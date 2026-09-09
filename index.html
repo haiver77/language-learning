@@ -1269,7 +1269,7 @@
             <div class="panel">
               <div class="panel-title">Speaking Practice</div>
               <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
-                <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min-settings" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
                 <label class="badge"><span>Silence Wait (sec)</span><input type="number" id="sp-wait" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
               </div>
             </div>
@@ -1349,6 +1349,7 @@
         aiStatus: document.getElementById('aiStatus'),
         rate: document.getElementById('rate'),
         pitch: document.getElementById('pitch'),
+        speakingMin: document.getElementById('sp-min-settings'),
       };
 
       const langMeta = {
@@ -2026,6 +2027,7 @@
             wrapCsv: !!(els.wrapCsv && els.wrapCsv.checked),
             color1: (els.color1 && els.color1.value) || '#4da3ff',
             color2: (els.color2 && els.color2.value) || '#3ccf7a',
+            speakingMin: speakingPractice.min,
             practiceLang: getPracticeLanguage(),
             speakingLang: (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang,
             writingLang: (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang,
@@ -2059,6 +2061,10 @@
           }
           if (cfg.rate) els.rate.value = cfg.rate;
           if (cfg.pitch) els.pitch.value = cfg.pitch;
+          if (cfg.speakingMin != null && els.speakingMin) {
+            els.speakingMin.value = Math.max(50, Math.min(100, parseInt(cfg.speakingMin, 10) || 90));
+            speakingPractice.min = parseInt(els.speakingMin.value, 10);
+          }
           if (cfg.font) { els.fontRange.value = cfg.font; document.documentElement.style.setProperty('--phrase-font', cfg.font + 'px'); els.fontValue.textContent = cfg.font + ' px'; }
           if (typeof cfg.themeDark !== 'undefined') { els.themeToggle.checked = !!cfg.themeDark; document.body.classList.toggle('theme-light', !els.themeToggle.checked); document.body.classList.toggle('theme-dark', els.themeToggle.checked); }
           if (cfg.mode) els.modeSelect.value = cfg.mode;
@@ -2671,7 +2677,13 @@
             }
           } catch (e) { /* ignore */ }
           spLangEl.onchange = e => { speakingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
-          div.querySelector('#sp-min').oninput = e => { speakingPractice.min = Math.max(50, Math.min(100, parseInt(e.target.value || '90', 10))); };
+          const spMinEl = div.querySelector('#sp-min');
+          if (els.speakingMin) spMinEl.value = els.speakingMin.value;
+          spMinEl.oninput = e => {
+            speakingPractice.min = Math.max(50, Math.min(100, parseInt(e.target.value || '90', 10)));
+            if (els.speakingMin) els.speakingMin.value = speakingPractice.min;
+            saveConfig();
+          };
         } else if (m === 'Writing Practice Mode') {
           const div = document.createElement('div');
           div.className = 'panel';
@@ -2792,7 +2804,11 @@
         if (speakingPractice.active) return;
         speakingPractice.active = true;
         speakingPractice.lang = (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang || 'es';
-        speakingPractice.min = parseInt(els.modeContent.querySelector('#sp-min')?.value || '90', 10) || 90;
+        const configuredMin = els.speakingMin?.value || els.modeContent.querySelector('#sp-min')?.value || '90';
+        speakingPractice.min = Math.max(50, Math.min(100, parseInt(configuredMin, 10) || 90));
+        if (els.speakingMin) els.speakingMin.value = speakingPractice.min;
+        const modeMin = els.modeContent.querySelector('#sp-min');
+        if (modeMin) modeMin.value = speakingPractice.min;
         speakingPractice.statusEl.textContent = 'Starting…';
 
         saveConfig();
@@ -3643,6 +3659,17 @@
         // Read slot checkboxes
         els.read[1].onchange = () => { saveConfig(); };
         els.read[2].onchange = () => { saveConfig(); };
+
+        // Speaking threshold is shared by Settings and the mode panel.
+        if (els.speakingMin) {
+          els.speakingMin.oninput = () => {
+            speakingPractice.min = Math.max(50, Math.min(100, parseInt(els.speakingMin.value || '90', 10)));
+            els.speakingMin.value = speakingPractice.min;
+            const modeMin = els.modeContent.querySelector('#sp-min');
+            if (modeMin) modeMin.value = speakingPractice.min;
+            saveConfig();
+          };
+        }
 
         // Font size
         const applyFont = () => {
