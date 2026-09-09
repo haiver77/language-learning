@@ -2833,6 +2833,19 @@
         }, waitSec * 1000);
       }
 
+      function advanceSpeakingImmediately(rec, token) {
+        if (!speakingPractice.active || speakingPractice.rec !== rec || token !== phraseSessionId) return;
+        if (speakingPractice.advanceTimer) {
+          clearTimeout(speakingPractice.advanceTimer);
+          speakingPractice.advanceTimer = null;
+        }
+        if (speakingPractice.advanceInterval) {
+          clearInterval(speakingPractice.advanceInterval);
+          speakingPractice.advanceInterval = null;
+        }
+        safeAdvanceSpeakingPractice(token);
+      }
+
       function resetSpeechUiAfterSilence() {
         if (speakingPractice.liveTextEl) speakingPractice.liveTextEl.textContent = '';
         if (speakingPractice.progressEl) speakingPractice.progressEl.value = 0;
@@ -2949,7 +2962,11 @@
 
 
           const matched = (pct >= speakingPractice.min && finalText);
-          if (matched) scheduleSpeakingAdvance(rec, myToken);
+          const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
+          if (matched) {
+            if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
+            else scheduleSpeakingAdvance(rec, myToken);
+          }
 
           if (finalText) {
             try {
@@ -3067,7 +3084,11 @@
 
 
           const matched = (pct >= speakingPractice.min && finalText);
-          if (matched) scheduleSpeakingAdvance(rec, myToken);
+          const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
+          if (matched) {
+            if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
+            else scheduleSpeakingAdvance(rec, myToken);
+          }
           if (finalText) {
             try {
               const ft = finalText.trim();
