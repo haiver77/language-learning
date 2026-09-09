@@ -2697,11 +2697,8 @@
           spLangEl.onchange = e => { speakingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
           const spMinEl = div.querySelector('#sp-min');
           if (els.speakingMin) spMinEl.value = els.speakingMin.value;
-          spMinEl.oninput = e => {
-            speakingPractice.min = Math.max(50, Math.min(100, parseInt(e.target.value || '90', 10)));
-            if (els.speakingMin) els.speakingMin.value = speakingPractice.min;
-            saveConfig();
-          };
+          spMinEl.oninput = e => updateSpeakingMinFromInput(e.target);
+          spMinEl.onchange = e => updateSpeakingMinFromInput(e.target, true);
           const spWaitEl = div.querySelector('#sp-wait');
           if (els.speakingWait) spWaitEl.value = els.speakingWait.value;
           spWaitEl.oninput = e => {
@@ -2798,6 +2795,18 @@
       function getSpeakingAfterMinSeconds() {
         const waitEl = els.speakingAfterMin || (els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-after-min') : null);
         return waitEl ? Math.max(0, Math.floor(Number(waitEl.value) || 0)) : 0;
+      }
+
+      function updateSpeakingMinFromInput(inputEl, commit = false) {
+        const value = Number(inputEl.value);
+        if (!Number.isFinite(value) || inputEl.value === '') return;
+        if (!commit && (value < 50 || value > 100)) return;
+        speakingPractice.min = Math.max(50, Math.min(100, Math.trunc(value)));
+        inputEl.value = speakingPractice.min;
+        if (inputEl !== els.speakingMin && els.speakingMin) els.speakingMin.value = speakingPractice.min;
+        const modeMin = els.modeContent && els.modeContent.querySelector('#sp-min');
+        if (modeMin && modeMin !== inputEl) modeMin.value = speakingPractice.min;
+        saveConfig();
       }
 
       function scheduleSpeakingAdvance(rec, token) {
@@ -3697,13 +3706,8 @@
 
         // Speaking threshold is shared by Settings and the mode panel.
         if (els.speakingMin) {
-          els.speakingMin.oninput = () => {
-            speakingPractice.min = Math.max(50, Math.min(100, parseInt(els.speakingMin.value || '90', 10)));
-            els.speakingMin.value = speakingPractice.min;
-            const modeMin = els.modeContent.querySelector('#sp-min');
-            if (modeMin) modeMin.value = speakingPractice.min;
-            saveConfig();
-          };
+          els.speakingMin.oninput = () => updateSpeakingMinFromInput(els.speakingMin);
+          els.speakingMin.onchange = () => updateSpeakingMinFromInput(els.speakingMin, true);
         }
         if (els.speakingWait) {
           els.speakingWait.oninput = () => {
