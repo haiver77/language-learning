@@ -1269,8 +1269,9 @@
             <div class="panel">
               <div class="panel-title">Speaking Practice</div>
               <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
-                <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
-                <label class="badge"><span>Silence Wait (sec)</span><input type="number" id="sp-wait" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min-settings" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Silence Wait (sec)</span><input type="number" id="sp-wait-settings" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Wait After Reach Min. Similarity (sec)</span><input type="number" id="sp-after-min-settings" min="0" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
               </div>
             </div>
           </section>
@@ -1349,6 +1350,9 @@
         aiStatus: document.getElementById('aiStatus'),
         rate: document.getElementById('rate'),
         pitch: document.getElementById('pitch'),
+        speakingMin: document.getElementById('sp-min-settings'),
+        speakingWait: document.getElementById('sp-wait-settings'),
+        speakingAfterMin: document.getElementById('sp-after-min-settings'),
       };
 
       const langMeta = {
@@ -1378,6 +1382,8 @@
         progressEl: null,
         statusEl: null,
         silenceCounterEl: null,
+        advanceTimer: null,
+        advanceInterval: null,
       };
       let writingPractice = {
         active: false,
@@ -1478,6 +1484,8 @@
         if (!rec) return;
         if (rec._silenceTimer) { clearTimeout(rec._silenceTimer); rec._silenceTimer = null; }
         if (rec._silenceInterval) { clearInterval(rec._silenceInterval); rec._silenceInterval = null; }
+        if (speakingPractice.advanceTimer) { clearTimeout(speakingPractice.advanceTimer); speakingPractice.advanceTimer = null; }
+        if (speakingPractice.advanceInterval) { clearInterval(speakingPractice.advanceInterval); speakingPractice.advanceInterval = null; }
         setSilenceCounterText('');
         if (rec._startTimer) { clearTimeout(rec._startTimer); rec._startTimer = null; }
       }
@@ -2026,6 +2034,9 @@
             wrapCsv: !!(els.wrapCsv && els.wrapCsv.checked),
             color1: (els.color1 && els.color1.value) || '#4da3ff',
             color2: (els.color2 && els.color2.value) || '#3ccf7a',
+            speakingMin: speakingPractice.min,
+            speakingWait: getSpeechSilenceWaitSeconds(),
+            speakingAfterMin: getSpeakingAfterMinSeconds(),
             practiceLang: getPracticeLanguage(),
             speakingLang: (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang,
             writingLang: (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang,
@@ -2059,6 +2070,16 @@
           }
           if (cfg.rate) els.rate.value = cfg.rate;
           if (cfg.pitch) els.pitch.value = cfg.pitch;
+          if (cfg.speakingMin != null && els.speakingMin) {
+            els.speakingMin.value = Math.max(50, Math.min(100, parseInt(cfg.speakingMin, 10) || 90));
+            speakingPractice.min = parseInt(els.speakingMin.value, 10);
+          }
+          if (cfg.speakingWait != null && els.speakingWait) {
+            els.speakingWait.value = Math.max(1, Math.floor(Number(cfg.speakingWait) || 3));
+          }
+          if (cfg.speakingAfterMin != null && els.speakingAfterMin) {
+            els.speakingAfterMin.value = Math.max(0, Math.floor(Number(cfg.speakingAfterMin) || 0));
+          }
           if (cfg.font) { els.fontRange.value = cfg.font; document.documentElement.style.setProperty('--phrase-font', cfg.font + 'px'); els.fontValue.textContent = cfg.font + ' px'; }
           if (typeof cfg.themeDark !== 'undefined') { els.themeToggle.checked = !!cfg.themeDark; document.body.classList.toggle('theme-light', !els.themeToggle.checked); document.body.classList.toggle('theme-dark', els.themeToggle.checked); }
           if (cfg.mode) els.modeSelect.value = cfg.mode;
@@ -2612,6 +2633,9 @@
           <label class="badge"><span>Silence wait (s)</span>
             <input id="sp-wait" type="number" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" />
           </label>
+          <label class="badge"><span>Wait after min. similarity (s)</span>
+            <input id="sp-after-min" type="number" min="0" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" />
+          </label>
           <button id="sp-start">Start</button>
           <button id="sp-stop" class="secondary">Stop</button>
           <span id="sp-status" class="status">Idle</span>
@@ -2671,7 +2695,26 @@
             }
           } catch (e) { /* ignore */ }
           spLangEl.onchange = e => { speakingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
-          div.querySelector('#sp-min').oninput = e => { speakingPractice.min = Math.max(50, Math.min(100, parseInt(e.target.value || '90', 10))); };
+          const spMinEl = div.querySelector('#sp-min');
+          if (els.speakingMin) spMinEl.value = els.speakingMin.value;
+          spMinEl.oninput = e => updateSpeakingMinFromInput(e.target);
+          spMinEl.onchange = e => updateSpeakingMinFromInput(e.target, true);
+          const spWaitEl = div.querySelector('#sp-wait');
+          if (els.speakingWait) spWaitEl.value = els.speakingWait.value;
+          spWaitEl.oninput = e => {
+            const wait = Math.max(1, Math.floor(Number(e.target.value) || 3));
+            e.target.value = wait;
+            if (els.speakingWait) els.speakingWait.value = wait;
+            saveConfig();
+          };
+          const spAfterMinEl = div.querySelector('#sp-after-min');
+          if (els.speakingAfterMin) spAfterMinEl.value = els.speakingAfterMin.value;
+          spAfterMinEl.oninput = e => {
+            const wait = Math.max(0, Math.floor(Number(e.target.value) || 0));
+            e.target.value = wait;
+            if (els.speakingAfterMin) els.speakingAfterMin.value = wait;
+            saveConfig();
+          };
         } else if (m === 'Writing Practice Mode') {
           const div = document.createElement('div');
           div.className = 'panel';
@@ -2745,8 +2788,62 @@
 
       // --- Speaking Practice Flow ---
       function getSpeechSilenceWaitSeconds() {
-        const waitEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-wait') : null;
+        const waitEl = els.speakingWait || (els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-wait') : null);
         return waitEl ? Math.max(1, Math.floor(Number(waitEl.value) || 3)) : 3;
+      }
+
+      function getSpeakingAfterMinSeconds() {
+        const waitEl = els.speakingAfterMin || (els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-after-min') : null);
+        return waitEl ? Math.max(0, Math.floor(Number(waitEl.value) || 0)) : 0;
+      }
+
+      function updateSpeakingMinFromInput(inputEl, commit = false) {
+        const value = Number(inputEl.value);
+        if (!Number.isFinite(value) || inputEl.value === '') return;
+        if (!commit && (value < 50 || value > 100)) return;
+        speakingPractice.min = Math.max(50, Math.min(100, Math.trunc(value)));
+        inputEl.value = speakingPractice.min;
+        if (inputEl !== els.speakingMin && els.speakingMin) els.speakingMin.value = speakingPractice.min;
+        const modeMin = els.modeContent && els.modeContent.querySelector('#sp-min');
+        if (modeMin && modeMin !== inputEl) modeMin.value = speakingPractice.min;
+        saveConfig();
+      }
+
+      function scheduleSpeakingAdvance(rec, token) {
+        if (speakingPractice.advanceTimer || !speakingPractice.active) return;
+        const waitSec = getSpeakingAfterMinSeconds();
+        const deadline = Date.now() + waitSec * 1000;
+        const updateStatus = () => {
+          if (speakingPractice.statusEl) {
+            const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+            speakingPractice.statusEl.textContent = `Minimum reached. Advancing in ${remaining}s...`;
+          }
+        };
+        updateStatus();
+        speakingPractice.advanceInterval = setInterval(updateStatus, 200);
+        speakingPractice.advanceTimer = setTimeout(() => {
+          speakingPractice.advanceTimer = null;
+          if (speakingPractice.advanceInterval) {
+            clearInterval(speakingPractice.advanceInterval);
+            speakingPractice.advanceInterval = null;
+          }
+          if (speakingPractice.active && speakingPractice.rec === rec && token === phraseSessionId) {
+            safeAdvanceSpeakingPractice(token);
+          }
+        }, waitSec * 1000);
+      }
+
+      function advanceSpeakingImmediately(rec, token) {
+        if (!speakingPractice.active || speakingPractice.rec !== rec || token !== phraseSessionId) return;
+        if (speakingPractice.advanceTimer) {
+          clearTimeout(speakingPractice.advanceTimer);
+          speakingPractice.advanceTimer = null;
+        }
+        if (speakingPractice.advanceInterval) {
+          clearInterval(speakingPractice.advanceInterval);
+          speakingPractice.advanceInterval = null;
+        }
+        safeAdvanceSpeakingPractice(token);
       }
 
       function resetSpeechUiAfterSilence() {
@@ -2792,7 +2889,11 @@
         if (speakingPractice.active) return;
         speakingPractice.active = true;
         speakingPractice.lang = (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang || 'es';
-        speakingPractice.min = parseInt(els.modeContent.querySelector('#sp-min')?.value || '90', 10) || 90;
+        const configuredMin = els.speakingMin?.value || els.modeContent.querySelector('#sp-min')?.value || '90';
+        speakingPractice.min = Math.max(50, Math.min(100, parseInt(configuredMin, 10) || 90));
+        if (els.speakingMin) els.speakingMin.value = speakingPractice.min;
+        const modeMin = els.modeContent.querySelector('#sp-min');
+        if (modeMin) modeMin.value = speakingPractice.min;
         speakingPractice.statusEl.textContent = 'Starting…';
 
         saveConfig();
@@ -2861,31 +2962,22 @@
 
 
           const matched = (pct >= speakingPractice.min && finalText);
+          const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
-            speakingPractice.statusEl.textContent = 'Great! ✅';
-            try {
-              if (rec._silenceTimer) { clearTimeout(rec._silenceTimer); rec._silenceTimer = null; }
-              if (rec._silenceInterval) { clearInterval(rec._silenceInterval); rec._silenceInterval = null; }
-              rec._accTranscript = '';
-              rec._accCaptured = false;
-              rec._suppressRestart = true;
-            } catch (e) {}
-            try { rec.abort(); } catch (e) {}
-            safeAdvanceSpeakingPractice(myToken);
+            if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
+            else scheduleSpeakingAdvance(rec, myToken);
           }
 
           if (finalText) {
             try {
-              if (!matched) {
-                const ft = finalText.trim();
-                if (ft) {
-                  if (!rec._accTranscript) rec._accTranscript = ft;
-                  else {
-                    const nextClean = removeTokenOverlap(rec._accTranscript, ft);
-                    if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
-                  }
-                  rec._accCaptured = false;
+              const ft = finalText.trim();
+              if (ft) {
+                if (!rec._accTranscript) rec._accTranscript = ft;
+                else {
+                  const nextClean = removeTokenOverlap(rec._accTranscript, ft);
+                  if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
                 }
+                rec._accCaptured = false;
               }
             } catch (e) { /* ignore */ }
           }
@@ -2992,32 +3084,21 @@
 
 
           const matched = (pct >= speakingPractice.min && finalText);
+          const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
-            speakingPractice.statusEl.textContent = 'Great! ✅';
-            try {
-              if (rec._silenceTimer) clearTimeout(rec._silenceTimer);
-              if (rec._silenceInterval) clearInterval(rec._silenceInterval);
-              rec._silenceTimer = null;
-              rec._silenceInterval = null;
-              rec._accTranscript = '';
-              rec._accCaptured = false;
-              rec._suppressRestart = true;
-            } catch (e) {}
-            try { rec.abort(); } catch (e) {}
-            safeAdvanceSpeakingPractice(myToken);
+            if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
+            else scheduleSpeakingAdvance(rec, myToken);
           }
           if (finalText) {
             try {
-              if (!matched) {
-                const ft = finalText.trim();
-                if (ft) {
-                  if (!rec._accTranscript) rec._accTranscript = ft;
-                  else {
-                    const nextClean = removeTokenOverlap(rec._accTranscript, ft);
-                    if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
-                  }
-                  rec._accCaptured = false;
+              const ft = finalText.trim();
+              if (ft) {
+                if (!rec._accTranscript) rec._accTranscript = ft;
+                else {
+                  const nextClean = removeTokenOverlap(rec._accTranscript, ft);
+                  if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
                 }
+                rec._accCaptured = false;
               }
             } catch (e) { /* ignore */ }
           }
@@ -3643,6 +3724,30 @@
         // Read slot checkboxes
         els.read[1].onchange = () => { saveConfig(); };
         els.read[2].onchange = () => { saveConfig(); };
+
+        // Speaking threshold is shared by Settings and the mode panel.
+        if (els.speakingMin) {
+          els.speakingMin.oninput = () => updateSpeakingMinFromInput(els.speakingMin);
+          els.speakingMin.onchange = () => updateSpeakingMinFromInput(els.speakingMin, true);
+        }
+        if (els.speakingWait) {
+          els.speakingWait.oninput = () => {
+            const wait = Math.max(1, Math.floor(Number(els.speakingWait.value) || 3));
+            els.speakingWait.value = wait;
+            const modeWait = els.modeContent.querySelector('#sp-wait');
+            if (modeWait) modeWait.value = wait;
+            saveConfig();
+          };
+        }
+        if (els.speakingAfterMin) {
+          els.speakingAfterMin.oninput = () => {
+            const wait = Math.max(0, Math.floor(Number(els.speakingAfterMin.value) || 0));
+            els.speakingAfterMin.value = wait;
+            const modeWait = els.modeContent.querySelector('#sp-after-min');
+            if (modeWait) modeWait.value = wait;
+            saveConfig();
+          };
+        }
 
         // Font size
         const applyFont = () => {
