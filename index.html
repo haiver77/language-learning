@@ -4,7 +4,11 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="icon" href="learn_bible.ico" type="image/x-icon" />
+  <title>Language Practice</title>
+  <meta name="description" content="Practice languages with phrases, speech, and writing exercises." />
+  <meta name="theme-color" content="#111827" />
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="icon" href="./pwa-icon-192.png" type="image/png" sizes="192x192" />
   <style>
     :root {
       --bg: #e6e9ed;
@@ -135,6 +139,117 @@
       margin-bottom: 14px;
     }
 
+    .speaking-practice-card {
+      transition: border-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
+    }
+
+    .speaking-practice-card.celebrating {
+      border-color: var(--success);
+      box-shadow: 0 0 0 4px var(--success-soft), 0 12px 28px var(--shadow);
+      transform: translateY(-2px);
+    }
+
+    .speaking-reward-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 8px 0 4px;
+    }
+
+    .speaking-streak {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      min-width: 112px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface-soft);
+      color: var(--ink);
+    }
+
+    .speaking-streak-icon {
+      color: var(--success);
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .speaking-streak-label {
+      display: block;
+      color: var(--muted);
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .speaking-streak-count {
+      display: block;
+      font-size: 1.15rem;
+      font-weight: 900;
+      line-height: 1.15;
+    }
+
+    .speaking-progress {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .speaking-progress-label {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 800;
+    }
+
+    .speaking-progress progress {
+      display: block;
+      width: 100%;
+      height: 12px;
+    }
+
+    .speaking-celebration {
+      min-height: 1.5em;
+      margin-top: 8px;
+      color: var(--success);
+      font-weight: 900;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 220ms ease, transform 220ms ease;
+    }
+
+    .speaking-celebration.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .speaking-practice-card,
+      .speaking-celebration {
+        transition: none;
+        transform: none;
+      }
+
+    }
+
+    @media (max-width: 420px) {
+      .speaking-practice-card {
+        padding: 14px 12px 10px;
+      }
+
+      .speaking-reward-row {
+        align-items: stretch;
+        gap: 8px;
+      }
+
+      .speaking-streak {
+        min-width: 96px;
+        padding: 7px 9px;
+      }
+    }
+
     .speaking-practice-panel.visible,
     .writing-practice-panel.visible {
       padding-bottom: 10px;
@@ -197,6 +312,72 @@
       border-radius: 28px;
       padding: 18px 18px 18px 10px;
       box-shadow: inset 0 0 0 1px rgba(17,24,39,0.04);
+    }
+
+    .phrase-line.speaking-success {
+      background: var(--success-soft);
+      border-color: var(--success);
+      box-shadow: 0 0 0 4px var(--success-soft), 0 14px 32px var(--shadow);
+      animation: phrase-success-glow var(--speaking-celebration-duration, 1.4s) ease-out both;
+    }
+
+    .phrase-text.speaking-phrase-pop {
+      transform-origin: center;
+      animation: phrase-success-pop var(--speaking-celebration-duration, 760ms) cubic-bezier(0.2, 0.8, 0.2, 1) both;
+    }
+
+    .speaking-confetti {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .speaking-confetti-piece {
+      position: absolute;
+      width: 15px;
+      height: 22px;
+      border-radius: 2px;
+      background: var(--confetti-color);
+      opacity: 0;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+      animation: speaking-confetti-fall var(--confetti-duration) cubic-bezier(0.18, 0.65, 0.35, 1) var(--confetti-delay) both;
+    }
+
+    .speaking-confetti-piece.round {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    @keyframes phrase-success-glow {
+      0% { transform: scale(1); }
+      35% { transform: scale(1.05); }
+      55% { transform: scale(1.07); }
+      75% { transform: scale(0.99); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes phrase-success-pop {
+      0%, 100% { transform: scale(1); }
+      28% { transform: scale(1.18); }
+      48% { transform: scale(1.12); }
+      70% { transform: scale(0.98); }
+      86% { transform: scale(1.08); }
+    }
+
+    @keyframes speaking-confetti-fall {
+      0% { opacity: 1; transform: translate3d(0, 0, 0) rotate(0); }
+      100% { opacity: 0; transform: translate3d(var(--confetti-drift), var(--confetti-fall), 0) rotate(var(--confetti-spin)); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .phrase-line.speaking-success,
+      .phrase-text.speaking-phrase-pop,
+      .speaking-confetti-piece {
+        animation: none;
+      }
     }
 
     .lang-tag {
@@ -389,6 +570,10 @@
 
     body.theme-dark .phrase-line {
       background: rgba(15, 23, 42, 0.55);
+    }
+
+    body.theme-dark .phrase-line.speaking-success {
+      background: var(--success-soft);
     }
 
     body.theme-dark .sheet .panel-title {
@@ -1272,6 +1457,7 @@
                 <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min-settings" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
                 <label class="badge"><span>Silence Wait (sec)</span><input type="number" id="sp-wait-settings" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
                 <label class="badge"><span>Wait After Reach Min. Similarity (sec)</span><input type="number" id="sp-after-min-settings" min="0" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Match celebration time (sec)</span><input type="number" id="sp-celebration-settings" min="0.5" max="10" step="0.1" value="1.2" style="width:58px; min-width:58px; max-width:58px;" /></label>
               </div>
             </div>
           </section>
@@ -1353,6 +1539,7 @@
         speakingMin: document.getElementById('sp-min-settings'),
         speakingWait: document.getElementById('sp-wait-settings'),
         speakingAfterMin: document.getElementById('sp-after-min-settings'),
+        speakingCelebration: document.getElementById('sp-celebration-settings'),
       };
 
       const langMeta = {
@@ -1372,6 +1559,9 @@
       let phraseSessionId = 0;           // Monotonic token
       let autoTimer = null;              // Auto mode interval
       let manualPlaybackLoop = { active: false };
+      const DEFAULT_SPEAKING_CELEBRATION_SECONDS = 1.2;
+      const MIN_SPEAKING_CELEBRATION_SECONDS = 0.5;
+      const MAX_SPEAKING_CELEBRATION_SECONDS = 10;
       let speakingPractice = {
         active: false,
         rec: null,
@@ -1382,6 +1572,17 @@
         progressEl: null,
         statusEl: null,
         silenceCounterEl: null,
+        streakEl: null,
+        celebrationEl: null,
+        cardEl: null,
+        phraseLineEl: null,
+        phraseTextEl: null,
+        confettiEl: null,
+        visualCelebrationTimer: null,
+        visualCelebrationUntil: 0,
+        celebrationSeconds: DEFAULT_SPEAKING_CELEBRATION_SECONDS,
+        streak: 0,
+        lastCelebratedToken: null,
         advanceTimer: null,
         advanceInterval: null,
       };
@@ -2037,6 +2238,7 @@
             speakingMin: speakingPractice.min,
             speakingWait: getSpeechSilenceWaitSeconds(),
             speakingAfterMin: getSpeakingAfterMinSeconds(),
+            speakingCelebrationSeconds: speakingPractice.celebrationSeconds,
             practiceLang: getPracticeLanguage(),
             speakingLang: (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang,
             writingLang: (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang,
@@ -2079,6 +2281,12 @@
           }
           if (cfg.speakingAfterMin != null && els.speakingAfterMin) {
             els.speakingAfterMin.value = Math.max(0, Math.floor(Number(cfg.speakingAfterMin) || 0));
+          }
+          if (cfg.speakingCelebrationSeconds != null) {
+            speakingPractice.celebrationSeconds = normalizeSpeakingCelebrationSeconds(cfg.speakingCelebrationSeconds);
+          }
+          if (els.speakingCelebration) {
+            els.speakingCelebration.value = speakingPractice.celebrationSeconds.toFixed(1);
           }
           if (cfg.font) { els.fontRange.value = cfg.font; document.documentElement.style.setProperty('--phrase-font', cfg.font + 'px'); els.fontValue.textContent = cfg.font + ' px'; }
           if (typeof cfg.themeDark !== 'undefined') { els.themeToggle.checked = !!cfg.themeDark; document.body.classList.toggle('theme-light', !els.themeToggle.checked); document.body.classList.toggle('theme-dark', els.themeToggle.checked); }
@@ -2648,10 +2856,17 @@
           hostPanel.className = 'speaking-practice-card';
           hostPanel.innerHTML = `
             <div class="panel-title">Live transcription and scoring</div>
-            <div class="progress-line">
-              <progress id="sp-progress-host" value="0" max="100"></progress>
-              <span id="sp-score-host" class="status">0%</span>
+            <div class="speaking-reward-row">
+              <div class="speaking-streak" aria-label="Current phrase streak">
+                <span class="speaking-streak-icon" aria-hidden="true">✦</span>
+                <span><span class="speaking-streak-label">Phrase streak</span><strong id="sp-streak-host" class="speaking-streak-count">0</strong></span>
+              </div>
+              <div class="speaking-progress">
+                <div class="speaking-progress-label"><span>Phrase progress</span><span id="sp-score-host" class="status">0%</span></div>
+                <progress id="sp-progress-host" value="0" max="100" aria-label="Current phrase progress"></progress>
+              </div>
             </div>
+            <div id="sp-celebration-host" class="speaking-celebration" role="status" aria-live="polite"></div>
             <div id="sp-live-host" class="status" style="margin-top:8px; font-size:15px; min-height: 1.5em;"></div>
             <div class="status-row">
               <span id="sp-status-host" class="status">Listening...</span>
@@ -2666,6 +2881,9 @@
           speakingPractice.progressEl = hostPanel.querySelector('#sp-progress-host');
           speakingPractice.scoreEl = hostPanel.querySelector('#sp-score-host');
           speakingPractice.statusEl = hostPanel.querySelector('#sp-status-host');
+          speakingPractice.streakEl = hostPanel.querySelector('#sp-streak-host');
+          speakingPractice.celebrationEl = hostPanel.querySelector('#sp-celebration-host');
+          speakingPractice.cardEl = hostPanel;
 
           const spSilenceHost = hostPanel.querySelector('#sp-silence-counter-host');
           speakingPractice.silenceCounterEl = spSilenceHost || speakingPractice.silenceCounterEl;
@@ -2797,6 +3015,16 @@
         return waitEl ? Math.max(0, Math.floor(Number(waitEl.value) || 0)) : 0;
       }
 
+      function normalizeSpeakingCelebrationSeconds(value) {
+        const seconds = Number(value);
+        if (!Number.isFinite(seconds)) return DEFAULT_SPEAKING_CELEBRATION_SECONDS;
+        return Math.round(Math.max(MIN_SPEAKING_CELEBRATION_SECONDS, Math.min(MAX_SPEAKING_CELEBRATION_SECONDS, seconds)) * 10) / 10;
+      }
+
+      function getSpeakingCelebrationMs() {
+        return Math.round(speakingPractice.celebrationSeconds * 1000);
+      }
+
       function updateSpeakingMinFromInput(inputEl, commit = false) {
         const value = Number(inputEl.value);
         if (!Number.isFinite(value) || inputEl.value === '') return;
@@ -2809,14 +3037,111 @@
         saveConfig();
       }
 
-      function scheduleSpeakingAdvance(rec, token) {
+      function resetSpeakingRunFeedback() {
+        speakingPractice.streak = 0;
+        speakingPractice.lastCelebratedToken = null;
+        if (speakingPractice.streakEl) speakingPractice.streakEl.textContent = '0';
+        clearSpeakingCelebration();
+      }
+
+      function clearSpeakingCelebration() {
+        clearSpeakingVisualEffects();
+        if (speakingPractice.celebrationEl) {
+          speakingPractice.celebrationEl.textContent = '';
+          speakingPractice.celebrationEl.classList.remove('visible');
+        }
+        if (speakingPractice.cardEl) speakingPractice.cardEl.classList.remove('celebrating');
+      }
+
+      function clearSpeakingVisualEffects() {
+        if (speakingPractice.visualCelebrationTimer) {
+          clearTimeout(speakingPractice.visualCelebrationTimer);
+          speakingPractice.visualCelebrationTimer = null;
+        }
+        speakingPractice.visualCelebrationUntil = 0;
+        if (speakingPractice.phraseLineEl) {
+          speakingPractice.phraseLineEl.classList.remove('speaking-success');
+          speakingPractice.phraseLineEl.style.removeProperty('--speaking-celebration-duration');
+          speakingPractice.phraseLineEl = null;
+        }
+        if (speakingPractice.phraseTextEl) {
+          speakingPractice.phraseTextEl.classList.remove('speaking-phrase-pop');
+          speakingPractice.phraseTextEl.style.removeProperty('--speaking-celebration-duration');
+          speakingPractice.phraseTextEl = null;
+        }
+        if (speakingPractice.confettiEl) {
+          speakingPractice.confettiEl.remove();
+          speakingPractice.confettiEl = null;
+        }
+      }
+
+      function showSpeakingVisualEffects() {
+        clearSpeakingVisualEffects();
+        const durationMs = getSpeakingCelebrationMs();
+        const slotPos = getSelectedLangCodes()[0] === speakingPractice.lang ? 1 : 2;
+        const phraseLine = document.querySelector(`.phrase-line[data-pos="${slotPos}"]`);
+        const phraseText = els.text[slotPos];
+        if (phraseLine) {
+          phraseLine.style.setProperty('--speaking-celebration-duration', `${durationMs}ms`);
+          phraseLine.classList.add('speaking-success');
+          speakingPractice.phraseLineEl = phraseLine;
+        }
+        if (phraseText) {
+          phraseText.style.setProperty('--speaking-celebration-duration', `${durationMs}ms`);
+          phraseText.classList.add('speaking-phrase-pop');
+          speakingPractice.phraseTextEl = phraseText;
+        }
+
+        const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reducedMotion) {
+          const colors = ['#ff2d55', '#ffd400', '#00e5a8', '#00b4ff', '#9b5cff', '#ff6d00'];
+          const overlay = document.createElement('div');
+          overlay.className = 'speaking-confetti';
+          overlay.setAttribute('aria-hidden', 'true');
+          for (let i = 0; i < 64; i++) {
+            const piece = document.createElement('span');
+            piece.className = `speaking-confetti-piece${i % 3 === 0 ? ' round' : ''}`;
+            piece.style.left = `${Math.random() * 100}%`;
+            piece.style.top = `${Math.random() * 90}%`;
+            piece.style.setProperty('--confetti-color', colors[i % colors.length]);
+            piece.style.setProperty('--confetti-drift', `${Math.round(Math.random() * 360 - 180)}px`);
+            piece.style.setProperty('--confetti-fall', `${Math.round(10 + Math.random() * 55)}vh`);
+            piece.style.setProperty('--confetti-spin', `${Math.round(360 + Math.random() * 720)}deg`);
+            const delayMs = Math.round(Math.random() * Math.min(160, durationMs * 0.12));
+            piece.style.setProperty('--confetti-delay', `${delayMs}ms`);
+            piece.style.setProperty('--confetti-duration', `${Math.max(1, durationMs - delayMs)}ms`);
+            overlay.appendChild(piece);
+          }
+          document.body.appendChild(overlay);
+          speakingPractice.confettiEl = overlay;
+        }
+
+        speakingPractice.visualCelebrationUntil = Date.now() + durationMs;
+        speakingPractice.visualCelebrationTimer = setTimeout(clearSpeakingVisualEffects, durationMs);
+      }
+
+      function celebrateSpeakingSuccess(token) {
+        if (!speakingPractice.active || token !== phraseSessionId || speakingPractice.lastCelebratedToken === token) return;
+        speakingPractice.lastCelebratedToken = token;
+        speakingPractice.streak += 1;
+        showSpeakingVisualEffects();
+        if (speakingPractice.streakEl) speakingPractice.streakEl.textContent = String(speakingPractice.streak);
+        if (speakingPractice.celebrationEl) {
+          speakingPractice.celebrationEl.textContent = `✨ Great job! ${speakingPractice.streak} phrase${speakingPractice.streak === 1 ? '' : 's'} in a row.`;
+          speakingPractice.celebrationEl.classList.add('visible');
+        }
+        if (speakingPractice.cardEl) speakingPractice.cardEl.classList.add('celebrating');
+      }
+
+      function scheduleSpeakingAdvance(rec, token, requestedWaitMs = getSpeakingAfterMinSeconds() * 1000) {
         if (speakingPractice.advanceTimer || !speakingPractice.active) return;
-        const waitSec = getSpeakingAfterMinSeconds();
-        const deadline = Date.now() + waitSec * 1000;
+        const celebrationWaitMs = Math.max(0, speakingPractice.visualCelebrationUntil - Date.now());
+        const waitMs = Math.max(requestedWaitMs, celebrationWaitMs);
+        const deadline = Date.now() + waitMs;
         const updateStatus = () => {
           if (speakingPractice.statusEl) {
             const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
-            speakingPractice.statusEl.textContent = `Minimum reached. Advancing in ${remaining}s...`;
+            speakingPractice.statusEl.textContent = `Great job! Advancing in ${remaining}s...`;
           }
         };
         updateStatus();
@@ -2830,7 +3155,7 @@
           if (speakingPractice.active && speakingPractice.rec === rec && token === phraseSessionId) {
             safeAdvanceSpeakingPractice(token);
           }
-        }, waitSec * 1000);
+        }, waitMs);
       }
 
       function advanceSpeakingImmediately(rec, token) {
@@ -2843,7 +3168,7 @@
           clearInterval(speakingPractice.advanceInterval);
           speakingPractice.advanceInterval = null;
         }
-        safeAdvanceSpeakingPractice(token);
+        scheduleSpeakingAdvance(rec, token, 0);
       }
 
       function resetSpeechUiAfterSilence() {
@@ -2888,6 +3213,7 @@
       async function startSpeakingPractice() {
         if (speakingPractice.active) return;
         speakingPractice.active = true;
+        resetSpeakingRunFeedback();
         speakingPractice.lang = (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang || 'es';
         const configuredMin = els.speakingMin?.value || els.modeContent.querySelector('#sp-min')?.value || '90';
         speakingPractice.min = Math.max(50, Math.min(100, parseInt(configuredMin, 10) || 90));
@@ -2964,6 +3290,7 @@
           const matched = (pct >= speakingPractice.min && finalText);
           const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
+            celebrateSpeakingSuccess(myToken);
             if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
             else scheduleSpeakingAdvance(rec, myToken);
           }
@@ -3048,6 +3375,7 @@
           speakingPractice.liveTextEl.textContent = '';
           speakingPractice.progressEl.value = 0;
           speakingPractice.scoreEl.textContent = '0%';
+          clearSpeakingCelebration();
         }
         speakingPractice.statusEl.textContent = getRecognitionStartDelayMs() > 0 ? 'Waiting for microphone…' : 'Listening…';
 
@@ -3086,6 +3414,7 @@
           const matched = (pct >= speakingPractice.min && finalText);
           const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
+            celebrateSpeakingSuccess(myToken);
             if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
             else scheduleSpeakingAdvance(rec, myToken);
           }
@@ -3184,6 +3513,7 @@
           } catch { }
           speakingPractice.rec = null;
         }
+        resetSpeakingRunFeedback();
         try { speechSynthesis.cancel(); } catch { }
         if (speakingPractice.statusEl) speakingPractice.statusEl.textContent = 'Stopped';
         recordLog('stopSpeakingPractice called');
@@ -3359,6 +3689,24 @@
       async function populatePredefinedList() {
         const sel = els.predefinedSelect;
         sel.innerHTML = ''; // Limpiar opciones previas
+
+        try {
+          const res = await fetch('./predefined_phrases/index.json');
+          if (!res.ok) throw new Error(`Phrase index request failed (${res.status})`);
+          const names = await res.json();
+          if (!Array.isArray(names) || !names.length || !names.every(name => typeof name === 'string' && /\.(csv|txt)$/i.test(name))) {
+            throw new Error('The bundled phrase index is invalid.');
+          }
+          for (const name of names) {
+            const opt = document.createElement('option');
+            opt.value = name;
+            opt.textContent = name;
+            sel.appendChild(opt);
+          }
+          return;
+        } catch (error) {
+          console.warn('Bundled phrase index unavailable:', error.message || error.toString());
+        }
 
         try {
           // Intento local
@@ -3748,6 +4096,18 @@
             saveConfig();
           };
         }
+        if (els.speakingCelebration) {
+          els.speakingCelebration.value = speakingPractice.celebrationSeconds.toFixed(1);
+          els.speakingCelebration.onchange = () => {
+            if (els.speakingCelebration.value === '') {
+              els.speakingCelebration.value = speakingPractice.celebrationSeconds.toFixed(1);
+              return;
+            }
+            speakingPractice.celebrationSeconds = normalizeSpeakingCelebrationSeconds(els.speakingCelebration.value);
+            els.speakingCelebration.value = speakingPractice.celebrationSeconds.toFixed(1);
+            saveConfig();
+          };
+        }
 
         // Font size
         const applyFont = () => {
@@ -3895,6 +4255,12 @@
 
       init();
     })();
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js')
+        .catch(error => console.error('Service worker registration failed:', error));
+    }
   </script>
 </body>
 

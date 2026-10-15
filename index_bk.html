@@ -7,277 +7,849 @@
   <link rel="icon" href="learn_bible.ico" type="image/x-icon" />
   <style>
     :root {
-      --bg: #111;
-      --fg: #e8e8e8;
-      --muted: #b3b3b3;
-      --card: #1a1a1a;
-      --accent: #4da3ff;
-      --border: #2a2a2a;
-      --danger: #ff5a5a;
-      --ok: #3ccf7a;
-      --control-bg: #151515;
-      --control-fg: #e8e8e8;
-      --focus: 0 0 0 3px rgba(77, 163, 255, 0.35);
+      --bg: #e6e9ed;
+      --panel: #f4f5f7;
+      --surface: #ffffff;
+      --surface-soft: #edf0f2;
+      --surface-strong: #dfe5eb;
+      --ink: #1a1d22;
+      --muted: #58606d;
+      --border: #d1d6dc;
+      --primary: #2b8cff;
+      --primary-soft: #daf0ff;
+      --success: #2cc39c;
+      --success-soft: #dffaf2;
+      --danger: #ef5b5b;
+      --shadow: rgba(17, 24, 39, 0.18);
+      --focus: 0 0 0 3px rgba(43, 140, 255, 0.24);
+      --phrase-font: 20px;
     }
 
-    .theme-light {
-      --bg: #ffffff;
-      --fg: #1d1d1f;
-      --muted: #555;
-      --card: #f5f5f7;
-      --accent: #1f6feb;
-      --border: #e5e5ea;
-      --danger: #d7263d;
-      --ok: #228b22;
-      --control-bg: #fff;
-      --control-fg: #1d1d1f;
-      --focus: 0 0 0 3px rgba(31, 111, 235, 0.25);
+    body.theme-dark {
+      --bg: #111827;
+      --panel: #0f172a;
+      --surface: #111827;
+      --surface-soft: #1f2937;
+      --surface-strong: #374151;
+      --ink: #e5e7eb;
+      --muted: #94a3b8;
+      --border: #334155;
+      --primary: #60a5fa;
+      --primary-soft: rgba(96, 165, 250, 0.18);
+      --success: #34d399;
+      --success-soft: rgba(52, 211, 153, 0.16);
+      --danger: #f87171;
+      --shadow: rgba(2, 6, 23, 0.44);
     }
 
-    html,
-    body {
+    body.theme-light {
+      --bg: #e6e9ed;
+      --panel: #f4f5f7;
+      --surface: #ffffff;
+      --surface-soft: #edf0f2;
+      --surface-strong: #dfe5eb;
+      --ink: #1a1d22;
+      --muted: #58606d;
+      --border: #d1d6dc;
+      --primary: #2b8cff;
+      --primary-soft: #daf0ff;
+      --success: #2cc39c;
+      --success-soft: #dffaf2;
+      --danger: #ef5b5b;
+      --shadow: rgba(17, 24, 39, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
       margin: 0;
-      padding: 0;
+      min-height: 100%;
       background: var(--bg);
-      color: var(--fg);
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
-      line-height: 1.4;
+      color: var(--ink);
+      font-family: "Trebuchet MS", "Segoe UI", sans-serif;
+      font-size: 10px;
+      line-height: 1.3;
     }
 
-    /* Container 1 Columna */
-    .container {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px;
-      padding: 12px;
-      max-width: 1100px;
-      margin: 0 auto;
+    body {
+      display: flex;
+      justify-content: center;
+      padding: 0;
     }
 
-    /* Container 2 Columnas */
-    .container2c {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-      padding: 1px;
-      max-width: 1100px;
-      margin: 0 auto;
+    button, select, input, textarea {
+      font: inherit;
     }
 
-    /* Card rows */
-    .row {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 4px;
+    .app-shell {
+      width: min(100%, 760px);
+      min-height: 100vh;
+      background: var(--panel);
+      border-left: 4px solid var(--surface-strong);
+      border-right: 4px solid var(--surface-strong);
+      box-shadow: 0 24px 50px var(--shadow);
+      position: relative;
+      overflow: hidden;
     }
 
-    .row-title {
-      font-weight: 600;
-      font-size: 0.95rem;
-      color: var(--muted);
-      margin: 0 0 10px 0;
+    .phone-frame {
+      min-height: 100vh;
+      padding-bottom: 0;
+      position: relative;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 18px 8px;
+    }
+
+    .brand {
+      font-weight: 900;
+      font-size: 18px;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin: 0;
+    }
+
+    .speaking-practice-panel,
+    .writing-practice-panel {
+      display: none;
+      width: 100%;
+      margin: 0 0 14px;
+    }
+
+    .speaking-practice-panel.visible,
+    .writing-practice-panel.visible {
+      display: block;
+    }
+
+    .speaking-practice-card,
+    .writing-practice-card {
+      background: var(--surface);
+      border: 3px solid rgba(36, 180, 123, 0.9);
+      border-radius: 26px;
+      padding: 16px 18px 12px;
+      box-shadow: inset 0 0 0 1px rgba(17,24,39,0.04);
+      margin-bottom: 14px;
+    }
+
+    .speaking-practice-panel.visible,
+    .writing-practice-panel.visible {
+      padding-bottom: 10px;
+    }
+
+    .speaking-practice-card .status-row,
+    .writing-practice-card .status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 8px;
+      color: var(--ink);
+      font-weight: 800;
+    }
+
+    .speaking-practice-card .status-row .status {
+      font-size: 1rem;
+    }
+
+    .ghost-button {
+      display: none !important;
+    }
+
+    .main-view {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-height: calc(100vh - 86px);
+      padding: 0 20px 0;
+      padding-bottom: 150px;
+    }
+
+    #row-phrases {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+      padding: 0;
     }
 
     .phrases {
+      width: 100%;
       display: grid;
+      gap: 18px;
       grid-template-columns: 1fr;
-      gap: 6px;
     }
 
     .phrase-line {
       display: grid;
-      grid-template-columns: 30px 1fr 28px;
+      grid-template-columns: 20px minmax(0, 1fr) 52px;
       align-items: center;
-      gap: 6px;
-      padding: 6px 8px;
-      background: var(--control-bg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
+      justify-items: start;
+      gap: 4px;
+      min-height: 150px;
+      background: rgba(255,255,255,0.62);
+      border: 3px solid var(--success);
+      border-radius: 28px;
+      padding: 18px 18px 18px 10px;
+      box-shadow: inset 0 0 0 1px rgba(17,24,39,0.04);
     }
 
     .lang-tag {
-      font-weight: 600;
-      color: var(--muted);
-      text-align: center;
+      display: inline-flex;
+      justify-content: flex-start;
+      align-items: center;
+      min-height: 54px;
+      font-size: 8px;
+      font-weight: 900;
+      color: var(--ink);
+      letter-spacing: -0.06em;
+      line-height: 1;
       user-select: none;
+      padding-left: 0;
+      width: 100%;
+      margin-left: 0;
     }
 
     .phrase-text {
-      font-size: clamp(14px, var(--phrase-font, 26px), 100px);
-      white-space: normal;
+      width: 100%;
+      justify-self: start;
+      color: var(--ink);
+      font-size: var(--phrase-font, 30px);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      text-align: left;
       word-wrap: break-word;
+      white-space: normal;
+      line-height: 1.12;
+      overflow-wrap: anywhere;
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    .phrase-word {
+      display: inline;
+      cursor: pointer;
+      border-radius: 8px;
+      padding: 0 0.08em;
+      transition: background-color 0.15s ease, transform 0.15s ease;
+    }
+
+    .phrase-word:hover,
+    .phrase-word:focus-visible {
+      background: rgba(74, 130, 224, 0.12);
+      outline: none;
+      transform: translateY(-1px);
     }
 
     .replay-btn {
-      width: 28px;
-      height: 28px;
-      border-radius: 6px;
-      display: inline-grid;
-      place-items: center;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--fg);
-      cursor: pointer;
-    }
-
-    .replay-btn:focus {
-      outline: none;
-      box-shadow: var(--focus);
-    }
-
-    .replay-btn:hover {
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    /* Inline compact controls */
-    .inline-controls {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .inline-controls .spacer {
-      flex: 1;
-    }
-
-    select,
-    input[type="text"],
-    input[type="password"],
-    input[type="number"],
-    input[type="file"] {
-      background: var(--control-bg);
-      color: var(--control-fg);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 6px 8px;
-      font-size: 14px;
-      box-sizing: border-box;
-      max-width: 100%;
-    }
-
-    /* Combo boxes compact width, adapt to content */
-    select {
-      width: auto;
-      max-width: 100%;
-    }
-
-    button {
-      background: var(--accent);
-      color: white;
+      width: 40px;
+      height: 40px;
+      padding: 0;
       border: none;
-      border-radius: 8px;
-      padding: 8px 10px;
-      font-size: 14px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #67b9ff 0%, #3a98ec 100%);
+      color: #fff;
+      font-size: 1.6rem;
+      line-height: 1;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 8px 18px rgba(41, 104, 194, 0.3);
       cursor: pointer;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
     }
 
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .replay-btn:hover { filter: brightness(1.03); }
+    .replay-btn:focus { outline: 0; box-shadow: var(--focus), 0 8px 18px rgba(41, 104, 194, 0.3); }
+
+    #btnStartAuto {
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      font-size: 14px;
+      line-height: 1;
+      min-width: 52px;
+      padding: 12px 16px;
+      display: grid;
+      place-items: center;
     }
 
-    button.secondary {
-      background: transparent;
-      color: var(--fg);
-      border: 1px solid var(--border);
+    .transport-bar {
+      position: fixed;
+      left: 50%;
+      bottom: 78px;
+      transform: translateX(-50%);
+      width: min(94vw, 760px);
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 12px;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      padding: 0 8px;
+      z-index: 10;
+      pointer-events: auto;
     }
 
-    button:focus {
-      outline: none;
-      box-shadow: var(--focus);
+    .toggle-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      padding: 0;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      border-radius: 14px;
+      color: var(--ink);
+      font-weight: 800;
+      box-shadow: 0 4px 16px rgba(17,24,39,0.04);
+      cursor: pointer;
+      font-size: 14px;
+      line-height: 1;
+      font-family: "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
+      transition: border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease, transform 0.18s ease;
     }
 
-    /* Panels inside rows */
-    .panel {
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      margin-top: 8px;
+    .toggle-pill .toggle-state {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
     }
 
-    .panel-title {
-      font-weight: 600;
+    .toggle-pill .toggle-icon {
+      font-size: 18px;
+      line-height: 1;
+    }
+
+    .toggle-pill.is-on {
+      border-color: rgba(34, 197, 94, 0.9);
+      background: rgba(34, 197, 94, 0.22);
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.14);
+    }
+
+    .toggle-pill.is-off {
+      background: var(--surface);
+      border-color: var(--border);
       color: var(--muted);
+    }
+
+    .toggle-pill input {
+      display: none;
+    }
+
+    .action-btn,
+    button {
+      border: none;
+      border-radius: 14px;
+      background: var(--surface);
+      border: 2px solid var(--border);
+      color: var(--ink);
+      font-weight: 800;
+      padding: 12px 18px;
+      min-height: 50px;
+      cursor: pointer;
+      box-shadow: none;
+      font-size: 14px;
+    }
+
+    .action-btn.secondary,
+    button.secondary {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      color: var(--ink);
+      box-shadow: none;
+    }
+
+    body.theme-dark .action-btn.secondary,
+    body.theme-dark button.secondary,
+    body.theme-dark .badge,
+    body.theme-dark .check,
+    body.theme-dark .mode-option {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    body.theme-dark .toggle-pill {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--ink);
+      border-color: var(--border);
+    }
+
+    body.theme-dark .toggle-pill.is-on {
+      background: rgba(34, 197, 94, 0.22);
+      border-color: rgba(34, 197, 94, 0.9);
+      box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.14);
+    }
+
+    body.theme-dark .phrase-line {
+      background: rgba(15, 23, 42, 0.55);
+    }
+
+    body.theme-dark .sheet .panel-title {
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(96, 165, 250, 0.05));
+    }
+
+    body.theme-dark .sheet .panel-title:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,0.1), rgba(96, 165, 250, 0.08));
+    }
+
+    body.theme-dark #csvBox {
+      background: rgba(15, 23, 42, 0.6);
+    }
+
+    .action-btn:focus, button:focus {
+      outline: 0;
+      box-shadow: var(--focus), 0 8px 16px rgba(44, 113, 201, 0.18);
+    }
+
+    .sheet-backdrop {
+      position: fixed;
+      inset: 0;
+      display: none;
+      background: rgba(15, 23, 42, 0.38);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+      z-index: 75;
+    }
+
+    .sheet-backdrop.visible {
+      display: block;
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .sheet {
+      position: fixed;
+      left: 50%;
+      bottom: 0;
+      display: none;
+      transform: translateX(-50%) translateY(calc(100% + 20px));
+      width: min(92vw, 760px);
+      height: min(94vh, calc(100vh - 12px));
+      max-height: calc(100vh - 12px);
+      background: var(--panel);
+      border-radius: 30px 30px 0 0;
+      box-shadow: 0 -20px 40px rgba(9, 16, 29, 0.22);
+      border: 2px solid rgba(17,24,39,0.08);
+      border-bottom: none;
+      transition: transform .25s ease, opacity .2s ease, visibility 0s linear .2s;
+      z-index: 90;
+      overflow: hidden;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .sheet.settings-page {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      width: 100vw;
+      max-width: 100vw;
+      height: 100vh;
+      max-height: 100vh;
+      border-radius: 0;
+      border: none;
+      transform: translateY(100%);
+    }
+
+    .sheet.open {
+      display: block;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+      opacity: 1;
+      visibility: visible;
+      transition: transform .25s ease, opacity .2s ease, visibility 0s linear 0s;
+    }
+
+    .sheet.settings-page.open {
+      transform: translateY(0);
+    }
+
+    .sheet-grab {
+      width: 68px;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(18, 20, 24, 0.2);
+      margin: 10px auto 0;
+      cursor: grab;
+      touch-action: none;
+    }
+
+    .sheet-grab:active {
+      cursor: grabbing;
+    }
+
+    .sheet-panel {
+      display: none;
+      padding: 12px 14px 18px;
+      height: calc(100% - 52px);
+      max-height: calc(100% - 52px);
+      overflow-y: auto;
+    }
+
+    .sheet-panel[data-panel="csv"] {
+      display: none;
+      height: 100%;
+      max-height: none;
+      padding: 8px 12px 10px;
+    }
+
+    .sheet-panel[data-panel="csv"].active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sheet-panel[data-panel="csv"] .row {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      margin-bottom: 0;
+      padding: 8px;
+    }
+
+    .sheet-panel[data-panel="csv"] .panel {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      gap: 8px;
+    }
+
+    .sheet-panel.active {
+      display: block;
+    }
+
+    .sheet-header {
+      font-size: clamp(1.6rem, 4vw, 2.3rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      margin: 8px 0 14px;
+      color: var(--ink);
+    }
+
+    .sheet .container,
+    .sheet .container2c {
+      display: block;
+      max-width: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sheet .row {
+      background: var(--surface-soft);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 12px;
+      margin-bottom: 12px;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18);
+    }
+
+    #row-load {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    #row-load .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.12);
+    }
+
+    #row-load .panel-title {
       margin-bottom: 8px;
     }
 
-    .checks {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(60px, auto));
-      gap: 8px 14px;
-      align-items: center;
+    #row-load .inline-controls {
+      width: 100%;
+      justify-content: center;
     }
 
-    .check {
+    .sheet .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 0;
+      margin-top: 0;
+      overflow: hidden;
+      transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
+    }
+
+    .sheet .panel.is-collapsible {
+      box-shadow: inset 0 0 0 1px rgba(17,24,39,0.03);
+    }
+
+    .sheet .panel-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      width: 100%;
+      padding: 14px 16px;
+      margin: 0;
+      border: 0;
+      border-radius: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.45), rgba(143, 182, 255, 0.08));
+      color: var(--ink);
+      font-size: 1.25rem;
+      font-weight: 900;
+      text-align: left;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+
+    .sheet .panel-title:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(143, 182, 255, 0.12));
+    }
+
+    .sheet .panel-title:focus-visible {
+      outline: 0;
+      box-shadow: inset 0 0 0 2px rgba(43, 140, 255, 0.35);
+    }
+
+    .sheet .panel-chevron {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: rgba(43, 140, 255, 0.1);
+      color: var(--primary);
+      font-size: 1.1rem;
+      line-height: 1;
+      transition: transform .2s ease;
+      transform: rotate(0deg);
+      flex-shrink: 0;
     }
 
-    input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
+    .sheet .panel.collapsed .panel-chevron {
+      transform: rotate(-90deg);
     }
 
-    .font-slider {
+    .sheet .panel-content {
+      padding: 12px 12px 14px;
+      display: block;
+    }
+
+    .sheet .panel.collapsed .panel-content {
+      display: none;
+    }
+
+    .sheet .inline-controls,
+    .sheet .font-slider,
+    .sheet .checks,
+    .sheet .progress-line {
       display: flex;
+      flex-wrap: wrap;
       gap: 10px;
       align-items: center;
-      flex-wrap: wrap;
     }
 
-    input[type="range"] {
-      width: 45%;
+    .sheet .checks {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(140px, 1fr));
+      gap: 12px;
     }
 
-    .tiny-toggle {
-      display: inline-flex;
-      gap: 6px;
+    .sheet .check {
+      font-size: 1.3rem;
+      font-weight: 800;
+      display: flex;
       align-items: center;
-      font-size: 13px;
+      justify-content: flex-start;
+      gap: 12px;
+      min-height: 54px;
+      width: 150px;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.75);
+    }
+
+    .sheet .check input {
+      width: 20px;
+      height: 20px;
+      margin: 0;
+      accent-color: var(--primary);
     }
 
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      background: rgba(255, 255, 255, 0.06);
+      gap: 8px;
+      background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 999px;
-      padding: 5px 10px;
-      color: var(--muted);
+      padding: 8px 12px;
+      color: var(--ink);
+      font-weight: 700;
     }
 
-    .textarea {
-      display: block;
+    .sheet select,
+    .sheet input[type="text"],
+    .sheet input[type="password"],
+    .sheet input[type="number"],
+    .sheet input[type="file"],
+    .sheet .textarea {
+      font-size: 9px;
+      min-height: 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      padding: 6px 8px;
+      width: 100%;
+    }
+
+    .sheet input[type="number"] {
+      width: fit-content;
+      min-width: 0;
+      max-width: 100%;
+      display: inline-block;
+    }
+
+    #aiTopic {
+      font-size: 12px;
+    }
+
+    .sheet select,
+    .sheet select option {
+      color: var(--ink);
+      background: var(--surface);
+    }
+
+    .sheet select,
+    .sheet input[type="number"],
+    .sheet input[type="file"] {
+      font-size: 9px;
+    }
+
+    .sheet select {
+      width: auto;
+      min-width: 180px;
+      height: 28px;
+      line-height: 1.2;
+      padding: 6px 10px;
+      appearance: auto;
+    }
+
+    .tiny-button {
+      min-height: 32px;
+      height: 32px;
+      padding: 6px 12px;
+      font-size: 12px;
+      line-height: 1.2;
+      border-radius: 10px;
+    }
+
+    .title-with-action {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .title-with-action .panel-title {
+      margin-bottom: 0;
+    }
+
+    .sheet .textarea {
+      min-height: 120px;
+    }
+
+    .sheet #csvBox {
+      position: absolute;
+      inset: 0;
       box-sizing: border-box;
       width: 100%;
-      max-width: 100%;
-      min-height: 160px;
-      max-height: 380px;
-      background: var(--control-bg);
-      color: var(--control-fg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 10px;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
-      font-size: 13px;
-      line-height: 1.5;
-      resize: vertical;
+      height: 100%;
+      min-height: 0;
+      resize: none;
+      z-index: 1;
+      color: transparent;
+      caret-color: var(--ink);
+      background: rgba(255,255,255,0.74);
+      white-space: pre;
+      overflow: auto;
     }
 
-    /* CSV viewer overlay (read-only colorized view) */
-    .viewer-wrapper { position: relative; width: 100%; }
-    #csvBox { box-sizing: border-box; width:100%; min-height:10em; resize:vertical; border-radius:10px; border:1px solid var(--border); background: var(--control-bg); color: transparent; caret-color: var(--control-fg); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; padding:10px; position:relative; z-index:1; }
-    #csvBoxViewerDisplay { position: absolute; top:0; left:0; right:0; bottom:0; overflow:auto; white-space:pre-wrap; word-wrap:break-word; padding:10px; pointer-events:none; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; z-index:2; box-sizing: border-box; }
-    /* hide overlay scrollbar so only the textarea shows one */
-    #csvBoxViewerDisplay::-webkit-scrollbar { display: none; }
-    #csvBoxViewerDisplay { -ms-overflow-style: none; scrollbar-width: none; }
-    /* viewer-line: each overlay line reserves space for a right-side line number */
-    #csvBoxViewerDisplay .viewer-line { display:block; position:relative; padding-right: calc(var(--ln-ch, 3ch) + 16px); }
-    #csvBoxViewerDisplay .viewer-line .line-content { white-space: inherit; display:inline; }
+    .csv-editor-shell {
+      display: flex;
+      flex-direction: column;
+      flex: 1 1 auto;
+      min-height: 0;
+      gap: 10px;
+    }
+
+    .viewer-wrapper {
+      position: relative;
+      flex: 1 1 auto;
+      width: 100%;
+      min-height: 220px;
+      height: min(74vh, 760px);
+      max-height: calc(100vh - 300px);
+      margin-top: 0;
+      min-width: 0;
+    }
+
+    .csv-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0;
+    }
+
+    #csvBoxViewerDisplay {
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      white-space: pre;
+      word-wrap: break-word;
+      padding: 10px;
+      pointer-events: none;
+      z-index: 2;
+      box-sizing: border-box;
+      background: transparent;
+      color: transparent;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    #csvBoxViewerDisplay::-webkit-scrollbar {
+      display: none;
+    }
+
+    #csvBoxViewerDisplay .viewer-line {
+      display: block;
+      position: relative;
+      padding-right: calc(var(--ln-ch, 3ch) + 18px);
+      min-height: 1.4em;
+    }
+
+    #csvBoxViewerDisplay .viewer-line .line-content {
+      white-space: inherit;
+      display: inline;
+    }
+
     #csvBoxViewerDisplay .viewer-line .ln {
       position: absolute;
       right: 6px;
@@ -291,302 +863,437 @@
       user-select: none;
       pointer-events: none;
     }
-    #csvColorControls { display:flex; gap:8px; align-items:center; margin-top:8px; flex-wrap:wrap }
-    #csvColorControls label { display:inline-flex; gap:6px; align-items:center; background:transparent; border-radius:8px; padding:4px }
 
-    .progress-line {
+    .sheet #modeSelect {
+      width: 100%;
+      min-height: 64px;
+      font-size: 1.15rem;
+      font-weight: 800;
+      padding-left: 16px;
+      border-radius: 18px;
+      background: #f1f5f9;
+    }
+
+    .mode-option-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .mode-option {
+      width: 100%;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
       gap: 12px;
-      flex-wrap: wrap;
+      padding: 14px 18px;
+      min-height: 58px;
+      border-radius: 18px;
+      border: 2px solid rgba(17,24,39,0.08);
+      background: var(--surface);
+      color: var(--ink);
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 900;
+      text-align: left;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12);
+      cursor: pointer;
     }
 
-    progress {
-      width: 220px;
-      height: 14px;
-      accent-color: var(--accent);
+    .mode-option.active {
+      background: linear-gradient(180deg, var(--primary-soft), rgba(91, 175, 255, 0.08));
+      border-color: rgba(43, 140, 255, 0.7);
+      box-shadow: 0 0 0 2px rgba(43, 140, 255, 0.18);
     }
 
-    .status {
-      font-size: 13px;
-      color: var(--muted);
+    .mode-option .emoji {
+      width: 38px;
+      text-align: center;
+      font-size: 2rem;
+      line-height: 1;
+      display: inline-block;
+    }
+
+    .sheet #modeContent {
+      width: 100%;
+    }
+
+    .sheet #modeContent .panel {
+      margin-top: 14px;
+    }
+
+    .sheet .status {
+      font-size: 1rem;
+      font-weight: 700;
     }
 
     .word-correct {
-      color: var(--ok);
-      font-weight: 600;
+      color: var(--success);
+      font-weight: 800;
     }
 
     .word-incorrect {
       color: var(--danger);
-      font-weight: 600;
+      font-weight: 800;
     }
 
-    .status.ok {
-      color: var(--ok);
+    progress {
+      width: 100%;
+      height: 18px;
+      border-radius: 999px;
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      border: 1px solid var(--border);
+      background: var(--surface-soft);
+      accent-color: var(--primary);
+      overflow: hidden;
     }
 
-    .status.error {
-      color: var(--danger);
+    progress::-webkit-progress-bar {
+      background: var(--surface-soft);
+      border-radius: 999px;
     }
 
-    /* Mobile-first spacing and tap targets */
-    .inline-controls>* {
-      min-height: 0px;
+    progress::-webkit-progress-value {
+      background: var(--primary);
+      border-radius: 999px;
+      transition: width .2s ease;
     }
 
-    .checks input[type="checkbox"] {
-      width: 22px;
-      height: 22px;
+    progress::-moz-progress-bar {
+      background: var(--primary);
+      border-radius: 999px;
     }
 
-    /* Responsive layout */
-    @media (min-width: 900px) {
-      .container {
-        gap: 14px;
-        padding: 16px;
-      }
+    .sheet progress {
+      width: min(100%, 300px);
     }
 
-    @media (max-width: 600px) {
-      .checks {
-        grid-template-columns: 1fr;
-      }
+    .bottom-nav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0;
+      background: var(--panel);
+      border-top: 2px solid var(--border);
+      box-shadow: 0 -10px 22px var(--shadow);
+      z-index: 120;
+      overflow: hidden;
+    }
 
-      .phrases {
-        gap: 8px;
-      }
+    .nav-item {
+      appearance: none;
+      border: none;
+      background: transparent;
+      color: var(--ink);
+      font-size: 20px;
+      font-weight: 800;
+      min-height: 72px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 6px 2px 8px;
+      cursor: pointer;
+      transition: background .15s ease, color .15s ease;
+      white-space: nowrap;
+      min-width: 0;
+    }
 
+    .nav-item .icon {
+      font-size: 20px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .nav-item span:last-child {
+      display: inline-block;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 1.1;
+    }
+
+    .nav-item.active {
+      background: linear-gradient(180deg, rgba(56,146,255,.14), rgba(56,146,255,.04));
+      color: var(--primary);
+    }
+
+    @media (max-width: 560px) {
       .phrase-line {
-        grid-template-columns: 28px 1fr 28px;
+        grid-template-columns: 20px minmax(0,1fr) 46px;
+        gap: 4px;
+        min-height: 130px;
       }
 
-      .inline-controls .spacer {
+      .lang-tag {
+        width: 100%;
+      }
+
+      .transport-bar {
+        gap: 8px;
+        width: calc(100vw - 14px);
+        padding: 0 4px;
+      }
+
+      .action-btn,
+      .toggle-pill {
+        flex: 0 0 auto;
+      }
+
+      .sheet {
+        width: min(94vw, 760px);
+        bottom: 0;
+        height: clamp(320px, 58vh, 390px);
+      }
+
+      .bottom-nav {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0;
+      }
+
+      .nav-item {
+        min-height: 64px;
+        padding: 6px 0 7px;
+      }
+
+      .nav-item span:last-child {
         display: none;
       }
-
     }
   </style>
 </head>
 
 <body class="theme-dark">
-  <div class="container">
+  <div class="app-shell">
+    <div class="phone-frame">
+      <header class="topbar">
+        <h1 class="brand">Language Practice</h1>
+      </header>
 
-    <!-- Row 1: Current phrases display -->
-    <section class="row" id="row-phrases">
-      <div class="phrases" id="phrasesView">
-        <!-- Language slot 1 -->
-        <div class="phrase-line" data-pos="1">
-          <div class="lang-tag" id="lang-tag-1">ES</div>
-          <div class="phrase-text" id="text-1"></div>
-          <button class="replay-btn" id="replay-1" title="Replay 1" aria-label="Replay 1">▶</button>
-        </div>
-        <!-- Language slot 2 -->
-        <div class="phrase-line" data-pos="2">
-          <div class="lang-tag" id="lang-tag-2">EN</div>
-          <div class="phrase-text" id="text-2"></div>
-          <button class="replay-btn" id="replay-2" title="Replay 2" aria-label="Replay 2">▶</button>
-        </div>
-        <!-- Only ES and EN supported (IT/PT removed) -->
-      </div>
-    </section>
-
-    <!-- Row 2: Operation Modes -->
-    <section class="row" id="row-modes">
-      <div class="inline-controls">
-        <label class="badge">
-          <span>Mode</span>
-          <select id="modeSelect" aria-label="Mode">
-            <option>Manual Mode</option>
-            <option>Auto Mode</option>
-            <option>Speaking Practice Mode</option>
-            <option>Writing Practice Mode</option>
-          </select>
-        </label>
-        <button id="btnRandom" class="secondary" title="Show a random phrase">Random Phrase</button>
-        <button id="btnFirst" class="secondary" title="Go to the first phrase">Go to First</button>
-        <div class="spacer"></div>
-        <div id="modeContent" style="width:100%"></div>
-      </div>
-    </section>
-
-  </div>
-
-
-  <div class="container">
-    <!-- Row 2.5: Languages -->
-    <section class="row" id="row-languages">
-      <div class="panel">
-        <div class="panel-title">Languages</div>
-        <div class="inline-controls">
-          <label class="badge"><span>Language 1</span>
-            <select id="lang1Select">
-              <option value="es" selected>Spanish</option>
-              <option value="en">English</option>
-              <option value="it">Italian</option>
-              <option value="pt">Portuguese</option>
-              <option value="de">German</option>
-              <option value="fr">French</option>
-            </select>
-          </label>
-          <label class="badge"><span>Language 2</span>
-            <select id="lang2Select">
-              <option value="es">Spanish</option>
-              <option value="en" selected>English</option>
-              <option value="it">Italian</option>
-              <option value="pt">Portuguese</option>
-              <option value="de">German</option>
-              <option value="fr">French</option>
-            </select>
-          </label>
-          <div class="spacer"></div>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="container2c">
-    <!-- Row 3: Language Reading Checkboxes -->
-    <section class="row" id="row-read">
-      <div class="panel">
-        <div class="panel-title">Read Language</div>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="read-1" checked /> <span id="read-label-1">L1</span></label>
-          <label class="check"><input type="checkbox" id="read-2" /> <span id="read-label-2">L2</span></label>
-        </div>
-      </div>
-    </section>
-
-    <!-- Row 3 (continued): Language Display Options -->
-    <section class="row" id="row-show">
-      <div class="panel">
-        <div class="panel-title">Show Language</div>
-        <div class="checks">
-          <label class="check"><input type="checkbox" id="show-1" checked /> <span id="show-label-1">L1</span></label>
-          <label class="check"><input type="checkbox" id="show-2" /> <span id="show-label-2">L2</span></label>
-        </div>
-      </div>
-    </section>
-  </div>
-
-  <div class="container">
-    <!-- Font Size -->
-    <section class="row" id="row-show">
-      <div class="font-slider" style="margin-top:10px">
-        <span class="badge">Font size</span>
-        <input type="range" min="14" max="100" value="26" id="fontRange" />
-        <span id="fontValue" class="status">26 px</span>
-        <span class="spacer"></span>
-        <label class="tiny-toggle">
-          <input type="checkbox" id="themeToggle" checked />
-          <span>Dark theme</span>
-        </label>
-      </div>
-    </section>
-
-    <!-- Row 4: Phrase list (CSV textbox) -->
-    <section class="row" id="row-csv">
-      <div class="panel">
-        <div class="panel-title">Phrases (CSV: ES,EN)</div>
-        <div class="inline-controls">
-          <div style="width:100%">
-            <div class="viewer-wrapper" style="position:relative; margin-top:8px">
-              <textarea class="textarea" id="csvBox" style="width:100%; min-height:10em; resize:vertical; position:relative; z-index:1"></textarea>
-              <div id="csvBoxViewerDisplay" aria-hidden="true"></div>
-              <label class="badge" style="display:inline-block; margin-bottom:6px; position:relative; z-index:2; margin-top:8px"><input type="checkbox" id="wrapCsv" /> <span>Word Wrap</span></label>
-
-              <div id="csvColorControls">
-                <label class="badge"><span>Phrase 1 color</span> <input type="color" id="color1" value="#4da3ff" /></label>
-                <label class="badge"><span>Phrase 2 color</span> <input type="color" id="color2" value="#3ccf7a" /></label>
-              </div>
+      <main class="main-view">
+        <section class="row" id="row-phrases">
+          <div class="phrases" id="phrasesView">
+            <div class="phrase-line" data-pos="1">
+              <div class="lang-tag" id="lang-tag-1">ES</div>
+              <div class="phrase-text" id="text-1"></div>
+              <button class="replay-btn" id="replay-1" title="Replay 1" aria-label="Replay 1">▶️</button>
+            </div>
+            <div class="phrase-line" data-pos="2">
+              <div class="lang-tag" id="lang-tag-2">EN</div>
+              <div class="phrase-text" id="text-2"></div>
+              <button class="replay-btn" id="replay-2" title="Replay 2" aria-label="Replay 2">▶️</button>
             </div>
           </div>
+        </section>
+        <div id="speakingPracticePanel" class="speaking-practice-panel" aria-live="polite"></div>
+        <div id="writingPracticePanel" class="writing-practice-panel" aria-live="polite"></div>
+
+        <div class="transport-bar" aria-label="Phrase controls">
+          <label class="toggle-pill is-on" for="randomToggle" title="Random mode active: random phrase selection" aria-label="Toggle random phrase order">
+            <input type="checkbox" id="randomToggle" checked />
+            <span class="toggle-state">
+              <span class="toggle-icon" aria-hidden="true">🔀</span>
+            </span>
+          </label>
+          <button id="btnFirst" class="action-btn secondary" type="button" title="Go to first phrase">⏮️</button>
+          <button id="btnStopAuto" class="action-btn secondary" type="button" title="Stop auto replay">⏹️</button>
+          <button id="btnStartAuto" class="action-btn" type="button" title="Start auto replay">▶️</button>
+          <button id="btnPrevPhrase" class="action-btn secondary" type="button" title="Previous phrase">⬅️</button>
+          <button id="btnNextPhrase" class="action-btn secondary" type="button" title="Next phrase">➡️</button>
         </div>
-      </div>
-    </section>
+      </main>
 
+      <div class="sheet-backdrop" id="sheetBackdrop"></div>
 
+      <aside class="sheet" id="bottomSheet" aria-label="Options panel">
+        <div class="sheet-grab"></div>
 
-    <!-- Row 7: OpenAI loader -->
-    <section class="row" id="row-ai">
-      <div class="panel">
-        <div class="panel-title">Load phrases from OpenAI</div>
-        <div class="inline-controls">
-          <label class="badge" style="display:block; width:100%"><span>Topic</span></label>
-          <div style="width:100%">
-            <textarea  class="textarea"  id="aiTopic" placeholder="e.g., comida, viajes"
-              style="width:100%; min-height:2.4em; resize:vertical"></textarea>
-          </div>
-          <label class="badge"><span>Level</span>
-            <select id="aiLevel">
-              <option value="ANY" selected>Any</option>
-              <option value="A1">A1</option>
-              <option value="A2">A2</option>
-              <option value="B1">B1</option>
-              <option value="B2">B2</option>
-              <option value="C1">C1</option>
-              <option value="C2">C2</option>
+        <div class="sheet-panel active" data-panel="practice">
+          <div class="sheet-header">Practice Mode</div>
+          <section class="row" id="row-modes">
+            <select id="modeSelect" aria-label="Mode" style="display:none;">
+              <option>Manual Mode</option>
+              <option>Auto Mode</option>
+              <option>Speaking Practice Mode</option>
+              <option>Writing Practice Mode</option>
             </select>
-          </label>
-          <label class="badge"><span>Quantity</span>
-            <input type="number" id="aiQuantity" min="1" max="500" value="40" style="width:7ch" />
-          </label>
-          <label class="badge"><span>Min words</span>
-            <input type="number" id="aiMinWords" min="1" max="500" value="15" style="width:7ch" />
-          </label>
-          <label class="badge"><span>OPEN_AI_TOKEN</span>
-            <input type="password" id="openaiToken" placeholder="sk-..." style="width:50px" />
-          </label>
-          <div class="spacer"></div>
-          <button id="btnLoadAI">Load from AI</button>
-          <span id="aiStatus" class="status">Idle</span>
+            <div class="mode-option-list" aria-label="Practice modes">
+              <button type="button" class="mode-option" data-mode="Manual Mode"><span class="emoji">🧠</span><span>Manual Mode</span></button>
+              <button type="button" class="mode-option" data-mode="Speaking Practice Mode"><span class="emoji">🎤</span><span>Speaking Practice</span></button>
+              <button type="button" class="mode-option" data-mode="Writing Practice Mode"><span class="emoji">✍️</span><span>Dictate Practice</span></button>
+            </div>
+            <div id="modeContent" style="width:100%; margin-top:12px;"></div>
+          </section>
         </div>
-      </div>
-    </section>
 
-    <!-- Row 5: Phrases Loading Options -->
-    <section class="row" id="row-load">
-      <div class="inline-controls">
-        <label class="badge">
-          <span>Predefined sets</span>
-          <select id="predefinedSelect">
-            <option value="">(Select a set)</option>
-          </select>
-        </label>
-        <button id="btnLoadPredefined" class="secondary">Load selected</button>
-        <a href="https://github.com/haiver77/language_learning/tree/main/predefined_phrases" target="_blank" rel="noopener noreferrer" class="secondary" style="text-decoration:none; display:inline-flex; align-items:center; gap:6px;">Edit Predefined Files</a>
-        <div class="spacer"></div>
-        <label class="badge">
-          <span>Load from file</span>
-          <input type="file" id="fileInput" accept=".csv,.txt" />
-        </label>
-      </div>
-    </section>
+        <div class="sheet-panel" data-panel="voices">
+          <div class="sheet-header">Voices</div>
+          <section class="row" id="row-tts">
+            <div class="panel">
+              <div class="panel-title">Voices</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
+                <label class="badge"><span>Voice 1</span><select id="voice-1"></select></label>
+                <label class="badge"><span>Voice 2</span><select id="voice-2"></select></label>
+                <button id="refreshVoices" class="secondary tiny-button" title="Refresh voices">Refresh voices</button>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">Read Aloud Languages</div>
+              <div class="checks">
+                <label class="check"><input type="checkbox" id="read-1" checked /> <span id="read-label-1">L1</span></label>
+                <label class="check"><input type="checkbox" id="read-2" /> <span id="read-label-2">L2</span></label>
+              </div>
+            </div>
+            <div class="panel collapsed">
+              <div class="panel-title">Other Options</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
+                <label class="badge"><span>Rate</span><input type="number" id="rate" min="0.5" max="2" step="0.1" value="1.0" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Pitch</span><input type="number" id="pitch" min="0" max="2" step="0.1" value="1.0" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Interval (Sec)</span><input type="number" id="autoInterval" min="0" step="1" value="0" style="width:50px; min-width:50px; max-width:50px;" /></label>
+              </div>
+            </div>
+          </section>
+        </div>
 
-    <!-- Row 6: Speech Synthesis configurations -->
-    <section class="row" id="row-tts">
-      <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
-        <label class="badge"><span>Voice 1</span>
-          <select id="voice-1"></select>
-        </label>
-        <label class="badge"><span>Voice 2</span>
-          <select id="voice-2"></select>
-        </label>
-        <button id="refreshVoices" class="secondary" title="Refresh voices">Refresh voices</button>
-        <label class="badge"><span>Rate</span>
-          <input type="number" id="rate" min="0.5" max="2" step="0.1" value="1.0" style="width:80px" />
-        </label>
-        <label class="badge"><span>Pitch</span>
-          <input type="number" id="pitch" min="0" max="2" step="0.1" value="1.0" style="width:80px" />
-        </label>
-      </div>
-    </section>
+        <div class="sheet-panel" data-panel="visualization">
+          <div class="sheet-header">Visualization Options</div>
+          <section class="row" id="row-show-panel">
+            <div class="panel">
+              <div class="panel-title">Appearance</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-start;">
+                <div class="font-slider" style="margin-top:0; flex:1; min-width:150px;">
+                  <input type="range" min="12" max="50" value="30" id="fontRange" />
+                  <span id="fontValue" class="status">30 px</span>
+                </div>
+                <label class="check" style="display:flex; align-items:center; gap:12px; font-size:1.2rem; font-weight:700; margin:0;">
+                  <input type="checkbox" id="themeToggle" checked />
+                  <span>Dark theme</span>
+                </label>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">Show Language</div>
+              <div class="checks">
+                <label class="check"><input type="checkbox" id="show-1" checked /> <span id="show-label-1">L1</span></label>
+                <label class="check"><input type="checkbox" id="show-2" /> <span id="show-label-2">L2</span></label>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="sheet-panel" data-panel="load">
+          <div class="sheet-header">Load Phrases</div>
+          <section class="row" id="row-ai">
+            <div class="panel collapsed">
+              <div class="panel-title">Prompt (Load using OpenAI)</div>
+              <textarea class="textarea" id="aiTopic" placeholder="e.g., travel, food, greetings"></textarea>
+              <div class="inline-controls" style="margin-top:10px; gap:10px;">
+                <label class="badge"><span>Level</span><select id="aiLevel" style="width:50px; min-width:50px; max-width:50px;"><option value="ANY" selected>Any</option><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option></select></label>
+                <label class="badge"><span>Quantity</span><input type="number" id="aiQuantity" min="1" max="500" value="40" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Min words</span><input type="number" id="aiMinWords" min="1" max="500" value="15" style="width:50px; min-width:50px; max-width:50px;" /></label>
+              </div>
+              <div class="inline-controls" style="margin-top:10px; gap:10px;">
+                <label class="badge" style="width:100%; justify-content:flex-start;"><span>OPEN_AI_TOKEN</span><input type="password" id="openaiToken" placeholder="sk-..." style="width:100%; min-width:160px; font-size:12px;" /></label>
+              </div>
+              <button id="btnLoadAI" class="tiny-button" style="margin-top:12px; width:100%;">Load from AI</button>
+              <div id="aiStatus" class="status" style="margin-top:8px;">Idle</div>
+            </div>
+          </section>
+          <section class="row">
+            <div class="panel collapsed">
+              <div class="panel-title">Load from file</div>
+              <div class="inline-controls" style="gap:10px;">
+                <input type="file" id="fileInput" accept=".csv,.txt" />
+              </div>
+            </div>
+          </section>
+
+          <section class="row">
+            <div class="panel">
+              <div class="panel-title">Predefined Sets</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
+                <select id="predefinedSelect" style="flex:1; min-width:180px;"><option value="">(Select a set)</option></select>
+                <button id="btnLoadPredefined" class="secondary tiny-button" type="button">Load</button>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="sheet-panel" data-panel="csv">
+          <div class="sheet-header">CSV Viewer</div>
+          <section class="row" id="row-csv">
+            <div class="panel">
+              <div class="csv-editor-shell">
+                <div class="viewer-wrapper">
+                  <textarea class="textarea" id="csvBox" style="width:100%; min-height:10em; resize:none; position:absolute; inset:0; z-index:1"></textarea>
+                  <div id="csvBoxViewerDisplay" aria-hidden="true"></div>
+                </div>
+                <div class="csv-toolbar">
+                  <label class="badge" style="display:inline-flex;">
+                    <input type="checkbox" id="wrapCsv" />
+                    <span>Word Wrap</span>
+                  </label>
+                  <div id="csvColorControls">
+                    <label class="badge"><span>Phrase 1 color</span><input type="color" id="color1" value="#4da3ff" /></label>
+                    <label class="badge"><span>Phrase 2 color</span><input type="color" id="color2" value="#3ccf7a" /></label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="sheet-panel" data-panel="settings">
+          <div class="sheet-header">Settings</div>
+          <section class="row" id="row-settings">
+            <div class="panel">
+              <div class="panel-title">Languages</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
+                <label class="badge"><span>Language 1</span><select id="lang1Select"><option value="es" selected>Spanish</option><option value="en">English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
+                <label class="badge"><span>Language 2</span><select id="lang2Select"><option value="es">Spanish</option><option value="en" selected>English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">Language to practice</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
+                <label class="badge"><span>Practice language</span><select id="practiceLangSelect"></select></label>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-title">Speaking Practice</div>
+              <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
+                <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min-settings" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Silence Wait (sec)</span><input type="number" id="sp-wait-settings" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                <label class="badge"><span>Wait After Reach Min. Similarity (sec)</span><input type="number" id="sp-after-min-settings" min="0" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
+              </div>
+            </div>
+          </section>
+        </div>
+      </aside>
+
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button class="nav-item active" type="button" data-sheet="practice"><span class="icon">🏋️</span><span>Practice</span></button>
+        <button class="nav-item" type="button" data-sheet="voices"><span class="icon">📢</span><span>Voices</span></button>
+        <button class="nav-item" type="button" data-sheet="visualization"><span class="icon">👀</span><span>View</span></button>
+        <button class="nav-item" type="button" data-sheet="load"><span class="icon">🤖</span><span>Load</span></button>
+        <button class="nav-item" type="button" data-sheet="csv"><span class="icon">📝</span><span>CSV</span></button>
+        <button class="nav-item" type="button" data-sheet="settings"><span class="icon">⚙️</span><span>Settings</span></button>
+      </nav>
+    </div>
   </div>
 
   <script>
     (() => {
       // --- State ---
       const els = {
+        randomToggle: document.getElementById('randomToggle'),
         text: {
           1: document.getElementById('text-1'),
           2: document.getElementById('text-2'),
@@ -603,10 +1310,13 @@
           1: document.getElementById('show-1'),
           2: document.getElementById('show-2'),
         },
+        brand: document.querySelector('.brand'),
         modeSelect: document.getElementById('modeSelect'),
         btnRandom: document.getElementById('btnRandom'),
         btnFirst: document.getElementById('btnFirst'),
         modeContent: document.getElementById('modeContent'),
+        speakingPracticePanel: document.getElementById('speakingPracticePanel'),
+        writingPracticePanel: document.getElementById('writingPracticePanel'),
         csvBox: document.getElementById('csvBox'),
         csvBoxViewerDisplay: document.getElementById('csvBoxViewerDisplay'),
         color1: document.getElementById('color1'),
@@ -624,6 +1334,7 @@
         },
         lang1Select: document.getElementById('lang1Select'),
         lang2Select: document.getElementById('lang2Select'),
+        practiceLangSelect: document.getElementById('practiceLangSelect'),
         langTag: {
           1: document.getElementById('lang-tag-1'),
           2: document.getElementById('lang-tag-2'),
@@ -639,6 +1350,9 @@
         aiStatus: document.getElementById('aiStatus'),
         rate: document.getElementById('rate'),
         pitch: document.getElementById('pitch'),
+        speakingMin: document.getElementById('sp-min-settings'),
+        speakingWait: document.getElementById('sp-wait-settings'),
+        speakingAfterMin: document.getElementById('sp-after-min-settings'),
       };
 
       const langMeta = {
@@ -657,6 +1371,7 @@
       let currentIndex = -1;             // Index in parsedRows
       let phraseSessionId = 0;           // Monotonic token
       let autoTimer = null;              // Auto mode interval
+      let manualPlaybackLoop = { active: false };
       let speakingPractice = {
         active: false,
         rec: null,
@@ -666,12 +1381,17 @@
         scoreEl: null,
         progressEl: null,
         statusEl: null,
+        silenceCounterEl: null,
+        advanceTimer: null,
+        advanceInterval: null,
       };
       let writingPractice = {
         active: false,
         lang: 'es',
         inputEl: null,
         statusEl: null,
+        scoreEl: null,
+        remainingEl: null,
         writingBusy: false,
         currentWriteTarget: '',
       };
@@ -754,11 +1474,19 @@
         return 0;
       }
 
+      function setSilenceCounterText(value) {
+        const modeCounterEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-silence-counter') : null;
+        if (modeCounterEl) modeCounterEl.textContent = value;
+        if (speakingPractice.silenceCounterEl) speakingPractice.silenceCounterEl.textContent = value;
+      }
+
       function clearRecognitionTimers(rec) {
         if (!rec) return;
         if (rec._silenceTimer) { clearTimeout(rec._silenceTimer); rec._silenceTimer = null; }
         if (rec._silenceInterval) { clearInterval(rec._silenceInterval); rec._silenceInterval = null; }
-        try { const el = els.modeContent && els.modeContent.querySelector && els.modeContent.querySelector('#sp-silence-counter'); if (el) el.textContent = ''; } catch (e) {}
+        if (speakingPractice.advanceTimer) { clearTimeout(speakingPractice.advanceTimer); speakingPractice.advanceTimer = null; }
+        if (speakingPractice.advanceInterval) { clearInterval(speakingPractice.advanceInterval); speakingPractice.advanceInterval = null; }
+        setSilenceCounterText('');
         if (rec._startTimer) { clearTimeout(rec._startTimer); rec._startTimer = null; }
       }
 
@@ -955,6 +1683,50 @@
         return [els.lang1Select.value, els.lang2Select.value];
       }
 
+      function populatePracticeLanguageOptions() {
+        const el = els.practiceLangSelect;
+        if (!el) return;
+        const [l1, l2] = getSelectedLangCodes();
+        const values = [l1, l2];
+        const prev = (el.value && values.includes(el.value)) ? el.value : values[0];
+        el.innerHTML = '';
+        for (const code of values) {
+          const option = document.createElement('option');
+          option.value = code;
+          option.textContent = (langMeta[code] && langMeta[code].label) ? langMeta[code].label : code.toUpperCase();
+          el.appendChild(option);
+        }
+        if (values.includes(prev)) {
+          el.value = prev;
+        } else {
+          el.value = values[0];
+        }
+      }
+
+      function getPracticeLanguage() {
+        const [l1, l2] = getSelectedLangCodes();
+        const candidate = (els.practiceLangSelect && els.practiceLangSelect.value) || speakingPractice.lang || writingPractice.lang || l1;
+        return [l1, l2].includes(candidate) ? candidate : l1;
+      }
+
+      function syncPracticeLanguageSelection(newLang) {
+        const [l1, l2] = getSelectedLangCodes();
+        const valid = [l1, l2].includes(newLang) ? newLang : l1;
+        if (els.practiceLangSelect && [...els.practiceLangSelect.options].some(option => option.value === valid)) {
+          els.practiceLangSelect.value = valid;
+        }
+        speakingPractice.lang = valid;
+        writingPractice.lang = valid;
+        const spLangEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-lang') : null;
+        const wrLangEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#wr-lang') : null;
+        if (spLangEl && [...spLangEl.options].some(option => option.value === valid)) {
+          spLangEl.value = valid;
+        }
+        if (wrLangEl && [...wrLangEl.options].some(option => option.value === valid)) {
+          wrLangEl.value = valid;
+        }
+      }
+
       function updateLangLabels() {
         const [l1, l2] = getSelectedLangCodes();
         els.langTag[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
@@ -963,6 +1735,8 @@
         els.readLabel[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
         els.showLabel[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
         els.showLabel[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
+        populatePracticeLanguageOptions();
+        syncPracticeLanguageSelection(getPracticeLanguage());
       }
 
       function parseCSV(text) {
@@ -1027,8 +1801,71 @@
 
       function setPhraseTexts(row) {
         const [l1, l2] = getSelectedLangCodes();
-        els.text[1].textContent = row?.[l1] || '';
-        els.text[2].textContent = row?.[l2] || '';
+        renderPhraseText(1, row?.[l1] || '');
+        renderPhraseText(2, row?.[l2] || '');
+      }
+
+      function renderPhraseText(slot, text) {
+        const el = els.text[slot];
+        if (!el) return;
+        el.textContent = '';
+
+        const tokens = String(text || '').match(/\S+|\s+|[.,!?;:]/g) || [];
+        if (!tokens.length) return;
+
+        tokens.forEach((token) => {
+          if (/^\s+$/.test(token)) {
+            el.appendChild(document.createTextNode(token));
+            return;
+          }
+
+          const cleanWord = token.replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+          if (!cleanWord) {
+            el.appendChild(document.createTextNode(token));
+            return;
+          }
+
+          const wordEl = document.createElement('span');
+          wordEl.className = 'phrase-word';
+          wordEl.textContent = token;
+          wordEl.tabIndex = 0;
+          wordEl.setAttribute('role', 'button');
+          wordEl.setAttribute('aria-label', `Read aloud ${cleanWord}`);
+          wordEl.dataset.word = cleanWord;
+          wordEl.dataset.lang = getSelectedLangCodes()[slot];
+          wordEl.addEventListener('click', handlePhraseWordClick);
+          wordEl.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              handlePhraseWordClick(event);
+            }
+          });
+          el.appendChild(wordEl);
+        });
+      }
+
+      function handlePhraseWordClick(event) {
+        const target = event.currentTarget || event.target;
+        const word = target?.dataset?.word || (target && target.textContent ? target.textContent.trim() : '');
+        const langCode = target?.dataset?.lang || getSelectedLangCodes()[1];
+        const spokenText = String(word || '').replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, '');
+
+        if (!spokenText) return;
+
+        try {
+          const voices = speechSynthesis.getVoices();
+          const vmap = getVoicesMap();
+          const v = findVoiceForLang(voices, vmap[langCode], langCode);
+          const u = new SpeechSynthesisUtterance(spokenText);
+          if (v) u.voice = v;
+          u.lang = (v && v.lang) ? v.lang : (langMeta[langCode]?.localeGuess?.[0] || 'en-US');
+          const { rate, pitch } = getRatePitch();
+          u.rate = rate;
+          u.pitch = pitch;
+          speechSynthesis.speak(u);
+        } catch (e) {
+          // ignore runtime errors from speech API
+        }
       }
 
       // Toggle CSV textarea wrapping
@@ -1156,6 +1993,10 @@
             whiteSpace: cs.whiteSpace,
             backgroundColor: cs.backgroundColor,
             letterSpacing: cs.letterSpacing,
+            boxSizing: cs.boxSizing,
+            width: cs.width,
+            height: cs.height,
+            overflow: cs.overflow,
           };
           if (els.csvBoxViewerDisplay) {
             Object.assign(els.csvBoxViewerDisplay.style, {
@@ -1193,6 +2034,10 @@
             wrapCsv: !!(els.wrapCsv && els.wrapCsv.checked),
             color1: (els.color1 && els.color1.value) || '#4da3ff',
             color2: (els.color2 && els.color2.value) || '#3ccf7a',
+            speakingMin: speakingPractice.min,
+            speakingWait: getSpeechSilenceWaitSeconds(),
+            speakingAfterMin: getSpeakingAfterMinSeconds(),
+            practiceLang: getPracticeLanguage(),
             speakingLang: (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang,
             writingLang: (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang,
           };
@@ -1225,6 +2070,16 @@
           }
           if (cfg.rate) els.rate.value = cfg.rate;
           if (cfg.pitch) els.pitch.value = cfg.pitch;
+          if (cfg.speakingMin != null && els.speakingMin) {
+            els.speakingMin.value = Math.max(50, Math.min(100, parseInt(cfg.speakingMin, 10) || 90));
+            speakingPractice.min = parseInt(els.speakingMin.value, 10);
+          }
+          if (cfg.speakingWait != null && els.speakingWait) {
+            els.speakingWait.value = Math.max(1, Math.floor(Number(cfg.speakingWait) || 3));
+          }
+          if (cfg.speakingAfterMin != null && els.speakingAfterMin) {
+            els.speakingAfterMin.value = Math.max(0, Math.floor(Number(cfg.speakingAfterMin) || 0));
+          }
           if (cfg.font) { els.fontRange.value = cfg.font; document.documentElement.style.setProperty('--phrase-font', cfg.font + 'px'); els.fontValue.textContent = cfg.font + ' px'; }
           if (typeof cfg.themeDark !== 'undefined') { els.themeToggle.checked = !!cfg.themeDark; document.body.classList.toggle('theme-light', !els.themeToggle.checked); document.body.classList.toggle('theme-dark', els.themeToggle.checked); }
           if (cfg.mode) els.modeSelect.value = cfg.mode;
@@ -1233,10 +2088,21 @@
           if (cfg.aiQuantity) els.aiQuantity.value = cfg.aiQuantity;
           if (cfg.aiMinWords) els.aiMinWords.value = cfg.aiMinWords;
           if (cfg.predefined) els.predefinedSelect.value = cfg.predefined;
+          if (typeof cfg.randomEnabled === 'boolean') {
+            if (els.randomToggle) { els.randomToggle.checked = cfg.randomEnabled; }
+            syncRandomToggleVisualState();
+            syncRandomModeCheckboxes();
+          }
           if (cfg.csv) { els.csvBox.value = cfg.csv; ensureParsed(); }
           if (typeof cfg.wrapCsv !== 'undefined') { try { els.wrapCsv.checked = !!cfg.wrapCsv; } catch (e) { } applyCsvWrap(); }
           if (cfg.color1) { try { if (els.color1) els.color1.value = cfg.color1; } catch (e) {} }
           if (cfg.color2) { try { if (els.color2) els.color2.value = cfg.color2; } catch (e) {} }
+          if (cfg.practiceLang) {
+            const [l1, l2] = getSelectedLangCodes();
+            const allowed = [l1, l2];
+            const nextLang = allowed.includes(cfg.practiceLang) ? cfg.practiceLang : allowed[0];
+            syncPracticeLanguageSelection(nextLang);
+          }
         } catch (e) { console.warn('loadConfig failed', e); }
       }
 
@@ -1438,16 +2304,72 @@
         parsedRows = parseCSV(els.csvBox.value);
       }
 
+      function syncRandomToggleVisualState() {
+        const toggle = els.randomToggle;
+        const pill = toggle && toggle.closest('.toggle-pill');
+        if (!toggle || !pill) return;
+        const isOn = !!toggle.checked;
+        pill.classList.toggle('is-on', isOn);
+        pill.classList.toggle('is-off', !isOn);
+        const icon = pill.querySelector('.toggle-icon');
+        if (icon) icon.textContent = '🔀';
+        pill.setAttribute('title', isOn ? 'Random mode active: random phrase selection' : 'Sequential mode active: next phrase in CSV order');
+        pill.setAttribute('aria-label', isOn ? 'Random phrase order enabled' : 'Sequential phrase order enabled');
+      }
+
+      function syncRandomModeCheckboxes() {
+        const enabled = !!(els.randomToggle && els.randomToggle.checked);
+        const selectors = ['#auto-random', '#sp-random', '#wr-random'];
+        selectors.forEach((selector) => {
+          const input = els.modeContent?.querySelector(selector);
+          if (input) input.checked = enabled;
+        });
+      }
+
+      function bindRandomModeCheckboxes() {
+        const selectors = ['#auto-random', '#sp-random', '#wr-random'];
+        selectors.forEach((selector) => {
+          const input = els.modeContent?.querySelector(selector);
+          if (!input) return;
+          input.onchange = () => {
+            if (els.randomToggle) els.randomToggle.checked = !!input.checked;
+            syncRandomToggleVisualState();
+            saveConfig();
+          };
+        });
+      }
+
+      function getRandomSelectionEnabled() {
+        if (els.randomToggle) return !!els.randomToggle.checked;
+        const mode = els.modeSelect?.value;
+        if (mode === 'Auto Mode') return !!(els.modeContent?.querySelector('#auto-random')?.checked);
+        if (mode === 'Speaking Practice Mode') return !!(els.modeContent?.querySelector('#sp-random')?.checked);
+        if (mode === 'Writing Practice Mode') return !!(els.modeContent?.querySelector('#wr-random')?.checked);
+        return true;
+      }
+
+      function showCurrentDisplayedRow({ speak = true } = {}) {
+        ensureParsed();
+        if (!parsedRows.length) return Promise.resolve();
+        if (currentIndex < 0) currentIndex = 0;
+
+        const row = parsedRows[currentIndex];
+        if (!row) return Promise.resolve();
+        setPhraseTexts(row);
+        applyShowVisibility();
+        const sessionToken = ++phraseSessionId;
+        if (speak) {
+          return speakCurrentRowSequence(sessionToken, row);
+        }
+        return Promise.resolve();
+      }
+
       function selectAndShowNextRow({ speak = true, random = null } = {}) {
         ensureParsed();
         if (!parsedRows.length) return Promise.resolve();
-        // Decide random/sequential if not explicitly provided
+        // Decide random/sequential if not explicitly provided; global toggle is the shared source of truth.
         if (random === null) {
-          const mode = els.modeSelect?.value;
-          if (mode === 'Auto Mode') random = !!(els.modeContent.querySelector('#auto-random')?.checked);
-          else if (mode === 'Speaking Practice Mode') random = !!(els.modeContent.querySelector('#sp-random')?.checked);
-          else if (mode === 'Writing Practice Mode') random = !!(els.modeContent.querySelector('#wr-random')?.checked);
-          else random = true;
+          random = getRandomSelectionEnabled();
         }
 
         if (random) {
@@ -1467,6 +2389,40 @@
         return Promise.resolve();
       }
 
+      function stopManualPlaybackLoop() {
+        manualPlaybackLoop.active = false;
+      }
+
+      async function startManualPlaybackLoop() {
+        ensureParsed();
+        if (!parsedRows.length) return;
+        if (manualPlaybackLoop.active) return;
+        manualPlaybackLoop.active = true;
+
+        while (manualPlaybackLoop.active) {
+          if (currentIndex < 0) currentIndex = 0;
+          let row = parsedRows[currentIndex];
+          if (!row) {
+            currentIndex = 0;
+            row = parsedRows[currentIndex];
+          }
+          if (!row) break;
+
+          setPhraseTexts(row);
+          applyShowVisibility();
+          await speakCurrentRowSequence(++phraseSessionId, row);
+          if (!manualPlaybackLoop.active) break;
+
+          if (getRandomSelectionEnabled()) {
+            currentIndex = pickRandomIndex(parsedRows.length);
+          } else {
+            currentIndex = (currentIndex + 1) % parsedRows.length;
+          }
+        }
+
+        manualPlaybackLoop.active = false;
+      }
+
       // Jump to the first phrase and display/speak it in the existing visualizers.
       function goToFirstRow({ speak = true } = {}) {
         ensureParsed();
@@ -1482,10 +2438,112 @@
         return Promise.resolve();
       }
 
+      function updateModeTitle() {
+        const mode = els.modeSelect?.value;
+        if (!els.brand) return;
+        if (mode === 'Speaking Practice Mode') {
+          els.brand.textContent = 'Speaking Practice';
+        } else if (mode === 'Writing Practice Mode') {
+          els.brand.textContent = 'Writing Practice';
+        } else {
+          els.brand.textContent = 'Language Practice';
+        }
+      }
+
       // --- Modes UI ---
+      function togglePanel(panel) {
+        if (!panel) return;
+        const header = panel.querySelector('.panel-title');
+        const content = panel.querySelector('.panel-content');
+        const isCollapsed = panel.classList.toggle('collapsed');
+        if (header) header.setAttribute('aria-expanded', String(!isCollapsed));
+        if (content) {
+          content.style.display = isCollapsed ? 'none' : 'block';
+        }
+      }
+
+      function initCollapsiblePanels() {
+        document.querySelectorAll('.sheet .panel').forEach((panel) => {
+          const header = panel.querySelector('.panel-title');
+          if (!header || header.dataset.collapsibleBound === 'true') return;
+
+          header.dataset.collapsibleBound = 'true';
+          header.setAttribute('type', 'button');
+          header.setAttribute('role', 'button');
+          header.setAttribute('tabindex', '0');
+          header.classList.add('accordion-trigger');
+
+          if (!panel.querySelector('.panel-content')) {
+            const contentNodes = Array.from(panel.childNodes).filter((node) => node !== header && !(node.nodeType === Node.TEXT_NODE && !node.textContent.trim()));
+            if (contentNodes.length) {
+              const content = document.createElement('div');
+              content.className = 'panel-content';
+              contentNodes.forEach((node) => content.appendChild(node));
+              panel.appendChild(content);
+            }
+          }
+
+          const content = panel.querySelector('.panel-content');
+          const isInitiallyCollapsed = panel.classList.contains('collapsed');
+          header.setAttribute('aria-expanded', String(!isInitiallyCollapsed));
+          if (content) {
+            content.style.display = isInitiallyCollapsed ? 'none' : 'block';
+          }
+
+          const chevron = header.querySelector('.panel-chevron');
+          if (!chevron) {
+            const icon = document.createElement('span');
+            icon.className = 'panel-chevron';
+            icon.setAttribute('aria-hidden', 'true');
+            icon.textContent = '▾';
+            header.appendChild(icon);
+          }
+
+          panel.classList.add('is-collapsible');
+
+          const onToggle = (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            togglePanel(panel);
+          };
+
+          header.removeEventListener('click', onToggle);
+          header.addEventListener('click', onToggle);
+          header.removeEventListener('pointerdown', onToggle);
+          header.addEventListener('pointerdown', (event) => {
+            event.stopPropagation();
+          });
+          header.removeEventListener('keydown', onToggle);
+          header.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              event.stopPropagation();
+              onToggle(event);
+            }
+          });
+        });
+      }
+
       function renderModePanel() {
         const m = els.modeSelect.value;
+        updateModeTitle();
+        document.querySelectorAll('.mode-option').forEach((item) => {
+          item.classList.toggle('active', item.dataset.mode === m);
+        });
         els.modeContent.innerHTML = '';
+        els.modeContent.style.display = 'block';
+        syncRandomToggleVisualState();
+        bindRandomModeCheckboxes();
+        const host = els.speakingPracticePanel;
+        if (host) {
+          host.innerHTML = '';
+          host.classList.remove('visible');
+        }
+        const writingHost = els.writingPracticePanel;
+        if (writingHost) {
+          writingHost.innerHTML = '';
+          writingHost.classList.remove('visible');
+        }
         if (m === 'Manual Mode') {
           const div = document.createElement('div');
           div.className = 'panel';
@@ -1497,7 +2555,7 @@
         <div class="panel-title">Wait Time</div>
         <div class="inline-controls">
           <label class="badge"><span>Interval (s)</span>
-            <input id="autoInterval" type="number" min="0" step="1" value="0" style="width:90px" />
+            <input id="autoInterval" type="number" min="0" step="1" value="0" style="width:50px; min-width:50px; max-width:50px;" />
           </label>
           <label class="badge"><input type="checkbox" id="auto-random" checked /> <span>Random</span></label>
           <button id="autoStart">Start</button>
@@ -1506,6 +2564,7 @@
         </div>
       `;
           els.modeContent.appendChild(div);
+          syncRandomModeCheckboxes();
           const autoStatus = div.querySelector('#autoStatus');
           const autoStart = () => {
             // Allow 0 (advance immediately). Only guard against NaN/negative values.
@@ -1518,12 +2577,22 @@
 
             const runOnce = async () => {
               if (!running) return;
-              // ensure new session token and cancel any in-progress speech before selecting
-              const token = ++phraseSessionId;
-              try { speechSynthesis.cancel(); } catch { }
-              await selectAndShowNextRow({ speak: true });
+              await showCurrentDisplayedRow({ speak: true });
               if (!running) return;
-              // wait the configured interval after speech finished
+              const random = getRandomSelectionEnabled();
+              if (random) {
+                currentIndex = pickRandomIndex(parsedRows.length);
+              } else {
+                if (currentIndex < 0) currentIndex = 0;
+                else currentIndex = (currentIndex + 1) % parsedRows.length;
+              }
+              if (parsedRows.length) {
+                const row = parsedRows[currentIndex];
+                if (row) {
+                  setPhraseTexts(row);
+                  applyShowVisibility();
+                }
+              }
               autoTimer = setTimeout(runOnce, sec * 1000);
             };
 
@@ -1559,10 +2628,13 @@
           </label>
           <label class="badge"><input type="checkbox" id="sp-random" checked /> <span>Random</span></label>
           <label class="badge"><span>Min similarity %</span>
-            <input id="sp-min" type="number" min="50" max="100" step="1" value="90" style="width:8ch" />
+            <input id="sp-min" type="number" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" />
           </label>
           <label class="badge"><span>Silence wait (s)</span>
-            <input id="sp-wait" type="number" min="1" step="1" value="3" style="width:6ch" />
+            <input id="sp-wait" type="number" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" />
+          </label>
+          <label class="badge"><span>Wait after min. similarity (s)</span>
+            <input id="sp-after-min" type="number" min="0" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" />
           </label>
           <button id="sp-start">Start</button>
           <button id="sp-stop" class="secondary">Stop</button>
@@ -1570,11 +2642,33 @@
         </div>
       `;
           els.modeContent.appendChild(div);
+          els.modeContent.style.display = 'none';
 
-          speakingPractice.liveTextEl = div.querySelector('#sp-live');
-          speakingPractice.progressEl = div.querySelector('#sp-progress');
-          speakingPractice.scoreEl = div.querySelector('#sp-score');
-          speakingPractice.statusEl = div.querySelector('#sp-status');
+          const hostPanel = document.createElement('div');
+          hostPanel.className = 'speaking-practice-card';
+          hostPanel.innerHTML = `
+            <div class="panel-title">Live transcription and scoring</div>
+            <div class="progress-line">
+              <progress id="sp-progress-host" value="0" max="100"></progress>
+              <span id="sp-score-host" class="status">0%</span>
+            </div>
+            <div id="sp-live-host" class="status" style="margin-top:8px; font-size:15px; min-height: 1.5em;"></div>
+            <div class="status-row">
+              <span id="sp-status-host" class="status">Listening...</span>
+              <span id="sp-silence-counter-host" class="status">0s</span>
+            </div>
+          `;
+          if (host) host.appendChild(hostPanel);
+          host.classList.add('visible');
+          initCollapsiblePanels();
+
+          speakingPractice.liveTextEl = hostPanel.querySelector('#sp-live-host');
+          speakingPractice.progressEl = hostPanel.querySelector('#sp-progress-host');
+          speakingPractice.scoreEl = hostPanel.querySelector('#sp-score-host');
+          speakingPractice.statusEl = hostPanel.querySelector('#sp-status-host');
+
+          const spSilenceHost = hostPanel.querySelector('#sp-silence-counter-host');
+          speakingPractice.silenceCounterEl = spSilenceHost || speakingPractice.silenceCounterEl;
 
           div.querySelector('#sp-start').onclick = startSpeakingPractice;
           div.querySelector('#sp-stop').onclick = stopSpeakingPractice;
@@ -1589,17 +2683,38 @@
               opt.textContent = (langMeta[c] && langMeta[c].label) ? langMeta[c].label : c.toUpperCase();
               spLangEl.appendChild(opt);
             }
-            // restore saved speaking language if available and valid
-            if (savedConfig && savedConfig.speakingLang && [...spLangEl.options].some(o => o.value === savedConfig.speakingLang)) {
+            // restore settings-driven practice language first, else keep mode-specific fallback
+            const selectedPracticeLang = getPracticeLanguage();
+            if ([...spLangEl.options].some(o => o.value === selectedPracticeLang)) {
+              spLangEl.value = selectedPracticeLang; speakingPractice.lang = selectedPracticeLang;
+            } else if (savedConfig && savedConfig.speakingLang && [...spLangEl.options].some(o => o.value === savedConfig.speakingLang)) {
               spLangEl.value = savedConfig.speakingLang; speakingPractice.lang = savedConfig.speakingLang;
             } else {
-              // default to current speakingPractice.lang if valid, otherwise first language
               if ([...spLangEl.options].some(o => o.value === speakingPractice.lang)) spLangEl.value = speakingPractice.lang;
               else { spLangEl.selectedIndex = 0; speakingPractice.lang = spLangEl.value; }
             }
           } catch (e) { /* ignore */ }
-          spLangEl.onchange = e => { speakingPractice.lang = e.target.value; saveConfig(); };
-          div.querySelector('#sp-min').oninput = e => { speakingPractice.min = Math.max(50, Math.min(100, parseInt(e.target.value || '90', 10))); };
+          spLangEl.onchange = e => { speakingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
+          const spMinEl = div.querySelector('#sp-min');
+          if (els.speakingMin) spMinEl.value = els.speakingMin.value;
+          spMinEl.oninput = e => updateSpeakingMinFromInput(e.target);
+          spMinEl.onchange = e => updateSpeakingMinFromInput(e.target, true);
+          const spWaitEl = div.querySelector('#sp-wait');
+          if (els.speakingWait) spWaitEl.value = els.speakingWait.value;
+          spWaitEl.oninput = e => {
+            const wait = Math.max(1, Math.floor(Number(e.target.value) || 3));
+            e.target.value = wait;
+            if (els.speakingWait) els.speakingWait.value = wait;
+            saveConfig();
+          };
+          const spAfterMinEl = div.querySelector('#sp-after-min');
+          if (els.speakingAfterMin) spAfterMinEl.value = els.speakingAfterMin.value;
+          spAfterMinEl.oninput = e => {
+            const wait = Math.max(0, Math.floor(Number(e.target.value) || 0));
+            e.target.value = wait;
+            if (els.speakingAfterMin) els.speakingAfterMin.value = wait;
+            saveConfig();
+          };
         } else if (m === 'Writing Practice Mode') {
           const div = document.createElement('div');
           div.className = 'panel';
@@ -1614,15 +2729,36 @@
           <button id="wr-stop" class="secondary">Stop</button>
           <span id="wr-status" class="status">Idle</span>
         </div>
-        <div class="panel" style="margin-top:10px">
-          <div class="panel-title">Type the phrase</div>
-          <input id="wr-input" type="text" placeholder="Type here…" style="width: 100%" />
-        </div>
       `;
           els.modeContent.appendChild(div);
+          els.modeContent.style.display = 'none';
 
-          writingPractice.inputEl = div.querySelector('#wr-input');
-          writingPractice.statusEl = div.querySelector('#wr-status');
+          const hostPanel = document.createElement('div');
+          hostPanel.className = 'writing-practice-card';
+          hostPanel.innerHTML = `
+            <div class="panel-title">Dictation</div>
+            <div class="progress-line">
+              <progress id="wr-progress-host" value="0" max="100"></progress>
+              <span id="wr-score-host" class="status">0%</span>
+            </div>
+            <div class="status-row">
+              <span id="wr-status-host" class="status">Waiting…</span>
+              <span id="wr-remaining-host" class="status">0 / 0</span>
+            </div>
+            <div style="margin-top:10px;">
+              <input id="wr-input-host" type="text" placeholder="Type here…" style="width:100%; min-height:48px;" />
+            </div>
+          `;
+          if (writingHost) {
+            writingHost.appendChild(hostPanel);
+            initCollapsiblePanels();
+            writingHost.classList.add('visible');
+          }
+
+          writingPractice.inputEl = hostPanel.querySelector('#wr-input-host');
+          writingPractice.statusEl = hostPanel.querySelector('#wr-status-host');
+          writingPractice.scoreEl = hostPanel.querySelector('#wr-score-host');
+          writingPractice.remainingEl = hostPanel.querySelector('#wr-remaining-host');
           div.querySelector('#wr-start').onclick = startWritingPractice;
           div.querySelector('#wr-stop').onclick = stopWritingPractice;
           const wrLangEl = div.querySelector('#wr-lang');
@@ -1636,22 +2772,78 @@
               opt.textContent = (langMeta[c] && langMeta[c].label) ? langMeta[c].label : c.toUpperCase();
               wrLangEl.appendChild(opt);
             }
-            // restore saved writing language if available and valid
-            if (savedConfig && savedConfig.writingLang && [...wrLangEl.options].some(o => o.value === savedConfig.writingLang)) {
+            const selectedPracticeLang = getPracticeLanguage();
+            if ([...wrLangEl.options].some(o => o.value === selectedPracticeLang)) {
+              wrLangEl.value = selectedPracticeLang; writingPractice.lang = selectedPracticeLang;
+            } else if (savedConfig && savedConfig.writingLang && [...wrLangEl.options].some(o => o.value === savedConfig.writingLang)) {
               wrLangEl.value = savedConfig.writingLang; writingPractice.lang = savedConfig.writingLang;
             } else {
               if ([...wrLangEl.options].some(o => o.value === writingPractice.lang)) wrLangEl.value = writingPractice.lang;
               else { wrLangEl.selectedIndex = 0; writingPractice.lang = wrLangEl.value; }
             }
           } catch (e) { /* ignore */ }
-          wrLangEl.onchange = e => { writingPractice.lang = e.target.value; saveConfig(); };
+          wrLangEl.onchange = e => { writingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
         }
       }
 
       // --- Speaking Practice Flow ---
       function getSpeechSilenceWaitSeconds() {
-        const waitEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-wait') : null;
+        const waitEl = els.speakingWait || (els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-wait') : null);
         return waitEl ? Math.max(1, Math.floor(Number(waitEl.value) || 3)) : 3;
+      }
+
+      function getSpeakingAfterMinSeconds() {
+        const waitEl = els.speakingAfterMin || (els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-after-min') : null);
+        return waitEl ? Math.max(0, Math.floor(Number(waitEl.value) || 0)) : 0;
+      }
+
+      function updateSpeakingMinFromInput(inputEl, commit = false) {
+        const value = Number(inputEl.value);
+        if (!Number.isFinite(value) || inputEl.value === '') return;
+        if (!commit && (value < 50 || value > 100)) return;
+        speakingPractice.min = Math.max(50, Math.min(100, Math.trunc(value)));
+        inputEl.value = speakingPractice.min;
+        if (inputEl !== els.speakingMin && els.speakingMin) els.speakingMin.value = speakingPractice.min;
+        const modeMin = els.modeContent && els.modeContent.querySelector('#sp-min');
+        if (modeMin && modeMin !== inputEl) modeMin.value = speakingPractice.min;
+        saveConfig();
+      }
+
+      function scheduleSpeakingAdvance(rec, token) {
+        if (speakingPractice.advanceTimer || !speakingPractice.active) return;
+        const waitSec = getSpeakingAfterMinSeconds();
+        const deadline = Date.now() + waitSec * 1000;
+        const updateStatus = () => {
+          if (speakingPractice.statusEl) {
+            const remaining = Math.max(0, Math.ceil((deadline - Date.now()) / 1000));
+            speakingPractice.statusEl.textContent = `Minimum reached. Advancing in ${remaining}s...`;
+          }
+        };
+        updateStatus();
+        speakingPractice.advanceInterval = setInterval(updateStatus, 200);
+        speakingPractice.advanceTimer = setTimeout(() => {
+          speakingPractice.advanceTimer = null;
+          if (speakingPractice.advanceInterval) {
+            clearInterval(speakingPractice.advanceInterval);
+            speakingPractice.advanceInterval = null;
+          }
+          if (speakingPractice.active && speakingPractice.rec === rec && token === phraseSessionId) {
+            safeAdvanceSpeakingPractice(token);
+          }
+        }, waitSec * 1000);
+      }
+
+      function advanceSpeakingImmediately(rec, token) {
+        if (!speakingPractice.active || speakingPractice.rec !== rec || token !== phraseSessionId) return;
+        if (speakingPractice.advanceTimer) {
+          clearTimeout(speakingPractice.advanceTimer);
+          speakingPractice.advanceTimer = null;
+        }
+        if (speakingPractice.advanceInterval) {
+          clearInterval(speakingPractice.advanceInterval);
+          speakingPractice.advanceInterval = null;
+        }
+        safeAdvanceSpeakingPractice(token);
       }
 
       function resetSpeechUiAfterSilence() {
@@ -1697,12 +2889,16 @@
         if (speakingPractice.active) return;
         speakingPractice.active = true;
         speakingPractice.lang = (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang || 'es';
-        speakingPractice.min = parseInt(els.modeContent.querySelector('#sp-min')?.value || '90', 10) || 90;
+        const configuredMin = els.speakingMin?.value || els.modeContent.querySelector('#sp-min')?.value || '90';
+        speakingPractice.min = Math.max(50, Math.min(100, parseInt(configuredMin, 10) || 90));
+        if (els.speakingMin) els.speakingMin.value = speakingPractice.min;
+        const modeMin = els.modeContent.querySelector('#sp-min');
+        if (modeMin) modeMin.value = speakingPractice.min;
         speakingPractice.statusEl.textContent = 'Starting…';
 
         saveConfig();
 
-        await selectAndShowNextRow({ speak: true });
+        await showCurrentDisplayedRow({ speak: true });
         if (!speakingPractice.active) return;
 
         const target = (parsedRows[currentIndex] || {})[speakingPractice.lang] || '';
@@ -1766,31 +2962,22 @@
 
 
           const matched = (pct >= speakingPractice.min && finalText);
+          const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
-            speakingPractice.statusEl.textContent = 'Great! ✅';
-            try {
-              if (rec._silenceTimer) { clearTimeout(rec._silenceTimer); rec._silenceTimer = null; }
-              if (rec._silenceInterval) { clearInterval(rec._silenceInterval); rec._silenceInterval = null; }
-              rec._accTranscript = '';
-              rec._accCaptured = false;
-              rec._suppressRestart = true;
-            } catch (e) {}
-            try { rec.abort(); } catch (e) {}
-            safeAdvanceSpeakingPractice(myToken);
+            if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
+            else scheduleSpeakingAdvance(rec, myToken);
           }
 
           if (finalText) {
             try {
-              if (!matched) {
-                const ft = finalText.trim();
-                if (ft) {
-                  if (!rec._accTranscript) rec._accTranscript = ft;
-                  else {
-                    const nextClean = removeTokenOverlap(rec._accTranscript, ft);
-                    if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
-                  }
-                  rec._accCaptured = false;
+              const ft = finalText.trim();
+              if (ft) {
+                if (!rec._accTranscript) rec._accTranscript = ft;
+                else {
+                  const nextClean = removeTokenOverlap(rec._accTranscript, ft);
+                  if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
                 }
+                rec._accCaptured = false;
               }
             } catch (e) { /* ignore */ }
           }
@@ -1826,7 +3013,13 @@
         }
         const newToken = ++phraseSessionId;
         if (!speakingPractice.active) return;
-        await selectAndShowNextRow({ speak: true });
+        if (getRandomSelectionEnabled()) {
+          currentIndex = pickRandomIndex(parsedRows.length);
+        } else {
+          if (currentIndex < 0) currentIndex = 0;
+          else currentIndex = (currentIndex + 1) % parsedRows.length;
+        }
+        await showCurrentDisplayedRow({ speak: true });
         if (!speakingPractice.active) return;
         await startSpeakingPracticeCycleOnly(true);
       }
@@ -1891,32 +3084,21 @@
 
 
           const matched = (pct >= speakingPractice.min && finalText);
+          const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
-            speakingPractice.statusEl.textContent = 'Great! ✅';
-            try {
-              if (rec._silenceTimer) clearTimeout(rec._silenceTimer);
-              if (rec._silenceInterval) clearInterval(rec._silenceInterval);
-              rec._silenceTimer = null;
-              rec._silenceInterval = null;
-              rec._accTranscript = '';
-              rec._accCaptured = false;
-              rec._suppressRestart = true;
-            } catch (e) {}
-            try { rec.abort(); } catch (e) {}
-            safeAdvanceSpeakingPractice(myToken);
+            if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
+            else scheduleSpeakingAdvance(rec, myToken);
           }
           if (finalText) {
             try {
-              if (!matched) {
-                const ft = finalText.trim();
-                if (ft) {
-                  if (!rec._accTranscript) rec._accTranscript = ft;
-                  else {
-                    const nextClean = removeTokenOverlap(rec._accTranscript, ft);
-                    if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
-                  }
-                  rec._accCaptured = false;
+              const ft = finalText.trim();
+              if (ft) {
+                if (!rec._accTranscript) rec._accTranscript = ft;
+                else {
+                  const nextClean = removeTokenOverlap(rec._accTranscript, ft);
+                  if (nextClean) rec._accTranscript = (rec._accTranscript + ' ' + nextClean).trim();
                 }
+                rec._accCaptured = false;
               }
             } catch (e) { /* ignore */ }
           }
@@ -1943,10 +3125,7 @@
         try {
           if (!rec) return;
           if (!speakingPractice.active || speakingPractice.rec !== rec || !rec._hasSpoken) {
-            try {
-              const el = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-silence-counter') : null;
-              if (el) el.textContent = '';
-            } catch (e) {}
+            setSilenceCounterText('');
             return;
           }
 
@@ -1957,19 +3136,17 @@
           rec._lastSpeechTs = Date.now();
           rec._silenceDeadline = rec._lastSpeechTs + waitSec * 1000;
 
-          const counterEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-silence-counter') : null;
-          if (counterEl) counterEl.textContent = waitSec + 's';
+          setSilenceCounterText(waitSec + 's');
 
           rec._silenceInterval = setInterval(() => {
             try {
-              if (!counterEl) return;
               const ms = rec._silenceDeadline - Date.now();
               if (ms <= 0) {
-                counterEl.textContent = '0s';
+                setSilenceCounterText('0s');
                 clearInterval(rec._silenceInterval); rec._silenceInterval = null;
                 return;
               }
-              counterEl.textContent = Math.ceil(ms / 1000) + 's';
+              setSilenceCounterText(Math.ceil(ms / 1000) + 's');
             } catch (e) {}
           }, 200);
 
@@ -1992,10 +3169,7 @@
             rec._resultBaseIndex = rec._lastResultsLength || 0;
             if (rec._silenceTimer) { clearTimeout(rec._silenceTimer); rec._silenceTimer = null; }
             if (rec._silenceInterval) { clearInterval(rec._silenceInterval); rec._silenceInterval = null; }
-            try {
-              const el = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-silence-counter') : null;
-              if (el) el.textContent = '';
-            } catch (e) {}
+            setSilenceCounterText('');
           }, waitSec * 1000);
         } catch (e) { /* ignore */ }
       }
@@ -2019,37 +3193,52 @@
       async function startWritingPractice() {
         if (writingPractice.active) return;
         writingPractice.active = true;
-        writingPractice.statusEl.textContent = 'Starting…';
+        if (writingPractice.statusEl) writingPractice.statusEl.textContent = 'Starting…';
         writingPractice.lang = (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang || 'es';
         // persist chosen writing language
         saveConfig();
 
-        // Select and speak once
-        await selectAndShowNextRow({ speak: true });
+        // Select and speak once from the currently displayed phrase, then continue in order
+        await showCurrentDisplayedRow({ speak: true });
         updateCurrentWriteTarget();
-        writingPractice.statusEl.textContent = 'Type what you hear…';
+        if (writingPractice.statusEl) writingPractice.statusEl.textContent = 'Type what you hear…';
+        if (writingPractice.remainingEl) {
+          const remaining = writingPractice.currentWriteTarget ? Math.max(0, writingPractice.currentWriteTarget.trim().split(/\s+/).filter(Boolean).length) : 0;
+          writingPractice.remainingEl.textContent = `${remaining} / ${remaining}`;
+        }
+        if (writingPractice.scoreEl) writingPractice.scoreEl.textContent = '0%';
 
         // Attach oninput handler referencing mutable target
         const input = writingPractice.inputEl;
-        input.value = '';
-        input.disabled = false;
+        if (input) {
+          input.value = '';
+          input.disabled = false;
+        }
 
         const onInput = async (e) => {
           if (!writingPractice.active || writingPractice.writingBusy) return;
           const user = normalizeForCompare(e.target.value);
           const target = normalizeForCompare(writingPractice.currentWriteTarget);
+          const pct = target ? Math.round((user.length && target.indexOf(user) === 0 ? Math.min(user.length / target.length, 1) : 0) * 100) : 0;
+          if (writingPractice.scoreEl) writingPractice.scoreEl.textContent = `${Math.max(0, Math.min(100, pct))}%`;
           if (user && user === target) {
             writingPractice.writingBusy = true;
             // Advance to next phrase safely; ensure single playback
             try { speechSynthesis.cancel(); } catch { }
-            await selectAndShowNextRow({ speak: true });
+            if (getRandomSelectionEnabled()) {
+              currentIndex = pickRandomIndex(parsedRows.length);
+            } else {
+              if (currentIndex < 0) currentIndex = 0;
+              else currentIndex = (currentIndex + 1) % parsedRows.length;
+            }
+            await showCurrentDisplayedRow({ speak: true });
             updateCurrentWriteTarget();
             e.target.value = '';
             writingPractice.writingBusy = false;
           }
         };
         // Store handler so we can disable/enable without stale closure
-        input.oninput = onInput;
+        if (input) input.oninput = onInput;
       }
 
       function stopWritingPractice() {
@@ -2060,12 +3249,17 @@
         }
         try { speechSynthesis.cancel(); } catch { }
         if (writingPractice.statusEl) writingPractice.statusEl.textContent = 'Stopped';
+        if (writingPractice.scoreEl) writingPractice.scoreEl.textContent = '0%';
       }
 
       function updateCurrentWriteTarget() {
         const row = parsedRows[currentIndex] || {};
         const k = writingPractice.lang;
         writingPractice.currentWriteTarget = row[k] || '';
+        if (writingPractice.remainingEl && writingPractice.currentWriteTarget) {
+          const total = writingPractice.currentWriteTarget.trim().split(/\s+/).filter(Boolean).length;
+          writingPractice.remainingEl.textContent = `${total} / ${total}`;
+        }
       }
 
       // --- Voices population ---
@@ -2328,11 +3522,179 @@
         }
       }
 
+      function startSelectedMode() {
+        const mode = els.modeSelect?.value || 'Manual Mode';
+        if (mode === 'Speaking Practice Mode') {
+          stopManualPlaybackLoop();
+          startSpeakingPractice();
+          return;
+        }
+        if (mode === 'Writing Practice Mode') {
+          stopManualPlaybackLoop();
+          startWritingPractice();
+          return;
+        }
+        if (mode === 'Auto Mode') {
+          stopManualPlaybackLoop();
+          const startBtn = els.modeContent?.querySelector('#autoStart');
+          if (startBtn) startBtn.click();
+          return;
+        }
+        stopManualPlaybackLoop();
+        startManualPlaybackLoop();
+      }
+
+      function stopSelectedMode() {
+        const mode = els.modeSelect?.value || 'Manual Mode';
+        if (mode === 'Speaking Practice Mode') {
+          stopManualPlaybackLoop();
+          stopSpeakingPractice();
+          return;
+        }
+        if (mode === 'Writing Practice Mode') {
+          stopManualPlaybackLoop();
+          stopWritingPractice();
+          return;
+        }
+        if (mode === 'Auto Mode') {
+          stopManualPlaybackLoop();
+          const stopBtn = els.modeContent?.querySelector('#autoStop');
+          if (stopBtn) stopBtn.click();
+          return;
+        }
+        stopManualPlaybackLoop();
+      }
+
       // --- Event wiring ---
       function bindEvents() {
+        const sheet = document.getElementById('bottomSheet');
+        const sheetBackdrop = document.getElementById('sheetBackdrop');
+        const navItems = document.querySelectorAll('.nav-item');
+        const fullPageSheets = new Set(['settings', 'load', 'csv']);
+        const openSheet = (sheetKey) => {
+          const isAlreadyOpen = sheet && sheet.classList.contains('open') && document.querySelector('.sheet-panel.active')?.dataset.panel === sheetKey;
+          if (isAlreadyOpen) {
+            closeSheet();
+            return;
+          }
+          document.querySelectorAll('.sheet-panel').forEach(panel => {
+            panel.classList.toggle('active', panel.dataset.panel === sheetKey);
+          });
+          navItems.forEach(item => item.classList.toggle('active', item.dataset.sheet === sheetKey));
+          if (sheet) {
+            sheet.classList.toggle('settings-page', fullPageSheets.has(sheetKey));
+            sheet.classList.add('open');
+            sheet.style.transition = '';
+            sheet.style.transform = '';
+          }
+          if (sheetBackdrop) {
+            sheetBackdrop.classList.toggle('visible', !fullPageSheets.has(sheetKey));
+          }
+        };
+        const closeSheet = () => {
+          if (sheet) {
+            sheet.classList.remove('open');
+            sheet.classList.remove('settings-page');
+            sheet.style.transition = '';
+            sheet.style.transform = '';
+          }
+          if (sheetBackdrop) sheetBackdrop.classList.remove('visible');
+          navItems.forEach(item => item.classList.remove('active'));
+          document.querySelectorAll('.sheet-panel').forEach(panel => panel.classList.remove('active'));
+        };
+
+        const dragState = { active: false, startY: 0, currentY: 0 };
+        const handleSheetDrag = (event) => {
+          if (!sheet || !sheet.classList.contains('open') || !dragState.active) return;
+          dragState.currentY = event.clientY;
+          const delta = Math.max(0, dragState.currentY - dragState.startY);
+          if (sheet.classList.contains('settings-page')) {
+            sheet.style.transform = 'translateY(' + delta + 'px)';
+          } else {
+            sheet.style.transform = 'translateX(-50%) translateY(' + delta + 'px)';
+          }
+        };
+
+        const stopSheetDrag = () => {
+          if (!dragState.active || !sheet) return;
+          const delta = Math.max(0, dragState.currentY - dragState.startY);
+          dragState.active = false;
+          sheet.style.transition = '';
+          if (delta > Math.min(140, window.innerHeight * 0.2)) {
+            closeSheet();
+            return;
+          }
+          sheet.style.transform = '';
+        };
+
+        if (sheet) {
+          sheet.addEventListener('pointerdown', (event) => {
+            if (!sheet.classList.contains('open')) return;
+            const interactiveSelector = 'button, input, select, textarea, label, a, .panel-title, .accordion-trigger';
+            if (event.target.closest(interactiveSelector)) return;
+            dragState.active = true;
+            dragState.startY = event.clientY;
+            dragState.currentY = event.clientY;
+            sheet.style.transition = 'none';
+            sheet.setPointerCapture?.(event.pointerId);
+          });
+          sheet.addEventListener('pointermove', handleSheetDrag);
+          sheet.addEventListener('pointerup', stopSheetDrag);
+          sheet.addEventListener('pointercancel', stopSheetDrag);
+          sheet.addEventListener('pointerleave', () => {
+            if (dragState.active && dragState.currentY > dragState.startY) {
+              stopSheetDrag();
+            }
+          });
+        }
+
+        navItems.forEach(item => {
+          item.onclick = () => openSheet(item.dataset.sheet);
+        });
+
+        document.querySelectorAll('.mode-option').forEach((button) => {
+          button.onclick = () => {
+            const modeValue = button.dataset.mode;
+            if (!modeValue) return;
+            els.modeSelect.value = modeValue;
+            document.querySelectorAll('.mode-option').forEach((item) => item.classList.toggle('active', item === button));
+            renderModePanel();
+            closeSheet();
+          };
+        });
+
+        if (sheetBackdrop) sheetBackdrop.onclick = closeSheet;
+
         // Random button (global)
-        els.btnRandom.onclick = async () => { await selectAndShowNextRow({ speak: true }); };
-        els.btnFirst.onclick = async () => { await goToFirstRow({ speak: true }); };
+        if (els.btnRandom) els.btnRandom.onclick = async () => { await selectAndShowNextRow({ speak: true }); };
+        if (els.btnFirst) els.btnFirst.onclick = async () => { await goToFirstRow({ speak: true }); };
+        document.getElementById('btnStartAuto').onclick = () => {
+          startSelectedMode();
+        };
+        document.getElementById('btnStopAuto').onclick = () => {
+          stopSelectedMode();
+        };
+        document.getElementById('btnPrevPhrase').onclick = async () => {
+          ensureParsed();
+          if (!parsedRows.length) return;
+          currentIndex = currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1;
+          setPhraseTexts(parsedRows[currentIndex]);
+          applyShowVisibility();
+          await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
+        };
+        document.getElementById('btnNextPhrase').onclick = async () => {
+          ensureParsed();
+          if (!parsedRows.length) return;
+          currentIndex = (currentIndex + 1) % parsedRows.length;
+          setPhraseTexts(parsedRows[currentIndex]);
+          applyShowVisibility();
+          await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
+        };
+        document.getElementById('randomToggle').onchange = () => {
+          syncRandomToggleVisualState();
+          syncRandomModeCheckboxes();
+          saveConfig();
+        };
 
         // Mode switching
         els.modeSelect.onchange = () => {
@@ -2340,9 +3702,15 @@
           if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
           stopSpeakingPractice();
           stopWritingPractice();
+          document.querySelectorAll('.mode-option').forEach((item) => {
+            item.classList.toggle('active', item.dataset.mode === els.modeSelect.value);
+          });
           renderModePanel();
+          closeSheet();
           saveConfig();
         };
+
+        bindRandomModeCheckboxes();
 
         // Replay per language
         // Replay per slot
@@ -2357,9 +3725,33 @@
         els.read[1].onchange = () => { saveConfig(); };
         els.read[2].onchange = () => { saveConfig(); };
 
+        // Speaking threshold is shared by Settings and the mode panel.
+        if (els.speakingMin) {
+          els.speakingMin.oninput = () => updateSpeakingMinFromInput(els.speakingMin);
+          els.speakingMin.onchange = () => updateSpeakingMinFromInput(els.speakingMin, true);
+        }
+        if (els.speakingWait) {
+          els.speakingWait.oninput = () => {
+            const wait = Math.max(1, Math.floor(Number(els.speakingWait.value) || 3));
+            els.speakingWait.value = wait;
+            const modeWait = els.modeContent.querySelector('#sp-wait');
+            if (modeWait) modeWait.value = wait;
+            saveConfig();
+          };
+        }
+        if (els.speakingAfterMin) {
+          els.speakingAfterMin.oninput = () => {
+            const wait = Math.max(0, Math.floor(Number(els.speakingAfterMin.value) || 0));
+            els.speakingAfterMin.value = wait;
+            const modeWait = els.modeContent.querySelector('#sp-after-min');
+            if (modeWait) modeWait.value = wait;
+            saveConfig();
+          };
+        }
+
         // Font size
         const applyFont = () => {
-          const px = Math.max(14, Math.min(100, parseInt(els.fontRange.value || '26', 10)));
+          const px = Math.max(12, Math.min(50, parseInt(els.fontRange.value || '26', 10)));
           document.documentElement.style.setProperty('--phrase-font', px + 'px');
           els.fontValue.textContent = px + ' px';
         };
@@ -2407,6 +3799,12 @@
         // Language selectors: update labels and voices when changed
         els.lang1Select.onchange = () => { updateLangLabels(); populateVoices(); ensureParsed(); selectAndShowNextRow({ speak: false }); renderModePanel(); saveConfig(); };
         els.lang2Select.onchange = () => { updateLangLabels(); populateVoices(); ensureParsed(); selectAndShowNextRow({ speak: false }); renderModePanel(); saveConfig(); };
+        if (els.practiceLangSelect) {
+          els.practiceLangSelect.onchange = () => {
+            syncPracticeLanguageSelection(els.practiceLangSelect.value);
+            saveConfig();
+          };
+        }
         if ('onvoiceschanged' in speechSynthesis) {
           speechSynthesis.onvoiceschanged = () => populateVoices();
         }
@@ -2450,6 +3848,7 @@
         if (!savedConfig || !savedConfig.csv) loadSamplePhrases();
 
         renderModePanel();
+        initCollapsiblePanels();
         bindEvents();
         // ensure language labels are in-sync before populating voices
         updateLangLabels();
@@ -2497,22 +3896,6 @@
       init();
     })();
   </script>
-  <div class="container">
-    <section class="row" id="row-todos">
-      <div class="panel">
-        <div class="panel-title">TODOs</div>
-        <ul id="todoList" style="margin:0; padding-left:1.2em;">
-          <li>Implement toggle panels for the different page sections.</li>
-          <li>Replicate "Load from AI" button style to the other buttons.</li>
-          <li>Hacer configurable el tiempo de espera durante el speaking practice para que no se resetee tan rápido.</li>
-          <li>Add titles to all existing sections for better clarity.</li>
-          <li>Implement a Prompt Viewer into a textarea for later use.</li>
-          <li>Force not to use built-in microphone for speech recognition, but the external microphone instead.</li>
-          <li></li>
-          </ul>
-      </div>
-    </section>
-  </div>
 </body>
 
 </html>

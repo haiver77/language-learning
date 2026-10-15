@@ -35,10 +35,18 @@ The configured `Min. Similarity (%)` value is clamped to the range 50 through 10
 The next phrase is taken when any of these rules is met:
 
 1. The phrase score reaches 100%.
-2. The phrase score reaches `Min. Similarity (%)`, and the app waits `Wait After Reach Min. Similarity (sec)` before advancing.
-3. The phrase score reaches `Min. Similarity (%)` and the final target word is already highlighted green. In this case, the app advances immediately without waiting for `Wait After Reach Min. Similarity (sec)`.
+2. The phrase score reaches `Min. Similarity (%)`, and the app waits at least `Wait After Reach Min. Similarity (sec)` before advancing.
+3. The phrase score reaches `Min. Similarity (%)` and the final target word is already highlighted green. In this case, the app cancels any pending similarity countdown and advances after the configured match celebration has been visible.
 
-When rule 3 applies, any pending similarity countdown is cancelled before the immediate transition. The same guarded transition path is used for all advance rules.
+All successful transitions keep the completed phrase visible for at least the configured match celebration time. If the configured similarity wait is longer, that longer wait is preserved. The same guarded transition path is used for all advance rules.
+
+## Success feedback and streak
+
+- A final speech result that meets the configured `Min. Similarity (%)` threshold triggers a silent visual success celebration, regardless of which advance rule applies.
+- The phrase streak increments once per phrase session; repeated recognition results for the same phrase do not increment it again.
+- The card displays the current phrase progress and run streak. The streak carries across phrase transitions and resets when practice is stopped or a new practice run starts.
+- Success highlights and animates the phrase card for the selected speaking language and displays page-wide confetti for the configured match celebration time. The confetti is non-interactive and is omitted when the system's `prefers-reduced-motion` setting is enabled; the phrase retains a static success highlight.
+- The phrase animation and confetti clear automatically, and any remaining success message and card highlight clear when the next phrase begins or practice stops.
 
 ## Timing and reset behavior
 
@@ -52,4 +60,5 @@ When rule 3 applies, any pending similarity countdown is cancelled before the im
 - `Min. Similarity (%)` accepts integer values from 50 to 100.
 - `Silence Wait (sec)` is at least 1 second.
 - `Wait After Reach Min. Similarity (sec)` is at least 0 seconds; zero means no delayed wait for rule 2.
-- Speaking-practice settings are shared between the Settings panel and the Speaking Practice controls and are persisted in browser local storage.
+- `Match celebration time (sec)` accepts values from 0.5 to 10 seconds in 0.1-second increments, defaults to 1.2 seconds, and is persisted in browser local storage.
+- Speaking-practice settings are persisted in browser local storage. The similarity, silence, and after-minimum controls are also shared with the Speaking Practice panel.

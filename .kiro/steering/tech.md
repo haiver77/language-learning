@@ -18,6 +18,9 @@
 ## Hosting
 - Served as static files. `web.config` enables IIS directory browsing. Any static server works.
 - Because `SpeechRecognition`, microphone access, and predefined-set fetching need a proper origin, prefer serving over `http(s)://` rather than opening via `file://`.
+- The app is installable as a PWA through `manifest.webmanifest` and `sw.js`. Serve it over HTTPS in production (localhost is suitable for development).
+- The service worker precaches the app shell and phrase index, then caches same-origin resources and phrase files as they are fetched. Previously opened phrase sets are available offline; OpenAI generation still requires internet access.
+- Speaking recognition depends on browser support and may not work offline or consistently in every Android browser.
 
 ## Coding Conventions
 - Keep everything self-contained in the single HTML file; do not introduce a build toolchain, npm, or frameworks unless the user explicitly asks.

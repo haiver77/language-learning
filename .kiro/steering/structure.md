@@ -4,9 +4,14 @@
 language_learning/
 ├── index.html              # Primary app (current). Full trainer: modes, TTS, recognition, AI, CSV editor.
 ├── index_full.html         # Alternate/older variant of the app (similar layout, kept for reference).
-├── learn_bible.ico         # Favicon.
+├── learn_bible.ico         # Original image source for the generated PWA icons.
+├── manifest.webmanifest    # Installable PWA metadata and launcher icons.
+├── sw.js                   # PWA app-shell and runtime caching.
+├── pwa-icon-192.png        # Android/PWA launcher icon.
+├── pwa-icon-512.png        # High-resolution PWA launcher icon.
 ├── web.config              # IIS config; enables static directory browsing.
 ├── predefined_phrases/     # Bundled phrase sets + a directory-listing page.
+│   ├── index.json          # Bundled phrase filename catalog (also available offline).
 │   ├── index.html          # GitHub-API-backed directory listing for the folder.
 │   ├── ESEN_*.csv          # Spanish→English sets (idioms, business, phrasal verbs, speech topics, etc.).
 │   ├── vida_diaria_*.csv   # Multi-language everyday-life sets (ES;EN;IT;PT).
