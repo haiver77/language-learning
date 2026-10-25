@@ -27,6 +27,8 @@
       --shadow: rgba(17, 24, 39, 0.18);
       --focus: 0 0 0 3px rgba(43, 140, 255, 0.24);
       --phrase-font: 20px;
+      --bottom-nav-height: 84px;
+      --nav-icon-size: 44px;
     }
 
     body.theme-dark {
@@ -1245,20 +1247,8 @@
       }
 
       .nav-item {
-        min-height: 64px;
-        padding: 6px 0 7px;
-      }
-
-      .nav-item span:last-child {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
+        min-height: var(--bottom-nav-height);
+        padding: 5px 1px 8px;
       }
     }
 
@@ -1521,7 +1511,7 @@
       background: radial-gradient(ellipse at 100% 0, transparent 46%, rgba(22,134,109,.3) 48% 58%, transparent 60%), radial-gradient(ellipse at 0 100%, transparent 46%, rgba(112,189,85,.35) 48% 58%, transparent 60%);
     }
     .language-pair-indicator { color: var(--muted); font: 700 12px/1.2 Arial, sans-serif; margin-left: auto; margin-right: 60px; }
-    .main-view { min-height: calc(100vh - 56px); padding-left: 20px; padding-right: 20px; padding-bottom: calc(160px + env(safe-area-inset-bottom)); }
+    .main-view { min-height: calc(100vh - 56px); padding-left: 20px; padding-right: 20px; padding-bottom: calc(var(--bottom-nav-height) + 96px + env(safe-area-inset-bottom)); }
     .phrases { gap: 18px; }
     .phrase-line {
       position: relative;
@@ -1578,21 +1568,70 @@
     progress::-webkit-progress-value { background: var(--accent-gradient); }
     progress::-moz-progress-bar { background: var(--accent-gradient); }
     .bottom-nav {
-      min-height: calc(72px + env(safe-area-inset-bottom));
+      min-height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
       padding-bottom: env(safe-area-inset-bottom);
       background: var(--panel);
     }
-    .nav-item { min-height: 64px; font: 600 11px/14px Arial, sans-serif; color: var(--muted); }
+    .nav-item {
+      min-height: var(--bottom-nav-height);
+      gap: 6px;
+      padding: 6px 2px 10px;
+      border-radius: 14px;
+      font: 600 11px/14px Arial, sans-serif;
+      color: var(--muted);
+      transition: background-color .15s ease, color .15s ease;
+    }
     .nav-item.active { color: var(--primary); background: var(--primary-soft); box-shadow: inset 0 -4px 0 var(--primary); }
-    .nav-item .icon { min-height: 26px; font-size: 20px; }
-    .transport-bar { bottom: calc(78px + env(safe-area-inset-bottom)); }
+    .nav-item .icon {
+      width: var(--nav-icon-size);
+      height: var(--nav-icon-size);
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: var(--nav-icon-bg);
+      color: var(--ink);
+    }
+    .nav-item .icon svg { display: block; width: 100%; height: 100%; }
+    .nav-item[data-sheet="practice"] { --nav-icon-bg: #eaf3ff; }
+    .nav-item[data-sheet="voices"] { --nav-icon-bg: #e6f6f4; }
+    .nav-item[data-sheet="visualization"] { --nav-icon-bg: #fff5df; }
+    .nav-item[data-sheet="load"] { --nav-icon-bg: #e8f5ee; }
+    .nav-item[data-sheet="csv"] { --nav-icon-bg: #fff5df; }
+    .nav-item[data-sheet="settings"] { --nav-icon-bg: #eaf3ff; }
+    body.theme-dark .nav-item[data-sheet="practice"],
+    body.theme-dark .nav-item[data-sheet="settings"] { --nav-icon-bg: #233653; }
+    body.theme-dark .nav-item[data-sheet="voices"] { --nav-icon-bg: #1f3c3d; }
+    body.theme-dark .nav-item[data-sheet="visualization"],
+    body.theme-dark .nav-item[data-sheet="csv"] { --nav-icon-bg: #3f3728; }
+    body.theme-dark .nav-item[data-sheet="load"] { --nav-icon-bg: #203b31; }
+    .nav-item span:last-child {
+      display: inline-block;
+      max-width: 100%;
+      overflow: visible;
+      text-overflow: clip;
+      color: var(--muted);
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+    .nav-item.active span:last-child { color: var(--primary); }
+    .nav-item:hover { background-color: var(--surface-soft); }
+    .nav-item.active:hover { background-color: var(--primary-soft); }
+    .nav-item:focus-visible {
+      position: relative;
+      z-index: 1;
+      outline: 2px solid var(--primary);
+      outline-offset: -3px;
+    }
+    .transport-bar { bottom: calc(var(--bottom-nav-height) + 8px + env(safe-area-inset-bottom)); }
     .sheet { background: var(--panel); color: var(--ink); }
     .sheet.settings-page { padding-top: env(safe-area-inset-top); }
     .sheet-panel[data-panel="settings"] {
       max-width: 760px;
       margin-left: auto;
       margin-right: auto;
-      padding-bottom: calc(92px + env(safe-area-inset-bottom));
+      padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom));
     }
     .sheet-panel { padding: 12px 20px calc(24px + env(safe-area-inset-bottom)); }
     .sheet .row { background: var(--surface-soft); color: var(--ink); border-color: var(--border); }
@@ -1678,13 +1717,18 @@
     @media (min-width: 561px) {
       .main-view { padding-left: 24px; padding-right: 24px; }
       .sheet-panel { padding-left: 24px; padding-right: 24px; }
-      .nav-item span:last-child { display: inline-block; }
     }
     @media (max-width: 559px) {
+      :root {
+        --bottom-nav-height: 76px;
+        --nav-icon-size: 34px;
+      }
       .sheet-panel { padding-left: 12px; padding-right: 12px; }
       .theme-choice-list { grid-template-columns: 1fr; }
       .theme-choice-card { min-height: 64px; }
-      .nav-item { min-height: 64px; }
+      .nav-item { min-height: var(--bottom-nav-height); padding: 4px 0 8px; gap: 5px; font-size: 10px; }
+      .nav-item .icon { border-radius: 10px; }
+      .nav-item span:last-child { display: inline-block; }
       .phrase-line { grid-template-columns: minmax(0, 1fr) 44px; min-height: 104px; }
       .transport-bar { gap: 2px; width: calc(100vw - 28px); }
       .transport-bar .action-btn, .transport-bar .toggle-pill {
@@ -1965,12 +2009,30 @@
       </aside>
 
       <nav class="bottom-nav" aria-label="Main navigation">
-        <button class="nav-item active" type="button" data-sheet="practice"><span class="icon">🏋️</span><span>Practice</span></button>
-        <button class="nav-item" type="button" data-sheet="voices"><span class="icon">📢</span><span>Voices</span></button>
-        <button class="nav-item" type="button" data-sheet="visualization"><span class="icon">👀</span><span>View</span></button>
-        <button class="nav-item" type="button" data-sheet="load"><span class="icon">🤖</span><span>Load</span></button>
-        <button class="nav-item" type="button" data-sheet="csv"><span class="icon">📝</span><span>CSV</span></button>
-        <button class="nav-item" type="button" data-sheet="settings"><span class="icon">⚙️</span><span>Settings</span></button>
+        <button class="nav-item active" type="button" data-sheet="practice" aria-controls="bottomSheet" aria-expanded="false">
+          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M14 11h28v34H14z" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/><path d="M20 19h16M20 26h16M20 33h9" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><path d="m30 39 4 4 8-9" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Practice</span>
+        </button>
+        <button class="nav-item" type="button" data-sheet="voices" aria-controls="bottomSheet" aria-expanded="false">
+          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><rect x="21" y="8" width="14" height="27" rx="7" fill="none" stroke="currentColor" stroke-width="2.7"/><path d="M15 27a13 13 0 0 0 26 0M28 40v7m-6 0h12" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><path d="M44 18q5 5 0 10" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round"/></svg></span>
+          <span>Voices</span>
+        </button>
+        <button class="nav-item" type="button" data-sheet="visualization" aria-controls="bottomSheet" aria-expanded="false">
+          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M8 28s8-12 20-12 20 12 20 12-8 12-20 12S8 28 8 28Z" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/><circle cx="28" cy="28" r="6" fill="none" stroke="var(--primary)" stroke-width="2.7"/><path d="M14 46h28" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/></svg></span>
+          <span>View</span>
+        </button>
+        <button class="nav-item" type="button" data-sheet="load" aria-controls="bottomSheet" aria-expanded="false">
+          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M12 24h32v22H12z" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/><path d="M9 24 15 14h26l6 10M28 5v29m-7-7 7 7 7-7" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span>Load</span>
+        </button>
+        <button class="nav-item" type="button" data-sheet="csv" aria-controls="bottomSheet" aria-expanded="false">
+          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M12 10h32v36H12zM12 19h32M12 28h32M12 37h32M23 19v27M34 19v27" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 14h3m5 0h3" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round"/></svg></span>
+          <span>CSV</span>
+        </button>
+        <button class="nav-item" type="button" data-sheet="settings" aria-controls="bottomSheet" aria-expanded="false">
+          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M12 17h32M12 28h32M12 39h32" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><circle cx="22" cy="17" r="4" fill="var(--nav-icon-bg)" stroke="var(--primary)" stroke-width="2.7"/><circle cx="35" cy="28" r="4" fill="var(--nav-icon-bg)" stroke="var(--primary)" stroke-width="2.7"/><circle cx="18" cy="39" r="4" fill="var(--nav-icon-bg)" stroke="var(--primary)" stroke-width="2.7"/></svg></span>
+          <span>Settings</span>
+        </button>
       </nav>
     </div>
   </div>
@@ -4470,7 +4532,11 @@
           document.querySelectorAll('.sheet-panel').forEach(panel => {
             panel.classList.toggle('active', panel.dataset.panel === sheetKey);
           });
-          navItems.forEach(item => item.classList.toggle('active', item.dataset.sheet === sheetKey));
+          navItems.forEach(item => {
+            const isActive = item.dataset.sheet === sheetKey;
+            item.classList.toggle('active', isActive);
+            item.setAttribute('aria-expanded', String(isActive));
+          });
           if (sheet) {
             sheet.classList.toggle('settings-page', fullPageSheets.has(sheetKey));
             sheet.classList.add('open');
@@ -4489,7 +4555,10 @@
             sheet.style.transform = '';
           }
           if (sheetBackdrop) sheetBackdrop.classList.remove('visible');
-          navItems.forEach(item => item.classList.remove('active'));
+          navItems.forEach(item => {
+            item.classList.remove('active');
+            item.setAttribute('aria-expanded', 'false');
+          });
           document.querySelectorAll('.sheet-panel').forEach(panel => panel.classList.remove('active'));
         };
 
