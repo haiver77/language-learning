@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Language Practice</title>
   <meta name="description" content="Practice languages with phrases, speech, and writing exercises." />
   <meta name="theme-color" content="#111827" />
@@ -27,8 +27,6 @@
       --shadow: rgba(17, 24, 39, 0.18);
       --focus: 0 0 0 3px rgba(43, 140, 255, 0.24);
       --phrase-font: 20px;
-      --bottom-nav-height: 84px;
-      --nav-icon-size: 44px;
     }
 
     body.theme-dark {
@@ -447,7 +445,6 @@
     }
 
     .replay-btn:hover { filter: brightness(1.03); }
-    .replay-btn:active { transform: scale(1.02); box-shadow: 0 0 0 3px var(--primary-soft); }
     .replay-btn:focus { outline: 0; box-shadow: var(--focus), 0 8px 18px rgba(41, 104, 194, 0.3); }
 
     #btnStartAuto {
@@ -1145,7 +1142,7 @@
     progress::-webkit-progress-value {
       background: var(--primary);
       border-radius: 999px;
-      transition: width .18s ease;
+      transition: width .2s ease;
     }
 
     progress::-moz-progress-bar {
@@ -1247,516 +1244,22 @@
       }
 
       .nav-item {
-        min-height: var(--bottom-nav-height);
-        padding: 5px 1px 8px;
+        min-height: 64px;
+        padding: 6px 0 7px;
       }
-    }
 
-    body {
-      --success: #176b4d;
-      --success-soft: #dff7ea;
-      --danger: #a92e3c;
-      --focus-color: #174fcb;
-      --disabled-text: #687386;
-      --disabled-surface: #e5e9ef;
-      background: var(--canvas-gradient);
-      transition: background-color 160ms ease, color 160ms ease;
-    }
-
-    body.theme-dark {
-      --success: #7de3b2;
-      --success-soft: #173c32;
-      --danger: #ff9298;
-      --focus-color: #ffe46b;
-      --disabled-text: #a4adc0;
-      --disabled-surface: #30384b;
-    }
-    body.theme-light {
-      --success: #176b4d;
-      --success-soft: #dff7ea;
-      --danger: #a92e3c;
-      --disabled-text: #687386;
-      --disabled-surface: #e5e9ef;
-    }
-
-    body[data-visual-theme="rainbow-playground"] {
-      --canvas-gradient: linear-gradient(180deg, #e6f5ff 0%, #fff2d7 100%);
-      --panel: #f7faff;
-      --surface: #fff;
-      --surface-soft: #f7faff;
-      --surface-strong: #cfd9e8;
-      --ink: #253650;
-      --muted: #58657c;
-      --border: #cfd9e8;
-      --primary: #435fd3;
-      --primary-soft: #e9edff;
-      --accent-gradient: linear-gradient(90deg, #ef5c66 0%, #ffb94f 23%, #f4df60 48%, #54c99a 72%, #5482ef 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ff994f, #f44f6e);
-      --theme-font: Verdana, Arial, sans-serif;
-      --focus-color: #174fcb;
-    }
-    body.theme-dark[data-visual-theme="rainbow-playground"] {
-      --canvas-gradient: linear-gradient(180deg, #17263f 0%, #292947 100%);
-      --panel: #252c43;
-      --surface: #252c43;
-      --surface-soft: #303750;
-      --surface-strong: #515b75;
-      --ink: #f5f6ff;
-      --muted: #c1c9dd;
-      --border: #515b75;
-      --primary: #a8b8ff;
-      --primary-soft: #363c5b;
-      --accent-gradient: linear-gradient(90deg, #ff7880 0%, #ffc566 23%, #f7e87b 48%, #70d9ae 72%, #8ba4ff 100%);
-    }
-    body[data-visual-theme="bright-adventure"] {
-      --canvas-gradient: linear-gradient(180deg, #ffdc8a 0%, #fff1d2 45%, #e2f6e5 100%);
-      --panel: #f9fff8;
-      --surface: #fffef7;
-      --surface-soft: #f9fff8;
-      --surface-strong: #9cc7ad;
-      --ink: #243b45;
-      --muted: #506c6b;
-      --border: #9cc7ad;
-      --primary: #237d76;
-      --primary-soft: #effff7;
-      --accent-gradient: linear-gradient(90deg, #237d76 0%, #43b99a 55%, #8ecf73 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ff994f 0%, #f44f6e 100%);
-      --theme-font: Arial, sans-serif;
-      --theme-heading-font: Arial, sans-serif;
-    }
-    body.theme-dark[data-visual-theme="bright-adventure"] {
-      --canvas-gradient: linear-gradient(180deg, #493725 0%, #343743 48%, #1e3a39 100%);
-      --panel: #2d3332;
-      --surface: #2d3332;
-      --surface-soft: #38433d;
-      --surface-strong: #536d5d;
-      --ink: #f4f7e9;
-      --muted: #c1d0c2;
-      --border: #536d5d;
-      --primary: #58d0b2;
-      --primary-soft: #30463e;
-      --accent-gradient: linear-gradient(90deg, #58d0b2 0%, #7be1b1 55%, #b6e982 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ffb86a 0%, #ff7484 100%);
-    }
-    body[data-visual-theme="rainbow-adventure"] {
-      --canvas-gradient: linear-gradient(180deg, #eee4ff 0%, #ddf6ef 100%);
-      --panel: #f9f7ff;
-      --surface: #fff;
-      --surface-soft: #f9f7ff;
-      --surface-strong: #d6d5e8;
-      --ink: #273652;
-      --muted: #596783;
-      --border: #d6d5e8;
-      --primary: #4d5ec5;
-      --primary-soft: #ececff;
-      --accent-gradient: linear-gradient(90deg, #ff6878 0%, #ffb84c 25%, #a9d55c 50%, #46c5ba 75%, #7374ec 100%);
-      --phrase-accent-two: linear-gradient(90deg, #46c5ba 0%, #7374ec 100%);
-      --theme-font: Arial, sans-serif;
-      --theme-heading-font: "Arial Black", Arial, sans-serif;
-    }
-    body.theme-dark[data-visual-theme="rainbow-adventure"] {
-      --canvas-gradient: linear-gradient(180deg, #292442 0%, #183d42 100%);
-      --panel: #292e49;
-      --surface: #292e49;
-      --surface-soft: #353953;
-      --surface-strong: #565b79;
-      --ink: #f6f5ff;
-      --muted: #c1c8dc;
-      --border: #565b79;
-      --primary: #aeb7ff;
-      --primary-soft: #373958;
-      --accent-gradient: linear-gradient(90deg, #ff8290 0%, #ffd176 25%, #bde77d 50%, #6cded4 75%, #9995ff 100%);
-      --phrase-accent-two: linear-gradient(90deg, #6cded4 0%, #9995ff 100%);
-    }
-    body[data-visual-theme="dazzling-expedition"] {
-      --canvas-gradient: linear-gradient(180deg, #edf4ff 0%, #e6f5f1 100%);
-      --panel: #f7faff;
-      --surface: #fff;
-      --surface-soft: #f7faff;
-      --surface-strong: #b8ccea;
-      --ink: #23365a;
-      --muted: #586c88;
-      --border: #b8ccea;
-      --primary: #253fe5;
-      --primary-soft: #e5efff;
-      --accent-gradient: linear-gradient(135deg, #253fe5 0%, #157cc9 55%, #21b8a2 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ffb347 0%, #ff6c72 100%);
-      --theme-font: Arial, sans-serif;
-      --theme-heading-font: Arial, sans-serif;
-    }
-    body.theme-dark[data-visual-theme="dazzling-expedition"] {
-      --canvas-gradient: linear-gradient(180deg, #172544 0%, #123e4b 100%);
-      --panel: #202d45;
-      --surface: #202d45;
-      --surface-soft: #293a50;
-      --surface-strong: #4e6986;
-      --ink: #f5f7ff;
-      --muted: #c0ccdd;
-      --border: #4e6986;
-      --primary: #7888ff;
-      --primary-soft: #101a2b;
-      --accent-gradient: linear-gradient(135deg, #7888ff 0%, #4db4f2 55%, #55d7bd 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ffd06d 0%, #ff8a91 100%);
-    }
-    body[data-visual-theme="brilliant-odyssey"] {
-      --canvas-gradient: linear-gradient(180deg, #e8e8ff 0%, #ddf4ff 100%);
-      --panel: #fff;
-      --surface: #f6f2ff;
-      --surface-soft: #fff;
-      --surface-strong: #c9c8ec;
-      --ink: #29254a;
-      --muted: #575b83;
-      --border: #c9c8ec;
-      --primary: #6b55cf;
-      --primary-soft: #eeeaff;
-      --accent-gradient: linear-gradient(135deg, #ff82a8 0%, #8d74f4 52%, #48d9dc 100%);
-      --theme-font: Arial, sans-serif;
-    }
-    body.theme-dark[data-visual-theme="brilliant-odyssey"] {
-      --canvas-gradient: linear-gradient(180deg, #20215d 0%, #3a2878 50%, #146d9c 100%);
-      --panel: #27265f;
-      --surface: #27265f;
-      --surface-soft: #302d70;
-      --surface-strong: #716bc1;
-      --ink: #fff;
-      --muted: #d0cff2;
-      --border: #716bc1;
-      --primary: #a08bff;
-      --primary-soft: #211f53;
-      --accent-gradient: linear-gradient(135deg, #ff9abb 0%, #a08bff 52%, #69e7e2 100%);
-    }
-    body[data-visual-theme="tropical-expedition"] {
-      --canvas-gradient: linear-gradient(135deg, #c9f0b1 0%, #b7e6c4 55%, #f4e9bf 100%);
-      --panel: #f7ffef;
-      --surface: #fffef2;
-      --surface-soft: #f7ffef;
-      --surface-strong: #83b98a;
-      --ink: #174e40;
-      --muted: #4f765f;
-      --border: #83b98a;
-      --primary: #126b59;
-      --primary-soft: #f4ffeb;
-      --accent-gradient: linear-gradient(90deg, #16866d 0%, #70bd55 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ffba4e 0%, #f06458 100%);
-      --theme-font: "Trebuchet MS", Arial, sans-serif;
-    }
-    body.theme-dark[data-visual-theme="tropical-expedition"] {
-      --canvas-gradient: linear-gradient(135deg, #183d34 0%, #214d43 55%, #3b4937 100%);
-      --panel: #263b35;
-      --surface: #263b35;
-      --surface-soft: #30483b;
-      --surface-strong: #53775f;
-      --ink: #f2f7e9;
-      --muted: #bbd0b8;
-      --border: #53775f;
-      --primary: #4cc6a0;
-      --primary-soft: #2c493c;
-      --accent-gradient: linear-gradient(90deg, #4cc6a0 0%, #a1db67 100%);
-      --warm-accent-gradient: linear-gradient(135deg, #ffd16e 0%, #ff8a79 100%);
-    }
-    body[data-visual-theme="bright-adventure"] { --focus-color: #175c55; }
-    body[data-visual-theme="rainbow-adventure"] { --focus-color: #354dce; }
-    body[data-visual-theme="dazzling-expedition"] { --focus-color: #1e4bc5; }
-    body[data-visual-theme="brilliant-odyssey"] { --focus-color: #4f43a3; }
-    body[data-visual-theme="tropical-expedition"] { --focus-color: #176b57; }
-    body.theme-dark[data-visual-theme] { --focus-color: #ffe46b; }
-
-    body, .app-shell, .sheet, .sheet .panel, .phrase-line, .speaking-practice-card,
-    .writing-practice-card, .bottom-nav, .toggle-pill, .action-btn, .replay-btn,
-    .theme-choice-card {
-      transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
-    }
-    html, body { font-family: var(--theme-font, "Trebuchet MS"), Arial, sans-serif; }
-    .app-shell { background: transparent; border-color: transparent; }
-    .phone-frame { background: transparent; }
-    .brand, .sheet-header, .theme-section-heading {
-      font-family: var(--theme-heading-font, var(--theme-font, Arial)), Arial, sans-serif;
-    }
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-    .brand { font-size: 22px; line-height: 28px; }
-    .topbar { position: relative; min-height: 56px; padding-left: 20px; padding-right: 20px; }
-    .topbar::after {
-      content: "";
-      position: absolute;
-      width: 56px;
-      height: 32px;
-      right: 20px;
-      top: 10px;
-      pointer-events: none;
-      opacity: .8;
-      background: var(--header-motif, none);
-    }
-    body[data-visual-theme="rainbow-playground"] .topbar::after {
-      background: radial-gradient(ellipse at 50% 100%, transparent 43%, #ef5c66 46% 52%, #ffb94f 55% 61%, #54c99a 64% 70%, #5482ef 73% 79%, transparent 82%);
-    }
-    body[data-visual-theme="bright-adventure"] .topbar::after {
-      background: linear-gradient(145deg, transparent 38%, rgba(35,125,118,.2) 39% 58%, transparent 59%), linear-gradient(35deg, transparent 42%, rgba(142,207,115,.3) 43% 66%, transparent 67%);
-    }
-    body[data-visual-theme="brilliant-odyssey"] .topbar::after {
-      border: 1px solid color-mix(in srgb, var(--primary) 60%, transparent);
-      border-radius: 50%;
-      box-shadow: inset 0 0 0 6px transparent, inset 0 0 0 7px color-mix(in srgb, var(--primary) 40%, transparent);
-    }
-    body[data-visual-theme="tropical-expedition"] .topbar::after {
-      background: radial-gradient(ellipse at 100% 0, transparent 46%, rgba(22,134,109,.3) 48% 58%, transparent 60%), radial-gradient(ellipse at 0 100%, transparent 46%, rgba(112,189,85,.35) 48% 58%, transparent 60%);
-    }
-    .language-pair-indicator { color: var(--muted); font: 700 12px/1.2 Arial, sans-serif; margin-left: auto; margin-right: 60px; }
-    .main-view { min-height: calc(100vh - 56px); padding-left: 20px; padding-right: 20px; padding-bottom: calc(var(--bottom-nav-height) + 96px + env(safe-area-inset-bottom)); }
-    .phrases { gap: 18px; }
-    .phrase-line {
-      position: relative;
-      grid-template-columns: minmax(0, 1fr) 52px;
-      grid-template-rows: auto 1fr;
-      align-items: start;
-      gap: 4px 12px;
-      min-height: 104px;
-      padding: 16px;
-      border: 1px solid var(--border);
-      border-radius: 24px;
-      background: var(--surface);
-      box-shadow: 0 8px 22px var(--shadow);
-      overflow: hidden;
-    }
-    .phrase-line::before {
-      content: "";
-      position: absolute;
-      inset: 0 auto 0 0;
-      width: 5px;
-      background: var(--phrase-accent, var(--accent-gradient));
-    }
-    .phrase-line[data-pos="1"] { --phrase-accent: var(--accent-gradient); }
-    .phrase-line[data-pos="2"] { --phrase-accent: var(--warm-accent-gradient, var(--phrase-accent-two, var(--accent-gradient))); }
-    .phrase-line.speaking-success { background: var(--success-soft); border-color: var(--success); }
-    body[data-visual-theme] .phrase-line { background: var(--surface); }
-    body[data-visual-theme] .phrase-line.speaking-success { background: var(--success-soft); }
-    .lang-tag { grid-column: 1; grid-row: 1; min-height: 16px; font: 700 11px/16px Arial, sans-serif; letter-spacing: 0; padding-left: 4px; }
-    .phrase-text { grid-column: 1; grid-row: 2; font-family: var(--theme-font, Arial), Arial, sans-serif; font-size: var(--phrase-font, 30px); line-height: 1.15; font-weight: 700; letter-spacing: 0; }
-    .phrase-word:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
-    .replay-btn {
-      grid-column: 2;
-      grid-row: 1 / span 2;
-      align-self: center;
-      justify-self: end;
-      width: 44px; height: 44px; min-width: 44px; min-height: 44px;
-      background: var(--accent-gradient); border-radius: 14px;
-    }
-    .replay-btn:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .theme-choice-card:focus-within {
-      outline: 3px solid var(--focus-color);
-      outline-offset: 2px;
-    }
-    .replay-btn:focus:not(:focus-visible), .action-btn:focus:not(:focus-visible), button:focus:not(:focus-visible) { outline: none; }
-    .action-btn, button { background: var(--surface); color: var(--ink); border-color: var(--border); }
-    #btnStartAuto, .replay-btn { background: var(--primary); color: #fff; border: 0; }
-    body.theme-dark #btnStartAuto, body.theme-dark .replay-btn { color: #17263f; }
-    .toggle-pill { min-width: 52px; min-height: 52px; background: var(--surface); }
-    .toggle-pill.is-on { background: var(--primary); color: var(--surface); border-color: transparent; }
-    .speaking-practice-card, .writing-practice-card {
-      background: var(--surface); color: var(--ink); border: 2px solid var(--success);
-    }
-    .speaking-progress progress { height: 12px; }
-    progress::-webkit-progress-value, progress::-moz-progress-bar { background: var(--accent-gradient); }
-    progress::-webkit-progress-value { background: var(--accent-gradient); }
-    progress::-moz-progress-bar { background: var(--accent-gradient); }
-    .bottom-nav {
-      min-height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
-      padding-bottom: env(safe-area-inset-bottom);
-      background: var(--panel);
-    }
-    .nav-item {
-      min-height: var(--bottom-nav-height);
-      gap: 6px;
-      padding: 6px 2px 10px;
-      border-radius: 14px;
-      font: 600 11px/14px Arial, sans-serif;
-      color: var(--muted);
-      transition: background-color .15s ease, color .15s ease;
-    }
-    .nav-item.active { color: var(--primary); background: var(--primary-soft); box-shadow: inset 0 -4px 0 var(--primary); }
-    .nav-item .icon {
-      width: var(--nav-icon-size);
-      height: var(--nav-icon-size);
-      flex: 0 0 auto;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      background: var(--nav-icon-bg);
-      color: var(--ink);
-    }
-    .nav-item .icon svg { display: block; width: 100%; height: 100%; }
-    .nav-item[data-sheet="practice"] { --nav-icon-bg: #eaf3ff; }
-    .nav-item[data-sheet="voices"] { --nav-icon-bg: #e6f6f4; }
-    .nav-item[data-sheet="visualization"] { --nav-icon-bg: #fff5df; }
-    .nav-item[data-sheet="load"] { --nav-icon-bg: #e8f5ee; }
-    .nav-item[data-sheet="csv"] { --nav-icon-bg: #fff5df; }
-    .nav-item[data-sheet="settings"] { --nav-icon-bg: #eaf3ff; }
-    body.theme-dark .nav-item[data-sheet="practice"],
-    body.theme-dark .nav-item[data-sheet="settings"] { --nav-icon-bg: #233653; }
-    body.theme-dark .nav-item[data-sheet="voices"] { --nav-icon-bg: #1f3c3d; }
-    body.theme-dark .nav-item[data-sheet="visualization"],
-    body.theme-dark .nav-item[data-sheet="csv"] { --nav-icon-bg: #3f3728; }
-    body.theme-dark .nav-item[data-sheet="load"] { --nav-icon-bg: #203b31; }
-    .nav-item span:last-child {
-      display: inline-block;
-      max-width: 100%;
-      overflow: visible;
-      text-overflow: clip;
-      color: var(--muted);
-      line-height: 1.1;
-      white-space: nowrap;
-    }
-    .nav-item.active span:last-child { color: var(--primary); }
-    .nav-item:hover { background-color: var(--surface-soft); }
-    .nav-item.active:hover { background-color: var(--primary-soft); }
-    .nav-item:focus-visible {
-      position: relative;
-      z-index: 1;
-      outline: 2px solid var(--primary);
-      outline-offset: -3px;
-    }
-    .transport-bar { bottom: calc(var(--bottom-nav-height) + 8px + env(safe-area-inset-bottom)); }
-    .sheet { background: var(--panel); color: var(--ink); }
-    .sheet.settings-page { padding-top: env(safe-area-inset-top); }
-    .sheet-panel[data-panel="settings"] {
-      max-width: 760px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-bottom: calc(var(--bottom-nav-height) + 20px + env(safe-area-inset-bottom));
-    }
-    .sheet-panel { padding: 12px 20px calc(24px + env(safe-area-inset-bottom)); }
-    .sheet .row { background: var(--surface-soft); color: var(--ink); border-color: var(--border); }
-    .sheet .panel { background: var(--surface); border-color: var(--border); color: var(--ink); }
-    .sheet .panel-title { background: var(--surface-soft); color: var(--ink); min-height: 48px; font-size: 16px; line-height: 22px; }
-    .sheet .panel-title:hover { background: var(--primary-soft); }
-    .sheet select, .sheet input[type="text"], .sheet input[type="password"], .sheet input[type="number"], .sheet input[type="file"], .sheet .textarea, .sheet #modeSelect {
-      min-height: 44px; font: 14px/20px Arial, sans-serif; background: var(--surface); color: var(--ink); border-color: var(--border);
-    }
-    .sheet .check { min-height: 54px; width: auto; background: var(--surface); color: var(--ink); }
-    .sheet .check input { width: 20px; height: 20px; accent-color: var(--primary); }
-    .sheet .badge { background: var(--surface); color: var(--ink); border-color: var(--border); min-height: 40px; font-size: 13px; line-height: 18px; }
-    .status, .sheet .status, .speaking-streak-label, .speaking-progress-label,
-    .speaking-practice-card .status-row .status, .writing-practice-card .status-row .status {
-      font: 600 12px/18px Arial, sans-serif;
-    }
-    .speaking-streak-count { font-size: 16px; line-height: 18px; }
-    .mode-option { background: var(--surface); color: var(--ink); border-color: var(--border); min-height: 58px; }
-    .mode-option.active { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
-    body.theme-dark[data-visual-theme] .action-btn.secondary,
-    body.theme-dark[data-visual-theme] button.secondary,
-    body.theme-dark[data-visual-theme] .badge,
-    body.theme-dark[data-visual-theme] .check,
-    body.theme-dark[data-visual-theme] .mode-option,
-    body.theme-dark[data-visual-theme] .toggle-pill {
-      background: var(--surface);
-      color: var(--ink);
-      border-color: var(--border);
-    }
-    body.theme-dark[data-visual-theme] .phrase-line { background: var(--surface); }
-    body.theme-dark[data-visual-theme] .phrase-line.speaking-success { background: var(--success-soft); }
-    body.theme-dark[data-visual-theme] .sheet .panel-title,
-    body.theme-dark[data-visual-theme] .sheet .panel-title:hover { background: var(--surface-soft); }
-    body.theme-dark[data-visual-theme] .sheet #csvBox { background: var(--surface); }
-    body.theme-dark[data-visual-theme] .toggle-pill.is-on { background: var(--primary); color: var(--surface); }
-    .sheet .panel-title:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
-    .theme-section-heading { font-size: 16px; line-height: 22px; margin: 0 0 4px; }
-    .theme-active-name { color: var(--primary); font: 700 13px/18px Arial, sans-serif; }
-    .theme-chooser-intro { color: var(--muted); font: 14px/20px Arial, sans-serif; margin: 0 0 12px; }
-    .theme-choice-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; width: 100%; min-width: 0; margin: 0; padding: 0; border: 0; }
-    .theme-choice-card {
-      position: relative;
-      min-height: 80px;
-      display: grid;
-      grid-template-columns: 44px minmax(0, 1fr) 24px;
-      align-items: center;
-      gap: 10px;
-      padding: 10px;
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      background: var(--surface);
-      cursor: pointer;
-      color: var(--ink);
-    }
-    .theme-choice-card.is-selected { border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); background: var(--primary-soft); }
-    .theme-choice-card input[type="radio"] { position: absolute; top: 50%; right: 10px; z-index: 1; opacity: 0; width: 20px; height: 20px; transform: translateY(-50%); }
-    .theme-swatch { width: 40px; height: 40px; border-radius: 12px; background: var(--preview-bg); border: 1px solid var(--border); position: relative; overflow: hidden; }
-    .theme-swatch::after { content: ""; position: absolute; left: 6px; right: 6px; bottom: 6px; height: 7px; border-radius: 99px; background: var(--preview-accent); }
-    .theme-choice-copy { min-width: 0; display: grid; gap: 3px; }
-    .theme-choice-name { font: 700 14px/18px Arial, sans-serif; }
-    .theme-choice-description { font: 12px/16px Arial, sans-serif; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .theme-choice-indicator { width: 20px; height: 20px; display: grid; place-items: center; border: 2px solid var(--border); border-radius: 50%; color: transparent; font: 700 13px/1 Arial, sans-serif; }
-    .theme-choice-card.is-selected .theme-choice-indicator { border-color: var(--primary); background: var(--primary); color: var(--surface); }
-    .theme-choice-card:focus-within { outline: 3px solid var(--focus-color); outline-offset: 2px; }
-    .theme-save-status { min-height: 20px; margin: 8px 0 0; color: var(--danger); font: 13px/20px Arial, sans-serif; }
-    .theme-choice-card[data-theme="rainbow-playground"] { --preview-bg: linear-gradient(180deg,#e6f5ff,#fff2d7); --preview-accent: linear-gradient(90deg,#ef5c66,#ffb94f,#54c99a,#5482ef); }
-    .theme-choice-card[data-theme="bright-adventure"] { --preview-bg: linear-gradient(180deg,#ffdc8a,#fff1d2,#e2f6e5); --preview-accent: linear-gradient(90deg,#237d76,#43b99a,#8ecf73); }
-    .theme-choice-card[data-theme="rainbow-adventure"] { --preview-bg: linear-gradient(180deg,#eee4ff,#ddf6ef); --preview-accent: linear-gradient(90deg,#ff6878,#ffb84c,#a9d55c,#46c5ba,#7374ec); }
-    .theme-choice-card[data-theme="dazzling-expedition"] { --preview-bg: linear-gradient(180deg,#edf4ff,#e6f5f1); --preview-accent: linear-gradient(135deg,#253fe5,#157cc9,#21b8a2); }
-    .theme-choice-card[data-theme="brilliant-odyssey"] { --preview-bg: linear-gradient(180deg,#e8e8ff,#ddf4ff); --preview-accent: linear-gradient(135deg,#ff82a8,#8d74f4,#48d9dc); }
-    .theme-choice-card[data-theme="tropical-expedition"] { --preview-bg: linear-gradient(135deg,#c9f0b1,#b7e6c4,#f4e9bf); --preview-accent: linear-gradient(90deg,#16866d,#70bd55); }
-    body.theme-dark .theme-choice-card[data-theme="rainbow-playground"] { --preview-bg: linear-gradient(180deg,#17263f,#292947); --preview-accent: linear-gradient(90deg,#ff7880,#ffc566,#70d9ae,#8ba4ff); }
-    body.theme-dark .theme-choice-card[data-theme="bright-adventure"] { --preview-bg: linear-gradient(180deg,#493725,#343743,#1e3a39); --preview-accent: linear-gradient(90deg,#58d0b2,#7be1b1,#b6e982); }
-    body.theme-dark .theme-choice-card[data-theme="rainbow-adventure"] { --preview-bg: linear-gradient(180deg,#292442,#183d42); --preview-accent: linear-gradient(90deg,#ff8290,#ffd176,#bde77d,#6cded4,#9995ff); }
-    body.theme-dark .theme-choice-card[data-theme="dazzling-expedition"] { --preview-bg: linear-gradient(180deg,#172544,#123e4b); --preview-accent: linear-gradient(135deg,#7888ff,#4db4f2,#55d7bd); }
-    body.theme-dark .theme-choice-card[data-theme="brilliant-odyssey"] { --preview-bg: linear-gradient(180deg,#20215d,#3a2878,#146d9c); --preview-accent: linear-gradient(135deg,#ff9abb,#a08bff,#69e7e2); }
-    body.theme-dark .theme-choice-card[data-theme="tropical-expedition"] { --preview-bg: linear-gradient(135deg,#183d34,#214d43,#3b4937); --preview-accent: linear-gradient(90deg,#4cc6a0,#a1db67); }
-    .word-correct { color: var(--success); text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 2px; }
-    .word-incorrect { color: var(--danger); font-weight: 900; text-decoration: underline wavy; text-underline-offset: 2px; }
-    button:disabled, input:disabled, select:disabled { color: var(--disabled-text); background-color: var(--disabled-surface); }
-    button, .nav-item, .replay-btn { touch-action: manipulation; }
-    .replay-btn:active, .toggle-pill:active, .action-btn:active, .nav-item:active { filter: brightness(.84); }
-    @media (min-width: 561px) {
-      .main-view { padding-left: 24px; padding-right: 24px; }
-      .sheet-panel { padding-left: 24px; padding-right: 24px; }
-    }
-    @media (max-width: 559px) {
-      :root {
-        --bottom-nav-height: 76px;
-        --nav-icon-size: 34px;
+      .nav-item span:last-child {
+        display: none;
       }
-      .sheet-panel { padding-left: 12px; padding-right: 12px; }
-      .theme-choice-list { grid-template-columns: 1fr; }
-      .theme-choice-card { min-height: 64px; }
-      .nav-item { min-height: var(--bottom-nav-height); padding: 4px 0 8px; gap: 5px; font-size: 10px; }
-      .nav-item .icon { border-radius: 10px; }
-      .nav-item span:last-child { display: inline-block; }
-      .phrase-line { grid-template-columns: minmax(0, 1fr) 44px; min-height: 104px; }
-      .transport-bar { gap: 2px; width: calc(100vw - 28px); }
-      .transport-bar .action-btn, .transport-bar .toggle-pill {
-        flex: 1 1 0;
-        min-width: 44px;
-        max-width: 56px;
-        min-height: 48px;
-        height: 48px;
-        padding: 0 2px;
-      }
-      .transport-bar #btnStartAuto { min-width: 44px; }
-    }
-    @media (max-width: 360px) {
-      .language-pair-indicator { font-size: 11px; margin-right: 48px; }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
-      .replay-btn:active { transform: none; }
     }
   </style>
 </head>
 
-<body class="theme-dark" data-visual-theme="rainbow-playground">
+<body class="theme-dark">
   <div class="app-shell">
     <div class="phone-frame">
       <header class="topbar">
         <h1 class="brand">Language Practice</h1>
-        <span class="language-pair-indicator" id="languagePairIndicator" aria-label="Selected language pair">ES · EN</span>
       </header>
 
       <main class="main-view">
@@ -1784,11 +1287,11 @@
               <span class="toggle-icon" aria-hidden="true">🔀</span>
             </span>
           </label>
-          <button id="btnFirst" class="action-btn secondary" type="button" title="Go to first phrase" aria-label="Go to first phrase">⏮️</button>
-          <button id="btnStopAuto" class="action-btn secondary" type="button" title="Stop auto replay" aria-label="Stop practice or auto replay">⏹️</button>
-          <button id="btnStartAuto" class="action-btn" type="button" title="Start auto replay" aria-label="Start practice or auto replay">▶️</button>
-          <button id="btnPrevPhrase" class="action-btn secondary" type="button" title="Previous phrase" aria-label="Previous phrase">⬅️</button>
-          <button id="btnNextPhrase" class="action-btn secondary" type="button" title="Next phrase" aria-label="Next phrase">➡️</button>
+          <button id="btnFirst" class="action-btn secondary" type="button" title="Go to first phrase">⏮️</button>
+          <button id="btnStopAuto" class="action-btn secondary" type="button" title="Stop auto replay">⏹️</button>
+          <button id="btnStartAuto" class="action-btn" type="button" title="Start auto replay">▶️</button>
+          <button id="btnPrevPhrase" class="action-btn secondary" type="button" title="Previous phrase">⬅️</button>
+          <button id="btnNextPhrase" class="action-btn secondary" type="button" title="Next phrase">➡️</button>
         </div>
       </main>
 
@@ -1935,53 +1438,6 @@
         <div class="sheet-panel" data-panel="settings">
           <div class="sheet-header">Settings</div>
           <section class="row" id="row-settings">
-            <div class="panel theme-chooser-panel">
-              <div class="panel-content">
-                <h2 class="theme-section-heading">Appearance and Theme</h2>
-                <p class="theme-chooser-intro">Choose a visual style. Your selection applies immediately.</p>
-                <div class="theme-active-name" id="activeThemeName">Rainbow Playground</div>
-                <fieldset class="theme-choice-list" id="visualThemeChoices" aria-label="Visual theme">
-                  <legend class="sr-only">Choose a visual theme</legend>
-                  <label class="theme-choice-card" data-theme="rainbow-playground">
-                    <input type="radio" name="visualTheme" value="rainbow-playground" checked />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Rainbow Playground</span><span class="theme-choice-description">Airy canvas with a playful rainbow arc.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="bright-adventure">
-                    <input type="radio" name="visualTheme" value="bright-adventure" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Bright Adventure</span><span class="theme-choice-description">Warm sunrise colors and fresh greens.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="rainbow-adventure">
-                    <input type="radio" name="visualTheme" value="rainbow-adventure" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Rainbow Adventure</span><span class="theme-choice-description">Spectrum accents mark language progress.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="dazzling-expedition">
-                    <input type="radio" name="visualTheme" value="dazzling-expedition" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Dazzling Expedition</span><span class="theme-choice-description">Energetic blue-green expedition dashboard.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="brilliant-odyssey">
-                    <input type="radio" name="visualTheme" value="brilliant-odyssey" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Brilliant Odyssey</span><span class="theme-choice-description">Cosmic violet-blue with luminous accents.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="tropical-expedition">
-                    <input type="radio" name="visualTheme" value="tropical-expedition" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Tropical Expedition</span><span class="theme-choice-description">Fresh foliage greens and tangerine cues.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                </fieldset>
-                <p class="theme-save-status" id="themeSaveStatus" role="status" aria-live="polite"></p>
-              </div>
-            </div>
             <div class="panel">
               <div class="panel-title">Languages</div>
               <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
@@ -2009,30 +1465,12 @@
       </aside>
 
       <nav class="bottom-nav" aria-label="Main navigation">
-        <button class="nav-item active" type="button" data-sheet="practice" aria-controls="bottomSheet" aria-expanded="false">
-          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M14 11h28v34H14z" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/><path d="M20 19h16M20 26h16M20 33h9" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><path d="m30 39 4 4 8-9" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>Practice</span>
-        </button>
-        <button class="nav-item" type="button" data-sheet="voices" aria-controls="bottomSheet" aria-expanded="false">
-          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><rect x="21" y="8" width="14" height="27" rx="7" fill="none" stroke="currentColor" stroke-width="2.7"/><path d="M15 27a13 13 0 0 0 26 0M28 40v7m-6 0h12" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><path d="M44 18q5 5 0 10" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round"/></svg></span>
-          <span>Voices</span>
-        </button>
-        <button class="nav-item" type="button" data-sheet="visualization" aria-controls="bottomSheet" aria-expanded="false">
-          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M8 28s8-12 20-12 20 12 20 12-8 12-20 12S8 28 8 28Z" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/><circle cx="28" cy="28" r="6" fill="none" stroke="var(--primary)" stroke-width="2.7"/><path d="M14 46h28" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/></svg></span>
-          <span>View</span>
-        </button>
-        <button class="nav-item" type="button" data-sheet="load" aria-controls="bottomSheet" aria-expanded="false">
-          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M12 24h32v22H12z" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linejoin="round"/><path d="M9 24 15 14h26l6 10M28 5v29m-7-7 7 7 7-7" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-          <span>Load</span>
-        </button>
-        <button class="nav-item" type="button" data-sheet="csv" aria-controls="bottomSheet" aria-expanded="false">
-          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M12 10h32v36H12zM12 19h32M12 28h32M12 37h32M23 19v27M34 19v27" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round" stroke-linejoin="round"/><path d="M17 14h3m5 0h3" fill="none" stroke="var(--primary)" stroke-width="2.7" stroke-linecap="round"/></svg></span>
-          <span>CSV</span>
-        </button>
-        <button class="nav-item" type="button" data-sheet="settings" aria-controls="bottomSheet" aria-expanded="false">
-          <span class="icon"><svg viewBox="0 0 56 56" aria-hidden="true" focusable="false"><path d="M12 17h32M12 28h32M12 39h32" fill="none" stroke="currentColor" stroke-width="2.7" stroke-linecap="round"/><circle cx="22" cy="17" r="4" fill="var(--nav-icon-bg)" stroke="var(--primary)" stroke-width="2.7"/><circle cx="35" cy="28" r="4" fill="var(--nav-icon-bg)" stroke="var(--primary)" stroke-width="2.7"/><circle cx="18" cy="39" r="4" fill="var(--nav-icon-bg)" stroke="var(--primary)" stroke-width="2.7"/></svg></span>
-          <span>Settings</span>
-        </button>
+        <button class="nav-item active" type="button" data-sheet="practice"><span class="icon">🏋️</span><span>Practice</span></button>
+        <button class="nav-item" type="button" data-sheet="voices"><span class="icon">📢</span><span>Voices</span></button>
+        <button class="nav-item" type="button" data-sheet="visualization"><span class="icon">👀</span><span>View</span></button>
+        <button class="nav-item" type="button" data-sheet="load"><span class="icon">🤖</span><span>Load</span></button>
+        <button class="nav-item" type="button" data-sheet="csv"><span class="icon">📝</span><span>CSV</span></button>
+        <button class="nav-item" type="button" data-sheet="settings"><span class="icon">⚙️</span><span>Settings</span></button>
       </nav>
     </div>
   </div>
@@ -2102,21 +1540,7 @@
         speakingWait: document.getElementById('sp-wait-settings'),
         speakingAfterMin: document.getElementById('sp-after-min-settings'),
         speakingCelebration: document.getElementById('sp-celebration-settings'),
-        visualThemeChoices: document.getElementById('visualThemeChoices'),
-        activeThemeName: document.getElementById('activeThemeName'),
-        themeSaveStatus: document.getElementById('themeSaveStatus'),
-        languagePairIndicator: document.getElementById('languagePairIndicator'),
       };
-
-      const THEME_NAMES = {
-        'rainbow-playground': 'Rainbow Playground',
-        'bright-adventure': 'Bright Adventure',
-        'rainbow-adventure': 'Rainbow Adventure',
-        'dazzling-expedition': 'Dazzling Expedition',
-        'brilliant-odyssey': 'Brilliant Odyssey',
-        'tropical-expedition': 'Tropical Expedition',
-      };
-      let visualTheme = 'rainbow-playground';
 
       const langMeta = {
         es: { localeGuess: ['es-ES', 'es-419', 'es-MX', 'es-AR', 'es-PE'], label: 'ES' },
@@ -2506,18 +1930,8 @@
 
       function updateLangLabels() {
         const [l1, l2] = getSelectedLangCodes();
-        if (els.languagePairIndicator) {
-          const label1 = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
-          const label2 = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
-          els.languagePairIndicator.textContent = `${label1} · ${label2}`;
-          els.languagePairIndicator.setAttribute('aria-label', `Selected language pair: ${label1} and ${label2}`);
-        }
         els.langTag[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
         els.langTag[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
-        els.replay[1].setAttribute('aria-label', `Replay ${LANGUAGE_NAMES[l1] || l1} phrase`);
-        els.replay[1].title = `Replay ${LANGUAGE_NAMES[l1] || l1} phrase`;
-        els.replay[2].setAttribute('aria-label', `Replay ${LANGUAGE_NAMES[l2] || l2} phrase`);
-        els.replay[2].title = `Replay ${LANGUAGE_NAMES[l2] || l2} phrase`;
         els.readLabel[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
         els.readLabel[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
         els.showLabel[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
@@ -2806,19 +2220,6 @@
 
       // --- Local Storage: save / load UI configuration ---
       const STORAGE_KEY = 'lang_trainer_config_v1';
-      const LANGUAGE_NAMES = { es: 'Spanish', en: 'English', it: 'Italian', pt: 'Portuguese', de: 'German', fr: 'French' };
-
-      function applyVisualTheme(theme) {
-        visualTheme = Object.prototype.hasOwnProperty.call(THEME_NAMES, theme) ? theme : 'rainbow-playground';
-        document.body.setAttribute('data-visual-theme', visualTheme);
-        if (els.activeThemeName) els.activeThemeName.textContent = THEME_NAMES[visualTheme];
-        if (els.visualThemeChoices) {
-          els.visualThemeChoices.querySelectorAll('input[name="visualTheme"]').forEach((input) => {
-            input.checked = input.value === visualTheme;
-            input.closest('.theme-choice-card').classList.toggle('is-selected', input.checked);
-          });
-        }
-      }
 
       function saveConfig() {
         try {
@@ -2827,7 +2228,6 @@
             rate: els.rate.value, pitch: els.pitch.value,
             font: els.fontRange.value,
             themeDark: !!els.themeToggle.checked,
-            visualTheme,
             mode: els.modeSelect.value,
             aiLevel: els.aiLevel.value, aiTopic: els.aiTopic.value, aiQuantity: els.aiQuantity.value, aiMinWords: els.aiMinWords?.value,
             predefined: els.predefinedSelect.value,
@@ -2849,8 +2249,7 @@
           cfg.read[l1] = !!els.read[1].checked; cfg.read[l2] = !!els.read[2].checked;
           cfg.voices[l1] = els.voices[1].value || ''; cfg.voices[l2] = els.voices[2].value || '';
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
-          return true;
-        } catch (e) { console.warn('saveConfig failed', e); return false; }
+        } catch (e) { console.warn('saveConfig failed', e); }
       }
 
       function loadConfig() {
@@ -2859,9 +2258,6 @@
           if (!raw) return;
           const cfg = JSON.parse(raw);
           savedConfig = cfg; // keep for populateVoices which runs later
-          applyVisualTheme(cfg && typeof cfg.visualTheme === 'string' && Object.prototype.hasOwnProperty.call(THEME_NAMES, cfg.visualTheme)
-            ? cfg.visualTheme
-            : 'rainbow-playground');
           // restore selected languages first
           if (cfg.lang1) els.lang1Select.value = cfg.lang1;
           if (cfg.lang2) els.lang2Select.value = cfg.lang2;
@@ -4532,11 +3928,7 @@
           document.querySelectorAll('.sheet-panel').forEach(panel => {
             panel.classList.toggle('active', panel.dataset.panel === sheetKey);
           });
-          navItems.forEach(item => {
-            const isActive = item.dataset.sheet === sheetKey;
-            item.classList.toggle('active', isActive);
-            item.setAttribute('aria-expanded', String(isActive));
-          });
+          navItems.forEach(item => item.classList.toggle('active', item.dataset.sheet === sheetKey));
           if (sheet) {
             sheet.classList.toggle('settings-page', fullPageSheets.has(sheetKey));
             sheet.classList.add('open');
@@ -4555,10 +3947,7 @@
             sheet.style.transform = '';
           }
           if (sheetBackdrop) sheetBackdrop.classList.remove('visible');
-          navItems.forEach(item => {
-            item.classList.remove('active');
-            item.setAttribute('aria-expanded', 'false');
-          });
+          navItems.forEach(item => item.classList.remove('active'));
           document.querySelectorAll('.sheet-panel').forEach(panel => panel.classList.remove('active'));
         };
 
@@ -4675,19 +4064,6 @@
         // Replay per slot
         els.replay[1].onclick = () => replaySlot(1);
         els.replay[2].onclick = () => replaySlot(2);
-        if (els.visualThemeChoices) {
-          els.visualThemeChoices.addEventListener('change', (event) => {
-            const input = event.target;
-            if (!input.matches('input[name="visualTheme"]')) return;
-            applyVisualTheme(input.value);
-            const saved = saveConfig();
-            if (els.themeSaveStatus) {
-              els.themeSaveStatus.textContent = saved
-                ? ''
-                : 'This theme is active for this session, but could not be saved. It may not remain selected after reload.';
-            }
-          });
-        }
 
         // Show/Hide slots
         els.show[1].onchange = () => { applyShowVisibility(); saveConfig(); };
@@ -4825,7 +4201,6 @@
 
       // --- Bootstrap ---
       function init() {
-        applyVisualTheme('rainbow-playground');
         // Load saved UI configuration first (if any)
         loadConfig();
 
