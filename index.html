@@ -1580,26 +1580,28 @@
       position: relative;
       isolation: isolate;
     }
-    .speaking-practice-card > :not(.speaking-cone-backdrop) {
+    .speaking-practice-card > :not(.speaking-cloud-backdrop) {
       position: relative;
       z-index: 1;
     }
-    .speaking-cone-backdrop {
+    .speaking-cloud-backdrop {
       position: absolute;
       inset: 0;
       z-index: 0;
       width: 100%;
       height: 100%;
+      overflow: hidden;
+      border-radius: inherit;
       pointer-events: none;
     }
-    .speaking-cone-halo {
+    .speaking-cloud-mass {
       transform-box: fill-box;
-      animation: speaking-cone-sweep 15s ease-in-out infinite alternate;
+      animation: speaking-cloud-sweep 19s ease-in-out infinite alternate;
     }
-    .speaking-cone-spark {
+    .speaking-cloud-spark {
       transform-box: fill-box;
       transform-origin: center;
-      animation: speaking-cone-twinkle 2.8s ease-in-out infinite;
+      animation: speaking-cloud-twinkle 3.6s ease-in-out infinite;
     }
     .speaking-reward-row {
       align-items: center;
@@ -1685,11 +1687,12 @@
     .speaking-practice-card .status-row {
       margin-top: 4px;
     }
-    @keyframes speaking-cone-sweep {
-      from { transform: translateX(110%); }
-      to { transform: translateX(-110%); }
+    @keyframes speaking-cloud-sweep {
+      0% { transform: translateX(110%); }
+      42%, 58% { transform: translateX(0); }
+      100% { transform: translateX(-110%); }
     }
-    @keyframes speaking-cone-twinkle {
+    @keyframes speaking-cloud-twinkle {
       50% { opacity: .2; transform: scale(.72); }
     }
     @keyframes speaking-wave-pulse {
@@ -1721,8 +1724,8 @@
       }
     }
     @media (prefers-reduced-motion: reduce) {
-      .speaking-cone-halo,
-      .speaking-cone-spark,
+      .speaking-cloud-mass,
+      .speaking-cloud-spark,
       .speaking-waveform .bar {
         animation: none;
         transform: none;
@@ -3723,29 +3726,28 @@
         });
       }
 
-      function buildSpeakingConeBackdrop(prefix) {
-        const gradientId = `${prefix}-cone-gradient`;
-        const clipId = `${prefix}-cone-clip`;
+      function buildSpeakingCloudBackdrop(prefix) {
+        const gradientId = `${prefix}-cloud-gradient`;
+        const clipId = `${prefix}-cloud-clip`;
         return `
-          <svg class="speaking-cone-backdrop" viewBox="0 0 760 154" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+          <svg class="speaking-cloud-backdrop" viewBox="0 0 760 154" preserveAspectRatio="none" aria-hidden="true" focusable="false">
             <defs>
               <linearGradient id="${gradientId}" x1="0" x2="1">
-                <stop stop-color="#93d2a4" stop-opacity="0"/>
-                <stop offset=".27" stop-color="#a8dbb5" stop-opacity=".3"/>
-                <stop offset=".52" stop-color="#f0d48d" stop-opacity=".38"/>
-                <stop offset=".75" stop-color="#d5c4ed" stop-opacity=".32"/>
-                <stop offset="1" stop-color="#93d2a4" stop-opacity="0"/>
+                <stop stop-color="#93d2a4" stop-opacity=".17"/>
+                <stop offset=".28" stop-color="#a8dbb5" stop-opacity=".38"/>
+                <stop offset=".55" stop-color="#f0d48d" stop-opacity=".48"/>
+                <stop offset=".78" stop-color="#d5c4ed" stop-opacity=".4"/>
+                <stop offset="1" stop-color="#93d2a4" stop-opacity=".17"/>
               </linearGradient>
               <clipPath id="${clipId}">
-                <rect x="13" y="13" width="734" height="128" rx="21"/>
+                <rect x="0" y="0" width="760" height="154"/>
               </clipPath>
             </defs>
             <g clip-path="url(#${clipId})">
-              <path class="speaking-cone-halo" d="M-30 83L760 5V149L-30 70Z" fill="url(#${gradientId})"/>
-              <path class="speaking-cone-spark" d="M644 30l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#e5c66f" opacity=".8"/>
-              <circle class="speaking-cone-spark" cx="700" cy="48" r="2.5" fill="#94c995" opacity=".8" style="animation-delay:.75s"/>
-              <path class="speaking-cone-spark" d="M727 75l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#c5a7dd" opacity=".8" style="animation-delay:1.25s"/>
-              <circle class="speaking-cone-spark" cx="672" cy="94" r="3" fill="#edce83" opacity=".8" style="animation-delay:.2s"/>
+              <path class="speaking-cloud-mass" d="M-210-25H820C925-25 1010 18 885 39C1020 53 990 82 875 90C1000 110 960 145 830 150C900 173 865 180 780 180H-210Z" fill="url(#${gradientId})"/>
+              <circle class="speaking-cloud-spark" cx="641" cy="69" r="2.5" fill="#9acb98" opacity=".8"/>
+              <path class="speaking-cloud-spark" d="M690 28l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#e4c66e" opacity=".8" style="animation-delay:.6s"/>
+              <path class="speaking-cloud-spark" d="M722 63l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#c8a9dd" opacity=".8" style="animation-delay:1.7s"/>
             </g>
           </svg>
         `;
@@ -3901,7 +3903,7 @@
           const hostPanel = document.createElement('div');
           hostPanel.className = 'speaking-practice-card';
           hostPanel.innerHTML = `
-            ${buildSpeakingConeBackdrop('sp')}
+            ${buildSpeakingCloudBackdrop('sp')}
             <div class="panel-title">Live transcription and scoring</div>
             <div class="speaking-reward-row">
               <div class="speaking-streak" aria-label="Current phrase streak">
@@ -3988,7 +3990,7 @@
           const hostPanel = document.createElement('div');
           hostPanel.className = 'speaking-practice-card';
           hostPanel.innerHTML = `
-            ${buildSpeakingConeBackdrop('ic')}
+            ${buildSpeakingCloudBackdrop('ic')}
             <div class="panel-title">Intensive Challenge</div>
             <div class="speaking-reward-row">
               <div class="speaking-streak" aria-label="Current successful phrase streak">
@@ -5126,73 +5128,73 @@
       // --- Predefined sets discovery & loading ---
       async function populatePredefinedList() {
         const sel = els.predefinedSelect;
-        sel.innerHTML = ''; // Limpiar opciones previas
+        const selectedName = sel.value || (savedConfig && savedConfig.predefined) || '';
+        sel.innerHTML = '';
+        const placeholder = document.createElement('option');
+        placeholder.value = '';
+        placeholder.textContent = '(Select a set)';
+        sel.appendChild(placeholder);
 
+        function addNames(names) {
+          const validNames = [...new Set(names)]
+            .filter(name => typeof name === 'string' && /\.(csv|txt)$/i.test(name))
+            .sort((a, b) => a.localeCompare(b));
+          for (const name of validNames) {
+            const option = document.createElement('option');
+            option.value = name;
+            option.textContent = name;
+            sel.appendChild(option);
+          }
+          if (selectedName && validNames.includes(selectedName)) sel.value = selectedName;
+          return validNames.length;
+        }
+
+        let githubError;
         try {
-          const res = await fetch('./predefined_phrases/index.json');
-          if (!res.ok) throw new Error(`Phrase index request failed (${res.status})`);
-          const names = await res.json();
-          if (!Array.isArray(names) || !names.length || !names.every(name => typeof name === 'string' && /\.(csv|txt)$/i.test(name))) {
-            throw new Error('The bundled phrase index is invalid.');
-          }
-          for (const name of names) {
-            const opt = document.createElement('option');
-            opt.value = name;
-            opt.textContent = name;
-            sel.appendChild(opt);
-          }
-          return;
+          const user = 'haiver77';
+          const repo = 'language_learning';
+          const branch = 'main';
+          const path = 'predefined_phrases';
+          const apiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${path}?ref=${branch}`;
+          const res = await fetch(apiUrl);
+          if (!res.ok) throw new Error(`GitHub API request failed (${res.status})`);
+
+          const files = await res.json();
+          if (!Array.isArray(files)) throw new Error('Unexpected GitHub API response.');
+          const count = addNames(files
+            .filter(file => file && file.type === 'file' && typeof file.name === 'string')
+            .map(file => file.name));
+          if (count > 0) return;
+          throw new Error('GitHub API returned no CSV or TXT files.');
         } catch (error) {
-          console.warn('Bundled phrase index unavailable:', error.message || error.toString());
+          githubError = error;
+          console.warn('GitHub phrase list unavailable:', error.message || error.toString());
         }
 
         try {
-          // Intento local
           const res = await fetch('./predefined_phrases/');
+          if (!res.ok) throw new Error(`Server directory request failed (${res.status})`);
+
           const text = await res.text();
-          const tmp = document.createElement('div');
-          tmp.innerHTML = text;
-          const links = [...tmp.querySelectorAll('a[href$=".csv"], a[href$=".txt"]')];
-          const names = links.map(a => (a.textContent || '').trim()).filter(Boolean);
-          if (names.length === 0) throw new Error('No se encontraron archivos válidos en el servidor local.');
-          for (const n of names) {
-            const opt = document.createElement('option');
-            opt.value = n;
-            opt.textContent = n;
-            sel.appendChild(opt);
-          }
-        } catch (error) {
-          console.warn('Fallo la carga local:', error.message || error.toString());
-          await fallbackToGithub();
-        }
-
-        async function fallbackToGithub() {
-          try {
-            const user = "haiver77";       // ejemplo: "johnmalagon"
-            const repo = "language_learning";   // ejemplo: "mi-web"
-            const branch = "main";           // o "master" según tu repo
-            const path = "predefined_phrases";
-
-            const githubApiUrl = `https://api.github.com/repos/${user}/${repo}/contents/${path}?ref=${branch}`;
-            const res = await fetch(githubApiUrl);
-            const files = await res.json();
-            if (!Array.isArray(files)) throw new Error('Respuesta inesperada de GitHub');
-
-            const validFiles = files
-              .filter(f => f.name.endsWith('.csv') || f.name.endsWith('.txt'))
-              .map(f => f.name);
-
-            if (validFiles.length === 0) throw new Error('No se encontraron archivos válidos en GitHub.');
-
-            for (const name of validFiles) {
-              const opt = document.createElement('option');
-              opt.value = name;
-              opt.textContent = name;
-              sel.appendChild(opt);
+          const listing = new DOMParser().parseFromString(text, 'text/html');
+          const directoryUrl = new URL(res.url);
+          if (!directoryUrl.pathname.endsWith('/')) directoryUrl.pathname += '/';
+          const names = [...listing.querySelectorAll('a[href]')].map(anchor => {
+            try {
+              const fileUrl = new URL(anchor.getAttribute('href'), directoryUrl);
+              if (fileUrl.origin !== directoryUrl.origin) return '';
+              const relativePath = fileUrl.pathname.slice(directoryUrl.pathname.length);
+              if (!relativePath || relativePath.includes('/')) return '';
+              return decodeURIComponent(relativePath);
+            } catch {
+              return '';
             }
-          } catch (err) {
-            alert('No se pudo cargar la lista de frases desde GitHub: ' + (err.message || err.toString()));
-          }
+          });
+          if (addNames(names) > 0) return;
+          throw new Error('The server directory listing contains no CSV or TXT files.');
+        } catch (error) {
+          console.error('Unable to load predefined phrase files:', { githubError, directoryError: error });
+          alert(`Could not load predefined phrase files. GitHub: ${githubError.message || githubError.toString()} Server: ${error.message || error.toString()}`);
         }
       }
 

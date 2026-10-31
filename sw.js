@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'language-practice-';
-const SHELL_CACHE = `${CACHE_PREFIX}shell-v3`;
+const SHELL_CACHE = `${CACHE_PREFIX}shell-v4`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const APP_ROOT = new URL('./', self.registration.scope);
 const APP_SHELL = [
