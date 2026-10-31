@@ -1576,6 +1576,162 @@
     progress::-webkit-progress-value, progress::-moz-progress-bar { background: var(--accent-gradient); }
     progress::-webkit-progress-value { background: var(--accent-gradient); }
     progress::-moz-progress-bar { background: var(--accent-gradient); }
+    .speaking-practice-card {
+      position: relative;
+      isolation: isolate;
+    }
+    .speaking-practice-card > :not(.speaking-cone-backdrop) {
+      position: relative;
+      z-index: 1;
+    }
+    .speaking-cone-backdrop {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+    .speaking-cone-halo {
+      transform-box: fill-box;
+      animation: speaking-cone-sweep 15s ease-in-out infinite alternate;
+    }
+    .speaking-cone-spark {
+      transform-box: fill-box;
+      transform-origin: center;
+      animation: speaking-cone-twinkle 2.8s ease-in-out infinite;
+    }
+    .speaking-reward-row {
+      align-items: center;
+      gap: 10px;
+      margin: 4px 0 0;
+    }
+    .speaking-streak {
+      flex: 0 0 auto;
+      min-width: 94px;
+      padding: 6px 9px;
+      gap: 7px;
+    }
+    .speaking-practice-card .speaking-streak-label,
+    .speaking-practice-card .speaking-progress-label {
+      font-size: 11px;
+      line-height: 14px;
+    }
+    .speaking-streak-icon {
+      display: block;
+      flex: 0 0 22px;
+      width: 22px;
+      height: 22px;
+      color: var(--success);
+    }
+    .speaking-progress {
+      display: flex;
+      flex: 1 1 0;
+      min-width: 0;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .speaking-progress-label {
+      align-items: center;
+      margin: 0;
+    }
+    .speaking-progress-track {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 42px;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+    .speaking-practice-card .speaking-progress progress {
+      width: 100%;
+      min-width: 0;
+      height: 9px;
+      margin: 0;
+    }
+    .speaking-waveform {
+      display: block;
+      width: 42px;
+      height: 24px;
+      overflow: visible;
+    }
+    .speaking-waveform .bar {
+      fill: var(--success);
+      opacity: .48;
+      transform-box: fill-box;
+      transform-origin: center;
+    }
+    .speaking-practice-card.is-listening .speaking-waveform .bar {
+      opacity: 1;
+      animation: speaking-wave-pulse 900ms ease-in-out infinite alternate;
+    }
+    .speaking-live-transcript {
+      min-height: 1.2em;
+      margin: 4px 0 0;
+      font-size: 14px;
+      line-height: 1.25;
+      overflow-wrap: anywhere;
+    }
+    .speaking-practice-card .speaking-celebration {
+      min-height: 0;
+      max-height: 0;
+      margin: 0;
+      overflow: hidden;
+      transition: opacity 180ms ease, max-height 180ms ease, margin 180ms ease;
+    }
+    .speaking-practice-card .speaking-celebration.visible {
+      max-height: 4em;
+      margin-top: 3px;
+    }
+    .speaking-practice-card .status-row {
+      margin-top: 4px;
+    }
+    @keyframes speaking-cone-sweep {
+      from { transform: translateX(110%); }
+      to { transform: translateX(-110%); }
+    }
+    @keyframes speaking-cone-twinkle {
+      50% { opacity: .2; transform: scale(.72); }
+    }
+    @keyframes speaking-wave-pulse {
+      to { transform: scaleY(.5); }
+    }
+    @media (max-width: 420px) {
+      .speaking-practice-card {
+        padding: 12px 10px 9px;
+      }
+
+      .speaking-reward-row {
+        gap: 6px;
+      }
+
+      .speaking-streak {
+        min-width: 82px;
+        padding: 6px 7px;
+        gap: 5px;
+      }
+
+      .speaking-progress-track {
+        grid-template-columns: minmax(0, 1fr) 36px;
+        gap: 4px;
+      }
+
+      .speaking-waveform {
+        width: 36px;
+        height: 22px;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .speaking-cone-halo,
+      .speaking-cone-spark,
+      .speaking-waveform .bar {
+        animation: none;
+        transform: none;
+      }
+
+      .speaking-practice-card .speaking-celebration {
+        transition: none;
+      }
+    }
     .bottom-nav {
       min-height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
       padding-bottom: env(safe-area-inset-bottom);
@@ -1995,11 +2151,13 @@
               <option>Manual Mode</option>
               <option>Auto Mode</option>
               <option>Speaking Practice Mode</option>
+              <option>Intensive Challenge</option>
               <option>Writing Practice Mode</option>
             </select>
             <div class="mode-option-list" aria-label="Practice modes">
               <button type="button" class="mode-option" data-mode="Manual Mode"><span class="emoji">🧠</span><span>Manual Mode</span></button>
               <button type="button" class="mode-option" data-mode="Speaking Practice Mode"><span class="emoji">🎤</span><span>Speaking Practice</span></button>
+              <button type="button" class="mode-option" data-mode="Intensive Challenge"><span class="emoji">⚡</span><span>Intensive Challenge</span></button>
               <button type="button" class="mode-option" data-mode="Writing Practice Mode"><span class="emoji">✍️</span><span>Dictate Practice</span></button>
             </div>
             <div id="modeContent" style="width:100%; margin-top:12px;"></div>
@@ -2329,6 +2487,9 @@
       const DEFAULT_SPEAKING_CELEBRATION_SECONDS = 1.2;
       const MIN_SPEAKING_CELEBRATION_SECONDS = 0.5;
       const MAX_SPEAKING_CELEBRATION_SECONDS = 10;
+      let sharedRandomEnabled = !!els.randomToggle?.checked;
+      let intensiveRandomEnabled = false;
+      let renderedMode = null;
       let speakingPractice = {
         active: false,
         rec: null,
@@ -2352,6 +2513,27 @@
         lastCelebratedToken: null,
         advanceTimer: null,
         advanceInterval: null,
+      };
+      let intensivePractice = {
+        active: false,
+        phase: 'idle',
+        rec: null,
+        lang: 'en',
+        min: 90,
+        revealed: false,
+        streak: 0,
+        streakEl: null,
+        liveTextEl: null,
+        scoreEl: null,
+        progressEl: null,
+        statusEl: null,
+        silenceCounterEl: null,
+        celebrationEl: null,
+        cardEl: null,
+        utterance: null,
+        silenceTimer: null,
+        silenceInterval: null,
+        restartTimer: null,
       };
       let writingPractice = {
         active: false,
@@ -2460,6 +2642,7 @@
 
       function startRecognitionWhenReady(rec, myToken) {
         if (!rec) return;
+        setPracticeCardListening(speakingPractice.cardEl, false);
         if (rec._startTimer) { clearTimeout(rec._startTimer); rec._startTimer = null; }
         const delayMs = getRecognitionStartDelayMs();
         if (delayMs > 0 && speakingPractice.statusEl) {
@@ -2472,7 +2655,14 @@
           if (speakingPractice.rec !== rec) { recordLog('start aborted: rec not current'); return; }
           if (myToken !== phraseSessionId) { recordLog('start aborted: token mismatch'); return; }
           if (speakingPractice.statusEl) speakingPractice.statusEl.textContent = 'Listening…';
-          try { rec.start(); recordLog('rec.start() invoked token=' + myToken); } catch (err) { recordLog('rec.start() failed ' + (err && err.message)); }
+          try {
+            rec.start();
+            setPracticeCardListening(speakingPractice.cardEl, true);
+            recordLog('rec.start() invoked token=' + myToken);
+          } catch (err) {
+            setPracticeCardListening(speakingPractice.cardEl, false);
+            recordLog('rec.start() failed ' + (err && err.message));
+          }
         }, delayMs);
       }
 
@@ -2630,20 +2820,20 @@
         return validation;
       }
 
-      function renderLiveValidation(live, spokenCorrect) {
-        if (!speakingPractice.liveTextEl) return;
+      function renderLiveValidation(live, spokenCorrect, liveTextEl = speakingPractice.liveTextEl) {
+        if (!liveTextEl) return;
         const liveTokens = (live.match(/\S+/g) || []);
         if (!liveTokens.length) {
-          speakingPractice.liveTextEl.textContent = '';
+          liveTextEl.textContent = '';
           return;
         }
-        speakingPractice.liveTextEl.innerHTML = '';
+        liveTextEl.innerHTML = '';
         for (let i = 0; i < liveTokens.length; i++) {
           const span = document.createElement('span');
           span.textContent = liveTokens[i];
           span.className = spokenCorrect && spokenCorrect[i] ? 'word-correct' : 'word-incorrect';
-          speakingPractice.liveTextEl.appendChild(span);
-          if (i !== liveTokens.length - 1) speakingPractice.liveTextEl.appendChild(document.createTextNode(' '));
+          liveTextEl.appendChild(span);
+          if (i !== liveTokens.length - 1) liveTextEl.appendChild(document.createTextNode(' '));
         }
       }
 
@@ -3020,6 +3210,7 @@
             themeDark: !!els.themeToggle.checked,
             visualTheme,
             mode: els.modeSelect.value,
+            randomEnabled: sharedRandomEnabled,
             aiLevel: els.aiLevel.value, aiTopic: els.aiTopic.value, aiQuantity: els.aiQuantity.value, aiMinWords: els.aiMinWords?.value,
             predefined: els.predefinedSelect.value,
             csv: els.csvBox.value,
@@ -3092,7 +3283,8 @@
           if (cfg.aiMinWords) els.aiMinWords.value = cfg.aiMinWords;
           if (cfg.predefined) els.predefinedSelect.value = cfg.predefined;
           if (typeof cfg.randomEnabled === 'boolean') {
-            if (els.randomToggle) { els.randomToggle.checked = cfg.randomEnabled; }
+            sharedRandomEnabled = cfg.randomEnabled;
+            if (els.randomToggle) { els.randomToggle.checked = sharedRandomEnabled; }
             syncRandomToggleVisualState();
             syncRandomModeCheckboxes();
           }
@@ -3311,7 +3503,9 @@
         const toggle = els.randomToggle;
         const pill = toggle && toggle.closest('.toggle-pill');
         if (!toggle || !pill) return;
-        const isOn = !!toggle.checked;
+        const enabled = getRandomSelectionEnabled();
+        toggle.checked = enabled;
+        const isOn = enabled;
         pill.classList.toggle('is-on', isOn);
         pill.classList.toggle('is-off', !isOn);
         pill.setAttribute('title', isOn ? 'Random mode active: random phrase selection' : 'Sequential mode active: next phrase in CSV order');
@@ -3319,7 +3513,7 @@
       }
 
       function syncRandomModeCheckboxes() {
-        const enabled = !!(els.randomToggle && els.randomToggle.checked);
+        const enabled = sharedRandomEnabled;
         const selectors = ['#auto-random', '#sp-random', '#wr-random'];
         selectors.forEach((selector) => {
           const input = els.modeContent?.querySelector(selector);
@@ -3333,7 +3527,8 @@
           const input = els.modeContent?.querySelector(selector);
           if (!input) return;
           input.onchange = () => {
-            if (els.randomToggle) els.randomToggle.checked = !!input.checked;
+            sharedRandomEnabled = !!input.checked;
+            if (els.randomToggle) els.randomToggle.checked = sharedRandomEnabled;
             syncRandomToggleVisualState();
             saveConfig();
           };
@@ -3341,8 +3536,9 @@
       }
 
       function getRandomSelectionEnabled() {
-        if (els.randomToggle) return !!els.randomToggle.checked;
         const mode = els.modeSelect?.value;
+        if (mode === 'Intensive Challenge') return intensiveRandomEnabled;
+        if (els.randomToggle) return sharedRandomEnabled;
         if (mode === 'Auto Mode') return !!(els.modeContent?.querySelector('#auto-random')?.checked);
         if (mode === 'Speaking Practice Mode') return !!(els.modeContent?.querySelector('#sp-random')?.checked);
         if (mode === 'Writing Practice Mode') return !!(els.modeContent?.querySelector('#wr-random')?.checked);
@@ -3444,6 +3640,8 @@
         if (!els.brand) return;
         if (mode === 'Speaking Practice Mode') {
           els.brand.textContent = 'Speaking Practice';
+        } else if (mode === 'Intensive Challenge') {
+          els.brand.textContent = 'Intensive Challenge';
         } else if (mode === 'Writing Practice Mode') {
           els.brand.textContent = 'Writing Practice';
         } else {
@@ -3523,6 +3721,61 @@
             }
           });
         });
+      }
+
+      function buildSpeakingConeBackdrop(prefix) {
+        const gradientId = `${prefix}-cone-gradient`;
+        const clipId = `${prefix}-cone-clip`;
+        return `
+          <svg class="speaking-cone-backdrop" viewBox="0 0 760 154" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="${gradientId}" x1="0" x2="1">
+                <stop stop-color="#93d2a4" stop-opacity="0"/>
+                <stop offset=".27" stop-color="#a8dbb5" stop-opacity=".3"/>
+                <stop offset=".52" stop-color="#f0d48d" stop-opacity=".38"/>
+                <stop offset=".75" stop-color="#d5c4ed" stop-opacity=".32"/>
+                <stop offset="1" stop-color="#93d2a4" stop-opacity="0"/>
+              </linearGradient>
+              <clipPath id="${clipId}">
+                <rect x="13" y="13" width="734" height="128" rx="21"/>
+              </clipPath>
+            </defs>
+            <g clip-path="url(#${clipId})">
+              <path class="speaking-cone-halo" d="M-30 83L760 5V149L-30 70Z" fill="url(#${gradientId})"/>
+              <path class="speaking-cone-spark" d="M644 30l2 6 6 2-6 2-2 6-2-6-6-2 6-2z" fill="#e5c66f" opacity=".8"/>
+              <circle class="speaking-cone-spark" cx="700" cy="48" r="2.5" fill="#94c995" opacity=".8" style="animation-delay:.75s"/>
+              <path class="speaking-cone-spark" d="M727 75l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="#c5a7dd" opacity=".8" style="animation-delay:1.25s"/>
+              <circle class="speaking-cone-spark" cx="672" cy="94" r="3" fill="#edce83" opacity=".8" style="animation-delay:.2s"/>
+            </g>
+          </svg>
+        `;
+      }
+
+      function buildSpeakingWaveform() {
+        return `
+          <svg class="speaking-waveform" viewBox="0 0 42 24" aria-hidden="true" focusable="false">
+            <rect class="bar" x="1" y="9" width="4" height="7" rx="2"/>
+            <rect class="bar" x="8" y="6" width="4" height="13" rx="2" style="animation-delay:.12s"/>
+            <rect class="bar" x="15" y="2" width="4" height="21" rx="2" style="animation-delay:.24s"/>
+            <rect class="bar" x="22" y="7" width="4" height="11" rx="2" style="animation-delay:.36s"/>
+            <rect class="bar" x="29" y="4" width="4" height="17" rx="2" style="animation-delay:.48s"/>
+            <rect class="bar" x="36" y="9" width="4" height="7" rx="2" style="animation-delay:.6s"/>
+          </svg>
+        `;
+      }
+
+      function buildSpeakingStreakIcon() {
+        return `
+          <svg class="speaking-streak-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M12 21V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="M12 14c-8-1-8-9 0-8 3 2 3 6 0 8z" fill="#79c293"/>
+            <path d="M12 17c8-1 8-9 0-8" fill="#a3d8ad"/>
+          </svg>
+        `;
+      }
+
+      function setPracticeCardListening(cardEl, isListening) {
+        if (cardEl) cardEl.classList.toggle('is-listening', isListening);
       }
 
       function renderModePanel() {
@@ -3648,19 +3901,23 @@
           const hostPanel = document.createElement('div');
           hostPanel.className = 'speaking-practice-card';
           hostPanel.innerHTML = `
+            ${buildSpeakingConeBackdrop('sp')}
             <div class="panel-title">Live transcription and scoring</div>
             <div class="speaking-reward-row">
               <div class="speaking-streak" aria-label="Current phrase streak">
-                <span class="speaking-streak-icon" aria-hidden="true">✦</span>
-                <span><span class="speaking-streak-label">Phrase streak</span><strong id="sp-streak-host" class="speaking-streak-count">0</strong></span>
+                ${buildSpeakingStreakIcon()}
+                <span><span class="speaking-streak-label">Streak</span><strong id="sp-streak-host" class="speaking-streak-count">0</strong></span>
               </div>
               <div class="speaking-progress">
                 <div class="speaking-progress-label"><span>Phrase progress</span><span id="sp-score-host" class="status">0%</span></div>
-                <progress id="sp-progress-host" value="0" max="100" aria-label="Current phrase progress"></progress>
+                <div class="speaking-progress-track">
+                  <progress id="sp-progress-host" value="0" max="100" aria-label="Current phrase progress"></progress>
+                  ${buildSpeakingWaveform()}
+                </div>
               </div>
             </div>
+            <div id="sp-live-host" class="status speaking-live-transcript"></div>
             <div id="sp-celebration-host" class="speaking-celebration" role="status" aria-live="polite"></div>
-            <div id="sp-live-host" class="status" style="margin-top:8px; font-size:15px; min-height: 1.5em;"></div>
             <div class="status-row">
               <span id="sp-status-host" class="status">Listening...</span>
               <span id="sp-silence-counter-host" class="status">0s</span>
@@ -3726,6 +3983,47 @@
             if (els.speakingAfterMin) els.speakingAfterMin.value = wait;
             saveConfig();
           };
+        } else if (m === 'Intensive Challenge') {
+          els.modeContent.style.display = 'none';
+          const hostPanel = document.createElement('div');
+          hostPanel.className = 'speaking-practice-card';
+          hostPanel.innerHTML = `
+            ${buildSpeakingConeBackdrop('ic')}
+            <div class="panel-title">Intensive Challenge</div>
+            <div class="speaking-reward-row">
+              <div class="speaking-streak" aria-label="Current successful phrase streak">
+                ${buildSpeakingStreakIcon()}
+                <span><span class="speaking-streak-label">Streak</span><strong id="ic-streak" class="speaking-streak-count">0</strong></span>
+              </div>
+              <div class="speaking-progress">
+                <div class="speaking-progress-label"><span>Phrase progress</span><span id="ic-score" class="status">0%</span></div>
+                <div class="speaking-progress-track">
+                  <progress id="ic-progress" value="0" max="100" aria-label="Current phrase progress"></progress>
+                  ${buildSpeakingWaveform()}
+                </div>
+              </div>
+            </div>
+            <div id="ic-live" class="status speaking-live-transcript"></div>
+            <div id="ic-celebration" class="speaking-celebration" role="status" aria-live="polite"></div>
+            <div class="status-row">
+              <span id="ic-status" class="status">Ready</span>
+              <span id="ic-silence-counter" class="status"></span>
+            </div>
+          `;
+          if (host) {
+            host.appendChild(hostPanel);
+            host.classList.add('visible');
+          }
+          initCollapsiblePanels();
+          intensivePractice.liveTextEl = hostPanel.querySelector('#ic-live');
+          intensivePractice.progressEl = hostPanel.querySelector('#ic-progress');
+          intensivePractice.scoreEl = hostPanel.querySelector('#ic-score');
+          intensivePractice.statusEl = hostPanel.querySelector('#ic-status');
+          intensivePractice.silenceCounterEl = hostPanel.querySelector('#ic-silence-counter');
+          intensivePractice.celebrationEl = hostPanel.querySelector('#ic-celebration');
+          intensivePractice.cardEl = hostPanel;
+          intensivePractice.streakEl = hostPanel.querySelector('#ic-streak');
+          intensivePractice.lang = getPracticeLanguage();
         } else if (m === 'Writing Practice Mode') {
           const div = document.createElement('div');
           div.className = 'panel';
@@ -3795,6 +4093,46 @@
           } catch (e) { /* ignore */ }
           wrLangEl.onchange = e => { writingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
         }
+        syncRandomModeCheckboxes();
+        bindRandomModeCheckboxes();
+      }
+
+      function switchPracticeMode(modeValue) {
+        if (!modeValue || modeValue === renderedMode) return;
+        if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+        stopManualPlaybackLoop();
+        stopSpeakingPractice();
+        stopWritingPractice();
+        stopIntensivePractice();
+
+        els.modeSelect.value = modeValue;
+        if (modeValue === 'Intensive Challenge') {
+          intensiveRandomEnabled = false;
+        } else if (els.randomToggle) {
+          els.randomToggle.checked = sharedRandomEnabled;
+        }
+        renderModePanel();
+        renderedMode = modeValue;
+        if (modeValue === 'Intensive Challenge') {
+          enterIntensiveChallengeMode();
+        } else {
+          applyShowVisibility();
+        }
+        saveConfig();
+      }
+
+      function enterIntensiveChallengeMode() {
+        intensiveRandomEnabled = false;
+        intensivePractice.lang = getPracticeLanguage();
+        ensureParsed();
+        currentIndex = parsedRows.length ? 0 : -1;
+        syncRandomToggleVisualState();
+        if (!parsedRows.length) {
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Load phrases from a CSV to begin.';
+          return;
+        }
+        displayIntensivePhrase(parsedRows[currentIndex], false);
+        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Ready';
       }
 
       // --- Speaking Practice Flow ---
@@ -3833,6 +4171,7 @@
       function resetSpeakingRunFeedback() {
         speakingPractice.streak = 0;
         speakingPractice.lastCelebratedToken = null;
+        setPracticeCardListening(speakingPractice.cardEl, false);
         if (speakingPractice.streakEl) speakingPractice.streakEl.textContent = '0';
         clearSpeakingCelebration();
       }
@@ -3868,10 +4207,10 @@
         }
       }
 
-      function showSpeakingVisualEffects() {
+      function showSpeakingVisualEffects(language = speakingPractice.lang) {
         clearSpeakingVisualEffects();
         const durationMs = getSpeakingCelebrationMs();
-        const slotPos = getSelectedLangCodes()[0] === speakingPractice.lang ? 1 : 2;
+        const slotPos = getSelectedLangCodes()[0] === language ? 1 : 2;
         const phraseLine = document.querySelector(`.phrase-line[data-pos="${slotPos}"]`);
         const phraseText = els.text[slotPos];
         if (phraseLine) {
@@ -3916,6 +4255,7 @@
       function celebrateSpeakingSuccess(token) {
         if (!speakingPractice.active || token !== phraseSessionId || speakingPractice.lastCelebratedToken === token) return;
         speakingPractice.lastCelebratedToken = token;
+        setPracticeCardListening(speakingPractice.cardEl, false);
         speakingPractice.streak += 1;
         showSpeakingVisualEffects();
         if (speakingPractice.streakEl) speakingPractice.streakEl.textContent = String(speakingPractice.streak);
@@ -4312,6 +4652,311 @@
         recordLog('stopSpeakingPractice called');
       }
 
+      function applyIntensivePhraseVisibility(revealTarget) {
+        const targetSlot = getSelectedLangCodes().indexOf(intensivePractice.lang) + 1;
+        const promptSlot = targetSlot === 1 ? 2 : 1;
+        for (const pos of [1, 2]) {
+          const line = document.querySelector(`.phrase-line[data-pos="${pos}"]`);
+          if (!line) continue;
+          line.style.display = pos === promptSlot || (revealTarget && pos === targetSlot) ? 'grid' : 'none';
+        }
+      }
+
+      function displayIntensivePhrase(row, revealTarget) {
+        setPhraseTexts(row);
+        intensivePractice.revealed = revealTarget;
+        applyIntensivePhraseVisibility(revealTarget);
+      }
+
+      function clearIntensiveSilenceTimers() {
+        if (intensivePractice.silenceTimer) {
+          clearTimeout(intensivePractice.silenceTimer);
+          intensivePractice.silenceTimer = null;
+        }
+        if (intensivePractice.silenceInterval) {
+          clearInterval(intensivePractice.silenceInterval);
+          intensivePractice.silenceInterval = null;
+        }
+        if (intensivePractice.silenceCounterEl) intensivePractice.silenceCounterEl.textContent = '';
+      }
+
+      function scheduleIntensiveSilence(rec, token) {
+        clearIntensiveSilenceTimers();
+        const waitSeconds = getSpeechSilenceWaitSeconds();
+        const deadline = Date.now() + waitSeconds * 1000;
+        const updateCounter = () => {
+          if (!intensivePractice.active || intensivePractice.rec !== rec || token !== phraseSessionId) return;
+          intensivePractice.silenceCounterEl.textContent = `${Math.max(0, Math.ceil((deadline - Date.now()) / 1000))}s`;
+        };
+        updateCounter();
+        intensivePractice.silenceInterval = setInterval(updateCounter, 200);
+        intensivePractice.silenceTimer = setTimeout(() => {
+          if (!intensivePractice.active || intensivePractice.rec !== rec || token !== phraseSessionId) return;
+          finishIntensiveAttempt(false, token);
+        }, waitSeconds * 1000);
+      }
+
+      function resetIntensiveFeedback() {
+        if (intensivePractice.liveTextEl) intensivePractice.liveTextEl.textContent = '';
+        if (intensivePractice.progressEl) intensivePractice.progressEl.value = 0;
+        if (intensivePractice.scoreEl) intensivePractice.scoreEl.textContent = '0%';
+        setPracticeCardListening(intensivePractice.cardEl, false);
+        if (intensivePractice.celebrationEl) {
+          intensivePractice.celebrationEl.textContent = '';
+          intensivePractice.celebrationEl.classList.remove('visible');
+        }
+        if (intensivePractice.cardEl) intensivePractice.cardEl.classList.remove('celebrating');
+        if (intensivePractice.silenceCounterEl) intensivePractice.silenceCounterEl.textContent = '';
+        clearSpeakingVisualEffects();
+      }
+
+      function startIntensiveRecognition(token) {
+        const row = parsedRows[currentIndex];
+        const target = row?.[intensivePractice.lang] || '';
+        if (!target.trim()) {
+          intensivePractice.active = false;
+          intensivePractice.phase = 'error';
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'The selected practice-language phrase is empty.';
+          return;
+        }
+
+        const rec = createRecognition(intensivePractice.lang);
+        intensivePractice.rec = rec;
+        if (!rec) {
+          intensivePractice.active = false;
+          intensivePractice.phase = 'error';
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Speech recognition is not supported in this browser.';
+          return;
+        }
+
+        rec._accTranscript = '';
+        rec._suppressRestart = false;
+        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Listening…';
+
+        rec.onresult = (event) => {
+          if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
+              intensivePractice.rec !== rec || token !== phraseSessionId) return;
+          let interim = '';
+          let finalText = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const result = event.results[i];
+            if (result.isFinal) finalText += (result[0] && result[0].transcript) || '';
+            else interim += (result[0] && result[0].transcript) || '';
+          }
+          const liveRaw = (finalText || interim).trim();
+          let liveForCompare = liveRaw;
+          if (rec._accTranscript) {
+            const nextClean = removeTokenOverlap(rec._accTranscript, liveRaw);
+            liveForCompare = (rec._accTranscript + (nextClean ? ` ${nextClean}` : '')).trim();
+          }
+          if (finalText || interim) {
+            rec._hasSpoken = true;
+            rec._lastSpeechTs = Date.now();
+          }
+
+          const targetSlot = getSelectedLangCodes().indexOf(intensivePractice.lang) + 1;
+          const validation = compareAndHighlight(target, liveForCompare, targetSlot);
+          renderLiveValidation(liveForCompare, validation.spokenCorrect, intensivePractice.liveTextEl);
+          intensivePractice.progressEl.value = validation.score;
+          intensivePractice.scoreEl.textContent = `${validation.score}%`;
+
+          if (validation.score >= intensivePractice.min && finalText) {
+            finishIntensiveAttempt(true, token);
+            return;
+          }
+          if (finalText) {
+            const finalChunk = finalText.trim();
+            if (finalChunk) {
+              const nextClean = removeTokenOverlap(rec._accTranscript, finalChunk);
+              rec._accTranscript = (rec._accTranscript + (nextClean ? ` ${nextClean}` : '')).trim();
+            }
+          }
+          scheduleIntensiveSilence(rec, token);
+        };
+
+        rec.onerror = (event) => {
+          if (!intensivePractice.active || intensivePractice.rec !== rec || token !== phraseSessionId) return;
+          const error = event?.error;
+          if (error === 'not-allowed' || error === 'service-not-allowed') {
+            intensivePractice.active = false;
+            intensivePractice.phase = 'error';
+            setPracticeCardListening(intensivePractice.cardEl, false);
+            clearIntensiveSilenceTimers();
+            if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Microphone access was denied. Allow microphone access and try again.';
+          } else if (intensivePractice.statusEl) {
+            intensivePractice.statusEl.textContent = `Listening…${error ? ` (${error})` : ''}`;
+          }
+        };
+
+        rec.onend = () => {
+          if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
+              intensivePractice.rec !== rec || token !== phraseSessionId) return;
+          intensivePractice.restartTimer = setTimeout(() => {
+            intensivePractice.restartTimer = null;
+            if (!intensivePractice.active || intensivePractice.rec !== rec ||
+                intensivePractice.phase !== 'listening' || token !== phraseSessionId) return;
+            try {
+              rec.start();
+              scheduleIntensiveSilence(rec, token);
+            } catch (error) {
+              intensivePractice.active = false;
+              intensivePractice.phase = 'error';
+              setPracticeCardListening(intensivePractice.cardEl, false);
+              clearIntensiveSilenceTimers();
+              if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not restart speech recognition: ${error.message || error}`;
+            }
+          }, 100);
+        };
+
+        try {
+          rec.start();
+          setPracticeCardListening(intensivePractice.cardEl, true);
+          scheduleIntensiveSilence(rec, token);
+        } catch (error) {
+          intensivePractice.active = false;
+          intensivePractice.phase = 'error';
+          setPracticeCardListening(intensivePractice.cardEl, false);
+          intensivePractice.rec = null;
+          clearIntensiveSilenceTimers();
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not start speech recognition: ${error.message || error}`;
+        }
+      }
+
+      function startIntensivePractice() {
+        if (intensivePractice.active) return;
+        ensureParsed();
+        if (!parsedRows.length) {
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Load phrases from a CSV to begin.';
+          return;
+        }
+        if (currentIndex < 0 || currentIndex >= parsedRows.length) currentIndex = 0;
+        intensivePractice.lang = getPracticeLanguage();
+        if (!getSelectedLangCodes().includes(intensivePractice.lang)) {
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Select one of the configured languages in Settings.';
+          return;
+        }
+
+        const configuredMin = Number(els.speakingMin?.value || 90);
+        intensivePractice.min = Math.max(50, Math.min(100, Math.trunc(configuredMin) || 90));
+        intensivePractice.active = true;
+        intensivePractice.phase = 'listening';
+        intensivePractice.streak = 0;
+        if (intensivePractice.streakEl) intensivePractice.streakEl.textContent = '0';
+        resetIntensiveFeedback();
+        displayIntensivePhrase(parsedRows[currentIndex], false);
+        const token = ++phraseSessionId;
+        startIntensiveRecognition(token);
+      }
+
+      function finishIntensiveAttempt(success, token) {
+        if (!intensivePractice.active || intensivePractice.phase !== 'listening' || token !== phraseSessionId) return;
+        intensivePractice.phase = 'reading';
+        setPracticeCardListening(intensivePractice.cardEl, false);
+        clearIntensiveSilenceTimers();
+        const rec = intensivePractice.rec;
+        intensivePractice.rec = null;
+        if (rec) {
+          try { rec._suppressRestart = true; } catch {}
+          try { rec.abort(); } catch {}
+        }
+
+        const row = parsedRows[currentIndex];
+        displayIntensivePhrase(row, true);
+        if (success) {
+          intensivePractice.streak += 1;
+          if (intensivePractice.streakEl) intensivePractice.streakEl.textContent = String(intensivePractice.streak);
+          showSpeakingVisualEffects(intensivePractice.lang);
+          if (intensivePractice.celebrationEl) {
+            intensivePractice.celebrationEl.textContent = '✨ Great job!';
+            intensivePractice.celebrationEl.classList.add('visible');
+          }
+          if (intensivePractice.cardEl) intensivePractice.cardEl.classList.add('celebrating');
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Success! Reading the phrase…';
+        } else if (intensivePractice.statusEl) {
+          intensivePractice.statusEl.textContent = 'Attempt failed. Reading the phrase…';
+        }
+
+        const text = row?.[intensivePractice.lang] || '';
+        try {
+          const utterance = new SpeechSynthesisUtterance(text);
+          const voices = speechSynthesis.getVoices();
+          const voiceIds = getVoicesMap();
+          const voice = findVoiceForLang(voices, voiceIds[intensivePractice.lang], intensivePractice.lang);
+          if (voice) utterance.voice = voice;
+          utterance.lang = voice?.lang || langMeta[intensivePractice.lang]?.localeGuess?.[0] || 'en-US';
+          const { rate, pitch } = getRatePitch();
+          utterance.rate = rate;
+          utterance.pitch = pitch;
+          intensivePractice.utterance = utterance;
+          utterance.onend = () => {
+            if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
+                token !== phraseSessionId || intensivePractice.utterance !== utterance) return;
+            intensivePractice.utterance = null;
+            advanceIntensivePractice(token);
+          };
+          utterance.onerror = (event) => {
+            if (!intensivePractice.active || token !== phraseSessionId) return;
+            intensivePractice.utterance = null;
+            intensivePractice.active = false;
+            intensivePractice.phase = 'error';
+            if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not read the phrase aloud${event?.error ? `: ${event.error}` : '.'}`;
+          };
+          speechSynthesis.cancel();
+          speechSynthesis.speak(utterance);
+        } catch (error) {
+          intensivePractice.utterance = null;
+          intensivePractice.active = false;
+          intensivePractice.phase = 'error';
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not read the phrase aloud: ${error.message || error}`;
+        }
+      }
+
+      function advanceIntensivePractice(token) {
+        if (!intensivePractice.active || intensivePractice.phase !== 'reading' || token !== phraseSessionId) return;
+        if (!parsedRows.length) {
+          stopIntensivePractice();
+          return;
+        }
+        currentIndex = intensiveRandomEnabled
+          ? pickRandomIndex(parsedRows.length)
+          : (currentIndex + 1) % parsedRows.length;
+        const nextToken = ++phraseSessionId;
+        intensivePractice.phase = 'listening';
+        resetIntensiveFeedback();
+        displayIntensivePhrase(parsedRows[currentIndex], false);
+        startIntensiveRecognition(nextToken);
+      }
+
+      function stopIntensivePractice() {
+        const wasActive = intensivePractice.active;
+        intensivePractice.active = false;
+        intensivePractice.phase = 'idle';
+        clearIntensiveSilenceTimers();
+        if (intensivePractice.restartTimer) {
+          clearTimeout(intensivePractice.restartTimer);
+          intensivePractice.restartTimer = null;
+        }
+        if (intensivePractice.rec) {
+          try { intensivePractice.rec._suppressRestart = true; } catch {}
+          try { intensivePractice.rec.abort(); } catch {}
+          intensivePractice.rec = null;
+        }
+        if (intensivePractice.utterance) {
+          intensivePractice.utterance.onend = null;
+          intensivePractice.utterance.onerror = null;
+          intensivePractice.utterance = null;
+        }
+        if (wasActive) {
+          phraseSessionId += 1;
+          try { speechSynthesis.cancel(); } catch {}
+        }
+        resetIntensiveFeedback();
+        if (els.modeSelect.value === 'Intensive Challenge' && parsedRows[currentIndex]) {
+          displayIntensivePhrase(parsedRows[currentIndex], false);
+        }
+        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Stopped';
+      }
+
       // --- Writing Practice Flow ---
       async function startWritingPractice() {
         if (writingPractice.active) return;
@@ -4558,6 +5203,7 @@
         try {
           const res = await fetch(`./predefined_phrases/${encodeURIComponent(name)}`);
           const text = await res.text();
+          if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
           // Update textarea value and ensure all viewers/parsers are refreshed
           els.csvBox.value = text.trim();
           // Apply wrap settings to textarea/viewer
@@ -4575,7 +5221,9 @@
           // Persist selection and CSV content
           try { saveConfig(); } catch (e) { /* ignore */ }
 
-          if (parsedRows.length) {
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            enterIntensiveChallengeMode();
+          } else if (parsedRows.length) {
             await selectAndShowNextRow({ speak: false });
           }
         } catch {
@@ -4641,6 +5289,7 @@
           const prompt = buildAIPrompt(level, topic, quantity, minWords);
           const content = await callOpenAI(token, prompt);
           // Put response into csvBox
+          if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
           els.csvBox.value = (content || '').trim();
           try { applyCsvWrap(); } catch (e) { /* ignore */ }
           ensureParsed();
@@ -4652,7 +5301,8 @@
             }
           } catch (e) { /* ignore */ }
           // Show first item silently so UI updates
-          if (parsedRows.length) await selectAndShowNextRow({ speak: false });
+          if (els.modeSelect.value === 'Intensive Challenge') enterIntensiveChallengeMode();
+          else if (parsedRows.length) await selectAndShowNextRow({ speak: false });
           els.aiStatus.textContent = 'Loaded';
         } catch (err) {
           console.error('OpenAI load error', err);
@@ -4668,6 +5318,11 @@
         if (mode === 'Speaking Practice Mode') {
           stopManualPlaybackLoop();
           startSpeakingPractice();
+          return;
+        }
+        if (mode === 'Intensive Challenge') {
+          stopManualPlaybackLoop();
+          startIntensivePractice();
           return;
         }
         if (mode === 'Writing Practice Mode') {
@@ -4690,6 +5345,11 @@
         if (mode === 'Speaking Practice Mode') {
           stopManualPlaybackLoop();
           stopSpeakingPractice();
+          return;
+        }
+        if (mode === 'Intensive Challenge') {
+          stopManualPlaybackLoop();
+          stopIntensivePractice();
           return;
         }
         if (mode === 'Writing Practice Mode') {
@@ -4804,9 +5464,7 @@
           button.onclick = () => {
             const modeValue = button.dataset.mode;
             if (!modeValue) return;
-            els.modeSelect.value = modeValue;
-            document.querySelectorAll('.mode-option').forEach((item) => item.classList.toggle('active', item === button));
-            renderModePanel();
+            switchPracticeMode(modeValue);
             closeSheet();
           };
         });
@@ -4814,8 +5472,30 @@
         if (sheetBackdrop) sheetBackdrop.onclick = closeSheet;
 
         // Random button (global)
-        if (els.btnRandom) els.btnRandom.onclick = async () => { await selectAndShowNextRow({ speak: true }); };
-        if (els.btnFirst) els.btnFirst.onclick = async () => { await goToFirstRow({ speak: true }); };
+        if (els.btnRandom) els.btnRandom.onclick = async () => {
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            if (intensivePractice.active) return;
+            ensureParsed();
+            if (!parsedRows.length) return;
+            currentIndex = getRandomSelectionEnabled()
+              ? pickRandomIndex(parsedRows.length)
+              : (currentIndex + 1 + parsedRows.length) % parsedRows.length;
+            displayIntensivePhrase(parsedRows[currentIndex], false);
+            return;
+          }
+          await selectAndShowNextRow({ speak: true });
+        };
+        if (els.btnFirst) els.btnFirst.onclick = async () => {
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            if (intensivePractice.active) return;
+            ensureParsed();
+            if (!parsedRows.length) return;
+            currentIndex = 0;
+            displayIntensivePhrase(parsedRows[currentIndex], false);
+            return;
+          }
+          await goToFirstRow({ speak: true });
+        };
         document.getElementById('btnStartAuto').onclick = () => {
           startSelectedMode();
         };
@@ -4823,6 +5503,14 @@
           stopSelectedMode();
         };
         document.getElementById('btnPrevPhrase').onclick = async () => {
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            if (intensivePractice.active) return;
+            ensureParsed();
+            if (!parsedRows.length) return;
+            currentIndex = currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1;
+            displayIntensivePhrase(parsedRows[currentIndex], false);
+            return;
+          }
           ensureParsed();
           if (!parsedRows.length) return;
           currentIndex = currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1;
@@ -4831,6 +5519,14 @@
           await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
         };
         document.getElementById('btnNextPhrase').onclick = async () => {
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            if (intensivePractice.active) return;
+            ensureParsed();
+            if (!parsedRows.length) return;
+            currentIndex = (currentIndex + 1) % parsedRows.length;
+            displayIntensivePhrase(parsedRows[currentIndex], false);
+            return;
+          }
           ensureParsed();
           if (!parsedRows.length) return;
           currentIndex = (currentIndex + 1) % parsedRows.length;
@@ -4839,6 +5535,11 @@
           await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
         };
         document.getElementById('randomToggle').onchange = () => {
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            intensiveRandomEnabled = !!els.randomToggle.checked;
+          } else {
+            sharedRandomEnabled = !!els.randomToggle.checked;
+          }
           syncRandomToggleVisualState();
           syncRandomModeCheckboxes();
           saveConfig();
@@ -4846,16 +5547,8 @@
 
         // Mode switching
         els.modeSelect.onchange = () => {
-          // Stop timers/practices on switch
-          if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
-          stopSpeakingPractice();
-          stopWritingPractice();
-          document.querySelectorAll('.mode-option').forEach((item) => {
-            item.classList.toggle('active', item.dataset.mode === els.modeSelect.value);
-          });
-          renderModePanel();
+          switchPracticeMode(els.modeSelect.value);
           closeSheet();
-          saveConfig();
         };
 
         bindRandomModeCheckboxes();
@@ -4879,8 +5572,16 @@
         }
 
         // Show/Hide slots
-        els.show[1].onchange = () => { applyShowVisibility(); saveConfig(); };
-        els.show[2].onchange = () => { applyShowVisibility(); saveConfig(); };
+        els.show[1].onchange = () => {
+          if (els.modeSelect.value === 'Intensive Challenge') applyIntensivePhraseVisibility(intensivePractice.revealed);
+          else applyShowVisibility();
+          saveConfig();
+        };
+        els.show[2].onchange = () => {
+          if (els.modeSelect.value === 'Intensive Challenge') applyIntensivePhraseVisibility(intensivePractice.revealed);
+          else applyShowVisibility();
+          saveConfig();
+        };
 
         // Read slot checkboxes
         els.read[1].onchange = () => { saveConfig(); };
@@ -4939,7 +5640,12 @@
         };
 
         // CSV changes
-        els.csvBox.oninput = () => { ensureParsed(); saveConfig(); };
+        els.csvBox.oninput = () => {
+          if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
+          ensureParsed();
+          if (els.modeSelect.value === 'Intensive Challenge') enterIntensiveChallengeMode();
+          saveConfig();
+        };
 
         // Predefined
         els.btnLoadPredefined.onclick = async () => { await loadSelectedPredefined(); saveConfig(); };
@@ -4960,7 +5666,12 @@
               els.csvBoxViewerDisplay.scrollLeft = els.csvBox.scrollLeft;
             }
           } catch (e) { /* ignore */ }
-          await selectAndShowNextRow({ speak: false });
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            stopIntensivePractice();
+            enterIntensiveChallengeMode();
+          } else {
+            await selectAndShowNextRow({ speak: false });
+          }
           saveConfig();
         };
 
@@ -4970,11 +5681,27 @@
         const refreshBtn = document.getElementById('refreshVoices');
         if (refreshBtn) refreshBtn.onclick = () => { refreshVoices(); };
         // Language selectors: update labels and voices when changed
-        els.lang1Select.onchange = () => { updateLangLabels(); populateVoices(); ensureParsed(); selectAndShowNextRow({ speak: false }); renderModePanel(); saveConfig(); };
-        els.lang2Select.onchange = () => { updateLangLabels(); populateVoices(); ensureParsed(); selectAndShowNextRow({ speak: false }); renderModePanel(); saveConfig(); };
+        const onLanguagePairChange = () => {
+          if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
+          updateLangLabels();
+          populateVoices();
+          ensureParsed();
+          renderModePanel();
+          if (els.modeSelect.value === 'Intensive Challenge') enterIntensiveChallengeMode();
+          else selectAndShowNextRow({ speak: false });
+          saveConfig();
+        };
+        els.lang1Select.onchange = onLanguagePairChange;
+        els.lang2Select.onchange = onLanguagePairChange;
         if (els.practiceLangSelect) {
           els.practiceLangSelect.onchange = () => {
             syncPracticeLanguageSelection(els.practiceLangSelect.value);
+            if (els.modeSelect.value === 'Intensive Challenge') {
+              stopIntensivePractice();
+              intensivePractice.lang = getPracticeLanguage();
+              if (parsedRows[currentIndex]) displayIntensivePhrase(parsedRows[currentIndex], false);
+              if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Practice language updated.';
+            }
             saveConfig();
           };
         }
@@ -5022,6 +5749,7 @@
         if (!savedConfig || !savedConfig.csv) loadSamplePhrases();
 
         renderModePanel();
+        renderedMode = els.modeSelect.value;
         initCollapsiblePanels();
         bindEvents();
         // ensure language labels are in-sync before populating voices
@@ -5031,7 +5759,8 @@
         populatePredefinedList();
 
         // Initial phrase display (silent) so UI isn't empty
-        selectAndShowNextRow({ speak: false });
+        if (els.modeSelect.value === 'Intensive Challenge') enterIntensiveChallengeMode();
+        else selectAndShowNextRow({ speak: false });
 
         // Defaults only when no saved configuration
         if (!savedConfig) {
