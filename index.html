@@ -671,6 +671,10 @@
       transform: translateY(0);
     }
 
+    .sheet.load-page .sheet-grab {
+      display: none;
+    }
+
     .sheet-grab {
       width: 68px;
       height: 6px;
@@ -724,6 +728,183 @@
 
     .sheet-panel.active {
       display: block;
+    }
+
+    .sheet.load-page .sheet-panel[data-panel="load"] {
+      height: 100%;
+      max-height: 100%;
+      padding: 20px 20px calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
+    }
+
+    .load-source-page,
+    .load-method-page {
+      width: 100%;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .load-source-page[hidden],
+    .load-method-page[hidden] {
+      display: none !important;
+    }
+
+    .load-intro {
+      margin: -4px 0 18px;
+      color: var(--muted);
+      font: 15px/1.5 Arial, sans-serif;
+    }
+
+    .load-close-hint {
+      margin: 20px 0 0;
+      color: var(--muted);
+      font: 13px/1.5 Arial, sans-serif;
+    }
+
+    .load-source-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .load-source-card {
+      display: flex;
+      min-width: 0;
+      min-height: 144px;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: border-color .15s ease, background-color .15s ease, transform .15s ease;
+    }
+
+    .load-source-card:hover {
+      border-color: var(--primary);
+      background: var(--surface-soft);
+    }
+
+    .load-source-card:focus-visible,
+    .load-back-button:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 3px;
+    }
+
+    .load-source-card--file {
+      grid-column: 1 / -1;
+      min-height: 168px;
+      align-items: center;
+      border: 2px solid var(--primary);
+      background: var(--primary-soft);
+    }
+
+    .load-source-icon {
+      display: inline-flex;
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 15px;
+      background: var(--surface-soft);
+      color: var(--primary);
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    .load-source-copy {
+      display: grid;
+      min-width: 0;
+      gap: 8px;
+    }
+
+    .load-source-copy strong {
+      font: 800 18px/1.3 "Trebuchet MS", "Segoe UI", sans-serif;
+      overflow-wrap: anywhere;
+    }
+
+    .load-source-copy > span {
+      color: var(--muted);
+      font: 14px/1.5 Arial, sans-serif;
+    }
+
+    .load-card-arrow {
+      margin: auto 0 auto auto;
+      color: var(--primary);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .load-page-header {
+      margin: 0 0 16px;
+    }
+
+    .load-back-button {
+      min-height: 44px;
+      margin: 0 0 12px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+      font: 700 14px/20px Arial, sans-serif;
+      cursor: pointer;
+    }
+
+    .load-page-header h2 {
+      margin: 0 0 8px;
+      color: var(--ink);
+      font: 900 clamp(1.8rem, 4vw, 2.4rem)/1.15 "Trebuchet MS", "Segoe UI", sans-serif;
+      letter-spacing: -.04em;
+    }
+
+    .load-page-header p {
+      margin: 0;
+      color: var(--muted);
+      font: 14px/1.5 Arial, sans-serif;
+    }
+
+    .load-method-page .row {
+      margin-top: 16px;
+    }
+
+    .load-file-note {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font: 13px/1.5 Arial, sans-serif;
+    }
+
+    #fileLoadStatus:empty {
+      display: none;
+    }
+
+    @media (max-width: 559px) {
+      .sheet.load-page .sheet-panel[data-panel="load"] {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .load-source-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .load-source-card,
+      .load-source-card--file {
+        grid-column: auto;
+        min-height: 108px;
+        padding: 14px;
+      }
+
+      .load-source-copy strong {
+        font-size: 16px;
+      }
+
+      .load-source-copy > span {
+        font-size: 13px;
+      }
     }
 
     .sheet-header {
@@ -2075,12 +2256,173 @@
       *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
       .replay-btn:active { transform: none; }
     }
+    .course-context-header {
+      display: none;
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 14px;
+      overflow-x: auto;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+    .course-context-header.visible { display: flex; }
+    .course-context-pill {
+      min-width: 0;
+      padding: 9px 12px;
+      border-radius: 12px;
+      background: var(--primary-soft);
+      color: var(--ink);
+      font-weight: 800;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .course-context-pill[data-course-context="practice"] {
+      background: var(--success-soft);
+      cursor: pointer;
+    }
+    button.course-context-pill[data-course-context="practice"] {
+      min-height: 0;
+      padding: 9px 12px;
+      border: 0;
+      font-size: inherit;
+      line-height: inherit;
+      text-align: left;
+    }
+    .course-entry-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+      padding: 20px;
+      border: 2px solid #8170d1;
+      border-radius: 22px;
+      background: #f3f0ff;
+      color: #322b58;
+      text-align: left;
+      cursor: pointer;
+    }
+    .course-entry-card strong { display: block; font-size: 1.8rem; }
+    .course-entry-card span { display: block; margin-top: 5px; color: #615b7b; }
+    .courses-app { padding-bottom: 12px; }
+    .courses-page-header, .course-card-top, .course-actions, .course-inline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .courses-page-header { margin: 4px 0 16px; }
+    .courses-title { margin: 0; font-size: clamp(2.2rem, 6vw, 3rem); }
+    .course-back-button, .course-action, .course-tab {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 14px;
+      background: var(--surface);
+      color: var(--ink);
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .course-action.primary, .course-tab.active {
+      background: #6652b8;
+      border-color: #6652b8;
+      color: #fff;
+    }
+    .course-toolbar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; margin-bottom: 16px; }
+    .course-toolbar input, .course-toolbar select, .course-config-input {
+      min-width: 0;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .course-card, .course-info-panel, .course-practice-option {
+      padding: 18px;
+      margin: 12px 0;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .course-card.current, .course-practice-option.selected {
+      border: 2px solid #8170d1;
+      background: #f3f0ff;
+    }
+    .course-card h3, .course-info-panel h2 { margin: 10px 0; overflow-wrap: anywhere; }
+    .course-description { color: var(--muted); line-height: 1.5; }
+    .course-badge { padding: 6px 10px; border-radius: 10px; background: var(--primary-soft); font-weight: 800; }
+    .course-badge.current { background: var(--success-soft); color: #267457; }
+    .course-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin: 14px 0; }
+    .course-metric { padding: 12px; border-radius: 14px; background: var(--surface-soft); }
+    .course-metric small { display: block; color: var(--muted); text-transform: uppercase; }
+    .course-metric strong { display: block; margin-top: 6px; font-size: 1.6rem; }
+    .course-progress { width: 100%; height: 9px; margin: 8px 0; accent-color: #6d58c4; }
+    .course-unit-list, .course-word-list { display: grid; gap: 10px; }
+    .course-unit-card, .course-word-row {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+    }
+    .course-unit-card.current { border: 2px solid #8170d1; background: #f3f0ff; }
+    .course-tabs { display: flex; gap: 8px; margin: 16px 0; }
+    .course-tabs > * { flex: 1; }
+    .course-practice-option { width: 100%; text-align: left; cursor: pointer; }
+    .course-practice-option strong, .course-practice-option span { display: block; }
+    .course-practice-option span { margin-top: 7px; color: var(--muted); }
+    .course-empty, .course-error { padding: 14px; border-radius: 14px; background: var(--surface-soft); color: var(--muted); }
+    .course-error { background: #fff0ef; color: #9c2925; }
+    .course-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .course-config-field { display: grid; gap: 6px; }
+    .course-config-field label { font-weight: 800; }
+    body.theme-dark .course-card.current,
+    body.theme-dark .course-practice-option.selected,
+    body.theme-dark .course-entry-card { background: var(--primary-soft); color: var(--ink); }
+    body.theme-dark .course-entry-card span { color: var(--muted); }
+    @media (max-width: 559px) {
+      .course-toolbar { grid-template-columns: 1fr; }
+      .course-card, .course-info-panel, .course-practice-option { padding: 14px; }
+      .course-actions { flex-wrap: wrap; justify-content: flex-start; }
+      .course-action { flex: 1 1 auto; }
+      .course-context-header { padding-left: 10px; padding-right: 10px; }
+    }
+    body.practice-focus-mode header,
+    body.practice-focus-mode h1,
+    body.practice-focus-mode h2,
+    body.practice-focus-mode h3,
+    body.practice-focus-mode h4,
+    body.practice-focus-mode h5,
+    body.practice-focus-mode h6,
+    body.practice-focus-mode [role="heading"],
+    body.practice-focus-mode .course-context-header,
+    body.practice-focus-mode .sheet-header,
+    body.practice-focus-mode .panel-title,
+    body.practice-focus-mode .theme-section-heading,
+    body.practice-focus-mode .courses-page-header,
+    body.practice-focus-mode .bottom-nav {
+      display: none !important;
+    }
+    body.practice-focus-mode .main-view {
+      min-height: 100vh;
+      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+    }
+    body.practice-focus-mode .transport-bar {
+      bottom: calc(8px + env(safe-area-inset-bottom));
+    }
   </style>
 </head>
 
 <body class="theme-dark" data-visual-theme="rainbow-playground">
   <div class="app-shell">
     <div class="phone-frame">
+      <div class="course-context-header" id="courseContextHeader" aria-live="polite">
+        <span class="course-context-pill" data-course-context="course"></span>
+        <span class="course-context-pill" data-course-context="unit"></span>
+        <button type="button" class="course-context-pill" data-course-context="practice" aria-label="Change course practice type"></button>
+      </div>
       <header class="topbar">
         <h1 class="brand">Language Practice</h1>
         <span class="language-pair-indicator" id="languagePairIndicator" aria-label="Selected language pair">ES · EN</span>
@@ -2144,7 +2486,7 @@
 
       <div class="sheet-backdrop" id="sheetBackdrop"></div>
 
-      <aside class="sheet" id="bottomSheet" aria-label="Options panel">
+      <aside class="sheet" id="bottomSheet" aria-label="Application menu">
         <div class="sheet-grab"></div>
 
         <div class="sheet-panel active" data-panel="practice">
@@ -2222,41 +2564,107 @@
           </section>
         </div>
 
-        <div class="sheet-panel" data-panel="load">
-          <div class="sheet-header">Load Phrases</div>
-          <section class="row" id="row-ai">
-            <div class="panel collapsed">
-              <div class="panel-title">Prompt (Load using OpenAI)</div>
-              <textarea class="textarea" id="aiTopic" placeholder="e.g., travel, food, greetings"></textarea>
-              <div class="inline-controls" style="margin-top:10px; gap:10px;">
-                <label class="badge"><span>Level</span><select id="aiLevel" style="width:50px; min-width:50px; max-width:50px;"><option value="ANY" selected>Any</option><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option></select></label>
-                <label class="badge"><span>Quantity</span><input type="number" id="aiQuantity" min="1" max="500" value="40" style="width:50px; min-width:50px; max-width:50px;" /></label>
-                <label class="badge"><span>Min words</span><input type="number" id="aiMinWords" min="1" max="500" value="15" style="width:50px; min-width:50px; max-width:50px;" /></label>
-              </div>
-              <div class="inline-controls" style="margin-top:10px; gap:10px;">
-                <label class="badge" style="width:100%; justify-content:flex-start;"><span>OPEN_AI_TOKEN</span><input type="password" id="openaiToken" placeholder="sk-..." style="width:100%; min-width:160px; font-size:12px;" /></label>
-              </div>
-              <button id="btnLoadAI" class="tiny-button" style="margin-top:12px; width:100%;">Load from AI</button>
-              <div id="aiStatus" class="status" style="margin-top:8px;">Idle</div>
+        <div class="sheet-panel" data-panel="load" aria-label="Load phrases">
+          <div id="loadOptions" class="load-source-page">
+            <h2 class="sheet-header">Load Phrases</h2>
+            <p class="load-intro">Choose a source to start practicing.</p>
+            <div class="load-source-grid" aria-label="Phrase sources">
+              <button type="button" class="load-source-card load-source-card--file" data-load-target="file" aria-controls="loadFilePage">
+                <span class="load-source-icon" aria-hidden="true">↑</span>
+                <span class="load-source-copy"><strong>Load from file</strong><span>Use a phrase list from your device. Supports CSV and TXT.</span></span>
+                <span class="load-card-arrow" aria-hidden="true">→</span>
+              </button>
+              <button type="button" class="load-source-card" data-load-target="ai" aria-controls="loadAiPage">
+                <span class="load-source-icon" aria-hidden="true">✦</span>
+                <span class="load-source-copy"><strong>Prompt (Load using OpenAI)</strong><span>Create a custom phrase set from a topic.</span></span>
+                <span class="load-card-arrow" aria-hidden="true">→</span>
+              </button>
+              <button type="button" class="load-source-card" data-load-target="predefined" aria-controls="loadPredefinedPage">
+                <span class="load-source-icon" aria-hidden="true">▤</span>
+                <span class="load-source-copy"><strong>Predefined Sets</strong><span>Browse the available phrase library.</span></span>
+                <span class="load-card-arrow" aria-hidden="true">→</span>
+              </button>
+              <button type="button" id="openCourses" class="load-source-card" data-load-target="courses" aria-controls="coursesApp">
+                <span class="load-source-icon" aria-hidden="true">▦</span>
+                <span class="load-source-copy"><strong>Courses</strong><span>Study structured courses, units, and lessons.</span></span>
+                <span class="load-card-arrow" aria-hidden="true">→</span>
+              </button>
             </div>
-          </section>
-          <section class="row">
-            <div class="panel collapsed">
-              <div class="panel-title">Load from file</div>
-              <div class="inline-controls" style="gap:10px;">
-                <input type="file" id="fileInput" accept=".csv,.txt" />
+            <p class="load-close-hint">Use your phone's Back button or tap Load again to close.</p>
+          </div>
+
+          <section class="load-method-page" id="loadAiPage" data-load-screen="ai" aria-labelledby="loadAiHeading" hidden>
+            <header class="load-page-header">
+              <button type="button" class="load-back-button" data-load-back>‹ Load Phrases</button>
+              <h2 id="loadAiHeading" tabindex="-1">Prompt (Load using OpenAI)</h2>
+              <p>Create a custom phrase set from a topic.</p>
+            </header>
+            <section class="row" id="row-ai">
+              <div class="panel">
+                <div class="panel-title">Prompt (Load using OpenAI)</div>
+                <textarea class="textarea" id="aiTopic" placeholder="e.g., travel, food, greetings"></textarea>
+                <div class="inline-controls" style="margin-top:10px; gap:10px;">
+                  <label class="badge"><span>Level</span><select id="aiLevel" style="width:50px; min-width:50px; max-width:50px;"><option value="ANY" selected>Any</option><option value="A1">A1</option><option value="A2">A2</option><option value="B1">B1</option><option value="B2">B2</option><option value="C1">C1</option><option value="C2">C2</option></select></label>
+                  <label class="badge"><span>Quantity</span><input type="number" id="aiQuantity" min="1" max="500" value="40" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                  <label class="badge"><span>Min words</span><input type="number" id="aiMinWords" min="1" max="500" value="15" style="width:50px; min-width:50px; max-width:50px;" /></label>
+                </div>
+                <div class="inline-controls" style="margin-top:10px; gap:10px;">
+                  <label class="badge" style="width:100%; justify-content:flex-start;"><span>OPEN_AI_TOKEN</span><input type="password" id="openaiToken" placeholder="sk-..." style="width:100%; min-width:160px; font-size:12px;" /></label>
+                </div>
+                <button id="btnLoadAI" class="tiny-button" style="margin-top:12px; width:100%;">Load from AI</button>
+                <div id="aiStatus" class="status" style="margin-top:8px;" role="status" aria-live="polite">Idle</div>
               </div>
-            </div>
+            </section>
           </section>
 
-          <section class="row">
-            <div class="panel">
-              <div class="panel-title">Predefined Sets</div>
-              <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
-                <select id="predefinedSelect" style="flex:1; min-width:180px;"><option value="">(Select a set)</option></select>
-                <button id="btnLoadPredefined" class="secondary tiny-button" type="button">Load</button>
+          <section class="load-method-page" id="loadFilePage" data-load-screen="file" aria-labelledby="loadFileHeading" hidden>
+            <header class="load-page-header">
+              <button type="button" class="load-back-button" data-load-back>‹ Load Phrases</button>
+              <h2 id="loadFileHeading" tabindex="-1">Load from file</h2>
+              <p>Choose a CSV or TXT file from your device. The selected file loads automatically.</p>
+            </header>
+            <section class="row" id="row-load-file">
+              <div class="panel">
+                <div class="panel-title">Phrase file</div>
+                <label class="load-file-label" for="fileInput">Choose a CSV or TXT file</label>
+                <div class="inline-controls" style="gap:10px;">
+                  <input type="file" id="fileInput" accept=".csv,.txt" aria-describedby="fileLoadNote fileLoadStatus" />
+                </div>
+                <p class="load-file-note" id="fileLoadNote">Your phrase session updates as soon as you select a file.</p>
+                <div id="fileLoadStatus" class="status" role="status" aria-live="polite"></div>
               </div>
+            </section>
+          </section>
+
+          <section class="load-method-page courses-app" id="coursesApp" data-load-screen="courses" hidden>
+            <div class="course-context-header visible" id="courseContextHeaderInSheet" aria-live="polite">
+              <span class="course-context-pill" data-course-context="course"></span>
+              <span class="course-context-pill" data-course-context="unit"></span>
+              <button type="button" class="course-context-pill" data-course-context="practice" aria-label="Change course practice type"></button>
             </div>
+            <div class="courses-page-header">
+              <button type="button" class="course-back-button" id="coursesBack">‹ Load Phrases</button>
+              <h2 class="courses-title" id="coursesPageTitle" tabindex="-1">Courses</h2>
+            </div>
+            <div id="coursesStatus" role="status" aria-live="polite"></div>
+            <div id="coursesContent"></div>
+          </section>
+
+          <section class="load-method-page" id="loadPredefinedPage" data-load-screen="predefined" aria-labelledby="loadPredefinedHeading" hidden>
+            <header class="load-page-header">
+              <button type="button" class="load-back-button" data-load-back>‹ Load Phrases</button>
+              <h2 id="loadPredefinedHeading" tabindex="-1">Predefined Sets</h2>
+              <p>Browse phrase collections already available.</p>
+            </header>
+            <section class="row" id="row-predefined">
+              <div class="panel">
+                <div class="panel-title">Choose a phrase set</div>
+                <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
+                  <select id="predefinedSelect" style="flex:1; min-width:180px;"><option value="">(Select a set)</option></select>
+                  <button id="btnLoadPredefined" class="secondary tiny-button" type="button">Load</button>
+                </div>
+              </div>
+            </section>
           </section>
         </div>
 
@@ -2356,6 +2764,16 @@
                 <label class="badge"><span>Match celebration time (sec)</span><input type="number" id="sp-celebration-settings" min="0.5" max="10" step="0.1" value="1.2" style="width:58px; min-width:58px; max-width:58px;" /></label>
               </div>
             </div>
+            <div class="panel">
+              <div class="panel-title">Course Settings</div>
+              <div class="course-settings-grid">
+                <div class="course-config-field"><label for="courseKnownThreshold">Known</label><input class="course-config-input" type="number" id="courseKnownThreshold" min="1" step="1" value="1" /></div>
+                <div class="course-config-field"><label for="courseLearningThreshold">Learning</label><input class="course-config-input" type="number" id="courseLearningThreshold" min="1" step="1" value="2" /></div>
+                <div class="course-config-field"><label for="courseLearnedThreshold">Learned</label><input class="course-config-input" type="number" id="courseLearnedThreshold" min="1" step="1" value="6" /></div>
+                <div class="course-config-field"><label for="courseMasteredThreshold">Mastered</label><input class="course-config-input" type="number" id="courseMasteredThreshold" min="1" step="1" value="8" /></div>
+              </div>
+              <p id="courseSettingsStatus" class="status" role="status" aria-live="polite"></p>
+            </div>
           </section>
         </div>
       </aside>
@@ -2425,6 +2843,7 @@
         predefinedSelect: document.getElementById('predefinedSelect'),
         btnLoadPredefined: document.getElementById('btnLoadPredefined'),
         fileInput: document.getElementById('fileInput'),
+        fileLoadStatus: document.getElementById('fileLoadStatus'),
         fontRange: document.getElementById('fontRange'),
         fontValue: document.getElementById('fontValue'),
         themeToggle: document.getElementById('themeToggle'),
@@ -2458,6 +2877,21 @@
         activeThemeName: document.getElementById('activeThemeName'),
         themeSaveStatus: document.getElementById('themeSaveStatus'),
         languagePairIndicator: document.getElementById('languagePairIndicator'),
+        courseContextHeaders: [...document.querySelectorAll('.course-context-header')],
+        openCourses: document.getElementById('openCourses'),
+        loadOptions: document.getElementById('loadOptions'),
+        coursesApp: document.getElementById('coursesApp'),
+        coursesBack: document.getElementById('coursesBack'),
+        coursesPageTitle: document.getElementById('coursesPageTitle'),
+        coursesContent: document.getElementById('coursesContent'),
+        coursesStatus: document.getElementById('coursesStatus'),
+        courseSettingsStatus: document.getElementById('courseSettingsStatus'),
+        courseThresholds: {
+          known: document.getElementById('courseKnownThreshold'),
+          learning: document.getElementById('courseLearningThreshold'),
+          learned: document.getElementById('courseLearnedThreshold'),
+          mastered: document.getElementById('courseMasteredThreshold'),
+        },
       };
 
       const THEME_NAMES = {
@@ -2486,6 +2920,7 @@
       let currentIndex = -1;             // Index in parsedRows
       let phraseSessionId = 0;           // Monotonic token
       let autoTimer = null;              // Auto mode interval
+      let autoPracticeActive = false;
       let manualPlaybackLoop = { active: false };
       const DEFAULT_SPEAKING_CELEBRATION_SECONDS = 1.2;
       const MIN_SPEAKING_CELEBRATION_SECONDS = 0.5;
@@ -2549,6 +2984,27 @@
         currentWriteTarget: '',
       };
       let savedConfig = null;
+      const COURSES_STORAGE_KEY = 'language_courses_state_v1';
+      const COURSE_FILES_DB_NAME = 'language-practice-course-files';
+      const COURSE_FILES_DB_VERSION = 1;
+      const DEFAULT_COURSE_THRESHOLDS = { known: 1, learning: 2, learned: 6, mastered: 8 };
+      let courseState = {
+        selectedCourseId: null,
+        selectedUnitId: null,
+        practiceTypes: {},
+        progress: {},
+        sessions: {},
+        thresholds: { ...DEFAULT_COURSE_THRESHOLDS },
+      };
+      let courseCatalog = [];
+      const courseDataCache = new Map();
+      let courseFilesDatabasePromise = null;
+      let courseScreen = 'catalog';
+      let loadSourceFocusTarget = null;
+      let coursePreviousScreen = 'details';
+      let courseTab = 'focus';
+      let pendingCoursePracticeTypeId = null;
+      let activeCourseSession = null;
 
       // --- Utilities ---
       function normalizeForCompare(s) {
@@ -2974,6 +3430,7 @@
         const [l1, l2] = getSelectedLangCodes();
         renderPhraseText(1, row?.[l1] || '');
         renderPhraseText(2, row?.[l2] || '');
+        trackCoursePhrasePosition(currentIndex);
       }
 
       function renderPhraseText(slot, text) {
@@ -3507,6 +3964,7 @@
         const pill = toggle && toggle.closest('.toggle-pill');
         if (!toggle || !pill) return;
         const enabled = getRandomSelectionEnabled();
+        toggle.disabled = !!activeCourseSession;
         toggle.checked = enabled;
         const isOn = enabled;
         pill.classList.toggle('is-on', isOn);
@@ -3539,6 +3997,7 @@
       }
 
       function getRandomSelectionEnabled() {
+        if (activeCourseSession) return false;
         const mode = els.modeSelect?.value;
         if (mode === 'Intensive Challenge') return intensiveRandomEnabled;
         if (els.randomToggle) return sharedRandomEnabled;
@@ -3591,6 +4050,7 @@
 
       function stopManualPlaybackLoop() {
         manualPlaybackLoop.active = false;
+        syncPracticeFocusMode();
       }
 
       async function startManualPlaybackLoop() {
@@ -3621,6 +4081,7 @@
         }
 
         manualPlaybackLoop.active = false;
+        syncPracticeFocusMode();
       }
 
       // Jump to the first phrase and display/speak it in the existing visualizers.
@@ -3828,6 +4289,7 @@
             const sec = Number.isFinite(parsed) ? Math.max(0, parsed) : 0;
             // stop any existing timer
             if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+            autoPracticeActive = true;
             let running = true;
             autoStatus.textContent = 'Running…';
 
@@ -3853,7 +4315,13 @@
             };
 
             // expose stop by replacing autoStop closure variables
-            div._autoStop = () => { running = false; if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; } autoStatus.textContent = 'Stopped'; };
+            div._autoStop = () => {
+              running = false;
+              if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+              autoPracticeActive = false;
+              autoStatus.textContent = 'Stopped';
+              syncPracticeFocusMode();
+            };
             runOnce();
           };
           const autoStop = () => {
@@ -4102,6 +4570,7 @@
       function switchPracticeMode(modeValue) {
         if (!modeValue || modeValue === renderedMode) return;
         if (autoTimer) { clearTimeout(autoTimer); autoTimer = null; }
+        autoPracticeActive = false;
         stopManualPlaybackLoop();
         stopSpeakingPractice();
         stopWritingPractice();
@@ -4120,6 +4589,7 @@
         } else {
           applyShowVisibility();
         }
+        syncPracticeFocusMode();
         saveConfig();
       }
 
@@ -4127,7 +4597,8 @@
         intensiveRandomEnabled = false;
         intensivePractice.lang = getPracticeLanguage();
         ensureParsed();
-        currentIndex = parsedRows.length ? 0 : -1;
+        if (!activeCourseSession) currentIndex = parsedRows.length ? 0 : -1;
+        else currentIndex = Math.max(0, Math.min(parsedRows.length - 1, currentIndex));
         syncRandomToggleVisualState();
         if (!parsedRows.length) {
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Load phrases from a CSV to begin.';
@@ -4379,6 +4850,7 @@
         if (!rec) {
           speakingPractice.statusEl.textContent = 'Speech recognition not supported in this browser.';
           speakingPractice.active = false;
+          syncPracticeFocusMode();
           return;
         }
         rec._lastSpeechTs = 0;
@@ -4425,6 +4897,13 @@
           const matched = (pct >= speakingPractice.min && finalText);
           const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
+            const vocabulary = activeCourseSession?.metadata?.[currentIndex]?.vocabulary;
+            if (activeCourseSession && !rec._coursePronunciationRecorded &&
+                activeCourseSession.languageTarget === speakingPractice.lang &&
+                courseVocabularyWasRecognized(vocabulary, validation)) {
+              rec._coursePronunciationRecorded = true;
+              recordCoursePronunciation(currentIndex);
+            }
             celebrateSpeakingSuccess(myToken);
             if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
             else scheduleSpeakingAdvance(rec, myToken);
@@ -4503,6 +4982,7 @@
         if (!rec) {
           speakingPractice.statusEl.textContent = 'Speech recognition not supported in this browser.';
           speakingPractice.active = false;
+          syncPracticeFocusMode();
           return;
         }
 
@@ -4549,6 +5029,13 @@
           const matched = (pct >= speakingPractice.min && finalText);
           const lastWordCorrect = validation.matchedTarget.length > 0 && validation.matchedTarget[validation.matchedTarget.length - 1];
           if (matched) {
+            const vocabulary = activeCourseSession?.metadata?.[currentIndex]?.vocabulary;
+            if (activeCourseSession && !rec._coursePronunciationRecorded &&
+                activeCourseSession.languageTarget === speakingPractice.lang &&
+                courseVocabularyWasRecognized(vocabulary, validation)) {
+              rec._coursePronunciationRecorded = true;
+              recordCoursePronunciation(currentIndex);
+            }
             celebrateSpeakingSuccess(myToken);
             if (lastWordCorrect) advanceSpeakingImmediately(rec, myToken);
             else scheduleSpeakingAdvance(rec, myToken);
@@ -4652,6 +5139,7 @@
         try { speechSynthesis.cancel(); } catch { }
         if (speakingPractice.statusEl) speakingPractice.statusEl.textContent = 'Stopped';
         recordLog('stopSpeakingPractice called');
+        syncPracticeFocusMode();
       }
 
       function applyIntensivePhraseVisibility(revealTarget) {
@@ -4719,6 +5207,7 @@
           intensivePractice.active = false;
           intensivePractice.phase = 'error';
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'The selected practice-language phrase is empty.';
+          syncPracticeFocusMode();
           return;
         }
 
@@ -4728,6 +5217,7 @@
           intensivePractice.active = false;
           intensivePractice.phase = 'error';
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Speech recognition is not supported in this browser.';
+          syncPracticeFocusMode();
           return;
         }
 
@@ -4763,6 +5253,13 @@
           intensivePractice.scoreEl.textContent = `${validation.score}%`;
 
           if (validation.score >= intensivePractice.min && finalText) {
+            const vocabulary = activeCourseSession?.metadata?.[currentIndex]?.vocabulary;
+            if (activeCourseSession && !rec._coursePronunciationRecorded &&
+                activeCourseSession.languageTarget === intensivePractice.lang &&
+                courseVocabularyWasRecognized(vocabulary, validation)) {
+              rec._coursePronunciationRecorded = true;
+              recordCoursePronunciation(currentIndex);
+            }
             finishIntensiveAttempt(true, token);
             return;
           }
@@ -4785,6 +5282,7 @@
             setPracticeCardListening(intensivePractice.cardEl, false);
             clearIntensiveSilenceTimers();
             if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Microphone access was denied. Allow microphone access and try again.';
+            syncPracticeFocusMode();
           } else if (intensivePractice.statusEl) {
             intensivePractice.statusEl.textContent = `Listening…${error ? ` (${error})` : ''}`;
           }
@@ -4806,6 +5304,7 @@
               setPracticeCardListening(intensivePractice.cardEl, false);
               clearIntensiveSilenceTimers();
               if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not restart speech recognition: ${error.message || error}`;
+              syncPracticeFocusMode();
             }
           }, 100);
         };
@@ -4821,6 +5320,7 @@
           intensivePractice.rec = null;
           clearIntensiveSilenceTimers();
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not start speech recognition: ${error.message || error}`;
+          syncPracticeFocusMode();
         }
       }
 
@@ -4902,6 +5402,7 @@
             intensivePractice.active = false;
             intensivePractice.phase = 'error';
             if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not read the phrase aloud${event?.error ? `: ${event.error}` : '.'}`;
+            syncPracticeFocusMode();
           };
           speechSynthesis.cancel();
           speechSynthesis.speak(utterance);
@@ -4910,6 +5411,7 @@
           intensivePractice.active = false;
           intensivePractice.phase = 'error';
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not read the phrase aloud: ${error.message || error}`;
+          syncPracticeFocusMode();
         }
       }
 
@@ -4919,7 +5421,7 @@
           stopIntensivePractice();
           return;
         }
-        currentIndex = intensiveRandomEnabled
+        currentIndex = !activeCourseSession && intensiveRandomEnabled
           ? pickRandomIndex(parsedRows.length)
           : (currentIndex + 1) % parsedRows.length;
         const nextToken = ++phraseSessionId;
@@ -4957,6 +5459,7 @@
           displayIntensivePhrase(parsedRows[currentIndex], false);
         }
         if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Stopped';
+        syncPracticeFocusMode();
       }
 
       // --- Writing Practice Flow ---
@@ -5020,6 +5523,7 @@
         try { speechSynthesis.cancel(); } catch { }
         if (writingPractice.statusEl) writingPractice.statusEl.textContent = 'Stopped';
         if (writingPractice.scoreEl) writingPractice.scoreEl.textContent = '0%';
+        syncPracticeFocusMode();
       }
 
       function updateCurrentWriteTarget() {
@@ -5204,7 +5708,9 @@
         if (!name) return;
         try {
           const res = await fetch(`./predefined_phrases/${encodeURIComponent(name)}`);
+          if (!res.ok) throw new Error(`Could not load ${name} (${res.status}).`);
           const text = await res.text();
+          deactivateCourseSession();
           if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
           // Update textarea value and ensure all viewers/parsers are refreshed
           els.csvBox.value = text.trim();
@@ -5228,8 +5734,1177 @@
           } else if (parsedRows.length) {
             await selectAndShowNextRow({ speak: false });
           }
-        } catch {
-          // ignore
+        } catch (error) {
+          console.error('Unable to load predefined phrase file:', error);
+          alert(`Could not load predefined phrase file "${name}": ${error.message}`);
+        }
+      }
+
+      function escapeCourseHtml(value) {
+        return String(value == null ? '' : value)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
+      function setCourseStatus(message, isError = false) {
+        if (!els.coursesStatus) return;
+        els.coursesStatus.className = message ? (isError ? 'course-error' : 'course-empty') : '';
+        els.coursesStatus.textContent = message || '';
+      }
+
+      function setCourseSettingsStatus(message, isError = false) {
+        if (!els.courseSettingsStatus) return;
+        els.courseSettingsStatus.className = message ? (isError ? 'course-error' : 'status') : 'status';
+        els.courseSettingsStatus.textContent = message || '';
+      }
+
+      function saveCourseState() {
+        try {
+          localStorage.setItem(COURSES_STORAGE_KEY, JSON.stringify(courseState));
+          return true;
+        } catch (error) {
+          console.error('Unable to save course state:', error);
+          setCourseStatus('Course progress could not be saved in this browser.', true);
+          return false;
+        }
+      }
+
+      function loadCourseState() {
+        try {
+          const raw = localStorage.getItem(COURSES_STORAGE_KEY);
+          if (!raw) return;
+          const stored = JSON.parse(raw);
+          if (!stored || typeof stored !== 'object' || Array.isArray(stored)) {
+            throw new Error('Stored course state must be an object.');
+          }
+          const thresholds = { ...DEFAULT_COURSE_THRESHOLDS, ...(stored.thresholds || {}) };
+          const thresholdValues = [thresholds.known, thresholds.learning, thresholds.learned, thresholds.mastered];
+          if (!thresholdValues.every(value => Number.isInteger(value) && value > 0) ||
+              !thresholdValues.every((value, index) => index === 0 || value > thresholdValues[index - 1])) {
+            console.warn('Invalid saved course thresholds; defaults were restored.');
+            Object.assign(thresholds, DEFAULT_COURSE_THRESHOLDS);
+          }
+          courseState = {
+            ...courseState,
+            ...stored,
+            practiceTypes: stored.practiceTypes && typeof stored.practiceTypes === 'object' ? stored.practiceTypes : {},
+            progress: stored.progress && typeof stored.progress === 'object' ? stored.progress : {},
+            sessions: stored.sessions && typeof stored.sessions === 'object' ? stored.sessions : {},
+            thresholds,
+          };
+          for (const [key, input] of Object.entries(els.courseThresholds)) {
+            input.value = String(courseState.thresholds[key]);
+          }
+        } catch (error) {
+          console.error('Unable to restore course state:', error);
+          setCourseStatus('Saved course data could not be read. Existing phrase data was left unchanged.', true);
+        }
+      }
+
+      function courseResourceUrl(courseId, relativePath) {
+        const parts = [courseId, ...relativePath.split('/')].map(part => encodeURIComponent(part));
+        return `./courses/${parts.join('/')}`;
+      }
+
+      function openCourseFilesDatabase() {
+        if (courseFilesDatabasePromise) return courseFilesDatabasePromise;
+        if (!('indexedDB' in window)) {
+          throw new Error('This browser does not support local course storage.');
+        }
+        courseFilesDatabasePromise = new Promise((resolve, reject) => {
+          const request = indexedDB.open(COURSE_FILES_DB_NAME, COURSE_FILES_DB_VERSION);
+          request.onupgradeneeded = () => {
+            const database = request.result;
+            if (!database.objectStoreNames.contains('files')) {
+              database.createObjectStore('files', { keyPath: 'path' });
+            }
+            if (!database.objectStoreNames.contains('directories')) {
+              database.createObjectStore('directories', { keyPath: 'path' });
+            }
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error || new Error('Could not open local course storage.'));
+          request.onblocked = () => reject(new Error('Local course storage is blocked by another open app tab.'));
+        });
+        return courseFilesDatabasePromise;
+      }
+
+      async function readCourseStorage(storeName, path) {
+        const database = await openCourseFilesDatabase();
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction(storeName, 'readonly');
+          const request = transaction.objectStore(storeName).get(path);
+          request.onsuccess = () => resolve(request.result || null);
+          request.onerror = () => reject(request.error || new Error(`Could not read local course resource ${path}.`));
+          transaction.onabort = () => reject(transaction.error || new Error(`Could not read local course resource ${path}.`));
+        });
+      }
+
+      async function writeCourseStorage(storeName, record) {
+        const database = await openCourseFilesDatabase();
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction(storeName, 'readwrite');
+          transaction.objectStore(storeName).put(record);
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = () => reject(transaction.error || new Error(`Could not save local course resource ${record.path}.`));
+          transaction.onabort = () => reject(transaction.error || new Error(`Could not save local course resource ${record.path}.`));
+        });
+      }
+
+      async function readStoredCourseFile(path) {
+        if (courseDataCache.has(path)) return courseDataCache.get(path);
+        const record = await readCourseStorage('files', path);
+        if (!record || typeof record.content !== 'string') return null;
+        courseDataCache.set(path, record.content);
+        return record.content;
+      }
+
+      async function storeCourseFile(path, content) {
+        await writeCourseStorage('files', { path, content });
+        courseDataCache.set(path, content);
+      }
+
+      function courseStoragePath(courseId, relativePath) {
+        return `courses/${courseId}/${relativePath}`;
+      }
+
+      function parseDirectoryListing(text, baseUrl) {
+        const listing = new DOMParser().parseFromString(text, 'text/html');
+        const directoryUrl = new URL(baseUrl);
+        if (!directoryUrl.pathname.endsWith('/')) directoryUrl.pathname += '/';
+        return [...listing.querySelectorAll('a[href]')].map(anchor => {
+          try {
+            const entryUrl = new URL(anchor.getAttribute('href'), directoryUrl);
+            if (entryUrl.origin !== directoryUrl.origin) return '';
+            const listedText = anchor.textContent.trim();
+            if (!/[\\/]+$/.test(listedText) && !entryUrl.pathname.endsWith('/')) return '';
+            const listedName = listedText.replace(/[\\/]+$/, '');
+            if (listedName && listedName !== '.' && listedName !== '..' && !/[\\/]/.test(listedName)) {
+              return listedName;
+            }
+            const relativePath = entryUrl.pathname.slice(directoryUrl.pathname.length).replace(/\/$/, '');
+            if (!relativePath || relativePath.includes('/')) return '';
+            return decodeURIComponent(relativePath);
+          } catch {
+            return '';
+          }
+        }).filter(Boolean);
+      }
+
+      async function listCourseDirectories(path, matcher) {
+        const cachedListing = await readCourseStorage('directories', path);
+        if (cachedListing && Array.isArray(cachedListing.names)) {
+          return cachedListing.names.filter(name => matcher.test(name));
+        }
+
+        let githubError;
+        try {
+          const apiUrl = `https://api.github.com/repos/haiver77/language_learning/contents/${path}?ref=main`;
+          const response = await fetch(apiUrl);
+          if (!response.ok) throw new Error(`GitHub Contents API returned ${response.status} for ${path}.`);
+          const entries = await response.json();
+          if (!Array.isArray(entries)) throw new Error(`GitHub Contents API returned an invalid listing for ${path}.`);
+          const names = entries
+            .filter(entry => entry && entry.type === 'dir' && typeof entry.name === 'string' && matcher.test(entry.name))
+            .map(entry => entry.name);
+          if (names.length) {
+            const sortedNames = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+            await writeCourseStorage('directories', { path, names: sortedNames });
+            return sortedNames;
+          }
+          throw new Error(`GitHub Contents API found no matching folders in ${path}.`);
+        } catch (error) {
+          githubError = error;
+          console.warn('Course GitHub listing unavailable:', error);
+        }
+
+        try {
+          const response = await fetch(`./${path}/`);
+          if (!response.ok) throw new Error(`Server directory listing returned ${response.status} for ${path}.`);
+          const names = parseDirectoryListing(await response.text(), response.url)
+            .filter(name => matcher.test(name));
+          if (names.length) {
+            const sortedNames = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+            await writeCourseStorage('directories', { path, names: sortedNames });
+            return sortedNames;
+          }
+          throw new Error(`Server directory listing found no matching folders in ${path}.`);
+        } catch (directoryError) {
+          throw new Error(`Could not list ${path}. GitHub: ${githubError.message} Server: ${directoryError.message}`);
+        }
+      }
+
+      async function fetchCourseJson(courseId, relativePath) {
+        const storagePath = courseStoragePath(courseId, relativePath);
+        const storedContent = await readStoredCourseFile(storagePath);
+        if (storedContent !== null) {
+          try {
+            return JSON.parse(storedContent);
+          } catch (error) {
+            throw new Error(`Invalid JSON in local course file ${storagePath}: ${error.message}`);
+          }
+        }
+        const url = courseResourceUrl(courseId, relativePath);
+        const response = await fetch(url);
+        if (!response.ok) {
+          const error = new Error(`Could not load ${url} (${response.status}).`);
+          error.status = response.status;
+          throw error;
+        }
+        try {
+          const content = await response.text();
+          await storeCourseFile(storagePath, content);
+          return JSON.parse(content);
+        } catch (error) {
+          throw new Error(`Invalid JSON in ${url} or could not save it locally: ${error.message}`);
+        }
+      }
+
+      async function fetchCourseText(courseId, relativePath) {
+        if (/\.csv$/i.test(relativePath)) {
+          return fetchCourseCsv(courseId, relativePath);
+        }
+        const storagePath = courseStoragePath(courseId, relativePath);
+        const storedContent = await readStoredCourseFile(storagePath);
+        if (storedContent !== null) return storedContent;
+        const url = courseResourceUrl(courseId, relativePath);
+        const response = await fetch(url);
+        if (!response.ok) {
+          const error = new Error(`Could not load ${url} (${response.status}).`);
+          error.status = response.status;
+          throw error;
+        }
+        const content = await response.text();
+        await storeCourseFile(storagePath, content);
+        return content;
+      }
+
+      function normalizeCourseCsvName(name) {
+        return name.replace(/\.csv$/i, '')
+          .replace(/^l['’]/i, '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .toLocaleLowerCase();
+      }
+
+      async function fetchCourseCsv(courseId, relativePath) {
+        const storagePath = courseStoragePath(courseId, relativePath);
+        const storedContent = await readStoredCourseFile(storagePath);
+        if (storedContent !== null) return storedContent;
+
+        const storeFetchedCsv = async response => {
+          if (!response.ok) {
+            const error = new Error(`Could not load course CSV (${response.status}).`);
+            error.status = response.status;
+            throw error;
+          }
+          const content = await response.text();
+          await storeCourseFile(storagePath, content);
+          return content;
+        };
+        const pathParts = relativePath.split('/');
+        const expectedName = pathParts.pop();
+        const directoryPath = pathParts.join('/');
+        const normalizedExpectedName = normalizeCourseCsvName(expectedName);
+        let githubError;
+        try {
+          const apiPath = `courses/${courseId}/${directoryPath}`
+            .split('/')
+            .map(part => encodeURIComponent(part))
+            .join('/');
+          const apiUrl = `https://api.github.com/repos/haiver77/language_learning/contents/${apiPath}?ref=main`;
+          const listingResponse = await fetch(apiUrl);
+          if (!listingResponse.ok) throw new Error(`GitHub Contents API returned ${listingResponse.status} for ${apiPath}.`);
+          const entries = await listingResponse.json();
+          if (!Array.isArray(entries)) throw new Error(`GitHub Contents API returned an invalid listing for ${apiPath}.`);
+          const entry = entries.find(item =>
+            item && item.type === 'file' && typeof item.name === 'string' &&
+            normalizeCourseCsvName(item.name) === normalizedExpectedName
+          );
+          if (!entry) throw new Error(`GitHub Contents API found no matching CSV for ${relativePath}.`);
+
+          const fileUrl = typeof entry.download_url === 'string'
+            ? entry.download_url
+            : courseResourceUrl(courseId, `${directoryPath}/${entry.name}`);
+          const response = await fetch(fileUrl);
+          return await storeFetchedCsv(response);
+        } catch (error) {
+          githubError = error;
+          console.warn('Course GitHub CSV unavailable:', error);
+        }
+
+        let directoryError;
+        try {
+          const directoryUrl = courseResourceUrl(courseId, directoryPath);
+          const listingResponse = await fetch(`${directoryUrl.replace(/\/$/, '')}/`);
+          if (!listingResponse.ok) throw new Error(`Server directory listing returned ${listingResponse.status} for ${directoryPath}.`);
+          const baseUrl = new URL(listingResponse.url);
+          if (!baseUrl.pathname.endsWith('/')) baseUrl.pathname += '/';
+          const listing = new DOMParser().parseFromString(await listingResponse.text(), 'text/html');
+          const fileLink = [...listing.querySelectorAll('a[href]')].find(anchor => {
+            try {
+              const url = new URL(anchor.getAttribute('href'), baseUrl);
+              if (url.origin !== baseUrl.origin) return false;
+              const name = anchor.textContent.trim().replace(/[\\/]+$/, '');
+              return name && !/[\\/]/.test(name) && normalizeCourseCsvName(name) === normalizedExpectedName;
+            } catch {
+              return false;
+            }
+          });
+          if (!fileLink) throw new Error(`Server directory listing found no matching CSV for ${relativePath}.`);
+
+          const fileName = fileLink.textContent.trim().replace(/[\\/]+$/, '');
+          const fileUrl = courseResourceUrl(
+            courseId,
+            directoryPath ? `${directoryPath}/${fileName}` : fileName,
+          );
+          const response = await fetch(fileUrl);
+          return await storeFetchedCsv(response);
+        } catch (error) {
+          directoryError = error;
+          console.warn('Course HTML CSV lookup unavailable:', error);
+        }
+
+        const url = courseResourceUrl(courseId, relativePath);
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            const error = new Error(`Could not load ${url} (${response.status}). GitHub: ${githubError.message} Server: ${directoryError.message}`);
+            error.status = response.status;
+            throw error;
+          }
+          return await storeFetchedCsv(response);
+        } catch (error) {
+          if (error.status) throw error;
+          throw new Error(`Could not load ${url}. GitHub: ${githubError.message} Server: ${directoryError.message} Direct request: ${error.message}`);
+        }
+      }
+
+      function validateCourseDetails(folderId, details) {
+        const requiredStrings = ['id', 'title', 'description', 'level', 'idioma_nativo', 'idioma_destino'];
+        for (const key of requiredStrings) {
+          if (typeof details?.[key] !== 'string' || !details[key].trim()) {
+            throw new Error(`Course ${folderId} has a missing or invalid ${key} field.`);
+          }
+        }
+        if (details.id !== folderId) throw new Error(`Course folder ${folderId} does not match metadata id ${details.id}.`);
+        if (!Object.prototype.hasOwnProperty.call(langMeta, details.idioma_nativo) ||
+            !Object.prototype.hasOwnProperty.call(langMeta, details.idioma_destino) ||
+            details.idioma_nativo === details.idioma_destino) {
+          throw new Error(`Course ${folderId} uses unsupported or duplicate language codes.`);
+        }
+        for (const key of ['focusVocabularyCount', 'supplementaryVocabularyCount']) {
+          if (!Number.isInteger(details[key]) || details[key] < 0) {
+            throw new Error(`Course ${folderId} has an invalid ${key} count.`);
+          }
+        }
+        if (!Array.isArray(details.practiceType) || !details.practiceType.length) {
+          throw new Error(`Course ${folderId} must define at least one practiceType.`);
+        }
+        const ids = new Set();
+        for (const [index, type] of details.practiceType.entries()) {
+          if (!type || typeof type.id !== 'string' || !type.id.trim() ||
+              typeof type.name !== 'string' || !type.name.trim() ||
+              typeof type.description !== 'string' || !Array.isArray(type.rows) ||
+              !type.rows.length || !type.rows.every(row => Number.isInteger(row) && row > 0) || ids.has(type.id)) {
+            throw new Error(`Course ${folderId} has an invalid practiceType at index ${index}.`);
+          }
+          ids.add(type.id);
+        }
+        return details;
+      }
+
+      async function loadCourseUnits(course) {
+        const unitNames = await listCourseDirectories(
+          `courses/${course.id}/Units`,
+          /^Unit_\d+$/i,
+        );
+        const units = await Promise.all(unitNames.map(async id => {
+          const details = await fetchCourseJson(course.id, `Units/${id}/unit_details.json`);
+          for (const key of ['title', 'description']) {
+            if (typeof details?.[key] !== 'string') throw new Error(`${id}/unit_details.json has an invalid ${key}.`);
+          }
+          for (const key of ['focusVocabularyCount', 'supplementaryVocabularyCount']) {
+            if (!Number.isInteger(details[key]) || details[key] < 0) {
+              throw new Error(`${id}/unit_details.json has an invalid ${key} count.`);
+            }
+          }
+          return { ...details, id, order: Number(id.match(/\d+/)[0]) };
+        }));
+        units.sort((a, b) => a.order - b.order);
+        if (!units.length) throw new Error(`Course ${course.id} contains no Unit_N folders.`);
+        course.units = units;
+        return units;
+      }
+
+      let courseCatalogPromise = null;
+      async function discoverCourses() {
+        if (courseCatalogPromise) return courseCatalogPromise;
+        courseCatalogPromise = (async () => {
+          setCourseStatus('Loading courses…');
+          const ids = await listCourseDirectories('courses', /^[A-Za-z0-9][A-Za-z0-9._-]*$/);
+          const warnings = [];
+          const courses = await Promise.all(ids.map(async id => {
+            try {
+              const details = validateCourseDetails(id, await fetchCourseJson(id, 'course_details.json'));
+              const course = { ...details, id, units: [] };
+              await loadCourseUnits(course);
+              return course;
+            } catch (error) {
+              console.error(`Course ${id} could not be loaded:`, error);
+              warnings.push(`${id}: ${error.message}`);
+              return null;
+            }
+          }));
+          courseCatalog = courses.filter(Boolean);
+          courseDataCache.clear();
+          if (warnings.length) setCourseStatus(`Some courses could not be loaded: ${warnings.join(' ')}`, true);
+          else setCourseStatus('');
+          if (!courseCatalog.length && !warnings.length) setCourseStatus('No courses are available in courses/.');
+          return courseCatalog;
+        })();
+        try {
+          return await courseCatalogPromise;
+        } catch (error) {
+          setCourseStatus(error.message, true);
+          throw error;
+        } finally {
+          courseCatalogPromise = null;
+        }
+      }
+
+      function parseCourseRows(text) {
+        return text.replace(/^\uFEFF/, '').split(/\r?\n/)
+          .filter(line => line.trim().length)
+          .map(line => parseCSVLine(line));
+      }
+
+      function parseVocabularyAssignment(text, resource, allowEmpty = false) {
+        const rows = parseCourseRows(text);
+        if (rows.length < 2 && !allowEmpty) throw new Error(`${resource} has no vocabulary rows.`);
+        if (!rows.length) throw new Error(`${resource} has no header row.`);
+        const headers = rows[0].map(value => value.trim().toLowerCase());
+        const wordIndex = headers.findIndex(value => value.includes('vocabulary') || value === 'word');
+        const unitIndex = headers.findIndex(value => value === 'unit' || value.includes('unit'));
+        if (wordIndex < 0 || unitIndex < 0) throw new Error(`${resource} must contain vocabulary and unit columns.`);
+        return rows.slice(1).map((row, index) => {
+          const word = (row[wordIndex] || '').trim();
+          const rawUnit = (row[unitIndex] || '').trim();
+          const unitId = /^\d+$/.test(rawUnit) ? `Unit_${rawUnit}` : rawUnit.split('/').pop();
+          if (!word || !/^Unit_\d+$/i.test(unitId)) throw new Error(`${resource} has an invalid row ${index + 2}.`);
+          return { word, unitId };
+        });
+      }
+
+      async function loadCourseAssignments(course) {
+        if (course.assignments) return course.assignments;
+        if (course.assignmentsPromise) return course.assignmentsPromise;
+        course.assignmentsPromise = (async () => {
+          const focusPath = 'course_vocabulary_focus_by_unit.csv';
+          const focus = parseVocabularyAssignment(await fetchCourseText(course.id, focusPath), `${course.id}/${focusPath}`);
+          let complementary = [];
+          try {
+            const complementaryPath = 'course_vocabulary_complementary_by_unit.csv';
+              complementary = parseVocabularyAssignment(
+                await fetchCourseText(course.id, complementaryPath),
+                `${course.id}/${complementaryPath}`,
+                course.supplementaryVocabularyCount === 0,
+              );
+          } catch (error) {
+            if (error.status !== 404 || course.supplementaryVocabularyCount !== 0) throw error;
+          }
+          const warnings = [];
+          if (focus.length !== course.focusVocabularyCount) {
+            warnings.push(`Course ${course.id} metadata reports ${course.focusVocabularyCount} focus words; assignment CSV contains ${focus.length}.`);
+          }
+          if (complementary.length !== course.supplementaryVocabularyCount) {
+            warnings.push(`Course ${course.id} metadata reports ${course.supplementaryVocabularyCount} supplementary words; assignment CSV contains ${complementary.length}.`);
+          }
+          for (const unit of course.units) {
+            const focusCount = focus.filter(item => item.unitId === unit.id).length;
+            const supplementaryCount = complementary.filter(item => item.unitId === unit.id).length;
+            if (focusCount !== unit.focusVocabularyCount ||
+                supplementaryCount !== unit.supplementaryVocabularyCount) {
+              warnings.push(`${unit.id} metadata reports ${unit.focusVocabularyCount} focus and ${unit.supplementaryVocabularyCount} supplementary words; assignment CSVs contain ${focusCount} focus and ${supplementaryCount} supplementary words.`);
+            }
+          }
+          course.assignments = { focus, complementary, warnings };
+          if (warnings.length) setCourseStatus(warnings.join(' '), true);
+          return course.assignments;
+        })();
+        try {
+          return await course.assignmentsPromise;
+        } finally {
+          course.assignmentsPromise = null;
+        }
+      }
+
+      function findCourse(courseId) {
+        return courseCatalog.find(course => course.id === courseId) || null;
+      }
+
+      function getCoursePracticeType(course, typeId) {
+        return course?.practiceType.find(type => type.id === typeId) || course?.practiceType[0] || null;
+      }
+
+      function getCourseWordProgress(courseId, unitId, word) {
+        return courseState.progress?.[courseId]?.units?.[unitId]?.words?.[word] || {
+          practices: 0,
+          pronunciationCorrect: 0,
+        };
+      }
+
+      function getVocabularyMastery(practices) {
+        const { known, learning, learned, mastered } = courseState.thresholds;
+        if (practices < known) return 'Sin practicar';
+        if (practices < learning) return 'Conocida';
+        if (practices < learned) return 'En aprendizaje';
+        if (practices < mastered) return 'Aprendida';
+        return 'Mastered';
+      }
+
+      function getProgressStats(courseId, unitId, words) {
+        const masteredThreshold = courseState.thresholds.mastered;
+        if (!words.length) return { points: 0, percent: 0, mastered: false };
+        let points = 0;
+        let allMastered = true;
+        for (const word of words) {
+          const practices = getCourseWordProgress(courseId, unitId, word).practices;
+          points += Math.min(practices, masteredThreshold);
+          if (practices < masteredThreshold) allMastered = false;
+        }
+        return {
+          points: points / words.length,
+          percent: Math.round(points / (words.length * masteredThreshold) * 100),
+          mastered: allMastered,
+        };
+      }
+
+      function getCourseUnit(course, unitId) {
+        return course?.units.find(unit => unit.id === unitId) || null;
+      }
+
+      function getUnitWords(assignments, unitId, kind = 'focus') {
+        return [...new Set(assignments[kind].filter(item => item.unitId === unitId).map(item => item.word))];
+      }
+
+      function getSavedCourseSession(courseId, unitId) {
+        return courseState.sessions?.[courseId]?.[unitId] || null;
+      }
+
+      function getCourseSessionKey(courseId, unitId) {
+        return `${courseId}::${unitId}`;
+      }
+
+      function updateCourseContext() {
+        const course = findCourse(courseState.selectedCourseId);
+        const unit = getCourseUnit(course, courseState.selectedUnitId);
+        const visible = !!(course && unit);
+        for (const header of els.courseContextHeaders) {
+          header.classList.toggle('visible', visible);
+          if (!visible) continue;
+          const typeId = courseState.practiceTypes[course.id] ||
+            (activeCourseSession?.courseId === course.id ? activeCourseSession.practiceTypeId : null);
+          const practiceType = getCoursePracticeType(course, typeId);
+          header.querySelector('[data-course-context="course"]').textContent = course.title;
+          header.querySelector('[data-course-context="unit"]').textContent = unit.title;
+          const practiceButton = header.querySelector('[data-course-context="practice"]');
+          practiceButton.textContent = `${practiceType?.name || 'Practice type'}⌄`;
+          practiceButton.dataset.action = 'open-practice-types';
+        }
+      }
+
+      function setLoadScreen(screen) {
+        const isOptions = screen === 'options';
+        if (els.loadOptions) els.loadOptions.hidden = !isOptions;
+        document.querySelectorAll('.load-method-page').forEach(page => {
+          page.hidden = page.dataset.loadScreen !== screen;
+        });
+        if (isOptions && loadSourceFocusTarget) {
+          requestAnimationFrame(() => loadSourceFocusTarget?.focus());
+        }
+      }
+
+      function setCourseScreen(screen) {
+        courseScreen = screen;
+        setLoadScreen(screen === 'options' ? 'options' : 'courses');
+        if (els.coursesPageTitle) {
+          const titles = {
+            catalog: 'Courses',
+            details: 'Course details',
+            unit: 'Unit details',
+            practiceTypes: 'Practice format',
+          };
+          els.coursesPageTitle.textContent = titles[screen] || 'Courses';
+        }
+        if (els.coursesBack) {
+          els.coursesBack.textContent = screen === 'catalog' ? '‹ Load Phrases' : '‹ Back';
+        }
+      }
+
+      function courseProgressSummary(course, assignments) {
+        const words = assignments.focus;
+        const progress = getProgressStatsForAssignments(course.id, words);
+        return { ...progress, total: words.length };
+      }
+
+      function getProgressStatsForAssignments(courseId, assignments) {
+        const masteredThreshold = courseState.thresholds.mastered;
+        const words = [...new Map(assignments.map(item => [`${item.unitId}\u0000${item.word}`, item])).values()];
+        if (!words.length) return { points: 0, percent: 0, mastered: false };
+        let points = 0;
+        let allMastered = true;
+        for (const item of words) {
+          const practices = getCourseWordProgress(courseId, item.unitId, item.word).practices;
+          points += Math.min(practices, masteredThreshold);
+          if (practices < masteredThreshold) allMastered = false;
+        }
+        return {
+          points: points / words.length,
+          percent: Math.round(points / (words.length * masteredThreshold) * 100),
+          mastered: allMastered,
+        };
+      }
+
+      async function renderCourseCatalog() {
+        setCourseScreen('catalog');
+        const courses = await discoverCourses();
+        if (!courses.length) {
+          els.coursesContent.innerHTML = '';
+          return;
+        }
+        const levels = [...new Set(courses.map(course => course.level))].sort();
+        const ordered = [...courses].sort((a, b) => {
+          if (a.id === courseState.selectedCourseId) return -1;
+          if (b.id === courseState.selectedCourseId) return 1;
+          return a.title.localeCompare(b.title);
+        });
+        const cards = await Promise.all(ordered.map(async course => {
+          let assignments = [];
+          let loadError = '';
+          try {
+            assignments = (await loadCourseAssignments(course)).focus;
+          } catch (error) {
+            loadError = error.message;
+            console.error(`Course metrics unavailable for ${course.id}:`, error);
+          }
+          const progress = courseProgressSummary(course, { focus: assignments });
+          const current = course.id === courseState.selectedCourseId;
+          return `
+            <article class="course-card${current ? ' current' : ''}" data-course-card="${escapeCourseHtml(course.id)}" tabindex="0">
+              <div class="course-card-top">
+                <span class="course-badge">${escapeCourseHtml(`${course.idioma_destino.toUpperCase()} · ${course.level}`)}</span>
+                ${current ? '<span class="course-badge current">Current</span>' : ''}
+              </div>
+              <h3>${escapeCourseHtml(course.title)}</h3>
+              <p class="course-description">${escapeCourseHtml(course.description)}</p>
+              <div class="course-metrics">
+                <div class="course-metric"><small>Focus vocabulary</small><strong>${course.focusVocabularyCount} words</strong></div>
+                <div class="course-metric"><small>Supplementary</small><strong>${course.supplementaryVocabularyCount} words</strong></div>
+              </div>
+              ${loadError ? `<p class="course-error">${escapeCourseHtml(loadError)}</p>` : ''}
+              <progress class="course-progress" max="100" value="${progress.percent}" aria-label="Course progress ${progress.percent}%"></progress>
+              <div class="course-inline"><span>${progress.percent}% complete</span><span>${progress.mastered ? 'Mastered' : ''}</span></div>
+              <div class="course-actions">
+                <button type="button" class="course-action primary" data-action="select-course" data-course-id="${escapeCourseHtml(course.id)}">Select</button>
+                <button type="button" class="course-action" data-action="course-details" data-course-id="${escapeCourseHtml(course.id)}">View details</button>
+                ${current ? `<button type="button" class="course-action" data-action="deselect-course" data-course-id="${escapeCourseHtml(course.id)}">Deselect</button>` : ''}
+              </div>
+            </article>`;
+        }));
+        els.coursesContent.innerHTML = `
+          <div class="course-toolbar">
+            <input id="courseSearch" type="search" placeholder="Search courses" aria-label="Search courses" />
+            <select id="courseLevelFilter" aria-label="Filter by level">
+              <option value="">All levels</option>
+              ${levels.map(level => `<option value="${escapeCourseHtml(level)}">${escapeCourseHtml(level)}</option>`).join('')}
+            </select>
+          </div>
+          <div id="courseCards">${cards.join('')}</div>
+          <p class="course-empty">Course catalog is discovered from the available course folders.</p>`;
+        const search = document.getElementById('courseSearch');
+        const levelFilter = document.getElementById('courseLevelFilter');
+        const filterCards = () => {
+          const query = search.value.trim().toLowerCase();
+          const level = levelFilter.value;
+          for (const card of els.coursesContent.querySelectorAll('[data-course-card]')) {
+            const course = findCourse(card.dataset.courseCard);
+            const matchesText = !query || `${course.title} ${course.description} ${course.id}`.toLowerCase().includes(query);
+            card.hidden = !matchesText || (!!level && course.level !== level);
+          }
+        };
+        search.addEventListener('input', filterCards);
+        levelFilter.addEventListener('change', filterCards);
+        updateCourseContext();
+      }
+
+      async function renderCourseDetails(courseId) {
+        const course = findCourse(courseId);
+        if (!course) throw new Error(`Course ${courseId} is not available.`);
+        setCourseScreen('details');
+        setCourseStatus('');
+        const assignments = await loadCourseAssignments(course);
+        if (assignments.warnings.length) setCourseStatus(assignments.warnings.join(' '), true);
+        const units = course.units.map(unit => {
+          const focusWords = getUnitWords(assignments, unit.id, 'focus');
+          const stats = getProgressStats(course.id, unit.id, focusWords);
+          const current = unit.id === courseState.selectedUnitId && course.id === courseState.selectedCourseId;
+          return `
+            <article class="course-unit-card${current ? ' current' : ''}">
+              <div class="course-card-top"><span class="course-badge">${String(unit.order).padStart(2, '0')}</span>${current ? '<span class="course-badge current">Current</span>' : ''}</div>
+              <h3>${escapeCourseHtml(unit.title)}</h3>
+              <p class="course-description">${escapeCourseHtml(unit.description)}</p>
+              <div class="course-metrics">
+                <div class="course-metric"><small>Focus vocabulary</small><strong>${unit.focusVocabularyCount} words</strong></div>
+                <div class="course-metric"><small>Supplementary</small><strong>${unit.supplementaryVocabularyCount} words</strong></div>
+              </div>
+              <progress class="course-progress" max="100" value="${stats.percent}" aria-label="Unit progress ${stats.percent}%"></progress>
+              <div class="course-inline"><span>${stats.percent}% complete</span><span>${stats.mastered ? 'Mastered' : ''}</span></div>
+              <div class="course-actions">
+                <button type="button" class="course-action primary" data-action="select-unit" data-course-id="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unit.id)}">Select</button>
+                <button type="button" class="course-action" data-action="unit-details" data-course-id="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unit.id)}">Details</button>
+              </div>
+            </article>`;
+        });
+        els.coursesContent.innerHTML = `
+          <section class="course-info-panel">
+            <span class="course-badge">${escapeCourseHtml(`${course.idioma_destino.toUpperCase()} · ${course.level}`)}</span>
+            <h2>${escapeCourseHtml(course.title)}</h2>
+            <p class="course-description">${escapeCourseHtml(course.description)}</p>
+            <div class="course-metrics">
+              <div class="course-metric"><small>Focus vocabulary</small><strong>${course.focusVocabularyCount} words</strong></div>
+              <div class="course-metric"><small>Supplementary</small><strong>${course.supplementaryVocabularyCount} words</strong></div>
+            </div>
+          </section>
+          <div class="course-card-top"><h3>Course units</h3><span>${course.units.length} · numeric order</span></div>
+          <div class="course-unit-list">${units.join('')}</div>`;
+        updateCourseContext();
+      }
+
+      async function renderUnitDetails(courseId, unitId) {
+        const course = findCourse(courseId);
+        const unit = getCourseUnit(course, unitId);
+        if (!course || !unit) throw new Error(`Unit ${unitId} is not available.`);
+        const assignments = await loadCourseAssignments(course);
+        if (assignments.warnings.length) setCourseStatus(assignments.warnings.join(' '), true);
+        const words = getUnitWords(assignments, unitId, courseTab);
+        const title = courseTab === 'focus' ? 'Focus vocabulary' : 'Supplementary vocabulary';
+        const rows = words.map((word, index) => {
+          const progress = getCourseWordProgress(course.id, unit.id, word);
+          return `<div class="course-word-row course-card-top">
+            <span class="course-badge">${String(index + 1).padStart(2, '0')}</span>
+            <strong>${escapeCourseHtml(word)}</strong>
+            <span>${escapeCourseHtml(getVocabularyMastery(progress.practices))}</span>
+            <span>${progress.practices} practices · ${progress.pronunciationCorrect} correct</span>
+          </div>`;
+        });
+        setCourseScreen('unit');
+        els.coursesContent.innerHTML = `
+          <section class="course-info-panel">
+            <button type="button" class="course-action" data-action="back-course-details" data-course-id="${escapeCourseHtml(course.id)}">‹ Course units</button>
+            <h2>${escapeCourseHtml(unit.title)}</h2>
+            <p class="course-description">${escapeCourseHtml(unit.description)}</p>
+          </section>
+          <div class="course-tabs" role="tablist">
+            <button type="button" class="course-tab${courseTab === 'focus' ? ' active' : ''}" data-action="unit-tab" data-course-id="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unit.id)}" data-tab="focus">Focus vocabulary · ${getUnitWords(assignments, unitId, 'focus').length}</button>
+              <button type="button" class="course-tab${courseTab === 'complementary' ? ' active' : ''}" data-action="unit-tab" data-course-id="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unit.id)}" data-tab="complementary">Supplementary · ${getUnitWords(assignments, unitId, 'complementary').length}</button>
+          </div>
+          <p class="course-empty">Words in course file order</p>
+          ${rows.length ? `<div class="course-word-list">${rows.join('')}</div>` : `<p class="course-empty">${course.supplementaryVocabularyCount === 0 && courseTab === 'complementary' ? 'This course has no supplementary vocabulary.' : `No ${title.toLowerCase()} are assigned to this unit.`}</p>`}
+          <button type="button" class="course-action primary" data-action="select-unit" data-course-id="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unit.id)}">Select unit and practice</button>`;
+        updateCourseContext();
+      }
+
+      function renderPracticeTypeSelection(courseId, unitId) {
+        const course = findCourse(courseId);
+        if (!course) throw new Error(`Course ${courseId} is not available.`);
+        setCourseScreen('practiceTypes');
+        const activeId = courseState.practiceTypes[course.id] ||
+          getSavedCourseSession(course.id, unitId)?.practiceTypeId ||
+          course.practiceType[0].id;
+        if (!pendingCoursePracticeTypeId) pendingCoursePracticeTypeId = activeId;
+        const options = course.practiceType.map(type => `
+          <button type="button" class="course-practice-option${pendingCoursePracticeTypeId === type.id ? ' selected' : ''}" data-action="choose-practice-type" data-type-id="${escapeCourseHtml(type.id)}">
+            <strong>${escapeCourseHtml(type.name)}</strong>
+            <span>${escapeCourseHtml(type.description)}</span>
+            <span>${type.rows.length} ${type.rows.length === 1 ? 'phrase' : 'phrases'} / word${type.id === activeId ? ' · ACTIVE' : ''}</span>
+          </button>`).join('');
+        els.coursesContent.innerHTML = `
+          <p class="course-description">Choose which lesson rows are used for each focus word.</p>
+          ${options}
+          <section class="course-info-panel">
+            <strong>Changing the format</strong>
+            <p class="course-description">Applying a new format builds a new combined lesson for this unit and restarts the session at phrase one.</p>
+          </section>
+          <button type="button" class="course-action primary" data-action="apply-practice-type" data-course-id="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unitId)}">Apply and restart session</button>`;
+        updateCourseContext();
+      }
+
+      async function openCourseApp() {
+        setCourseScreen('catalog');
+        try {
+          await renderCourseCatalog();
+          requestAnimationFrame(() => els.coursesPageTitle?.focus());
+        } catch (error) {
+          setCourseStatus(error.message, true);
+          els.coursesContent.innerHTML = '';
+        }
+      }
+
+      async function openCourseDetails(courseId, allowResume = false) {
+        courseState.selectedCourseId = courseId;
+        const course = findCourse(courseId);
+        if (!course) throw new Error(`Course ${courseId} is not available.`);
+        const activeSavedSession = [...course.units].reverse().map(unit => ({
+          unitId: unit.id,
+          session: getSavedCourseSession(courseId, unit.id),
+        })).find(item => item.session && !item.session.completed);
+        if (allowResume && activeSavedSession) {
+          courseState.selectedUnitId = activeSavedSession.unitId;
+          saveCourseState();
+          updateCourseContext();
+          await restoreCourseSession(activeSavedSession.session);
+          window._trainer?.closeSheet?.();
+          return;
+        }
+        const latestProgressUnit = [...course.units].reverse().find(unit => {
+          const words = courseState.progress?.[courseId]?.units?.[unit.id]?.words || {};
+          return Object.values(words).some(item => item.practices > 0);
+        });
+        courseState.selectedUnitId = latestProgressUnit?.id || course.units[0].id;
+        courseState.practiceTypes[courseId] = courseState.practiceTypes[courseId] || course.practiceType[0].id;
+        saveCourseState();
+        await renderCourseDetails(courseId);
+      }
+
+      function deselectCourse(courseId) {
+        if (courseState.selectedCourseId !== courseId) return;
+        courseState.selectedCourseId = null;
+        courseState.selectedUnitId = null;
+        saveCourseState();
+        updateCourseContext();
+        if (courseScreen !== 'options') renderCourseCatalog();
+      }
+
+      function restoreCourseSettings() {
+        for (const [key, input] of Object.entries(els.courseThresholds)) {
+          input.value = String(courseState.thresholds[key]);
+        }
+      }
+
+      function escapeCourseCsvField(value) {
+        const text = String(value == null ? '' : value);
+        return /[;"\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+      }
+
+      function shuffleCourseWords(words) {
+        const shuffled = [...words];
+        for (let index = shuffled.length - 1; index > 0; index--) {
+          const swapIndex = Math.floor(Math.random() * (index + 1));
+          [shuffled[index], shuffled[swapIndex]] = [shuffled[swapIndex], shuffled[index]];
+        }
+        return shuffled;
+      }
+
+      async function buildCourseCombinedSession(course, unit, practiceType) {
+        const assignments = await loadCourseAssignments(course);
+        const focusWords = getUnitWords(assignments, unit.id, 'focus');
+        const complementaryWords = getUnitWords(assignments, unit.id, 'complementary');
+        if (!focusWords.length) throw new Error(`${unit.id} has no focus vocabulary assigned.`);
+        const combinedRows = [];
+        const metadata = [];
+        const orderedWords = shuffleCourseWords(focusWords);
+        for (const vocabulary of orderedWords) {
+          const relativePath = `Units/${unit.id}/Lessons/${vocabulary}.csv`;
+          const lines = parseCourseRows(await fetchCourseText(course.id, relativePath));
+          for (const rowNumber of practiceType.rows) {
+            const columns = lines[rowNumber - 1];
+            if (!columns) throw new Error(`${relativePath} is missing requested row ${rowNumber}.`);
+            if (columns.length < 2) throw new Error(`${relativePath} row ${rowNumber} does not have two language columns.`);
+            combinedRows.push(`${escapeCourseCsvField(columns[0])};${escapeCourseCsvField(columns[1])}`);
+            metadata.push({ vocabulary, source: relativePath, sourceRow: rowNumber });
+          }
+        }
+        if (!combinedRows.length) throw new Error(`The combined session for ${unit.id} is empty.`);
+        return {
+          courseId: course.id,
+          unitId: unit.id,
+          practiceTypeId: practiceType.id,
+          languageNative: course.idioma_nativo,
+          languageTarget: course.idioma_destino,
+          csv: combinedRows.join('\n'),
+          metadata,
+          focusWords: [...new Set(focusWords)],
+          complementaryWords: [...new Set(complementaryWords)],
+          currentIndex: 0,
+          lastSequentialIndex: 0,
+          completed: false,
+        };
+      }
+
+      function saveCourseSession(session) {
+        courseState.sessions[session.courseId] = courseState.sessions[session.courseId] || {};
+        const savedSession = session.completed ? {
+          courseId: session.courseId,
+          unitId: session.unitId,
+          practiceTypeId: session.practiceTypeId,
+          currentIndex: session.currentIndex,
+          languageNative: session.languageNative,
+          languageTarget: session.languageTarget,
+          completed: true,
+        } : session;
+        courseState.sessions[session.courseId][session.unitId] = savedSession;
+        courseState.activeSessionKey = getCourseSessionKey(session.courseId, session.unitId);
+        return saveCourseState();
+      }
+
+      function deactivateCourseSession() {
+        activeCourseSession = null;
+        els.csvBox.readOnly = false;
+        if (els.randomToggle) els.randomToggle.disabled = false;
+        syncRandomToggleVisualState();
+      }
+
+      function persistCourseSessionPosition(index) {
+        if (!activeCourseSession || activeCourseSession.completed || index < 0) return;
+        activeCourseSession.currentIndex = index;
+        saveCourseSession(activeCourseSession);
+      }
+
+      function addCourseWordPractice(courseId, unitId, word, field) {
+        if (!word) return;
+        courseState.progress[courseId] = courseState.progress[courseId] || { units: {} };
+        courseState.progress[courseId].units = courseState.progress[courseId].units || {};
+        courseState.progress[courseId].units[unitId] = courseState.progress[courseId].units[unitId] || { words: {} };
+        const words = courseState.progress[courseId].units[unitId].words;
+        words[word] = words[word] || { practices: 0, pronunciationCorrect: 0 };
+        words[word][field] = (Number(words[word][field]) || 0) + 1;
+      }
+
+      function completeCourseSession() {
+        if (!activeCourseSession || activeCourseSession.completed) return;
+        activeCourseSession.completed = true;
+        const uniqueWords = new Set([
+          ...(activeCourseSession.focusWords || []),
+          ...(activeCourseSession.complementaryWords || []),
+        ]);
+        for (const word of uniqueWords) {
+          addCourseWordPractice(activeCourseSession.courseId, activeCourseSession.unitId, word, 'practices');
+        }
+        saveCourseSession(activeCourseSession);
+        if (courseScreen !== 'options' && els.coursesApp && !els.coursesApp.hidden) {
+          if (courseScreen === 'details') renderCourseDetails(activeCourseSession.courseId);
+          else renderCourseCatalog();
+        }
+      }
+
+      function trackCoursePhrasePosition(index) {
+        if (!activeCourseSession || activeCourseSession.completed || index < 0) return;
+        const previousIndex = activeCourseSession.lastSequentialIndex;
+        const completesSession = index === previousIndex + 1 && index === parsedRows.length - 1;
+        activeCourseSession.lastSequentialIndex = index;
+        activeCourseSession.currentIndex = index;
+        if (completesSession) completeCourseSession();
+        else persistCourseSessionPosition(index);
+      }
+
+      function courseVocabularyWasRecognized(vocabulary, validation) {
+        if (!vocabulary || !validation?.targetTokens || !validation?.matchedTarget) return false;
+        const recognizedText = validation.targetTokens
+          .filter((token, index) => validation.matchedTarget[index])
+          .map(token => normalizeForCompare(token))
+          .join(' ');
+        const normalizedVocabulary = normalizeForCompare(vocabulary);
+        return !!normalizedVocabulary && ` ${recognizedText} `.includes(` ${normalizedVocabulary} `);
+      }
+
+      function recordCoursePronunciation(index) {
+        const metadata = activeCourseSession?.metadata?.[index];
+        if (!metadata || !activeCourseSession) return;
+        addCourseWordPractice(activeCourseSession.courseId, activeCourseSession.unitId, metadata.vocabulary, 'pronunciationCorrect');
+        saveCourseSession(activeCourseSession);
+      }
+
+      async function restoreCourseSession(session) {
+        if (!session || session.completed) return false;
+        const course = findCourse(session.courseId);
+        const unit = getCourseUnit(course, session.unitId);
+        if (!course || !unit) throw new Error('The saved course session refers to a course or unit that is no longer available.');
+        if (typeof session.csv !== 'string' || !Array.isArray(session.metadata)) {
+          throw new Error('The saved course session does not contain its combined CSV and source metadata.');
+        }
+        const assignments = await loadCourseAssignments(course);
+        session.focusWords = session.focusWords || getUnitWords(assignments, unit.id, 'focus');
+        session.complementaryWords = session.complementaryWords || getUnitWords(assignments, unit.id, 'complementary');
+        stopSelectedMode();
+        if (courseState.selectedCourseId === course.id) courseState.selectedUnitId = unit.id;
+        courseState.practiceTypes[course.id] = session.practiceTypeId;
+        activeCourseSession = session;
+        activeCourseSession.lastSequentialIndex = Number.isInteger(session.currentIndex) ? session.currentIndex : 0;
+        activeCourseSession.currentIndex = activeCourseSession.lastSequentialIndex;
+        els.lang1Select.value = session.languageNative;
+        els.lang2Select.value = session.languageTarget;
+        updateLangLabels();
+        syncPracticeLanguageSelection(session.languageTarget);
+        els.csvBox.value = session.csv;
+        ensureParsed();
+        if (!parsedRows.length || parsedRows.length !== session.metadata.length) {
+          activeCourseSession = null;
+          throw new Error('The saved combined CSV could not be restored with its original rows.');
+        }
+        currentIndex = Math.max(0, Math.min(parsedRows.length - 1, activeCourseSession.currentIndex));
+        activeCourseSession.currentIndex = currentIndex;
+        activeCourseSession.lastSequentialIndex = currentIndex;
+        els.csvBox.readOnly = true;
+        if (els.randomToggle) els.randomToggle.disabled = true;
+        intensiveRandomEnabled = false;
+        syncRandomToggleVisualState();
+        renderCsvViewer();
+        if (els.modeSelect.value === 'Intensive Challenge') {
+          displayIntensivePhrase(parsedRows[currentIndex], false);
+        } else {
+          setPhraseTexts(parsedRows[currentIndex]);
+          applyShowVisibility();
+        }
+        saveCourseSession(activeCourseSession);
+        saveConfig();
+        updateCourseContext();
+        return true;
+      }
+
+      async function startCourseUnit(courseId, unitId, forceNew = false, practiceTypeOverride = null) {
+        const course = findCourse(courseId);
+        const unit = getCourseUnit(course, unitId);
+        if (!course || !unit) throw new Error(`Course unit ${unitId} is not available.`);
+        courseState.selectedCourseId = course.id;
+        courseState.selectedUnitId = unit.id;
+        const saved = getSavedCourseSession(course.id, unit.id);
+        if (!forceNew && saved && !saved.completed) {
+          courseState.practiceTypes[course.id] = saved.practiceTypeId;
+          await restoreCourseSession(saved);
+        } else {
+          const type = practiceTypeOverride || getCoursePracticeType(course, courseState.practiceTypes[course.id]);
+          if (!type) throw new Error(`Course ${course.id} has no active practice type.`);
+          const session = await buildCourseCombinedSession(course, unit, type);
+          stopSelectedMode();
+          courseState.practiceTypes[course.id] = type.id;
+          activeCourseSession = session;
+          currentIndex = 0;
+          els.lang1Select.value = session.languageNative;
+          els.lang2Select.value = session.languageTarget;
+          updateLangLabels();
+          syncPracticeLanguageSelection(session.languageTarget);
+          els.csvBox.value = session.csv;
+          ensureParsed();
+          if (!parsedRows.length || parsedRows.length !== session.metadata.length) {
+            activeCourseSession = null;
+            throw new Error('The combined course session could not be parsed completely.');
+          }
+          els.csvBox.readOnly = true;
+          if (els.randomToggle) els.randomToggle.disabled = true;
+          intensiveRandomEnabled = false;
+          syncRandomToggleVisualState();
+          if (els.modeSelect.value === 'Intensive Challenge') {
+            enterIntensiveChallengeMode();
+          } else {
+            setPhraseTexts(parsedRows[0]);
+            applyShowVisibility();
+          }
+          saveCourseSession(session);
+          renderCsvViewer();
+          saveConfig();
+        }
+        updateCourseContext();
+        window._trainer?.closeSheet?.();
+      }
+
+      async function applyCoursePracticeType(courseId, unitId) {
+        const course = findCourse(courseId);
+        const unit = getCourseUnit(course, unitId);
+        const type = course?.practiceType.find(item => item.id === pendingCoursePracticeTypeId);
+        if (!course || !unit || !type) throw new Error('Choose a valid practice type before applying it.');
+        await startCourseUnit(course.id, unit.id, true, type);
+        pendingCoursePracticeTypeId = null;
+      }
+
+      async function openPracticeTypePicker() {
+        const course = findCourse(courseState.selectedCourseId);
+        const unitId = courseState.selectedUnitId;
+        if (!course || !unitId) {
+          setCourseStatus('Select a course and unit before choosing a practice type.', true);
+          return;
+        }
+        coursePreviousScreen = courseScreen;
+        pendingCoursePracticeTypeId = courseState.practiceTypes[course.id] ||
+          activeCourseSession?.practiceTypeId || course.practiceType[0].id;
+        const sheet = document.getElementById('bottomSheet');
+        if (!sheet?.classList.contains('open') ||
+            document.querySelector('.sheet-panel.active')?.dataset.panel !== 'load') {
+          window._trainer?.openSheet?.('load');
+        }
+        await renderPracticeTypeSelection(course.id, unitId);
+      }
+
+      async function restoreSavedCourseSession() {
+        const sessionKey = courseState.activeSessionKey;
+        if (!sessionKey) {
+          if (courseState.selectedCourseId) {
+            try {
+              await discoverCourses();
+              updateCourseContext();
+            } catch (error) {
+              console.error('Unable to restore the selected course context:', error);
+              setCourseStatus(error.message, true);
+            }
+          }
+          return;
+        }
+        const separator = sessionKey.indexOf('::');
+        if (separator <= 0) return;
+        const courseId = sessionKey.slice(0, separator);
+        const unitId = sessionKey.slice(separator + 2);
+        const session = getSavedCourseSession(courseId, unitId);
+        if (!session || session.completed) {
+          if (courseState.selectedCourseId) {
+            try {
+              await discoverCourses();
+              updateCourseContext();
+            } catch (error) {
+              console.error('Unable to restore the selected course context:', error);
+              setCourseStatus(error.message, true);
+            }
+          }
+          return;
+        }
+        try {
+          await discoverCourses();
+          await restoreCourseSession(session);
+        } catch (error) {
+          console.error('Unable to resume the saved course session:', error);
+          setCourseStatus(`Could not resume the saved course session: ${error.message}`, true);
+        }
+      }
+
+      function saveCourseThresholds() {
+        const next = Object.fromEntries(Object.entries(els.courseThresholds).map(([key, input]) => [key, Number(input.value)]));
+        const values = [next.known, next.learning, next.learned, next.mastered];
+        if (!values.every(value => Number.isInteger(value) && value > 0) ||
+            !values.every((value, index) => index === 0 || value > values[index - 1])) {
+          setCourseSettingsStatus('Enter positive whole numbers in strictly increasing order.', true);
+          return;
+        }
+        courseState.thresholds = next;
+        saveCourseState();
+        setCourseSettingsStatus('Course mastery thresholds saved.');
+        if (els.coursesApp && !els.coursesApp.hidden) {
+          if (courseScreen === 'catalog') renderCourseCatalog();
+          else if (courseScreen === 'details' && courseState.selectedCourseId) renderCourseDetails(courseState.selectedCourseId);
+          else if (courseScreen === 'unit' && courseState.selectedCourseId && courseState.selectedUnitId) {
+            renderUnitDetails(courseState.selectedCourseId, courseState.selectedUnitId);
+          }
         }
       }
 
@@ -5291,6 +6966,7 @@
           const prompt = buildAIPrompt(level, topic, quantity, minWords);
           const content = await callOpenAI(token, prompt);
           // Put response into csvBox
+          deactivateCourseSession();
           if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
           els.csvBox.value = (content || '').trim();
           try { applyCsvWrap(); } catch (e) { /* ignore */ }
@@ -5315,31 +6991,51 @@
         }
       }
 
+      function syncPracticeFocusMode() {
+        const mode = els.modeSelect?.value || 'Manual Mode';
+        const active = mode === 'Manual Mode'
+          ? manualPlaybackLoop.active
+          : mode === 'Auto Mode'
+            ? autoPracticeActive
+            : mode === 'Speaking Practice Mode'
+              ? speakingPractice.active
+              : mode === 'Writing Practice Mode'
+                ? writingPractice.active
+                : mode === 'Intensive Challenge' && intensivePractice.active;
+        document.body.classList.toggle('practice-focus-mode', active);
+        if (active) window._trainer?.closeSheet?.();
+      }
+
       function startSelectedMode() {
         const mode = els.modeSelect?.value || 'Manual Mode';
         if (mode === 'Speaking Practice Mode') {
           stopManualPlaybackLoop();
           startSpeakingPractice();
+          syncPracticeFocusMode();
           return;
         }
         if (mode === 'Intensive Challenge') {
           stopManualPlaybackLoop();
           startIntensivePractice();
+          syncPracticeFocusMode();
           return;
         }
         if (mode === 'Writing Practice Mode') {
           stopManualPlaybackLoop();
           startWritingPractice();
+          syncPracticeFocusMode();
           return;
         }
         if (mode === 'Auto Mode') {
           stopManualPlaybackLoop();
           const startBtn = els.modeContent?.querySelector('#autoStart');
           if (startBtn) startBtn.click();
+          syncPracticeFocusMode();
           return;
         }
         stopManualPlaybackLoop();
         startManualPlaybackLoop();
+        syncPracticeFocusMode();
       }
 
       function stopSelectedMode() {
@@ -5374,11 +7070,24 @@
         const sheetBackdrop = document.getElementById('sheetBackdrop');
         const navItems = document.querySelectorAll('.nav-item');
         const fullPageSheets = new Set(['settings', 'load', 'csv']);
+        let loadHistoryEntryActive = false;
+        let ignoreLoadPopstate = false;
         const openSheet = (sheetKey) => {
           const isAlreadyOpen = sheet && sheet.classList.contains('open') && document.querySelector('.sheet-panel.active')?.dataset.panel === sheetKey;
           if (isAlreadyOpen) {
             closeSheet();
             return;
+          }
+          if (sheetKey === 'load') {
+            setLoadScreen('options');
+            if (!loadHistoryEntryActive) {
+              const priorState = history.state;
+              const nextState = priorState && typeof priorState === 'object'
+                ? { ...priorState, loadPhrasesOverlay: true }
+                : { loadPhrasesOverlay: true };
+              history.pushState(nextState, '', location.href);
+              loadHistoryEntryActive = true;
+            }
           }
           document.querySelectorAll('.sheet-panel').forEach(panel => {
             panel.classList.toggle('active', panel.dataset.panel === sheetKey);
@@ -5390,6 +7099,7 @@
           });
           if (sheet) {
             sheet.classList.toggle('settings-page', fullPageSheets.has(sheetKey));
+            sheet.classList.toggle('load-page', sheetKey === 'load');
             sheet.classList.add('open');
             sheet.style.transition = '';
             sheet.style.transform = '';
@@ -5398,10 +7108,13 @@
             sheetBackdrop.classList.toggle('visible', !fullPageSheets.has(sheetKey));
           }
         };
-        const closeSheet = () => {
+        const closeSheet = (fromPopState = false) => {
+          const restoreHistory = loadHistoryEntryActive && !fromPopState;
+          loadHistoryEntryActive = false;
           if (sheet) {
             sheet.classList.remove('open');
             sheet.classList.remove('settings-page');
+            sheet.classList.remove('load-page');
             sheet.style.transition = '';
             sheet.style.transform = '';
           }
@@ -5411,7 +7124,20 @@
             item.setAttribute('aria-expanded', 'false');
           });
           document.querySelectorAll('.sheet-panel').forEach(panel => panel.classList.remove('active'));
+          if (restoreHistory) {
+            ignoreLoadPopstate = true;
+            history.back();
+          }
         };
+        window._trainer.openSheet = openSheet;
+        window._trainer.closeSheet = closeSheet;
+        window.addEventListener('popstate', () => {
+          if (ignoreLoadPopstate) {
+            ignoreLoadPopstate = false;
+            return;
+          }
+          if (loadHistoryEntryActive) closeSheet(true);
+        });
 
         const dragState = { active: false, startY: 0, currentY: 0 };
         const handleSheetDrag = (event) => {
@@ -5440,6 +7166,7 @@
         if (sheet) {
           sheet.addEventListener('pointerdown', (event) => {
             if (!sheet.classList.contains('open')) return;
+            if (sheet.classList.contains('load-page')) return;
             const interactiveSelector = 'button, input, select, textarea, label, a, .panel-title, .accordion-trigger';
             if (event.target.closest(interactiveSelector)) return;
             dragState.active = true;
@@ -5462,6 +7189,19 @@
           item.onclick = () => openSheet(item.dataset.sheet);
         });
 
+        document.querySelectorAll('.load-source-card[data-load-target]:not(#openCourses)').forEach(button => {
+          button.onclick = () => {
+            loadSourceFocusTarget = button;
+            const target = button.dataset.loadTarget;
+            setLoadScreen(target);
+            const heading = document.querySelector(`[data-load-screen="${target}"] .load-page-header h2`);
+            if (heading) requestAnimationFrame(() => heading.focus());
+          };
+        });
+        document.querySelectorAll('[data-load-back]').forEach(button => {
+          button.onclick = () => setLoadScreen('options');
+        });
+
         document.querySelectorAll('.mode-option').forEach((button) => {
           button.onclick = () => {
             const modeValue = button.dataset.mode;
@@ -5470,6 +7210,82 @@
             closeSheet();
           };
         });
+
+        els.openCourses.onclick = () => {
+          loadSourceFocusTarget = els.openCourses;
+          openCourseApp();
+        };
+        els.coursesBack.onclick = () => {
+          if (courseScreen === 'catalog') {
+            setCourseScreen('options');
+            setCourseStatus('');
+            return;
+          }
+          if (courseScreen === 'details') {
+            renderCourseCatalog().catch(error => setCourseStatus(error.message, true));
+            return;
+          }
+          if (courseScreen === 'unit') {
+            renderCourseDetails(courseState.selectedCourseId).catch(error => setCourseStatus(error.message, true));
+            return;
+          }
+          if (courseScreen === 'practiceTypes') {
+            const course = findCourse(courseState.selectedCourseId);
+            if (coursePreviousScreen === 'unit' && courseState.selectedUnitId) {
+              renderUnitDetails(course.id, courseState.selectedUnitId).catch(error => setCourseStatus(error.message, true));
+            } else if (coursePreviousScreen === 'catalog') {
+              renderCourseCatalog().catch(error => setCourseStatus(error.message, true));
+            } else {
+              renderCourseDetails(course.id).catch(error => setCourseStatus(error.message, true));
+            }
+          }
+        };
+        els.coursesContent.addEventListener('click', event => {
+          const actionButton = event.target.closest('[data-action]');
+          if (!actionButton) {
+            const card = event.target.closest('[data-course-card]');
+            if (card) openCourseDetails(card.dataset.courseCard).catch(error => setCourseStatus(error.message, true));
+            return;
+          }
+          const { action, courseId, unitId } = actionButton.dataset;
+          const run = async () => {
+            if (action === 'course-details') await openCourseDetails(courseId);
+            else if (action === 'select-course') await openCourseDetails(courseId, true);
+            else if (action === 'deselect-course') deselectCourse(courseId);
+            else if (action === 'select-unit') await startCourseUnit(courseId, unitId);
+            else if (action === 'unit-details') {
+              courseTab = 'focus';
+              await renderUnitDetails(courseId, unitId);
+            } else if (action === 'back-course-details') await renderCourseDetails(courseId);
+            else if (action === 'unit-tab') {
+              courseTab = actionButton.dataset.tab;
+              await renderUnitDetails(courseId || courseState.selectedCourseId, unitId || courseState.selectedUnitId);
+            } else if (action === 'choose-practice-type') {
+              pendingCoursePracticeTypeId = actionButton.dataset.typeId;
+              renderPracticeTypeSelection(courseState.selectedCourseId, courseState.selectedUnitId);
+            } else if (action === 'apply-practice-type') await applyCoursePracticeType(courseId, unitId);
+            else if (action === 'open-practice-types') await openPracticeTypePicker();
+          };
+          run().catch(error => {
+            console.error('Course action failed:', error);
+            setCourseStatus(error.message, true);
+          });
+        });
+        els.coursesContent.addEventListener('keydown', event => {
+          if (event.key !== 'Enter' && event.key !== ' ') return;
+          const card = event.target.closest('[data-course-card]');
+          if (!card || event.target !== card) return;
+          event.preventDefault();
+          openCourseDetails(card.dataset.courseCard).catch(error => setCourseStatus(error.message, true));
+        });
+        els.courseContextHeaders.forEach(header => {
+          header.addEventListener('click', event => {
+            if (event.target.closest('[data-course-context="practice"]')) {
+              openPracticeTypePicker().catch(error => setCourseStatus(error.message, true));
+            }
+          });
+        });
+        Object.values(els.courseThresholds).forEach(input => input.addEventListener('change', saveCourseThresholds));
 
         if (sheetBackdrop) sheetBackdrop.onclick = closeSheet;
 
@@ -5643,6 +7459,7 @@
 
         // CSV changes
         els.csvBox.oninput = () => {
+          deactivateCourseSession();
           if (els.modeSelect.value === 'Intensive Challenge') stopIntensivePractice();
           ensureParsed();
           if (els.modeSelect.value === 'Intensive Challenge') enterIntensiveChallengeMode();
@@ -5657,24 +7474,38 @@
         els.fileInput.onchange = async (e) => {
           const file = e.target.files?.[0];
           if (!file) return;
-          const text = await file.text();
-          els.csvBox.value = text.trim();
-          try { applyCsvWrap(); } catch (e) { /* ignore */ }
-          ensureParsed();
-          try { renderCsvViewer(); } catch (e) { /* ignore */ }
+          if (els.fileLoadStatus) els.fileLoadStatus.textContent = `Loading ${file.name}…`;
+          els.fileInput.disabled = true;
           try {
-            if (els.csvBoxViewerDisplay) {
-              els.csvBoxViewerDisplay.scrollTop = els.csvBox.scrollTop;
-              els.csvBoxViewerDisplay.scrollLeft = els.csvBox.scrollLeft;
+            const text = await file.text();
+            deactivateCourseSession();
+            els.csvBox.value = text.trim();
+            try { applyCsvWrap(); } catch (e) { /* ignore */ }
+            ensureParsed();
+            try { renderCsvViewer(); } catch (e) { /* ignore */ }
+            try {
+              if (els.csvBoxViewerDisplay) {
+                els.csvBoxViewerDisplay.scrollTop = els.csvBox.scrollTop;
+                els.csvBoxViewerDisplay.scrollLeft = els.csvBox.scrollLeft;
+              }
+            } catch (e) { /* ignore */ }
+            if (els.modeSelect.value === 'Intensive Challenge') {
+              stopIntensivePractice();
+              enterIntensiveChallengeMode();
+            } else {
+              await selectAndShowNextRow({ speak: false });
             }
-          } catch (e) { /* ignore */ }
-          if (els.modeSelect.value === 'Intensive Challenge') {
-            stopIntensivePractice();
-            enterIntensiveChallengeMode();
-          } else {
-            await selectAndShowNextRow({ speak: false });
+            saveConfig();
+            if (els.fileLoadStatus) els.fileLoadStatus.textContent = `Loaded ${file.name}.`;
+          } catch (error) {
+            console.error('Phrase file import failed:', error);
+            if (els.fileLoadStatus) {
+              const details = error instanceof Error ? ` ${error.message}` : '';
+              els.fileLoadStatus.textContent = `Unable to load ${file.name}.${details}`;
+            }
+          } finally {
+            els.fileInput.disabled = false;
           }
-          saveConfig();
         };
 
         // Voices ready
@@ -5744,6 +7575,7 @@
       // --- Bootstrap ---
       function init() {
         applyVisualTheme('rainbow-playground');
+        loadCourseState();
         // Load saved UI configuration first (if any)
         loadConfig();
 
@@ -5759,6 +7591,7 @@
         applyShowVisibility();
         populateVoices();
         populatePredefinedList();
+        restoreSavedCourseSession();
 
         // Initial phrase display (silent) so UI isn't empty
         if (els.modeSelect.value === 'Intensive Challenge') enterIntensiveChallengeMode();
@@ -5796,7 +7629,9 @@
       }
 
       // Expose minimal for debugging (optional)
-      window._trainer = { state: () => ({ currentIndex, phraseSessionId, parsedRowsCount: parsedRows.length }) };
+      window._trainer = window._trainer || {};
+      window._trainer.state = () => ({ currentIndex, phraseSessionId, parsedRowsCount: parsedRows.length });
+      window._trainer.courseState = () => JSON.parse(JSON.stringify(courseState));
 
       init();
     })();

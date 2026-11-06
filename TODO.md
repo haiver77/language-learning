@@ -106,3 +106,4 @@ Completed with input: {
 
 
 
+Elabora prototipos para la pantalla de "Load Phrases", para que no sea un panel que se arrastra para abajo para desaparecer sino que se abre completamente y los elementos aparecen deforma atractiva y ordenada. Para cerrar esa pantalla, el usuario puede presionar el botón "atras" de su celular o presionar nuevamente el botón "Load Phrases" del menú.
