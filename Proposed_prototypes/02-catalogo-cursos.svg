@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1080" role="img" aria-labelledby="title desc">
+  <title id="title">34 — Course catalog with separated vocabulary metrics</title>
+  <desc id="desc">Main course screen with Current badge, four-line description, distinct focus and supplementary metric panels, and a full-width progress bar.</desc>
+  <rect width="760" height="1080" fill="#eff2f7"/>
+  <rect x="28" y="24" width="704" height="1032" rx="32" fill="#fbfcfe"/>
+  <text x="64" y="73" font-family="Arial" font-size="25" font-weight="700" fill="#202c3c">Language Practice</text>
+  <text x="678" y="72" text-anchor="middle" font-family="Arial" font-size="21" fill="#667085">‹</text>
+  <text x="64" y="143" font-family="Arial" font-size="32" font-weight="700" fill="#202c3c">Courses</text>
+  <text x="64" y="172" font-family="Arial" font-size="15" fill="#69778a">Choose a course to see its units</text>
+
+  <rect x="58" y="198" width="644" height="58" rx="16" fill="#f1f3f7" stroke="#e0e5ec"/>
+  <text x="82" y="234" font-family="Arial" font-size="16" fill="#98a2b3">⌕  Search courses</text>
+  <rect x="598" y="209" width="88" height="36" rx="11" fill="#fff" stroke="#dde2eb"/>
+  <text x="642" y="232" text-anchor="middle" font-family="Arial" font-size="13" fill="#596579">All levels⌄</text>
+
+  <rect x="58" y="279" width="644" height="400" rx="24" fill="#fff" stroke="#8979d0" stroke-width="2"/>
+  <rect x="58" y="279" width="10" height="400" rx="5" fill="#705bc3"/>
+  <rect x="84" y="301" width="82" height="34" rx="12" fill="#f0edff"/>
+  <text x="125" y="323" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#5947ad">ITALIAN · A1</text>
+  <rect x="594" y="301" width="82" height="34" rx="12" fill="#e5f5ee"/>
+  <text x="635" y="323" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#267457">Current</text>
+  <text x="84" y="373" font-family="Arial" font-size="20" font-weight="700" fill="#222e40">ESIT-NounsFrequentlyUsedByRank_Top500</text>
+  <text x="84" y="405" font-family="Arial" font-size="14" fill="#68768a">Build a practical Italian foundation with 498 frequently used nouns for Spanish speakers,</text>
+  <text x="84" y="426" font-family="Arial" font-size="14" fill="#68768a">organized into 17 units with short examples for familiar, everyday situations and contexts.</text>
+  <text x="84" y="447" font-family="Arial" font-size="14" fill="#68768a">Choose a practice style—from individual vocabulary to simple usage and questions—then</text>
+  <text x="84" y="468" font-family="Arial" font-size="14" fill="#68768a">continue from your current unit whenever you return to study.</text>
+
+  <rect x="84" y="488" width="265" height="67" rx="16" fill="#f7f6ff"/>
+  <text x="102" y="515" font-family="Arial" font-size="13" fill="#778196">FOCUS VOCABULARY</text>
+  <text x="102" y="541" font-family="Arial" font-size="19" font-weight="700" fill="#342b63">498 words</text>
+  <rect x="363" y="488" width="284" height="67" rx="16" fill="#f5f7fa"/>
+  <text x="383" y="515" font-family="Arial" font-size="13" fill="#778196">SUPPLEMENTARY</text>
+  <text x="383" y="541" font-family="Arial" font-size="19" font-weight="700" fill="#344054">0 words</text>
+
+  <rect x="84" y="572" width="118" height="45" rx="14" fill="#6652b8"/>
+  <text x="143" y="601" text-anchor="middle" font-family="Arial" font-size="15" font-weight="700" fill="#fff">Select</text>
+  <rect x="214" y="572" width="140" height="45" rx="14" fill="#f3f1ff"/>
+  <text x="284" y="601" text-anchor="middle" font-family="Arial" font-size="15" font-weight="700" fill="#5b49b2">View details</text>
+  <rect x="84" y="647" width="592" height="9" rx="4.5" fill="#ebeef3"/>
+  <rect x="321" y="647" width="355" height="9" rx="4.5" fill="#6d58c4"/>
+
+  <rect x="58" y="704" width="644" height="196" rx="24" fill="#fff" stroke="#dfe4ec"/>
+  <rect x="84" y="727" width="74" height="30" rx="11" fill="#eef2f8"/>
+  <text x="121" y="748" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#536176">B1</text>
+  <text x="84" y="794" font-family="Arial" font-size="20" font-weight="700" fill="#222e40">More courses appear here</text>
+  <text x="84" y="824" font-family="Arial" font-size="14" fill="#68768a">Catalog is discovered from available course folders.</text>
+  <text x="84" y="862" font-family="Arial" font-size="13" fill="#8a94a5">Course list is not hard-coded</text>
+  <path d="M658 776l10 10-10 10" fill="none" stroke="#98a2b3" stroke-width="3"/>
+
+  <rect x="58" y="934" width="644" height="90" rx="20" fill="#f3f5f9"/>
+  <text x="84" y="971" font-family="Arial" font-size="14" font-weight="700" fill="#39465a">Course not listed?</text>
+  <text x="84" y="997" font-family="Arial" font-size="13" fill="#768397">Refresh the catalog or check the connection.</text>
+</svg>

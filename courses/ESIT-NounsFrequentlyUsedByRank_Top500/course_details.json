@@ -1,0 +1,30 @@
+{
+  "id": "ESIT-NounsFrequentlyUsedByRank_Top500",
+  "title": "ESIT-NounsFrequentlyUsedByRank_Top500",
+  "description": "Curso de italiano para hablantes de español, nivel A1, centrado en sustantivos frecuentes. Se prioriza el uso de vocabulario simple y básico A1.",
+  "idioma_nativo": "es",
+  "idioma_destino": "it",
+  "focusVocabularyCount": 498,
+  "supplementaryVocabularyCount": 0,
+  "level": "A1",
+  "practiceType": [
+    {
+      "id": "solo_vocabulario_foco",
+      "name": "Práctica individual",
+      "description": "Presenta únicamente la primera frase de cada archivo CSV.",
+      "rows": [1]
+    },
+    {
+      "id": "vocabulario_en_uso_simple",
+      "name": "Uso simple",
+      "description": "Presenta las tres primeras frases de cada archivo CSV.",
+      "rows": [1, 2, 3]
+    },
+    {
+      "id": "vocabulario_en_preguntas",
+      "name": "Uso en preguntas",
+      "description": "Presenta únicamente la frase de la fila 4 de cada archivo CSV.",
+      "rows": [4]
+    }
+  ]
+}
