@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" role="img" aria-labelledby="title desc">
+  <title id="title">Settings detail — Speaking Recognition Options</title>
+  <desc id="desc">Standalone speaking recognition screen with the current similarity, silence, wait-after-match, and celebration values.</desc>
+  <defs><pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="3" cy="3" r="1.4" fill="#08719a" opacity=".4"/></pattern></defs>
+  <rect width="390" height="844" fill="#070808"/><rect width="390" height="112" fill="url(#dots)"/>
+  <g font-family="Arial,sans-serif">
+    <text x="20" y="24" fill="#eef5fb" font-size="12" font-weight="700">9:41</text><text x="328" y="24" fill="#eef5fb" font-size="12">●  ▰  95</text>
+    <path d="m22 52-8 8 8 8" fill="none" stroke="#eaf0f3" stroke-width="2.5"/><text x="40" y="66" fill="#c0c8cc" font-size="12">Settings</text>
+    <text x="20" y="105" fill="#f5f7fa" font-size="20" font-weight="700">Speaking Recognition Options</text>
+    <text x="20" y="135" fill="#aeb9be" font-size="11">Adjust speech matching and response timing.</text>
+    <rect x="16" y="156" width="358" height="137" rx="18" fill="#242627"/>
+    <text x="32" y="187" fill="#e9edef" font-size="13" font-weight="700">Min. Similarity (%)</text><text x="354" y="187" fill="#49c4e9" font-size="15" font-weight="700" text-anchor="end">90</text>
+    <rect x="32" y="205" width="326" height="7" rx="4" fill="#41484a"/><rect x="32" y="205" width="267" height="7" rx="4" fill="#28b7e5"/><circle cx="299" cy="208.5" r="8" fill="#e4f8fc"/>
+    <text x="32" y="237" fill="#869399" font-size="9">50</text><text x="358" y="237" fill="#869399" font-size="9" text-anchor="end">100</text>
+    <text x="32" y="270" fill="#aeb8bc" font-size="10">Higher similarity requires a closer match.</text>
+    <rect x="16" y="307" width="358" height="78" rx="17" fill="#242627"/>
+    <text x="32" y="337" fill="#e9edef" font-size="12" font-weight="700">Silence Wait (sec)</text><text x="32" y="360" fill="#aab5b9" font-size="10">How long to wait for speech</text>
+    <rect x="275" y="327" width="83" height="38" rx="11" fill="#34393b"/><text x="288" y="352" fill="#c1cace" font-size="16">−</text><text x="316" y="352" fill="#f3f5f6" font-size="14" font-weight="700">3</text><text x="345" y="352" fill="#c1cace" font-size="16">+</text>
+    <rect x="16" y="397" width="358" height="92" rx="17" fill="#242627"/>
+    <text x="32" y="426" fill="#e9edef" font-size="11" font-weight="700">Wait After Reach Min. Similarity (sec)</text><text x="32" y="450" fill="#aab5b9" font-size="10">Extra time before confirming a match</text>
+    <rect x="275" y="439" width="83" height="38" rx="11" fill="#34393b"/><text x="288" y="464" fill="#c1cace" font-size="16">−</text><text x="316" y="464" fill="#f3f5f6" font-size="14" font-weight="700">3</text><text x="345" y="464" fill="#c1cace" font-size="16">+</text>
+    <rect x="16" y="501" width="358" height="82" rx="17" fill="#242627"/>
+    <text x="32" y="531" fill="#e9edef" font-size="11" font-weight="700">Match celebration time (sec)</text><text x="32" y="555" fill="#aab5b9" font-size="10">Duration of the success animation</text>
+    <rect x="275" y="523" width="83" height="38" rx="11" fill="#34393b"/><text x="288" y="548" fill="#c1cace" font-size="16">−</text><text x="316" y="548" fill="#f3f5f6" font-size="13" font-weight="700">1.2</text><text x="345" y="548" fill="#c1cace" font-size="16">+</text>
+    <text x="20" y="617" fill="#87949a" font-size="10">Changes apply to speaking practice.</text>
+    <rect y="756" width="390" height="62" fill="#1b1c1d"/><path d="M0 756h390" stroke="#303234"/>
+    <g font-size="9" text-anchor="middle"><text x="49" y="783" fill="#abb1b5">◷</text><text x="49" y="803" fill="#abb1b5">Practice</text><text x="147" y="783" fill="#abb1b5">⇩</text><text x="147" y="803" fill="#abb1b5">Load</text><text x="244" y="783" fill="#abb1b5">▤</text><text x="244" y="803" fill="#abb1b5">CSV</text><rect x="298" y="761" width="78" height="48" rx="24" fill="#102d3a"/><text x="337" y="783" fill="#35bcea" font-size="17">⚙</text><text x="337" y="803" fill="#35bcea" font-size="9" font-weight="700">Settings</text></g>
+    <rect y="818" width="390" height="26" fill="#070808"/><path d="M151 831h16m8 0h40m8 0h16" stroke="#e9ecef" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+</svg>

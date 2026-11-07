@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" role="img" aria-labelledby="title desc">
+  <title id="title">02 — Course Settings: focused progression</title>
+  <desc id="desc">A focused Course Settings screen with four editable repetition thresholds arranged along a vertical progression line.</desc>
+  <rect width="390" height="844" fill="#f3f7f1"/>
+  <g font-family="Arial,sans-serif">
+    <rect width="390" height="28" fill="#f3f7f1"/>
+    <text x="20" y="19" fill="#26372c" font-size="12" font-weight="700">9:41</text>
+    <text x="343" y="19" fill="#26372c" font-size="12">● ▰</text>
+
+    <rect y="28" width="390" height="60" fill="#fff"/>
+    <path d="M25 51 17 59l8 8" fill="none" stroke="#26372c" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="40" y="65" fill="#26372c" font-size="18" font-weight="700">Course Settings</text>
+    <text x="343" y="63" fill="#36764a" font-size="14" font-weight="700">Done</text>
+
+    <text x="20" y="121" fill="#26372c" font-size="15" font-weight="700">Course progression</text>
+    <text x="20" y="143" fill="#6f8071" font-size="11">Repetitions to move along your course</text>
+
+    <rect x="16" y="161" width="358" height="381" rx="20" fill="#fff" stroke="#cfdfd1" stroke-width="1.2"/>
+    <path d="M54 218v267" fill="none" stroke="#a9cbb0" stroke-width="3" stroke-linecap="round"/>
+
+    <g fill="#36764a">
+      <circle cx="54" cy="227" r="10"/>
+      <circle cx="54" cy="307" r="10"/>
+      <circle cx="54" cy="387" r="10"/>
+      <circle cx="54" cy="467" r="10"/>
+    </g>
+    <g fill="#fff" font-size="9" font-weight="700" text-anchor="middle">
+      <text x="54" y="230">1</text>
+      <text x="54" y="310">2</text>
+      <text x="54" y="390">3</text>
+      <text x="54" y="470">4</text>
+    </g>
+    <g fill="#26372c" font-size="14" font-weight="700">
+      <text x="78" y="223">Known</text>
+      <text x="78" y="303">Learning</text>
+      <text x="78" y="383">Learned</text>
+      <text x="78" y="463">Mastered</text>
+    </g>
+    <g fill="#6f8071" font-size="10">
+      <text x="78" y="241">First milestone</text>
+      <text x="78" y="321">Building familiarity</text>
+      <text x="78" y="401">Practiced with confidence</text>
+      <text x="78" y="481">Ready to advance</text>
+    </g>
+    <g>
+      <rect x="291" y="203" width="64" height="48" rx="12" fill="#f0f7f0" stroke="#cfdfd1" stroke-width="1.2"/>
+      <rect x="291" y="283" width="64" height="48" rx="12" fill="#f0f7f0" stroke="#cfdfd1" stroke-width="1.2"/>
+      <rect x="291" y="363" width="64" height="48" rx="12" fill="#f0f7f0" stroke="#cfdfd1" stroke-width="1.2"/>
+      <rect x="291" y="443" width="64" height="48" rx="12" fill="#f0f7f0" stroke="#cfdfd1" stroke-width="1.2"/>
+    </g>
+    <g fill="#26372c" font-size="18" font-weight="700" text-anchor="middle">
+      <text x="323" y="234">1</text>
+      <text x="323" y="314">2</text>
+      <text x="323" y="394">6</text>
+      <text x="323" y="474">8</text>
+    </g>
+    <g fill="#6f8071" font-size="9" text-anchor="middle">
+      <text x="323" y="262">repetitions</text>
+      <text x="323" y="342">repetitions</text>
+      <text x="323" y="422">repetitions</text>
+      <text x="323" y="502">repetitions</text>
+    </g>
+
+    <rect x="16" y="561" width="358" height="64" rx="14" fill="#e7f1e8"/>
+    <circle cx="39" cy="593" r="11" fill="#36764a"/>
+    <text x="39" y="597" fill="#fff" font-size="13" font-weight="700" text-anchor="middle">i</text>
+    <text x="59" y="588" fill="#365943" font-size="11" font-weight="700">Each number is editable</text>
+    <text x="59" y="605" fill="#6f8071" font-size="10">Set the repetition count for each milestone.</text>
+
+    <text x="20" y="674" fill="#6f8071" font-size="10">Values are saved when you select Done.</text>
+    <rect y="812" width="390" height="32" fill="#f3f7f1"/>
+  </g>
+</svg>

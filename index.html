@@ -2005,6 +2005,231 @@
     .sheet .check { min-height: 54px; width: auto; background: var(--surface); color: var(--ink); }
     .sheet .check input { width: 20px; height: 20px; accent-color: var(--primary); }
     .sheet .badge { background: var(--surface); color: var(--ink); border-color: var(--border); min-height: 40px; font-size: 13px; line-height: 18px; }
+    .sheet.settings-page .sheet-grab { display: none; }
+    .sheet-panel[data-panel="settings"] {
+      position: relative;
+      height: 100%;
+      max-height: 100%;
+      padding: 0;
+      overflow: hidden;
+    }
+    .settings-menu,
+    .settings-page-view {
+      position: absolute;
+      inset: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: calc(24px + env(safe-area-inset-top)) 16px calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
+      transition: transform .3s ease, opacity .22s ease, visibility 0s linear .3s;
+      background: var(--panel);
+      scrollbar-width: thin;
+    }
+    .settings-menu {
+      z-index: 1;
+      transform: translateX(0);
+      opacity: 1;
+      visibility: visible;
+    }
+    .settings-panel.has-detail .settings-menu {
+      transform: translateX(-24%);
+      opacity: 0;
+      visibility: hidden;
+    }
+    .settings-page-view {
+      z-index: 2;
+      transform: translateX(100%);
+      visibility: hidden;
+      pointer-events: none;
+    }
+    .settings-page-view.is-current {
+      transform: translateX(0);
+      visibility: visible;
+      pointer-events: auto;
+      transition-delay: 0s;
+    }
+    .settings-page-view.is-current ~ .settings-page-view {
+      transform: translateX(100%);
+    }
+    .settings-menu-title {
+      margin: 0 0 24px;
+      color: var(--ink);
+      font: 700 30px/1.15 var(--theme-heading-font, var(--theme-font, Arial)), Arial, sans-serif;
+    }
+    .settings-section-list { display: grid; gap: 12px; }
+    .settings-section-card {
+      --settings-accent: var(--primary);
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) 30px;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      min-height: 84px;
+      padding: 14px 12px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      border-left: 4px solid var(--settings-accent);
+      background: var(--surface-soft);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+      transition: background .16s ease, transform .16s ease;
+    }
+    .settings-section-card:hover { background: var(--primary-soft); transform: translateY(-1px); }
+    .settings-section-icon {
+      display: grid;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border-radius: 15px;
+      background: var(--surface);
+      color: var(--settings-accent);
+      font: 700 22px/1 Arial, sans-serif;
+    }
+    .settings-section-copy { display: grid; gap: 6px; min-width: 0; }
+    .settings-section-name { font: 700 15px/19px Arial, sans-serif; }
+    .settings-section-description { color: var(--muted); font: 12px/17px Arial, sans-serif; }
+    .settings-section-arrow {
+      display: grid;
+      width: 30px;
+      height: 30px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--muted);
+      font: 24px/1 Arial, sans-serif;
+    }
+    .settings-detail-header {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr);
+      align-items: center;
+      gap: 12px;
+      margin: 0 0 22px;
+    }
+    .settings-back-button {
+      display: grid;
+      width: 40px;
+      height: 40px;
+      place-items: center;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--surface-soft);
+      color: var(--ink);
+      font: 25px/1 Arial, sans-serif;
+      cursor: pointer;
+    }
+    .settings-detail-heading { margin: 0; font: 700 22px/1.25 var(--theme-heading-font, var(--theme-font, Arial)), Arial, sans-serif; }
+    .settings-detail-description { margin: 6px 0 0; color: var(--muted); font: 13px/19px Arial, sans-serif; }
+    .settings-detail-content { display: grid; gap: 16px; }
+    .settings-content-card {
+      min-width: 0;
+      padding: 18px 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .settings-content-card h3 { margin: 0 0 12px; font: 700 15px/20px Arial, sans-serif; }
+    .settings-content-card p { color: var(--muted); }
+    .settings-language-list { display: grid; gap: 10px; }
+    .settings-language-field { display: grid; gap: 5px; }
+    .settings-language-field > span { padding: 0 12px; color: var(--muted); font: 12px/16px Arial, sans-serif; }
+    .settings-language-field select {
+      width: 100%;
+      min-height: 52px !important;
+      padding: 8px 36px 8px 12px;
+      border-radius: 15px;
+      font-weight: 700 !important;
+    }
+    .practice-language-options { display: grid; gap: 12px; }
+    .practice-language-card {
+      display: grid;
+      grid-template-columns: 48px minmax(0, 1fr) 24px;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      min-height: 82px;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface-soft);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+    }
+    .practice-language-card[aria-pressed="true"] { border: 2px solid var(--primary); background: var(--primary-soft); }
+    .practice-language-code {
+      display: grid;
+      width: 46px;
+      height: 46px;
+      place-items: center;
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--primary);
+      font: 700 13px/1 Arial, sans-serif;
+    }
+    .practice-language-copy { display: grid; gap: 4px; min-width: 0; }
+    .practice-language-name { font: 700 16px/21px Arial, sans-serif; }
+    .practice-language-slot { color: var(--muted); font: 12px/16px Arial, sans-serif; }
+    .practice-language-check { color: var(--primary); font: 700 20px/1 Arial, sans-serif; }
+    .settings-native-select { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
+    .speaking-option-list { display: grid; gap: 12px; }
+    .speaking-option-card {
+      display: grid;
+      gap: 12px;
+      padding: 18px 16px;
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface-soft);
+    }
+    .speaking-option-heading { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+    .speaking-option-heading label { color: var(--ink); font: 700 14px/19px Arial, sans-serif; }
+    .speaking-option-description { margin: -5px 0 0; color: var(--muted); font: 12px/17px Arial, sans-serif; }
+    .speaking-option-value { color: var(--primary); font: 700 15px/20px Arial, sans-serif; }
+    .speaking-option-card input[type="range"] { width: 100%; accent-color: var(--primary); }
+    .speaking-range-limits { display: flex; justify-content: space-between; margin-top: -8px; color: var(--muted); font: 11px/15px Arial, sans-serif; }
+    .settings-stepper { display: grid; grid-template-columns: 42px minmax(60px, 1fr) 42px; gap: 8px; align-items: center; }
+    .settings-stepper button {
+      min-height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+      font: 700 20px/1 Arial, sans-serif;
+      cursor: pointer;
+    }
+    .settings-stepper input { width: 100%; min-width: 0; text-align: center; font-weight: 700 !important; }
+    .course-progression-card { position: relative; display: grid; gap: 0; padding: 12px 16px; }
+    .course-milestone {
+      position: relative;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr) 82px;
+      align-items: center;
+      gap: 12px;
+      min-height: 78px;
+    }
+    .course-milestone:not(:last-child)::after {
+      position: absolute;
+      content: "";
+      left: 14px;
+      top: calc(50% + 13px);
+      bottom: calc(-50% + 13px);
+      width: 3px;
+      border-radius: 2px;
+      background: color-mix(in srgb, var(--primary) 36%, var(--border));
+    }
+    .course-milestone-index { z-index: 1; display: grid; width: 29px; height: 29px; place-items: center; border-radius: 50%; background: var(--primary); color: var(--surface); font: 700 12px/1 Arial, sans-serif; }
+    .course-milestone-copy { display: grid; gap: 4px; }
+    .course-milestone-copy strong { font: 700 14px/18px Arial, sans-serif; }
+    .course-milestone-copy span { color: var(--muted); font: 11px/15px Arial, sans-serif; }
+    .course-milestone input { width: 100%; min-width: 0; min-height: 46px !important; padding: 6px; text-align: center; font-size: 17px !important; font-weight: 700 !important; }
+    .course-settings-note { margin: 0; padding: 14px; border-radius: 14px; background: var(--primary-soft); color: var(--muted); font: 12px/18px Arial, sans-serif; }
+    .settings-content-card .theme-choice-list { grid-template-columns: 1fr; }
+    .settings-panel button:focus-visible,
+    .settings-panel select:focus-visible,
+    .settings-panel input:focus-visible { outline: 3px solid var(--focus-color); outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) {
+      .settings-menu, .settings-page-view, .settings-section-card { transition-duration: .01ms; }
+    }
     .status, .sheet .status, .speaking-streak-label, .speaking-progress-label,
     .speaking-practice-card .status-row .status, .writing-practice-card .status-row .status {
       font: 600 12px/18px Arial, sans-serif;
@@ -2693,88 +2918,166 @@
         </div>
 
         <div class="sheet-panel" data-panel="settings">
-          <div class="sheet-header">Settings</div>
-          <section class="row" id="row-settings">
-            <div class="panel theme-chooser-panel">
-              <div class="panel-content">
-                <h2 class="theme-section-heading">Appearance and Theme</h2>
-                <p class="theme-chooser-intro">Choose a visual style. Your selection applies immediately.</p>
-                <div class="theme-active-name" id="activeThemeName">Rainbow Playground</div>
-                <fieldset class="theme-choice-list" id="visualThemeChoices" aria-label="Visual theme">
-                  <legend class="sr-only">Choose a visual theme</legend>
-                  <label class="theme-choice-card" data-theme="rainbow-playground">
-                    <input type="radio" name="visualTheme" value="rainbow-playground" checked />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Rainbow Playground</span><span class="theme-choice-description">Airy canvas with a playful rainbow arc.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="bright-adventure">
-                    <input type="radio" name="visualTheme" value="bright-adventure" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Bright Adventure</span><span class="theme-choice-description">Warm sunrise colors and fresh greens.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="rainbow-adventure">
-                    <input type="radio" name="visualTheme" value="rainbow-adventure" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Rainbow Adventure</span><span class="theme-choice-description">Spectrum accents mark language progress.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="dazzling-expedition">
-                    <input type="radio" name="visualTheme" value="dazzling-expedition" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Dazzling Expedition</span><span class="theme-choice-description">Energetic blue-green expedition dashboard.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="brilliant-odyssey">
-                    <input type="radio" name="visualTheme" value="brilliant-odyssey" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Brilliant Odyssey</span><span class="theme-choice-description">Cosmic violet-blue with luminous accents.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                  <label class="theme-choice-card" data-theme="tropical-expedition">
-                    <input type="radio" name="visualTheme" value="tropical-expedition" />
-                    <span class="theme-swatch" aria-hidden="true"></span>
-                    <span class="theme-choice-copy"><span class="theme-choice-name">Tropical Expedition</span><span class="theme-choice-description">Fresh foliage greens and tangerine cues.</span></span>
-                    <span class="theme-choice-indicator" aria-hidden="true">✓</span>
-                  </label>
-                </fieldset>
-                <p class="theme-save-status" id="themeSaveStatus" role="status" aria-live="polite"></p>
+          <div class="settings-panel" id="settingsPanel">
+            <section class="settings-menu" data-settings-view="menu" aria-label="Settings menu">
+              <h1 class="settings-menu-title">Settings</h1>
+              <div class="settings-section-list">
+                <button class="settings-section-card" type="button" data-settings-open="appearance" style="--settings-accent:#42bfe6">
+                  <span class="settings-section-icon" aria-hidden="true">◉</span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Appearance and Theme</span><span class="settings-section-description">Theme, colors, and display</span></span>
+                  <span class="settings-section-arrow" aria-hidden="true">›</span>
+                </button>
+                <button class="settings-section-card" type="button" data-settings-open="languages" style="--settings-accent:#d4aa51">
+                  <span class="settings-section-icon" aria-hidden="true">文</span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Languages</span><span class="settings-section-description">Choose the languages you use</span></span>
+                  <span class="settings-section-arrow" aria-hidden="true">›</span>
+                </button>
+                <button class="settings-section-card" type="button" data-settings-open="practice-language" style="--settings-accent:#54c891">
+                  <span class="settings-section-icon" aria-hidden="true">◎</span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Language to practice</span><span class="settings-section-description">Set your active practice language</span></span>
+                  <span class="settings-section-arrow" aria-hidden="true">›</span>
+                </button>
+                <button class="settings-section-card" type="button" data-settings-open="speaking" style="--settings-accent:#b07cde">
+                  <span class="settings-section-icon" aria-hidden="true">♫</span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Speaking Recognition Options</span><span class="settings-section-description">Sensitivity, wait, and timing</span></span>
+                  <span class="settings-section-arrow" aria-hidden="true">›</span>
+                </button>
+                <button class="settings-section-card" type="button" data-settings-open="course" style="--settings-accent:#e98761">
+                  <span class="settings-section-icon" aria-hidden="true">▥</span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Course Settings</span><span class="settings-section-description">Configure learning milestones</span></span>
+                  <span class="settings-section-arrow" aria-hidden="true">›</span>
+                </button>
               </div>
-            </div>
-            <div class="panel">
-              <div class="panel-title">Languages</div>
-              <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
-                <label class="badge"><span>Language 1</span><select id="lang1Select"><option value="es" selected>Spanish</option><option value="en">English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
-                <label class="badge"><span>Language 2</span><select id="lang2Select"><option value="es">Spanish</option><option value="en" selected>English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
+            </section>
+
+            <section class="settings-page-view" data-settings-view="appearance" aria-labelledby="settings-appearance-title" aria-hidden="true" inert>
+              <header class="settings-detail-header">
+                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
+                <div><h2 class="settings-detail-heading" id="settings-appearance-title">Appearance and Theme</h2><p class="settings-detail-description">Choose a visual style. Your selection applies immediately.</p></div>
+              </header>
+              <div class="settings-detail-content">
+                <div class="settings-content-card">
+                  <div class="theme-active-name" id="activeThemeName">Rainbow Playground</div>
+                  <fieldset class="theme-choice-list" id="visualThemeChoices" aria-label="Visual theme">
+                    <legend class="sr-only">Choose a visual theme</legend>
+                    <label class="theme-choice-card" data-theme="rainbow-playground">
+                      <input type="radio" name="visualTheme" value="rainbow-playground" checked />
+                      <span class="theme-swatch" aria-hidden="true"></span>
+                      <span class="theme-choice-copy"><span class="theme-choice-name">Rainbow Playground</span><span class="theme-choice-description">Airy canvas with a playful rainbow arc.</span></span>
+                      <span class="theme-choice-indicator" aria-hidden="true">✓</span>
+                    </label>
+                    <label class="theme-choice-card" data-theme="bright-adventure">
+                      <input type="radio" name="visualTheme" value="bright-adventure" />
+                      <span class="theme-swatch" aria-hidden="true"></span>
+                      <span class="theme-choice-copy"><span class="theme-choice-name">Bright Adventure</span><span class="theme-choice-description">Warm sunrise colors and fresh greens.</span></span>
+                      <span class="theme-choice-indicator" aria-hidden="true">✓</span>
+                    </label>
+                    <label class="theme-choice-card" data-theme="rainbow-adventure">
+                      <input type="radio" name="visualTheme" value="rainbow-adventure" />
+                      <span class="theme-swatch" aria-hidden="true"></span>
+                      <span class="theme-choice-copy"><span class="theme-choice-name">Rainbow Adventure</span><span class="theme-choice-description">Spectrum accents mark language progress.</span></span>
+                      <span class="theme-choice-indicator" aria-hidden="true">✓</span>
+                    </label>
+                    <label class="theme-choice-card" data-theme="dazzling-expedition">
+                      <input type="radio" name="visualTheme" value="dazzling-expedition" />
+                      <span class="theme-swatch" aria-hidden="true"></span>
+                      <span class="theme-choice-copy"><span class="theme-choice-name">Dazzling Expedition</span><span class="theme-choice-description">Energetic blue-green expedition dashboard.</span></span>
+                      <span class="theme-choice-indicator" aria-hidden="true">✓</span>
+                    </label>
+                    <label class="theme-choice-card" data-theme="brilliant-odyssey">
+                      <input type="radio" name="visualTheme" value="brilliant-odyssey" />
+                      <span class="theme-swatch" aria-hidden="true"></span>
+                      <span class="theme-choice-copy"><span class="theme-choice-name">Brilliant Odyssey</span><span class="theme-choice-description">Cosmic violet-blue with luminous accents.</span></span>
+                      <span class="theme-choice-indicator" aria-hidden="true">✓</span>
+                    </label>
+                    <label class="theme-choice-card" data-theme="tropical-expedition">
+                      <input type="radio" name="visualTheme" value="tropical-expedition" />
+                      <span class="theme-swatch" aria-hidden="true"></span>
+                      <span class="theme-choice-copy"><span class="theme-choice-name">Tropical Expedition</span><span class="theme-choice-description">Fresh foliage greens and tangerine cues.</span></span>
+                      <span class="theme-choice-indicator" aria-hidden="true">✓</span>
+                    </label>
+                  </fieldset>
+                  <p class="theme-save-status" id="themeSaveStatus" role="status" aria-live="polite"></p>
+                </div>
               </div>
-            </div>
-            <div class="panel">
-              <div class="panel-title">Language to practice</div>
-              <div class="inline-controls" style="gap:10px; flex-wrap:wrap">
-                <label class="badge"><span>Practice language</span><select id="practiceLangSelect"></select></label>
+            </section>
+
+            <section class="settings-page-view" data-settings-view="languages" aria-labelledby="settings-languages-title" aria-hidden="true" inert>
+              <header class="settings-detail-header">
+                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
+                <div><h2 class="settings-detail-heading" id="settings-languages-title">Languages</h2><p class="settings-detail-description">Choose the languages you use.</p></div>
+              </header>
+              <div class="settings-detail-content">
+                <div class="settings-language-list settings-content-card">
+                  <label class="settings-language-field"><span>Language 1</span><select id="lang1Select"><option value="es" selected>Spanish</option><option value="en">English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
+                  <label class="settings-language-field"><span>Language 2</span><select id="lang2Select"><option value="es">Spanish</option><option value="en" selected>English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
+                </div>
               </div>
-            </div>
-            <div class="panel">
-              <div class="panel-title">Speaking Practice</div>
-              <div class="inline-controls" style="gap:10px; flex-wrap:wrap;">
-                <label class="badge"><span>Min. Similarity (%)</span><input type="number" id="sp-min-settings" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" /></label>
-                <label class="badge"><span>Silence Wait (sec)</span><input type="number" id="sp-wait-settings" min="1" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
-                <label class="badge"><span>Wait After Reach Min. Similarity (sec)</span><input type="number" id="sp-after-min-settings" min="0" step="1" value="3" style="width:50px; min-width:50px; max-width:50px;" /></label>
-                <label class="badge"><span>Match celebration time (sec)</span><input type="number" id="sp-celebration-settings" min="0.5" max="10" step="0.1" value="1.2" style="width:58px; min-width:58px; max-width:58px;" /></label>
+            </section>
+
+            <section class="settings-page-view" data-settings-view="practice-language" aria-labelledby="settings-practice-language-title" aria-hidden="true" inert>
+              <header class="settings-detail-header">
+                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
+                <div><h2 class="settings-detail-heading" id="settings-practice-language-title">Language to practice</h2><p class="settings-detail-description">Choose the language used in speaking practice.</p></div>
+              </header>
+              <div class="settings-detail-content">
+                <div class="practice-language-options" id="practiceLanguageChoices"></div>
+                <select id="practiceLangSelect" class="settings-native-select" aria-label="Practice language"></select>
+                <div class="settings-content-card">
+                  <h3>About practice language</h3>
+                  <p>Your speaking practice uses this language. Only languages in your configured pair appear.</p>
+                </div>
               </div>
-            </div>
-            <div class="panel">
-              <div class="panel-title">Course Settings</div>
-              <div class="course-settings-grid">
-                <div class="course-config-field"><label for="courseKnownThreshold">Known</label><input class="course-config-input" type="number" id="courseKnownThreshold" min="1" step="1" value="1" /></div>
-                <div class="course-config-field"><label for="courseLearningThreshold">Learning</label><input class="course-config-input" type="number" id="courseLearningThreshold" min="1" step="1" value="2" /></div>
-                <div class="course-config-field"><label for="courseLearnedThreshold">Learned</label><input class="course-config-input" type="number" id="courseLearnedThreshold" min="1" step="1" value="6" /></div>
-                <div class="course-config-field"><label for="courseMasteredThreshold">Mastered</label><input class="course-config-input" type="number" id="courseMasteredThreshold" min="1" step="1" value="8" /></div>
+            </section>
+
+            <section class="settings-page-view" data-settings-view="speaking" aria-labelledby="settings-speaking-title" aria-hidden="true" inert>
+              <header class="settings-detail-header">
+                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
+                <div><h2 class="settings-detail-heading" id="settings-speaking-title">Speaking Recognition Options</h2><p class="settings-detail-description">Adjust speech matching and response timing.</p></div>
+              </header>
+              <div class="settings-detail-content speaking-option-list">
+                <div class="speaking-option-card">
+                  <div class="speaking-option-heading"><label for="sp-min-settings">Min. Similarity (%)</label><output class="speaking-option-value" id="sp-min-value">90</output></div>
+                  <input type="range" id="sp-min-settings" min="50" max="100" step="1" value="90" />
+                  <div class="speaking-range-limits"><span>50</span><span>100</span></div>
+                  <p class="speaking-option-description">Higher similarity requires a closer match.</p>
+                </div>
+                <div class="speaking-option-card">
+                  <div class="speaking-option-heading"><label for="sp-wait-settings">Silence Wait (sec)</label></div>
+                  <p class="speaking-option-description">How long to wait for speech.</p>
+                  <div class="settings-stepper"><button type="button" data-step-target="sp-wait-settings" data-step="-1" aria-label="Decrease silence wait">−</button><input type="number" id="sp-wait-settings" min="1" step="1" value="3" /><button type="button" data-step-target="sp-wait-settings" data-step="1" aria-label="Increase silence wait">+</button></div>
+                </div>
+                <div class="speaking-option-card">
+                  <div class="speaking-option-heading"><label for="sp-after-min-settings">Wait After Reach Min. Similarity (sec)</label></div>
+                  <p class="speaking-option-description">Extra time before confirming a match.</p>
+                  <div class="settings-stepper"><button type="button" data-step-target="sp-after-min-settings" data-step="-1" aria-label="Decrease wait after match">−</button><input type="number" id="sp-after-min-settings" min="0" step="1" value="3" /><button type="button" data-step-target="sp-after-min-settings" data-step="1" aria-label="Increase wait after match">+</button></div>
+                </div>
+                <div class="speaking-option-card">
+                  <div class="speaking-option-heading"><label for="sp-celebration-settings">Match celebration time (sec)</label></div>
+                  <p class="speaking-option-description">Duration of the success animation.</p>
+                  <div class="settings-stepper"><button type="button" data-step-target="sp-celebration-settings" data-step="-1" aria-label="Decrease match celebration time">−</button><input type="number" id="sp-celebration-settings" min="0.5" max="10" step="0.1" value="1.2" /><button type="button" data-step-target="sp-celebration-settings" data-step="1" aria-label="Increase match celebration time">+</button></div>
+                </div>
+                <p class="settings-detail-description">Changes apply to speaking practice.</p>
               </div>
-              <p id="courseSettingsStatus" class="status" role="status" aria-live="polite"></p>
-            </div>
-          </section>
+            </section>
+
+            <section class="settings-page-view" data-settings-view="course" aria-labelledby="settings-course-title" aria-hidden="true" inert>
+              <header class="settings-detail-header">
+                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
+                <div><h2 class="settings-detail-heading" id="settings-course-title">Course Settings</h2><p class="settings-detail-description">Repetitions to move along your course.</p></div>
+              </header>
+              <div class="settings-detail-content">
+                <div class="settings-content-card course-progression-card">
+                  <div class="course-milestone"><span class="course-milestone-index">1</span><span class="course-milestone-copy"><strong>Known</strong><span>First milestone</span></span><input class="course-config-input" type="number" id="courseKnownThreshold" min="1" step="1" value="1" aria-label="Known repetitions" /></div>
+                  <div class="course-milestone"><span class="course-milestone-index">2</span><span class="course-milestone-copy"><strong>Learning</strong><span>Building familiarity</span></span><input class="course-config-input" type="number" id="courseLearningThreshold" min="1" step="1" value="2" aria-label="Learning repetitions" /></div>
+                  <div class="course-milestone"><span class="course-milestone-index">3</span><span class="course-milestone-copy"><strong>Learned</strong><span>Practiced with confidence</span></span><input class="course-config-input" type="number" id="courseLearnedThreshold" min="1" step="1" value="6" aria-label="Learned repetitions" /></div>
+                  <div class="course-milestone"><span class="course-milestone-index">4</span><span class="course-milestone-copy"><strong>Mastered</strong><span>Ready to advance</span></span><input class="course-config-input" type="number" id="courseMasteredThreshold" min="1" step="1" value="8" aria-label="Mastered repetitions" /></div>
+                </div>
+                <p class="course-settings-note">Set the repetition count for each milestone. Values must be positive whole numbers in increasing order and are saved automatically.</p>
+                <p id="courseSettingsStatus" class="status" role="status" aria-live="polite"></p>
+              </div>
+            </section>
+          </div>
         </div>
       </aside>
 
@@ -3304,13 +3607,13 @@
         const el = els.practiceLangSelect;
         if (!el) return;
         const [l1, l2] = getSelectedLangCodes();
-        const values = [l1, l2];
+        const values = [...new Set([l1, l2])];
         const prev = (el.value && values.includes(el.value)) ? el.value : values[0];
         el.innerHTML = '';
         for (const code of values) {
           const option = document.createElement('option');
           option.value = code;
-          option.textContent = (langMeta[code] && langMeta[code].label) ? langMeta[code].label : code.toUpperCase();
+          option.textContent = [...els.lang1Select.options].find(item => item.value === code)?.textContent || code.toUpperCase();
           el.appendChild(option);
         }
         if (values.includes(prev)) {
@@ -3318,6 +3621,37 @@
         } else {
           el.value = values[0];
         }
+        renderPracticeLanguageChoices();
+      }
+
+      function renderPracticeLanguageChoices() {
+        const choices = document.getElementById('practiceLanguageChoices');
+        const select = els.practiceLangSelect;
+        if (!choices || !select) return;
+        choices.replaceChildren();
+        [...select.options].forEach((option, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.className = 'practice-language-card';
+          button.dataset.practiceLanguage = option.value;
+          button.setAttribute('aria-pressed', String(option.value === select.value));
+          button.setAttribute('aria-label', `${option.textContent}, ${option.value === els.lang1Select.value ? 'Language 1' : 'Language 2'}`);
+          const code = document.createElement('span');
+          code.className = 'practice-language-code';
+          code.setAttribute('aria-hidden', 'true');
+          code.textContent = (langMeta[option.value] && langMeta[option.value].label) || option.value.toUpperCase();
+          const copy = document.createElement('span');
+          copy.className = 'practice-language-copy';
+          copy.innerHTML = '<span class="practice-language-name"></span><span class="practice-language-slot"></span>';
+          copy.querySelector('.practice-language-name').textContent = option.textContent;
+          copy.querySelector('.practice-language-slot').textContent = option.value === els.lang1Select.value ? 'Language 1' : 'Language 2';
+          const check = document.createElement('span');
+          check.className = 'practice-language-check';
+          check.setAttribute('aria-hidden', 'true');
+          check.textContent = option.value === select.value ? '✓' : '';
+          button.append(code, copy, check);
+          choices.appendChild(button);
+        });
       }
 
       function getPracticeLanguage() {
@@ -3342,6 +3676,7 @@
         if (wrLangEl && [...wrLangEl.options].some(option => option.value === valid)) {
           wrLangEl.value = valid;
         }
+        renderPracticeLanguageChoices();
       }
 
       function updateLangLabels() {
@@ -7070,6 +7405,38 @@
         const sheetBackdrop = document.getElementById('sheetBackdrop');
         const navItems = document.querySelectorAll('.nav-item');
         const fullPageSheets = new Set(['settings', 'load', 'csv']);
+        const settingsPanel = document.getElementById('settingsPanel');
+        const settingsMenu = settingsPanel?.querySelector('[data-settings-view="menu"]');
+        const settingsViews = settingsPanel ? [...settingsPanel.querySelectorAll('.settings-page-view')] : [];
+        const showSettingsMenu = () => {
+          settingsPanel?.classList.remove('has-detail');
+          if (settingsMenu) {
+            settingsMenu.setAttribute('aria-hidden', 'false');
+            settingsMenu.inert = false;
+          }
+          settingsViews.forEach(view => {
+            view.classList.remove('is-current');
+            view.setAttribute('aria-hidden', 'true');
+            view.inert = true;
+          });
+        };
+        const openSettingsView = (viewName) => {
+          const activeView = settingsViews.find(view => view.dataset.settingsView === viewName);
+          if (!activeView) return;
+          settingsPanel.classList.add('has-detail');
+          if (settingsMenu) {
+            settingsMenu.setAttribute('aria-hidden', 'true');
+            settingsMenu.inert = true;
+          }
+          settingsViews.forEach(view => {
+            const isCurrent = view === activeView;
+            view.classList.toggle('is-current', isCurrent);
+            view.setAttribute('aria-hidden', String(!isCurrent));
+            view.inert = !isCurrent;
+          });
+          activeView.querySelector('[data-settings-back]')?.focus({ preventScroll: true });
+        };
+        showSettingsMenu();
         let loadHistoryEntryActive = false;
         let ignoreLoadPopstate = false;
         const openSheet = (sheetKey) => {
@@ -7078,6 +7445,7 @@
             closeSheet();
             return;
           }
+          if (sheetKey === 'settings') showSettingsMenu();
           if (sheetKey === 'load') {
             setLoadScreen('options');
             if (!loadHistoryEntryActive) {
@@ -7111,6 +7479,7 @@
         const closeSheet = (fromPopState = false) => {
           const restoreHistory = loadHistoryEntryActive && !fromPopState;
           loadHistoryEntryActive = false;
+          showSettingsMenu();
           if (sheet) {
             sheet.classList.remove('open');
             sheet.classList.remove('settings-page');
@@ -7184,6 +7553,45 @@
             }
           });
         }
+
+        settingsPanel?.addEventListener('click', (event) => {
+          const openButton = event.target.closest('[data-settings-open]');
+          if (openButton) {
+            openSettingsView(openButton.dataset.settingsOpen);
+            return;
+          }
+          if (event.target.closest('[data-settings-back]')) {
+            showSettingsMenu();
+            settingsMenu?.querySelector('.settings-section-card')?.focus({ preventScroll: true });
+            return;
+          }
+          const practiceLanguageButton = event.target.closest('[data-practice-language]');
+          if (practiceLanguageButton && els.practiceLangSelect) {
+            els.practiceLangSelect.value = practiceLanguageButton.dataset.practiceLanguage;
+            els.practiceLangSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            return;
+          }
+          const stepButton = event.target.closest('[data-step-target]');
+          if (stepButton) {
+            const input = document.getElementById(stepButton.dataset.stepTarget);
+            if (!input || input.disabled) return;
+            const direction = Number(stepButton.dataset.step);
+            const step = Number(input.step) || 1;
+            const min = input.min === '' ? -Infinity : Number(input.min);
+            const max = input.max === '' ? Infinity : Number(input.max);
+            const current = Number(input.value) || 0;
+            const next = Math.max(min, Math.min(max, current + direction * step));
+            input.value = String(Number(next.toFixed(2)));
+            input.dispatchEvent(new Event('input', { bubbles: true }));
+            input.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        });
+        const speakingMinValue = document.getElementById('sp-min-value');
+        if (speakingMinValue && els.speakingMin) speakingMinValue.textContent = els.speakingMin.value;
+        els.speakingMin?.addEventListener('input', () => {
+          const value = document.getElementById('sp-min-value');
+          if (value) value.textContent = els.speakingMin.value;
+        });
 
         navItems.forEach(item => {
           item.onclick = () => openSheet(item.dataset.sheet);
@@ -7529,6 +7937,7 @@
         if (els.practiceLangSelect) {
           els.practiceLangSelect.onchange = () => {
             syncPracticeLanguageSelection(els.practiceLangSelect.value);
+            renderPracticeLanguageChoices();
             if (els.modeSelect.value === 'Intensive Challenge') {
               stopIntensivePractice();
               intensivePractice.lang = getPracticeLanguage();

@@ -95,7 +95,8 @@ Completed with input: {
 
 Read , lines 68 to 100
 Completed with input: {
-  "path": "C:\\GIT\\language_learning\\funcionalidad_cursos.md",
+  "path": "C:\\GIT\\language_learning\\funci
+  onalidad_cursos.md",
   "view_range": [
     68,
     100
