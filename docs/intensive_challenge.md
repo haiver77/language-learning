@@ -2,14 +2,14 @@
 
 ## Propósito
 
-**Intensive Challenge** es un modo de práctica oral por turnos. Para cada fila del CSV, la aplicación presenta la frase en el idioma que el usuario no está practicando y empieza a escuchar. El usuario intenta decir la traducción en el idioma seleccionado para practicar. Al completar el intento, la aplicación revela y lee la frase objetivo y, cuando termina la lectura, pasa a otra fila.
+**Intensive Challenge** es un modo de práctica oral por turnos. Para cada fila del CSV, la aplicación presenta la frase en el idioma que el usuario no está practicando y empieza a escuchar. El usuario intenta decir la traducción en el idioma seleccionado para practicar. Al completar el intento, la aplicación revela y lee la frase objetivo; después de un éxito o de agotar los reintentos, pasa a otra fila.
 
 El intento se cierra de una de estas dos maneras:
 
 - **Éxito:** un resultado final de reconocimiento alcanza el umbral **Min. Similarity (%)**.
 - **Fallido por silencio:** vence **Silence Wait (sec)** sin que se haya alcanzado el umbral.
 
-El modo reutiliza el reconocimiento, la comparación de palabras, las opciones de voz y los efectos visuales que ya existen en la aplicación, pero tiene sus propias reglas de cierre y avance. En particular, el silencio cierra el intento y revela la respuesta; no reinicia la evaluación de la misma frase.
+El modo reutiliza el reconocimiento, la comparación de palabras, las opciones de voz y los efectos visuales que ya existen en la aplicación, pero tiene sus propias reglas de cierre y avance. El silencio cierra el intento y revela la respuesta; si quedan reintentos configurados, vuelve a escuchar la misma frase después de leerla.
 
 ## Preparación y configuración
 
@@ -18,6 +18,7 @@ El modo reutiliza el reconocimiento, la comparación de palabras, las opciones d
 - El selector global **Practice language** de **Settings** determina cuál columna es el objetivo de pronunciación. La otra columna es el estímulo visible al comenzar cada frase. Cualquiera de los dos idiomas puede ser el idioma objetivo.
 - **Min. Similarity (%)** es compartido con Speaking Practice. Su valor se limita al intervalo de 50 a 100 y, si no está configurado, el valor inicial es 90.
 - **Silence Wait (sec)** también es compartido. Su valor mínimo es un segundo y el valor inicial es 3 segundos.
+- **Additional retries after failure**, en **Settings > Course Settings**, determina cuántas veces adicionales se puede intentar la misma frase después de un fallo por silencio. Acepta enteros no negativos, su valor inicial es 2 y se guarda en el navegador.
 - La voz, velocidad y tono configurados en la aplicación se usan para leer la frase objetivo.
 - Este modo no usa **Wait After Reach Min. Similarity (sec)** para decidir cuándo avanzar: después de un éxito, espera a que termine la lectura en voz alta.
 
@@ -49,6 +50,7 @@ Si el usuario cambia el idioma de práctica en **Settings** mientras el modo est
 - La transcripción y la puntuación se actualizan mientras el usuario habla. Los resultados intermedios sirven para mostrar el progreso, pero **solo un resultado final** puede cerrar el intento como éxito.
 - La comparación usa las reglas compartidas de Speaking Practice: normalización del texto, comparación de palabras en orden y similitud por palabra de al menos 70 % para marcar una coincidencia. El porcentaje de la frase es la proporción de palabras objetivo coincidentes, redondeada a un entero. Véase [Speaking Practice Rules](./speaking_practice.md) para los detalles compartidos del cálculo.
 - El contador de **Silence Wait (sec)** comienza al iniciar la escucha y se reinicia al recibir actividad de voz reconocida. Si el temporizador vence antes del éxito, el intento termina como fallido, incluso si hubo voz pero la puntuación no alcanzó el umbral.
+- Cuando el intento termina por silencio y todavía quedan reintentos, la respuesta se revela y se lee; al terminar la lectura, se oculta de nuevo y comienza otro intento con la misma frase. Cada reintento tiene su propio contador de silencio.
 - Si el navegador no ofrece reconocimiento, se informa que la función no está disponible. Si se deniega el micrófono, se informa que hay que permitir su acceso. En ambos casos, el modo no avanza automáticamente.
 
 ## Resultado del intento
@@ -70,13 +72,14 @@ Cuando vence **Silence Wait (sec)** sin éxito:
 1. Se cierra la escucha y se cancelan los temporizadores de silencio.
 2. Se revela la frase objetivo, sin celebración de éxito ni incremento del contador de frases correctas.
 3. La aplicación lee la frase objetivo con la voz y los ajustes configurados.
-4. Cuando termina la lectura, se selecciona y muestra la siguiente frase y comienza una nueva escucha.
+4. Si quedan reintentos configurados, al terminar la lectura se oculta la respuesta y comienza otra escucha de la misma frase. De lo contrario, se selecciona y muestra la siguiente frase y comienza una nueva escucha.
 
-En ambos resultados, el avance espera a que termine la lectura en voz alta. El efecto visual de éxito puede desaparecer según su duración configurada, pero no agrega una espera independiente al avance. Si la síntesis de voz falla, el modo informa el error y no inicia la siguiente frase.
+El valor inicial permite dos reintentos adicionales, es decir, hasta tres intentos por frase. Al tener éxito, o al agotarse los reintentos, la práctica continúa después de que termine la lectura en voz alta. El efecto visual de éxito puede desaparecer según su duración configurada, pero no agrega una espera independiente al avance. Si la síntesis de voz falla, el modo informa el error y no inicia otro intento ni avanza a otra frase.
 
 ## Límites de la sesión
 
 - **Stop** o el cambio a otro modo interrumpe el intento actual, cancela la síntesis de voz y aborta el reconocimiento. Los eventos tardíos de un intento detenido no pueden avanzar la sesión.
 - Al detener, la frase actual vuelve a mostrarse solo como estímulo; no se lee ni se revela automáticamente.
+- El contador de reintentos se reinicia al comenzar una frase nueva o detener la práctica. El ajuste no modifica la evaluación ni el flujo de los demás modos.
 - El contador de frases correctas se reinicia al iniciar una nueva sesión. Un intento fallido no lo incrementa.
 - El comportamiento de Intensive Challenge no debe cambiar la evaluación, los tiempos ni el flujo de los demás modos de práctica.

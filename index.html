@@ -3074,6 +3074,14 @@
                   <div class="course-milestone"><span class="course-milestone-index">4</span><span class="course-milestone-copy"><strong>Mastered</strong><span>Ready to advance</span></span><input class="course-config-input" type="number" id="courseMasteredThreshold" min="1" step="1" value="8" aria-label="Mastered repetitions" /></div>
                 </div>
                 <p class="course-settings-note">Set the repetition count for each milestone. Values must be positive whole numbers in increasing order and are saved automatically.</p>
+                <div class="settings-content-card">
+                  <h3>Intensive Challenge</h3>
+                  <div class="speaking-option-card">
+                    <div class="speaking-option-heading"><label for="courseIntensiveChallengeRetries">Additional retries after failure</label></div>
+                    <p class="speaking-option-description">How many additional times to repeat a phrase after an unsuccessful attempt. Default: 2.</p>
+                    <div class="settings-stepper"><button type="button" data-step-target="courseIntensiveChallengeRetries" data-step="-1" aria-label="Decrease additional retries">−</button><input type="number" id="courseIntensiveChallengeRetries" min="0" step="1" value="2" /><button type="button" data-step-target="courseIntensiveChallengeRetries" data-step="1" aria-label="Increase additional retries">+</button></div>
+                  </div>
+                </div>
                 <p id="courseSettingsStatus" class="status" role="status" aria-live="polite"></p>
               </div>
             </section>
@@ -3189,6 +3197,7 @@
         coursesContent: document.getElementById('coursesContent'),
         coursesStatus: document.getElementById('coursesStatus'),
         courseSettingsStatus: document.getElementById('courseSettingsStatus'),
+        intensiveChallengeRetries: document.getElementById('courseIntensiveChallengeRetries'),
         courseThresholds: {
           known: document.getElementById('courseKnownThreshold'),
           learning: document.getElementById('courseLearningThreshold'),
@@ -3272,6 +3281,8 @@
         celebrationEl: null,
         cardEl: null,
         utterance: null,
+        retryCount: 0,
+        retryAfterRead: false,
         silenceTimer: null,
         silenceInterval: null,
         restartTimer: null,
@@ -3291,6 +3302,7 @@
       const COURSE_FILES_DB_NAME = 'language-practice-course-files';
       const COURSE_FILES_DB_VERSION = 1;
       const DEFAULT_COURSE_THRESHOLDS = { known: 1, learning: 2, learned: 6, mastered: 8 };
+      const DEFAULT_INTENSIVE_CHALLENGE_RETRIES = 2;
       let courseState = {
         selectedCourseId: null,
         selectedUnitId: null,
@@ -3298,6 +3310,7 @@
         progress: {},
         sessions: {},
         thresholds: { ...DEFAULT_COURSE_THRESHOLDS },
+        intensiveChallengeRetries: DEFAULT_INTENSIVE_CHALLENGE_RETRIES,
       };
       let courseCatalog = [];
       const courseDataCache = new Map();
@@ -5678,6 +5691,8 @@
         intensivePractice.active = true;
         intensivePractice.phase = 'listening';
         intensivePractice.streak = 0;
+        intensivePractice.retryCount = 0;
+        intensivePractice.retryAfterRead = false;
         if (intensivePractice.streakEl) intensivePractice.streakEl.textContent = '0';
         resetIntensiveFeedback();
         displayIntensivePhrase(parsedRows[currentIndex], false);
@@ -5687,6 +5702,8 @@
 
       function finishIntensiveAttempt(success, token) {
         if (!intensivePractice.active || intensivePractice.phase !== 'listening' || token !== phraseSessionId) return;
+        intensivePractice.retryAfterRead = !success &&
+          intensivePractice.retryCount < courseState.intensiveChallengeRetries;
         intensivePractice.phase = 'reading';
         setPracticeCardListening(intensivePractice.cardEl, false);
         clearIntensiveSilenceTimers();
@@ -5710,7 +5727,9 @@
           if (intensivePractice.cardEl) intensivePractice.cardEl.classList.add('celebrating');
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Success! Reading the phrase…';
         } else if (intensivePractice.statusEl) {
-          intensivePractice.statusEl.textContent = 'Attempt failed. Reading the phrase…';
+          intensivePractice.statusEl.textContent = intensivePractice.retryAfterRead
+            ? 'Attempt failed. Reading the phrase before retrying…'
+            : 'Attempt failed. Reading the phrase…';
         }
 
         const text = row?.[intensivePractice.lang] || '';
@@ -5729,6 +5748,10 @@
             if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
                 token !== phraseSessionId || intensivePractice.utterance !== utterance) return;
             intensivePractice.utterance = null;
+            if (intensivePractice.retryAfterRead) {
+              retryIntensiveAttempt(token);
+              return;
+            }
             advanceIntensivePractice(token);
           };
           utterance.onerror = (event) => {
@@ -5750,6 +5773,17 @@
         }
       }
 
+      function retryIntensiveAttempt(token) {
+        if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
+            token !== phraseSessionId || !intensivePractice.retryAfterRead) return;
+        intensivePractice.retryCount += 1;
+        intensivePractice.retryAfterRead = false;
+        intensivePractice.phase = 'listening';
+        resetIntensiveFeedback();
+        displayIntensivePhrase(parsedRows[currentIndex], false);
+        startIntensiveRecognition(token);
+      }
+
       function advanceIntensivePractice(token) {
         if (!intensivePractice.active || intensivePractice.phase !== 'reading' || token !== phraseSessionId) return;
         if (!parsedRows.length) {
@@ -5759,6 +5793,8 @@
         currentIndex = !activeCourseSession && intensiveRandomEnabled
           ? pickRandomIndex(parsedRows.length)
           : (currentIndex + 1) % parsedRows.length;
+        intensivePractice.retryCount = 0;
+        intensivePractice.retryAfterRead = false;
         const nextToken = ++phraseSessionId;
         intensivePractice.phase = 'listening';
         resetIntensiveFeedback();
@@ -5770,6 +5806,8 @@
         const wasActive = intensivePractice.active;
         intensivePractice.active = false;
         intensivePractice.phase = 'idle';
+        intensivePractice.retryCount = 0;
+        intensivePractice.retryAfterRead = false;
         clearIntensiveSilenceTimers();
         if (intensivePractice.restartTimer) {
           clearTimeout(intensivePractice.restartTimer);
@@ -6122,6 +6160,15 @@
             console.warn('Invalid saved course thresholds; defaults were restored.');
             Object.assign(thresholds, DEFAULT_COURSE_THRESHOLDS);
           }
+          const storedIntensiveChallengeRetries = stored.intensiveChallengeRetries;
+          const validIntensiveChallengeRetries = Number.isInteger(storedIntensiveChallengeRetries) &&
+            storedIntensiveChallengeRetries >= 0;
+          const intensiveChallengeRetries = validIntensiveChallengeRetries
+            ? storedIntensiveChallengeRetries
+            : DEFAULT_INTENSIVE_CHALLENGE_RETRIES;
+          if (storedIntensiveChallengeRetries !== undefined && !validIntensiveChallengeRetries) {
+            console.warn('Invalid saved Intensive Challenge retries; the default was restored.');
+          }
           courseState = {
             ...courseState,
             ...stored,
@@ -6129,10 +6176,12 @@
             progress: stored.progress && typeof stored.progress === 'object' ? stored.progress : {},
             sessions: stored.sessions && typeof stored.sessions === 'object' ? stored.sessions : {},
             thresholds,
+            intensiveChallengeRetries,
           };
           for (const [key, input] of Object.entries(els.courseThresholds)) {
             input.value = String(courseState.thresholds[key]);
           }
+          els.intensiveChallengeRetries.value = String(courseState.intensiveChallengeRetries);
         } catch (error) {
           console.error('Unable to restore course state:', error);
           setCourseStatus('Saved course data could not be read. Existing phrase data was left unchanged.', true);
@@ -6928,6 +6977,7 @@
         for (const [key, input] of Object.entries(els.courseThresholds)) {
           input.value = String(courseState.thresholds[key]);
         }
+        els.intensiveChallengeRetries.value = String(courseState.intensiveChallengeRetries);
       }
 
       function escapeCourseCsvField(value) {
@@ -7240,6 +7290,25 @@
           else if (courseScreen === 'unit' && courseState.selectedCourseId && courseState.selectedUnitId) {
             renderUnitDetails(courseState.selectedCourseId, courseState.selectedUnitId);
           }
+        }
+
+        function saveIntensiveChallengeRetries() {
+          const rawValue = els.intensiveChallengeRetries.value.trim();
+          const next = Number(rawValue);
+          if (!rawValue || !Number.isInteger(next) || next < 0) {
+            setCourseSettingsStatus('Enter a non-negative whole number of additional retries.', true);
+            return;
+          }
+
+          const previous = courseState.intensiveChallengeRetries;
+          courseState.intensiveChallengeRetries = next;
+          if (!saveCourseState()) {
+            courseState.intensiveChallengeRetries = previous;
+            els.intensiveChallengeRetries.value = String(previous);
+            setCourseSettingsStatus('Intensive Challenge retries could not be saved in this browser.', true);
+            return;
+          }
+          setCourseSettingsStatus('Intensive Challenge retries saved.');
         }
       }
 
@@ -7694,6 +7763,7 @@
           });
         });
         Object.values(els.courseThresholds).forEach(input => input.addEventListener('change', saveCourseThresholds));
+        els.intensiveChallengeRetries.addEventListener('change', saveIntensiveChallengeRetries);
 
         if (sheetBackdrop) sheetBackdrop.onclick = closeSheet;
 
