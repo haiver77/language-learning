@@ -2140,38 +2140,6 @@
       border-radius: 15px;
       font-weight: 700 !important;
     }
-    .practice-language-options { display: grid; gap: 12px; }
-    .practice-language-card {
-      display: grid;
-      grid-template-columns: 48px minmax(0, 1fr) 24px;
-      align-items: center;
-      gap: 14px;
-      width: 100%;
-      min-height: 82px;
-      padding: 14px;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      background: var(--surface-soft);
-      color: var(--ink);
-      text-align: left;
-      cursor: pointer;
-    }
-    .practice-language-card[aria-pressed="true"] { border: 2px solid var(--primary); background: var(--primary-soft); }
-    .practice-language-code {
-      display: grid;
-      width: 46px;
-      height: 46px;
-      place-items: center;
-      border-radius: 50%;
-      background: var(--surface);
-      color: var(--primary);
-      font: 700 13px/1 Arial, sans-serif;
-    }
-    .practice-language-copy { display: grid; gap: 4px; min-width: 0; }
-    .practice-language-name { font: 700 16px/21px Arial, sans-serif; }
-    .practice-language-slot { color: var(--muted); font: 12px/16px Arial, sans-serif; }
-    .practice-language-check { color: var(--primary); font: 700 20px/1 Arial, sans-serif; }
-    .settings-native-select { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
     .speaking-option-list { display: grid; gap: 12px; }
     .speaking-option-card {
       display: grid;
@@ -2929,12 +2897,7 @@
                 </button>
                 <button class="settings-section-card" type="button" data-settings-open="languages" style="--settings-accent:#d4aa51">
                   <span class="settings-section-icon" aria-hidden="true">文</span>
-                  <span class="settings-section-copy"><span class="settings-section-name">Languages</span><span class="settings-section-description">Choose the languages you use</span></span>
-                  <span class="settings-section-arrow" aria-hidden="true">›</span>
-                </button>
-                <button class="settings-section-card" type="button" data-settings-open="practice-language" style="--settings-accent:#54c891">
-                  <span class="settings-section-icon" aria-hidden="true">◎</span>
-                  <span class="settings-section-copy"><span class="settings-section-name">Language to practice</span><span class="settings-section-description">Set your active practice language</span></span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Languages</span><span class="settings-section-description">Set your native and target languages</span></span>
                   <span class="settings-section-arrow" aria-hidden="true">›</span>
                 </button>
                 <button class="settings-section-card" type="button" data-settings-open="speaking" style="--settings-accent:#b07cde">
@@ -3005,27 +2968,12 @@
             <section class="settings-page-view" data-settings-view="languages" aria-labelledby="settings-languages-title" aria-hidden="true" inert>
               <header class="settings-detail-header">
                 <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
-                <div><h2 class="settings-detail-heading" id="settings-languages-title">Languages</h2><p class="settings-detail-description">Choose the languages you use.</p></div>
+                <div><h2 class="settings-detail-heading" id="settings-languages-title">Languages</h2><p class="settings-detail-description">Choose your native language and the language you are learning.</p></div>
               </header>
               <div class="settings-detail-content">
                 <div class="settings-language-list settings-content-card">
-                  <label class="settings-language-field"><span>Language 1</span><select id="lang1Select"><option value="es" selected>Spanish</option><option value="en">English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
-                  <label class="settings-language-field"><span>Language 2</span><select id="lang2Select"><option value="es">Spanish</option><option value="en" selected>English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
-                </div>
-              </div>
-            </section>
-
-            <section class="settings-page-view" data-settings-view="practice-language" aria-labelledby="settings-practice-language-title" aria-hidden="true" inert>
-              <header class="settings-detail-header">
-                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
-                <div><h2 class="settings-detail-heading" id="settings-practice-language-title">Language to practice</h2><p class="settings-detail-description">Choose the language used in speaking practice.</p></div>
-              </header>
-              <div class="settings-detail-content">
-                <div class="practice-language-options" id="practiceLanguageChoices"></div>
-                <select id="practiceLangSelect" class="settings-native-select" aria-label="Practice language"></select>
-                <div class="settings-content-card">
-                  <h3>About practice language</h3>
-                  <p>Your speaking practice uses this language. Only languages in your configured pair appear.</p>
+                  <label class="settings-language-field"><span>Idioma nativo</span><select id="lang1Select"><option value="es" selected>Spanish</option><option value="en">English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
+                  <label class="settings-language-field"><span>Target Language</span><select id="lang2Select"><option value="es">Spanish</option><option value="en" selected>English</option><option value="it">Italian</option><option value="pt">Portuguese</option><option value="de">German</option><option value="fr">French</option></select></label>
                 </div>
               </div>
             </section>
@@ -3164,7 +3112,6 @@
         },
         lang1Select: document.getElementById('lang1Select'),
         lang2Select: document.getElementById('lang2Select'),
-        practiceLangSelect: document.getElementById('practiceLangSelect'),
         langTag: {
           1: document.getElementById('lang-tag-1'),
           2: document.getElementById('lang-tag-2'),
@@ -3616,80 +3563,15 @@
         return [els.lang1Select.value, els.lang2Select.value];
       }
 
-      function populatePracticeLanguageOptions() {
-        const el = els.practiceLangSelect;
-        if (!el) return;
-        const [l1, l2] = getSelectedLangCodes();
-        const values = [...new Set([l1, l2])];
-        const prev = (el.value && values.includes(el.value)) ? el.value : values[0];
-        el.innerHTML = '';
-        for (const code of values) {
-          const option = document.createElement('option');
-          option.value = code;
-          option.textContent = [...els.lang1Select.options].find(item => item.value === code)?.textContent || code.toUpperCase();
-          el.appendChild(option);
-        }
-        if (values.includes(prev)) {
-          el.value = prev;
-        } else {
-          el.value = values[0];
-        }
-        renderPracticeLanguageChoices();
-      }
-
-      function renderPracticeLanguageChoices() {
-        const choices = document.getElementById('practiceLanguageChoices');
-        const select = els.practiceLangSelect;
-        if (!choices || !select) return;
-        choices.replaceChildren();
-        [...select.options].forEach((option, index) => {
-          const button = document.createElement('button');
-          button.type = 'button';
-          button.className = 'practice-language-card';
-          button.dataset.practiceLanguage = option.value;
-          button.setAttribute('aria-pressed', String(option.value === select.value));
-          button.setAttribute('aria-label', `${option.textContent}, ${option.value === els.lang1Select.value ? 'Language 1' : 'Language 2'}`);
-          const code = document.createElement('span');
-          code.className = 'practice-language-code';
-          code.setAttribute('aria-hidden', 'true');
-          code.textContent = (langMeta[option.value] && langMeta[option.value].label) || option.value.toUpperCase();
-          const copy = document.createElement('span');
-          copy.className = 'practice-language-copy';
-          copy.innerHTML = '<span class="practice-language-name"></span><span class="practice-language-slot"></span>';
-          copy.querySelector('.practice-language-name').textContent = option.textContent;
-          copy.querySelector('.practice-language-slot').textContent = option.value === els.lang1Select.value ? 'Language 1' : 'Language 2';
-          const check = document.createElement('span');
-          check.className = 'practice-language-check';
-          check.setAttribute('aria-hidden', 'true');
-          check.textContent = option.value === select.value ? '✓' : '';
-          button.append(code, copy, check);
-          choices.appendChild(button);
-        });
-      }
-
       function getPracticeLanguage() {
-        const [l1, l2] = getSelectedLangCodes();
-        const candidate = (els.practiceLangSelect && els.practiceLangSelect.value) || speakingPractice.lang || writingPractice.lang || l1;
-        return [l1, l2].includes(candidate) ? candidate : l1;
+        return els.lang2Select.value;
       }
 
-      function syncPracticeLanguageSelection(newLang) {
-        const [l1, l2] = getSelectedLangCodes();
-        const valid = [l1, l2].includes(newLang) ? newLang : l1;
-        if (els.practiceLangSelect && [...els.practiceLangSelect.options].some(option => option.value === valid)) {
-          els.practiceLangSelect.value = valid;
-        }
-        speakingPractice.lang = valid;
-        writingPractice.lang = valid;
-        const spLangEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#sp-lang') : null;
-        const wrLangEl = els.modeContent && els.modeContent.querySelector ? els.modeContent.querySelector('#wr-lang') : null;
-        if (spLangEl && [...spLangEl.options].some(option => option.value === valid)) {
-          spLangEl.value = valid;
-        }
-        if (wrLangEl && [...wrLangEl.options].some(option => option.value === valid)) {
-          wrLangEl.value = valid;
-        }
-        renderPracticeLanguageChoices();
+      function syncTargetLanguage() {
+        const targetLanguage = getPracticeLanguage();
+        speakingPractice.lang = targetLanguage;
+        writingPractice.lang = targetLanguage;
+        intensivePractice.lang = targetLanguage;
       }
 
       function updateLangLabels() {
@@ -3710,8 +3592,7 @@
         els.readLabel[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
         els.showLabel[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
         els.showLabel[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
-        populatePracticeLanguageOptions();
-        syncPracticeLanguageSelection(getPracticeLanguage());
+        syncTargetLanguage();
       }
 
       function parseCSV(text) {
@@ -4029,9 +3910,6 @@
             speakingWait: getSpeechSilenceWaitSeconds(),
             speakingAfterMin: getSpeakingAfterMinSeconds(),
             speakingCelebrationSeconds: speakingPractice.celebrationSeconds,
-            practiceLang: getPracticeLanguage(),
-            speakingLang: (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang,
-            writingLang: (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang,
           };
           const [l1, l2] = getSelectedLangCodes();
           cfg.lang1 = l1; cfg.lang2 = l2;
@@ -4100,12 +3978,6 @@
           if (typeof cfg.wrapCsv !== 'undefined') { try { els.wrapCsv.checked = !!cfg.wrapCsv; } catch (e) { } applyCsvWrap(); }
           if (cfg.color1) { try { if (els.color1) els.color1.value = cfg.color1; } catch (e) {} }
           if (cfg.color2) { try { if (els.color2) els.color2.value = cfg.color2; } catch (e) {} }
-          if (cfg.practiceLang) {
-            const [l1, l2] = getSelectedLangCodes();
-            const allowed = [l1, l2];
-            const nextLang = allowed.includes(cfg.practiceLang) ? cfg.practiceLang : allowed[0];
-            syncPracticeLanguageSelection(nextLang);
-          }
         } catch (e) { console.warn('loadConfig failed', e); }
       }
 
@@ -4695,9 +4567,6 @@
         </div>
         <div class="panel-title">Speaking practice</div>
         <div class="inline-controls">
-          <label class="badge" width="100px"><span></span>
-            <select id="sp-lang"></select>
-          </label>
           <label class="badge"><input type="checkbox" id="sp-random" checked /> <span>Random</span></label>
           <label class="badge"><span>Min similarity %</span>
             <input id="sp-min" type="number" min="50" max="100" step="1" value="90" style="width:50px; min-width:50px; max-width:50px;" />
@@ -4758,29 +4627,7 @@
 
           div.querySelector('#sp-start').onclick = startSpeakingPractice;
           div.querySelector('#sp-stop').onclick = stopSpeakingPractice;
-          const spLangEl = div.querySelector('#sp-lang');
-          // populate sp-lang from current language selectors
-          try {
-            const codes = getSelectedLangCodes();
-            spLangEl.innerHTML = '';
-            for (const c of codes) {
-              const opt = document.createElement('option');
-              opt.value = c;
-              opt.textContent = (langMeta[c] && langMeta[c].label) ? langMeta[c].label : c.toUpperCase();
-              spLangEl.appendChild(opt);
-            }
-            // restore settings-driven practice language first, else keep mode-specific fallback
-            const selectedPracticeLang = getPracticeLanguage();
-            if ([...spLangEl.options].some(o => o.value === selectedPracticeLang)) {
-              spLangEl.value = selectedPracticeLang; speakingPractice.lang = selectedPracticeLang;
-            } else if (savedConfig && savedConfig.speakingLang && [...spLangEl.options].some(o => o.value === savedConfig.speakingLang)) {
-              spLangEl.value = savedConfig.speakingLang; speakingPractice.lang = savedConfig.speakingLang;
-            } else {
-              if ([...spLangEl.options].some(o => o.value === speakingPractice.lang)) spLangEl.value = speakingPractice.lang;
-              else { spLangEl.selectedIndex = 0; speakingPractice.lang = spLangEl.value; }
-            }
-          } catch (e) { /* ignore */ }
-          spLangEl.onchange = e => { speakingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
+          speakingPractice.lang = getPracticeLanguage();
           const spMinEl = div.querySelector('#sp-min');
           if (els.speakingMin) spMinEl.value = els.speakingMin.value;
           spMinEl.oninput = e => updateSpeakingMinFromInput(e.target);
@@ -4848,9 +4695,6 @@
           div.innerHTML = `
         <div class="panel-title">Writing practice</div>
         <div class="inline-controls">
-          <label class="badge"><span>Practice language</span>
-            <select id="wr-lang"></select>
-          </label>
           <label class="badge"><input type="checkbox" id="wr-random" checked /> <span>Random</span></label>
           <button id="wr-start">Start</button>
           <button id="wr-stop" class="secondary">Stop</button>
@@ -4888,28 +4732,7 @@
           writingPractice.remainingEl = hostPanel.querySelector('#wr-remaining-host');
           div.querySelector('#wr-start').onclick = startWritingPractice;
           div.querySelector('#wr-stop').onclick = stopWritingPractice;
-          const wrLangEl = div.querySelector('#wr-lang');
-          // populate wr-lang from current language selectors
-          try {
-            const codes = getSelectedLangCodes();
-            wrLangEl.innerHTML = '';
-            for (const c of codes) {
-              const opt = document.createElement('option');
-              opt.value = c;
-              opt.textContent = (langMeta[c] && langMeta[c].label) ? langMeta[c].label : c.toUpperCase();
-              wrLangEl.appendChild(opt);
-            }
-            const selectedPracticeLang = getPracticeLanguage();
-            if ([...wrLangEl.options].some(o => o.value === selectedPracticeLang)) {
-              wrLangEl.value = selectedPracticeLang; writingPractice.lang = selectedPracticeLang;
-            } else if (savedConfig && savedConfig.writingLang && [...wrLangEl.options].some(o => o.value === savedConfig.writingLang)) {
-              wrLangEl.value = savedConfig.writingLang; writingPractice.lang = savedConfig.writingLang;
-            } else {
-              if ([...wrLangEl.options].some(o => o.value === writingPractice.lang)) wrLangEl.value = writingPractice.lang;
-              else { wrLangEl.selectedIndex = 0; writingPractice.lang = wrLangEl.value; }
-            }
-          } catch (e) { /* ignore */ }
-          wrLangEl.onchange = e => { writingPractice.lang = e.target.value; if (els.practiceLangSelect) els.practiceLangSelect.value = e.target.value; saveConfig(); };
+          writingPractice.lang = getPracticeLanguage();
         }
         syncRandomModeCheckboxes();
         bindRandomModeCheckboxes();
@@ -5168,7 +4991,7 @@
         if (speakingPractice.active) return;
         speakingPractice.active = true;
         resetSpeakingRunFeedback();
-        speakingPractice.lang = (els.modeContent.querySelector('#sp-lang')?.value) || speakingPractice.lang || 'es';
+        speakingPractice.lang = getPracticeLanguage();
         const configuredMin = els.speakingMin?.value || els.modeContent.querySelector('#sp-min')?.value || '90';
         speakingPractice.min = Math.max(50, Math.min(100, parseInt(configuredMin, 10) || 90));
         if (els.speakingMin) els.speakingMin.value = speakingPractice.min;
@@ -5554,121 +5377,146 @@
         if (!target.trim()) {
           intensivePractice.active = false;
           intensivePractice.phase = 'error';
-          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'The selected practice-language phrase is empty.';
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'The target-language phrase is empty.';
           syncPracticeFocusMode();
           return;
         }
 
-        const rec = createRecognition(intensivePractice.lang);
-        intensivePractice.rec = rec;
+        let rec = intensivePractice.rec;
         if (!rec) {
-          intensivePractice.active = false;
-          intensivePractice.phase = 'error';
-          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Speech recognition is not supported in this browser.';
-          syncPracticeFocusMode();
-          return;
-        }
-
-        rec._accTranscript = '';
-        rec._suppressRestart = false;
-        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Listening…';
-
-        rec.onresult = (event) => {
-          if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
-              intensivePractice.rec !== rec || token !== phraseSessionId) return;
-          let interim = '';
-          let finalText = '';
-          for (let i = event.resultIndex; i < event.results.length; i++) {
-            const result = event.results[i];
-            if (result.isFinal) finalText += (result[0] && result[0].transcript) || '';
-            else interim += (result[0] && result[0].transcript) || '';
-          }
-          const liveRaw = (finalText || interim).trim();
-          let liveForCompare = liveRaw;
-          if (rec._accTranscript) {
-            const nextClean = removeTokenOverlap(rec._accTranscript, liveRaw);
-            liveForCompare = (rec._accTranscript + (nextClean ? ` ${nextClean}` : '')).trim();
-          }
-          if (finalText || interim) {
-            rec._hasSpoken = true;
-            rec._lastSpeechTs = Date.now();
-          }
-
-          const targetSlot = getSelectedLangCodes().indexOf(intensivePractice.lang) + 1;
-          const validation = compareAndHighlight(target, liveForCompare, targetSlot);
-          renderLiveValidation(liveForCompare, validation.spokenCorrect, intensivePractice.liveTextEl);
-          intensivePractice.progressEl.value = validation.score;
-          intensivePractice.scoreEl.textContent = `${validation.score}%`;
-
-          if (validation.score >= intensivePractice.min && finalText) {
-            const vocabulary = activeCourseSession?.metadata?.[currentIndex]?.vocabulary;
-            if (activeCourseSession && !rec._coursePronunciationRecorded &&
-                activeCourseSession.languageTarget === intensivePractice.lang &&
-                courseVocabularyWasRecognized(vocabulary, validation)) {
-              rec._coursePronunciationRecorded = true;
-              recordCoursePronunciation(currentIndex);
-            }
-            finishIntensiveAttempt(true, token);
-            return;
-          }
-          if (finalText) {
-            const finalChunk = finalText.trim();
-            if (finalChunk) {
-              const nextClean = removeTokenOverlap(rec._accTranscript, finalChunk);
-              rec._accTranscript = (rec._accTranscript + (nextClean ? ` ${nextClean}` : '')).trim();
-            }
-          }
-          scheduleIntensiveSilence(rec, token);
-        };
-
-        rec.onerror = (event) => {
-          if (!intensivePractice.active || intensivePractice.rec !== rec || token !== phraseSessionId) return;
-          const error = event?.error;
-          if (error === 'not-allowed' || error === 'service-not-allowed') {
+          rec = createRecognition(intensivePractice.lang);
+          if (!rec) {
             intensivePractice.active = false;
             intensivePractice.phase = 'error';
-            setPracticeCardListening(intensivePractice.cardEl, false);
-            clearIntensiveSilenceTimers();
-            if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Microphone access was denied. Allow microphone access and try again.';
+            if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Speech recognition is not supported in this browser.';
             syncPracticeFocusMode();
-          } else if (intensivePractice.statusEl) {
-            intensivePractice.statusEl.textContent = `Listening…${error ? ` (${error})` : ''}`;
+            return;
           }
-        };
 
-        rec.onend = () => {
-          if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
-              intensivePractice.rec !== rec || token !== phraseSessionId) return;
-          intensivePractice.restartTimer = setTimeout(() => {
-            intensivePractice.restartTimer = null;
-            if (!intensivePractice.active || intensivePractice.rec !== rec ||
-                intensivePractice.phase !== 'listening' || token !== phraseSessionId) return;
+          intensivePractice.rec = rec;
+          rec._intensiveRunning = false;
+          rec._intensiveToken = token;
+          rec._suppressRestart = false;
+          rec._startIntensiveRecognition = () => {
+            const activeToken = rec._intensiveToken;
+            if (!intensivePractice.active ||
+                !['listening', 'reading'].includes(intensivePractice.phase) ||
+                intensivePractice.rec !== rec || activeToken !== phraseSessionId) return;
             try {
               rec.start();
-              scheduleIntensiveSilence(rec, token);
+              rec._intensiveRunning = true;
+              const isListening = intensivePractice.phase === 'listening';
+              setPracticeCardListening(intensivePractice.cardEl, isListening);
+              if (isListening) {
+                if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Listening…';
+                scheduleIntensiveSilence(rec, activeToken);
+              }
             } catch (error) {
               intensivePractice.active = false;
               intensivePractice.phase = 'error';
               setPracticeCardListening(intensivePractice.cardEl, false);
+              intensivePractice.rec = null;
+              rec._intensiveRunning = false;
               clearIntensiveSilenceTimers();
-              if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not restart speech recognition: ${error.message || error}`;
+              if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not start speech recognition: ${error.message || error}`;
               syncPracticeFocusMode();
             }
-          }, 100);
-        };
+          };
 
-        try {
-          rec.start();
+          rec.onresult = (event) => {
+            const attemptToken = rec._intensiveToken;
+            if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
+                intensivePractice.rec !== rec || attemptToken !== phraseSessionId) return;
+            let interim = '';
+            let finalText = '';
+            for (let i = event.resultIndex; i < event.results.length; i++) {
+              const result = event.results[i];
+              if (result.isFinal) finalText += (result[0] && result[0].transcript) || '';
+              else interim += (result[0] && result[0].transcript) || '';
+            }
+            const liveRaw = (finalText || interim).trim();
+            let liveForCompare = liveRaw;
+            if (rec._accTranscript) {
+              const nextClean = removeTokenOverlap(rec._accTranscript, liveRaw);
+              liveForCompare = (rec._accTranscript + (nextClean ? ` ${nextClean}` : '')).trim();
+            }
+            if (finalText || interim) {
+              rec._hasSpoken = true;
+              rec._lastSpeechTs = Date.now();
+            }
+
+            const target = parsedRows[currentIndex]?.[intensivePractice.lang] || '';
+            const targetSlot = getSelectedLangCodes().indexOf(intensivePractice.lang) + 1;
+            const validation = compareAndHighlight(target, liveForCompare, targetSlot);
+            renderLiveValidation(liveForCompare, validation.spokenCorrect, intensivePractice.liveTextEl);
+            intensivePractice.progressEl.value = validation.score;
+            intensivePractice.scoreEl.textContent = `${validation.score}%`;
+
+            if (validation.score >= intensivePractice.min && finalText) {
+              const vocabulary = activeCourseSession?.metadata?.[currentIndex]?.vocabulary;
+              if (activeCourseSession && !rec._coursePronunciationRecorded &&
+                  activeCourseSession.languageTarget === intensivePractice.lang &&
+                  courseVocabularyWasRecognized(vocabulary, validation)) {
+                rec._coursePronunciationRecorded = true;
+                recordCoursePronunciation(currentIndex);
+              }
+              finishIntensiveAttempt(true, attemptToken);
+              return;
+            }
+            if (finalText) {
+              const finalChunk = finalText.trim();
+              if (finalChunk) {
+                const nextClean = removeTokenOverlap(rec._accTranscript, finalChunk);
+                rec._accTranscript = (rec._accTranscript + (nextClean ? ` ${nextClean}` : '')).trim();
+              }
+            }
+            scheduleIntensiveSilence(rec, attemptToken);
+          };
+
+          rec.onerror = (event) => {
+            const attemptToken = rec._intensiveToken;
+            if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
+                intensivePractice.rec !== rec || attemptToken !== phraseSessionId) return;
+            const error = event?.error;
+            if (error === 'not-allowed' || error === 'service-not-allowed') {
+              intensivePractice.active = false;
+              intensivePractice.phase = 'error';
+              intensivePractice.rec = null;
+              rec._intensiveRunning = false;
+              setPracticeCardListening(intensivePractice.cardEl, false);
+              clearIntensiveSilenceTimers();
+              if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Microphone access was denied. Allow microphone access and try again.';
+              syncPracticeFocusMode();
+            } else if (intensivePractice.statusEl) {
+              intensivePractice.statusEl.textContent = `Listening…${error ? ` (${error})` : ''}`;
+            }
+          };
+
+          rec.onend = () => {
+            rec._intensiveRunning = false;
+            const attemptToken = rec._intensiveToken;
+            if (!intensivePractice.active ||
+                !['listening', 'reading'].includes(intensivePractice.phase) ||
+                intensivePractice.rec !== rec || attemptToken !== phraseSessionId) return;
+            intensivePractice.restartTimer = setTimeout(() => {
+              intensivePractice.restartTimer = null;
+              if (!intensivePractice.active || intensivePractice.rec !== rec ||
+                  !['listening', 'reading'].includes(intensivePractice.phase) ||
+                  rec._intensiveToken !== phraseSessionId) return;
+              rec._startIntensiveRecognition();
+            }, 100);
+          };
+        }
+
+        rec._intensiveToken = token;
+        rec._accTranscript = '';
+        rec._coursePronunciationRecorded = false;
+        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Listening…';
+        if (rec._intensiveRunning) {
           setPracticeCardListening(intensivePractice.cardEl, true);
           scheduleIntensiveSilence(rec, token);
-        } catch (error) {
-          intensivePractice.active = false;
-          intensivePractice.phase = 'error';
-          setPracticeCardListening(intensivePractice.cardEl, false);
-          intensivePractice.rec = null;
-          clearIntensiveSilenceTimers();
-          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = `Could not start speech recognition: ${error.message || error}`;
-          syncPracticeFocusMode();
+        } else {
+          rec._startIntensiveRecognition();
         }
       }
 
@@ -5707,12 +5555,6 @@
         intensivePractice.phase = 'reading';
         setPracticeCardListening(intensivePractice.cardEl, false);
         clearIntensiveSilenceTimers();
-        const rec = intensivePractice.rec;
-        intensivePractice.rec = null;
-        if (rec) {
-          try { rec._suppressRestart = true; } catch {}
-          try { rec.abort(); } catch {}
-        }
 
         const row = parsedRows[currentIndex];
         displayIntensivePhrase(row, true);
@@ -5840,9 +5682,7 @@
         if (writingPractice.active) return;
         writingPractice.active = true;
         if (writingPractice.statusEl) writingPractice.statusEl.textContent = 'Starting…';
-        writingPractice.lang = (els.modeContent.querySelector('#wr-lang')?.value) || writingPractice.lang || 'es';
-        // persist chosen writing language
-        saveConfig();
+        writingPractice.lang = getPracticeLanguage();
 
         // Select and speak once from the currently displayed phrase, then continue in order
         await showCurrentDisplayedRow({ speak: true });
@@ -7133,7 +6973,6 @@
         els.lang1Select.value = session.languageNative;
         els.lang2Select.value = session.languageTarget;
         updateLangLabels();
-        syncPracticeLanguageSelection(session.languageTarget);
         els.csvBox.value = session.csv;
         ensureParsed();
         if (!parsedRows.length || parsedRows.length !== session.metadata.length) {
@@ -7181,7 +7020,6 @@
           els.lang1Select.value = session.languageNative;
           els.lang2Select.value = session.languageTarget;
           updateLangLabels();
-          syncPracticeLanguageSelection(session.languageTarget);
           els.csvBox.value = session.csv;
           ensureParsed();
           if (!parsedRows.length || parsedRows.length !== session.metadata.length) {
@@ -7291,25 +7129,25 @@
             renderUnitDetails(courseState.selectedCourseId, courseState.selectedUnitId);
           }
         }
+      }
 
-        function saveIntensiveChallengeRetries() {
-          const rawValue = els.intensiveChallengeRetries.value.trim();
-          const next = Number(rawValue);
-          if (!rawValue || !Number.isInteger(next) || next < 0) {
-            setCourseSettingsStatus('Enter a non-negative whole number of additional retries.', true);
-            return;
-          }
-
-          const previous = courseState.intensiveChallengeRetries;
-          courseState.intensiveChallengeRetries = next;
-          if (!saveCourseState()) {
-            courseState.intensiveChallengeRetries = previous;
-            els.intensiveChallengeRetries.value = String(previous);
-            setCourseSettingsStatus('Intensive Challenge retries could not be saved in this browser.', true);
-            return;
-          }
-          setCourseSettingsStatus('Intensive Challenge retries saved.');
+      function saveIntensiveChallengeRetries() {
+        const rawValue = els.intensiveChallengeRetries.value.trim();
+        const next = Number(rawValue);
+        if (!rawValue || !Number.isInteger(next) || next < 0) {
+          setCourseSettingsStatus('Enter a non-negative whole number of additional retries.', true);
+          return;
         }
+
+        const previous = courseState.intensiveChallengeRetries;
+        courseState.intensiveChallengeRetries = next;
+        if (!saveCourseState()) {
+          courseState.intensiveChallengeRetries = previous;
+          els.intensiveChallengeRetries.value = String(previous);
+          setCourseSettingsStatus('Intensive Challenge retries could not be saved in this browser.', true);
+          return;
+        }
+        setCourseSettingsStatus('Intensive Challenge retries saved.');
       }
 
       // --- Prompt - OpenAI integration ---
@@ -7632,12 +7470,6 @@
           if (event.target.closest('[data-settings-back]')) {
             showSettingsMenu();
             settingsMenu?.querySelector('.settings-section-card')?.focus({ preventScroll: true });
-            return;
-          }
-          const practiceLanguageButton = event.target.closest('[data-practice-language]');
-          if (practiceLanguageButton && els.practiceLangSelect) {
-            els.practiceLangSelect.value = practiceLanguageButton.dataset.practiceLanguage;
-            els.practiceLangSelect.dispatchEvent(new Event('change', { bubbles: true }));
             return;
           }
           const stepButton = event.target.closest('[data-step-target]');
@@ -8004,19 +7836,6 @@
         };
         els.lang1Select.onchange = onLanguagePairChange;
         els.lang2Select.onchange = onLanguagePairChange;
-        if (els.practiceLangSelect) {
-          els.practiceLangSelect.onchange = () => {
-            syncPracticeLanguageSelection(els.practiceLangSelect.value);
-            renderPracticeLanguageChoices();
-            if (els.modeSelect.value === 'Intensive Challenge') {
-              stopIntensivePractice();
-              intensivePractice.lang = getPracticeLanguage();
-              if (parsedRows[currentIndex]) displayIntensivePhrase(parsedRows[currentIndex], false);
-              if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Practice language updated.';
-            }
-            saveConfig();
-          };
-        }
         if ('onvoiceschanged' in speechSynthesis) {
           speechSynthesis.onvoiceschanged = () => populateVoices();
         }

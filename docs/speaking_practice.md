@@ -3,11 +3,11 @@
 ## Starting and stopping
 
 - Speaking Practice uses the browser Speech Recognition API (`SpeechRecognition` or `webkitSpeechRecognition`). If neither API is available, the practice stops and reports that speech recognition is unsupported.
-- Starting practice speaks the current phrase, then listens for the selected practice language.
+- Starting practice speaks the current phrase, then listens for the language configured as **Target Language** in **Settings > Languages**.
 - Stopping practice cancels speech synthesis, aborts recognition, clears practice timers, and marks the practice as stopped.
 - A recognition result is ignored if practice is no longer active or if it belongs to an older phrase session.
 - Recognition uses continuous listening, interim results, and one recognition alternative.
-- The selected practice language is taken from the available language selectors and mapped to the first configured locale for that language.
+- The target language is always **Target Language** from **Settings > Languages** and is mapped to the first configured locale for that language. Speaking and Writing Practice have no separate language selector.
 
 ## Phrase selection
 
@@ -62,3 +62,4 @@ All successful transitions keep the completed phrase visible for at least the co
 - `Wait After Reach Min. Similarity (sec)` is at least 0 seconds; zero means no delayed wait for rule 2.
 - `Match celebration time (sec)` accepts values from 0.5 to 10 seconds in 0.1-second increments, defaults to 1.2 seconds, and is persisted in browser local storage.
 - Speaking-practice settings are persisted in browser local storage. The similarity, silence, and after-minimum controls are also shared with the Speaking Practice panel.
+- Changing **Target Language** in **Settings > Languages** changes the language used for subsequent practice.
