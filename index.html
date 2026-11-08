@@ -3025,9 +3025,9 @@
                 <div class="settings-content-card">
                   <h3>Intensive Challenge</h3>
                   <div class="speaking-option-card">
-                    <div class="speaking-option-heading"><label for="courseIntensiveChallengeRetries">Additional retries after failure</label></div>
-                    <p class="speaking-option-description">How many additional times to repeat a phrase after an unsuccessful attempt. Default: 2.</p>
-                    <div class="settings-stepper"><button type="button" data-step-target="courseIntensiveChallengeRetries" data-step="-1" aria-label="Decrease additional retries">−</button><input type="number" id="courseIntensiveChallengeRetries" min="0" step="1" value="2" /><button type="button" data-step-target="courseIntensiveChallengeRetries" data-step="1" aria-label="Increase additional retries">+</button></div>
+                    <div class="speaking-option-heading"><label for="courseIntensiveChallengeForcedRetries">Forced retries after failure</label></div>
+                    <p class="speaking-option-description">After the first unsuccessful attempt, force the phrase to be repeated this many additional times, regardless of subsequent results. Default: 2.</p>
+                    <div class="settings-stepper"><button type="button" data-step-target="courseIntensiveChallengeForcedRetries" data-step="-1" aria-label="Decrease forced retries">−</button><input type="number" id="courseIntensiveChallengeForcedRetries" min="0" step="1" value="2" /><button type="button" data-step-target="courseIntensiveChallengeForcedRetries" data-step="1" aria-label="Increase forced retries">+</button></div>
                   </div>
                 </div>
                 <p id="courseSettingsStatus" class="status" role="status" aria-live="polite"></p>
@@ -3144,7 +3144,7 @@
         coursesContent: document.getElementById('coursesContent'),
         coursesStatus: document.getElementById('coursesStatus'),
         courseSettingsStatus: document.getElementById('courseSettingsStatus'),
-        intensiveChallengeRetries: document.getElementById('courseIntensiveChallengeRetries'),
+        intensiveChallengeForcedRetries: document.getElementById('courseIntensiveChallengeForcedRetries'),
         courseThresholds: {
           known: document.getElementById('courseKnownThreshold'),
           learning: document.getElementById('courseLearningThreshold'),
@@ -3228,8 +3228,8 @@
         celebrationEl: null,
         cardEl: null,
         utterance: null,
-        retryCount: 0,
-        retryAfterRead: false,
+        forcedRetryCount: 0,
+        forcedRetryAfterRead: false,
         silenceTimer: null,
         silenceInterval: null,
         restartTimer: null,
@@ -3249,7 +3249,7 @@
       const COURSE_FILES_DB_NAME = 'language-practice-course-files';
       const COURSE_FILES_DB_VERSION = 1;
       const DEFAULT_COURSE_THRESHOLDS = { known: 1, learning: 2, learned: 6, mastered: 8 };
-      const DEFAULT_INTENSIVE_CHALLENGE_RETRIES = 2;
+      const DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES = 2;
       let courseState = {
         selectedCourseId: null,
         selectedUnitId: null,
@@ -3257,7 +3257,7 @@
         progress: {},
         sessions: {},
         thresholds: { ...DEFAULT_COURSE_THRESHOLDS },
-        intensiveChallengeRetries: DEFAULT_INTENSIVE_CHALLENGE_RETRIES,
+        forcedIntensiveChallengeRetries: DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES,
       };
       let courseCatalog = [];
       const courseDataCache = new Map();
@@ -5539,8 +5539,8 @@
         intensivePractice.active = true;
         intensivePractice.phase = 'listening';
         intensivePractice.streak = 0;
-        intensivePractice.retryCount = 0;
-        intensivePractice.retryAfterRead = false;
+        intensivePractice.forcedRetryCount = 0;
+        intensivePractice.forcedRetryAfterRead = false;
         if (intensivePractice.streakEl) intensivePractice.streakEl.textContent = '0';
         resetIntensiveFeedback();
         displayIntensivePhrase(parsedRows[currentIndex], false);
@@ -5550,8 +5550,8 @@
 
       function finishIntensiveAttempt(success, token) {
         if (!intensivePractice.active || intensivePractice.phase !== 'listening' || token !== phraseSessionId) return;
-        intensivePractice.retryAfterRead = !success &&
-          intensivePractice.retryCount < courseState.intensiveChallengeRetries;
+        intensivePractice.forcedRetryAfterRead = intensivePractice.forcedRetryCount < courseState.forcedIntensiveChallengeRetries &&
+          (!success || intensivePractice.forcedRetryCount > 0);
         intensivePractice.phase = 'reading';
         setPracticeCardListening(intensivePractice.cardEl, false);
         clearIntensiveSilenceTimers();
@@ -5567,10 +5567,12 @@
             intensivePractice.celebrationEl.classList.add('visible');
           }
           if (intensivePractice.cardEl) intensivePractice.cardEl.classList.add('celebrating');
-          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Success! Reading the phrase…';
+          if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = intensivePractice.forcedRetryAfterRead
+            ? 'Success! Reading before repeating the phrase…'
+            : 'Success! Reading the phrase…';
         } else if (intensivePractice.statusEl) {
-          intensivePractice.statusEl.textContent = intensivePractice.retryAfterRead
-            ? 'Attempt failed. Reading the phrase before retrying…'
+          intensivePractice.statusEl.textContent = intensivePractice.forcedRetryAfterRead
+            ? 'Attempt failed. Reading the phrase before forced repetition…'
             : 'Attempt failed. Reading the phrase…';
         }
 
@@ -5590,8 +5592,8 @@
             if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
                 token !== phraseSessionId || intensivePractice.utterance !== utterance) return;
             intensivePractice.utterance = null;
-            if (intensivePractice.retryAfterRead) {
-              retryIntensiveAttempt(token);
+            if (intensivePractice.forcedRetryAfterRead) {
+              beginForcedIntensiveRetry(token);
               return;
             }
             advanceIntensivePractice(token);
@@ -5615,11 +5617,11 @@
         }
       }
 
-      function retryIntensiveAttempt(token) {
+      function beginForcedIntensiveRetry(token) {
         if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
-            token !== phraseSessionId || !intensivePractice.retryAfterRead) return;
-        intensivePractice.retryCount += 1;
-        intensivePractice.retryAfterRead = false;
+            token !== phraseSessionId || !intensivePractice.forcedRetryAfterRead) return;
+        intensivePractice.forcedRetryCount += 1;
+        intensivePractice.forcedRetryAfterRead = false;
         intensivePractice.phase = 'listening';
         resetIntensiveFeedback();
         displayIntensivePhrase(parsedRows[currentIndex], false);
@@ -5635,8 +5637,8 @@
         currentIndex = !activeCourseSession && intensiveRandomEnabled
           ? pickRandomIndex(parsedRows.length)
           : (currentIndex + 1) % parsedRows.length;
-        intensivePractice.retryCount = 0;
-        intensivePractice.retryAfterRead = false;
+        intensivePractice.forcedRetryCount = 0;
+        intensivePractice.forcedRetryAfterRead = false;
         const nextToken = ++phraseSessionId;
         intensivePractice.phase = 'listening';
         resetIntensiveFeedback();
@@ -5648,8 +5650,8 @@
         const wasActive = intensivePractice.active;
         intensivePractice.active = false;
         intensivePractice.phase = 'idle';
-        intensivePractice.retryCount = 0;
-        intensivePractice.retryAfterRead = false;
+        intensivePractice.forcedRetryCount = 0;
+        intensivePractice.forcedRetryAfterRead = false;
         clearIntensiveSilenceTimers();
         if (intensivePractice.restartTimer) {
           clearTimeout(intensivePractice.restartTimer);
@@ -5976,7 +5978,9 @@
 
       function saveCourseState() {
         try {
-          localStorage.setItem(COURSES_STORAGE_KEY, JSON.stringify(courseState));
+          const { forcedIntensiveChallengeRetries, ...persistedCourseState } = courseState;
+          persistedCourseState.intensiveChallengeRetries = forcedIntensiveChallengeRetries;
+          localStorage.setItem(COURSES_STORAGE_KEY, JSON.stringify(persistedCourseState));
           return true;
         } catch (error) {
           console.error('Unable to save course state:', error);
@@ -6000,28 +6004,32 @@
             console.warn('Invalid saved course thresholds; defaults were restored.');
             Object.assign(thresholds, DEFAULT_COURSE_THRESHOLDS);
           }
-          const storedIntensiveChallengeRetries = stored.intensiveChallengeRetries;
-          const validIntensiveChallengeRetries = Number.isInteger(storedIntensiveChallengeRetries) &&
-            storedIntensiveChallengeRetries >= 0;
-          const intensiveChallengeRetries = validIntensiveChallengeRetries
-            ? storedIntensiveChallengeRetries
-            : DEFAULT_INTENSIVE_CHALLENGE_RETRIES;
-          if (storedIntensiveChallengeRetries !== undefined && !validIntensiveChallengeRetries) {
+          const storedIntensiveChallengeForcedRetries =
+            stored.forcedIntensiveChallengeRetries ?? stored.intensiveChallengeRetries;
+          const validIntensiveChallengeForcedRetries = Number.isInteger(storedIntensiveChallengeForcedRetries) &&
+            storedIntensiveChallengeForcedRetries >= 0;
+          const forcedIntensiveChallengeRetries = validIntensiveChallengeForcedRetries
+            ? storedIntensiveChallengeForcedRetries
+            : DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES;
+          if (storedIntensiveChallengeForcedRetries !== undefined && !validIntensiveChallengeForcedRetries) {
             console.warn('Invalid saved Intensive Challenge retries; the default was restored.');
           }
+          const restoredCourseState = { ...stored };
+          delete restoredCourseState.intensiveChallengeRetries;
+          delete restoredCourseState.forcedIntensiveChallengeRetries;
           courseState = {
             ...courseState,
-            ...stored,
+            ...restoredCourseState,
             practiceTypes: stored.practiceTypes && typeof stored.practiceTypes === 'object' ? stored.practiceTypes : {},
             progress: stored.progress && typeof stored.progress === 'object' ? stored.progress : {},
             sessions: stored.sessions && typeof stored.sessions === 'object' ? stored.sessions : {},
             thresholds,
-            intensiveChallengeRetries,
+            forcedIntensiveChallengeRetries,
           };
           for (const [key, input] of Object.entries(els.courseThresholds)) {
             input.value = String(courseState.thresholds[key]);
           }
-          els.intensiveChallengeRetries.value = String(courseState.intensiveChallengeRetries);
+          els.intensiveChallengeForcedRetries.value = String(courseState.forcedIntensiveChallengeRetries);
         } catch (error) {
           console.error('Unable to restore course state:', error);
           setCourseStatus('Saved course data could not be read. Existing phrase data was left unchanged.', true);
@@ -6817,7 +6825,7 @@
         for (const [key, input] of Object.entries(els.courseThresholds)) {
           input.value = String(courseState.thresholds[key]);
         }
-        els.intensiveChallengeRetries.value = String(courseState.intensiveChallengeRetries);
+        els.intensiveChallengeForcedRetries.value = String(courseState.forcedIntensiveChallengeRetries);
       }
 
       function escapeCourseCsvField(value) {
@@ -7131,23 +7139,23 @@
         }
       }
 
-      function saveIntensiveChallengeRetries() {
-        const rawValue = els.intensiveChallengeRetries.value.trim();
+      function saveForcedIntensiveChallengeRetries() {
+        const rawValue = els.intensiveChallengeForcedRetries.value.trim();
         const next = Number(rawValue);
         if (!rawValue || !Number.isInteger(next) || next < 0) {
-          setCourseSettingsStatus('Enter a non-negative whole number of additional retries.', true);
+          setCourseSettingsStatus('Enter a non-negative whole number of forced retries.', true);
           return;
         }
 
-        const previous = courseState.intensiveChallengeRetries;
-        courseState.intensiveChallengeRetries = next;
+        const previous = courseState.forcedIntensiveChallengeRetries;
+        courseState.forcedIntensiveChallengeRetries = next;
         if (!saveCourseState()) {
-          courseState.intensiveChallengeRetries = previous;
-          els.intensiveChallengeRetries.value = String(previous);
-          setCourseSettingsStatus('Intensive Challenge retries could not be saved in this browser.', true);
+          courseState.forcedIntensiveChallengeRetries = previous;
+          els.intensiveChallengeForcedRetries.value = String(previous);
+          setCourseSettingsStatus('Forced Intensive Challenge repetitions could not be saved in this browser.', true);
           return;
         }
-        setCourseSettingsStatus('Intensive Challenge retries saved.');
+        setCourseSettingsStatus('Forced Intensive Challenge repetitions saved.');
       }
 
       // --- Prompt - OpenAI integration ---
@@ -7595,7 +7603,7 @@
           });
         });
         Object.values(els.courseThresholds).forEach(input => input.addEventListener('change', saveCourseThresholds));
-        els.intensiveChallengeRetries.addEventListener('change', saveIntensiveChallengeRetries);
+        els.intensiveChallengeForcedRetries.addEventListener('change', saveForcedIntensiveChallengeRetries);
 
         if (sheetBackdrop) sheetBackdrop.onclick = closeSheet;
 

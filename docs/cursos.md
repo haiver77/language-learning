@@ -24,10 +24,10 @@ Los idiomas del curso se aplican automáticamente: el idioma nativo ocupa la pri
 - En **Speaking Practice** e **Intensive Challenge**, una pronunciación correcta de la palabra foco suma una vez al contador de pronunciaciones correctas. Los demás modos no incrementan este contador.
 - Los niveles se calculan a partir del contador de prácticas: **Sin practicar**, **Conocida**, **En aprendizaje**, **Aprendida** y **Mastered**. Los umbrales iniciales son 1, 2, 6 y 8 prácticas, respectivamente.
 - **Settings > Course Settings** permite cambiar esos cuatro umbrales. Deben ser enteros positivos en orden estrictamente creciente; al guardarlos se recalculan los niveles y porcentajes sin alterar los contadores.
-- **Additional retries after failure** configura los reintentos de Intensive Challenge tras un fallo por silencio. Acepta enteros no negativos y su valor inicial es 2.
+- **Forced retries after failure** configura cuántas veces adicionales se repite obligatoriamente la frase en Intensive Challenge tras un fallo por silencio en el primer intento. Las repeticiones continúan aunque los intentos posteriores sean correctos. Acepta enteros no negativos y su valor inicial es 2.
 - El porcentaje de unidad y curso se calcula con el vocabulario foco, limitando los puntos por palabra al umbral **Mastered**. El vocabulario complementario tiene niveles y contadores propios, pero no determina esos porcentajes ni el estado de dominio de la unidad o del curso.
 
-La selección, los umbrales, los reintentos de Intensive Challenge, el progreso y las sesiones se guardan en el navegador. Los recursos de curso descargados se almacenan localmente para reutilizarlos; los que todavía no se han cargado requieren conexión.
+La selección, los umbrales, los reintentos forzados de Intensive Challenge, el progreso y las sesiones se guardan en el navegador. Los recursos de curso descargados se almacenan localmente para reutilizarlos; los que todavía no se han cargado requieren conexión.
 
 ## Datos de los cursos
 
