@@ -736,6 +736,10 @@
       padding: 20px 20px calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
     }
 
+    .sheet.load-page .sheet-panel[data-panel="load"].courses-active {
+      padding-bottom: 20px;
+    }
+
     .load-source-page,
     .load-method-page {
       width: 100%;
@@ -883,6 +887,13 @@
 
     @media (max-width: 559px) {
       .sheet.load-page .sheet-panel[data-panel="load"] {
+        padding-left: 12px;
+        padding-right: 12px;
+      }
+
+      .courses-sticky-header {
+        margin-left: -12px;
+        margin-right: -12px;
         padding-left: 12px;
         padding-right: 12px;
       }
@@ -2462,6 +2473,15 @@
       border-bottom: 1px solid var(--border);
     }
     .course-context-header.visible { display: flex; }
+    .courses-sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      margin: -20px -20px 16px;
+      padding: 8px 20px 0;
+      background: var(--panel);
+    }
+    .courses-sticky-header .course-context-header { position: static; }
     .course-context-pill {
       min-width: 0;
       padding: 9px 12px;
@@ -2831,14 +2851,16 @@
           </section>
 
           <section class="load-method-page courses-app" id="coursesApp" data-load-screen="courses" hidden>
-            <div class="course-context-header visible" id="courseContextHeaderInSheet" aria-live="polite">
-              <span class="course-context-pill" data-course-context="course"></span>
-              <span class="course-context-pill" data-course-context="unit"></span>
-              <button type="button" class="course-context-pill" data-course-context="practice" aria-label="Change course practice type"></button>
-            </div>
-            <div class="courses-page-header">
-              <button type="button" class="course-back-button" id="coursesBack">‹ Load Phrases</button>
-              <h2 class="courses-title" id="coursesPageTitle" tabindex="-1">Courses</h2>
+            <div class="courses-sticky-header">
+              <div class="course-context-header visible" id="courseContextHeaderInSheet" aria-live="polite">
+                <span class="course-context-pill" data-course-context="course"></span>
+                <span class="course-context-pill" data-course-context="unit"></span>
+                <button type="button" class="course-context-pill" data-course-context="practice" aria-label="Change course practice type"></button>
+              </div>
+              <div class="courses-page-header">
+                <button type="button" class="course-back-button" id="coursesBack">‹ Load Phrases</button>
+                <h2 class="courses-title" id="coursesPageTitle" tabindex="-1">Courses</h2>
+              </div>
             </div>
             <div id="coursesStatus" role="status" aria-live="polite"></div>
             <div id="coursesContent"></div>
@@ -6597,8 +6619,9 @@
       function setLoadScreen(screen) {
         const isOptions = screen === 'options';
         if (els.loadOptions) els.loadOptions.hidden = !isOptions;
+        els.coursesApp?.closest('.sheet-panel')?.classList.toggle('courses-active', screen === 'courses');
         document.querySelectorAll('.load-method-page').forEach(page => {
-          page.hidden = page.dataset.loadScreen !== screen;
+        page.hidden = page.dataset.loadScreen !== screen;
         });
         if (isOptions && loadSourceFocusTarget) {
           requestAnimationFrame(() => loadSourceFocusTarget?.focus());
