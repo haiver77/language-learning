@@ -96,16 +96,18 @@
     .app-shell {
       width: min(100%, 760px);
       min-height: 100vh;
+      min-height: 100dvh;
       background: var(--panel);
       border-left: 4px solid var(--surface-strong);
       border-right: 4px solid var(--surface-strong);
       box-shadow: 0 24px 50px var(--shadow);
       position: relative;
-      overflow: hidden;
+      overflow-x: clip;
     }
 
     .phone-frame {
       min-height: 100vh;
+      min-height: 100dvh;
       padding-bottom: 0;
       position: relative;
     }
@@ -1712,7 +1714,8 @@
       background: radial-gradient(ellipse at 100% 0, transparent 46%, rgba(22,134,109,.3) 48% 58%, transparent 60%), radial-gradient(ellipse at 0 100%, transparent 46%, rgba(112,189,85,.35) 48% 58%, transparent 60%);
     }
     .language-pair-indicator { color: var(--muted); font: 700 12px/1.2 Arial, sans-serif; margin-left: auto; margin-right: 60px; }
-    .main-view { min-height: calc(100vh - 56px); padding-left: 20px; padding-right: 20px; padding-bottom: calc(var(--bottom-nav-height) + 96px + env(safe-area-inset-bottom)); }
+    .main-view { min-height: 0; padding-left: 20px; padding-right: 20px; padding-bottom: calc(var(--bottom-nav-height) + 72px + env(safe-area-inset-bottom)); }
+    #row-phrases { flex: 0 0 auto; }
     .phrases { gap: 18px; }
     .phrase-line {
       position: relative;
@@ -3334,6 +3337,112 @@
 
       function normalizeSpeechChunk(s) {
         return (s || '').replace(/\s+/g, ' ').trim();
+      }
+
+      const spokenPunctuationTerms = {
+        en: {
+          '.': ['period', 'full stop'],
+          ',': ['comma'],
+          '?': ['question mark'],
+          '!': ['exclamation mark', 'exclamation point'],
+          ':': ['colon'],
+          ';': ['semicolon'],
+        },
+        es: {
+          '.': ['punto'],
+          ',': ['coma'],
+          '?': ['signo de interrogación'],
+          '!': ['signo de exclamación'],
+          ':': ['dos puntos'],
+          ';': ['punto y coma'],
+        },
+        it: {
+          '.': ['punto'],
+          ',': ['virgola'],
+          '?': ['punto interrogativo'],
+          '!': ['punto esclamativo'],
+          ':': ['due punti'],
+          ';': ['punto e virgola'],
+        },
+        pt: {
+          '.': ['ponto'],
+          ',': ['vírgula'],
+          '?': ['ponto de interrogação'],
+          '!': ['ponto de exclamação'],
+          ':': ['dois pontos'],
+          ';': ['ponto e vírgula'],
+        },
+        de: {
+          '.': ['Punkt'],
+          ',': ['Komma'],
+          '?': ['Fragezeichen'],
+          '!': ['Ausrufezeichen'],
+          ':': ['Doppelpunkt'],
+          ';': ['Semikolon'],
+        },
+        fr: {
+          '.': ['point'],
+          ',': ['virgule'],
+          '?': ["point d'interrogation"],
+          '!': ["point d'exclamation"],
+          ':': ['deux points'],
+          ';': ['point-virgule'],
+        },
+      };
+
+      function restoreSpokenPunctuationWords(target, transcript, lang, preceding = '') {
+        const targetTokens = target.match(/\S+/g) || [];
+        const transcriptTokens = transcript.match(/\S+/g) || [];
+        if (!targetTokens.length || !transcriptTokens.length) return transcript;
+
+        const targetNormalized = targetTokens.map(normalizeForCompare);
+        const targetCursor = { index: 0 };
+        const advanceTargetCursor = (token) => {
+          let bestIdx = -1;
+          let bestSim = -1;
+          for (let i = targetCursor.index; i < targetTokens.length; i++) {
+            const similarity = similarityPercent(token, targetTokens[i]);
+            if (similarity >= 70 && similarity > bestSim) {
+              bestIdx = i;
+              bestSim = similarity;
+              if (similarity === 100) break;
+            }
+          }
+          if (bestIdx >= 0) targetCursor.index = bestIdx + 1;
+        };
+        const advancePastPreceding = (preceding.match(/\S+/g) || []);
+        advancePastPreceding.forEach(advanceTargetCursor);
+
+        const terms = spokenPunctuationTerms[lang] || {};
+        return transcriptTokens.map((token) => {
+          if (/^[.,!?;:]+$/.test(token)) {
+            const candidates = (terms[token] || []).map((term) => ({
+              normalizedWords: term.split(/\s+/).map(normalizeForCompare),
+            }));
+            let bestMatch = null;
+            for (const candidate of candidates) {
+              const wordCount = candidate.normalizedWords.length;
+              for (let i = targetCursor.index; i <= targetNormalized.length - wordCount; i++) {
+                if (candidate.normalizedWords.every((word, offset) =>
+                  word && targetNormalized[i + offset] === word
+                )) {
+                  if (!bestMatch || i < bestMatch.index) {
+                    bestMatch = { index: i, wordCount };
+                  }
+                  break;
+                }
+              }
+            }
+            if (bestMatch) {
+              const restored = targetTokens.slice(bestMatch.index, bestMatch.index + bestMatch.wordCount);
+              targetCursor.index = bestMatch.index + bestMatch.wordCount;
+              return restored.join(' ');
+            }
+            return token;
+          }
+          advanceTargetCursor(token);
+          return token;
+        }).join(' ');
       }
 
       // Lightweight event logger for speaking-practice debugging
@@ -5065,6 +5174,8 @@
             if (res.isFinal) finalText += (res[0] && res[0].transcript) || '';
             else interim += (res[0] && res[0].transcript) || '';
           }
+          finalText = restoreSpokenPunctuationWords(target, finalText, speakingPractice.lang, rec._accTranscript);
+          interim = restoreSpokenPunctuationWords(target, interim, speakingPractice.lang, rec._accTranscript);
           const liveRaw = (finalText || interim || '').trim();
           let liveForCompare = liveRaw;
           try {
@@ -5195,6 +5306,8 @@
             if (res.isFinal) finalText += (res[0] && res[0].transcript) || '';
             else interim += (res[0] && res[0].transcript) || '';
           }
+          finalText = restoreSpokenPunctuationWords(target, finalText, speakingPractice.lang, rec._accTranscript);
+          interim = restoreSpokenPunctuationWords(target, interim, speakingPractice.lang, rec._accTranscript);
           const liveRaw = (finalText || interim || '').trim();
           let liveForCompare = liveRaw;
           try {
@@ -5460,6 +5573,7 @@
             const attemptToken = rec._intensiveToken;
             if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
                 intensivePractice.rec !== rec || attemptToken !== phraseSessionId) return;
+            const target = parsedRows[currentIndex]?.[intensivePractice.lang] || '';
             let interim = '';
             let finalText = '';
             for (let i = event.resultIndex; i < event.results.length; i++) {
@@ -5467,6 +5581,8 @@
               if (result.isFinal) finalText += (result[0] && result[0].transcript) || '';
               else interim += (result[0] && result[0].transcript) || '';
             }
+            finalText = restoreSpokenPunctuationWords(target, finalText, intensivePractice.lang, rec._accTranscript);
+            interim = restoreSpokenPunctuationWords(target, interim, intensivePractice.lang, rec._accTranscript);
             const liveRaw = (finalText || interim).trim();
             let liveForCompare = liveRaw;
             if (rec._accTranscript) {
@@ -5478,7 +5594,6 @@
               rec._lastSpeechTs = Date.now();
             }
 
-            const target = parsedRows[currentIndex]?.[intensivePractice.lang] || '';
             const targetSlot = getSelectedLangCodes().indexOf(intensivePractice.lang) + 1;
             const validation = compareAndHighlight(target, liveForCompare, targetSlot);
             renderLiveValidation(liveForCompare, validation.spokenCorrect, intensivePractice.liveTextEl);

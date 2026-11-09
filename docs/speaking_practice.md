@@ -26,6 +26,7 @@
 - The score is the percentage of target phrase words matched, rounded to a whole number.
 - Correct target words are highlighted green; unmatched target words are highlighted red.
 - The live transcript also highlights spoken words that were matched as correct or incorrect.
+- If speech recognition returns a punctuation symbol for a spoken punctuation word, the live transcript restores the target-language word when it matches the next expected target words.
 - Repeated or overlapping recognition chunks are merged and de-duplicated before comparison where possible.
 
 ## Phrase completion and advance rules
