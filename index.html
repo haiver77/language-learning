@@ -5369,6 +5369,19 @@
         clearSpeakingVisualEffects();
       }
 
+      function stopIntensiveRecognition() {
+        const rec = intensivePractice.rec;
+        if (!rec) return;
+        intensivePractice.rec = null;
+        rec._suppressRestart = true;
+        rec._intensiveRunning = false;
+        if (intensivePractice.restartTimer) {
+          clearTimeout(intensivePractice.restartTimer);
+          intensivePractice.restartTimer = null;
+        }
+        try { rec.abort(); } catch {}
+      }
+
       function startIntensiveRecognition(token) {
         const row = parsedRows[currentIndex];
         const target = row?.[intensivePractice.lang] || '';
@@ -5493,13 +5506,12 @@
           rec.onend = () => {
             rec._intensiveRunning = false;
             const attemptToken = rec._intensiveToken;
-            if (!intensivePractice.active ||
-                !['listening', 'reading'].includes(intensivePractice.phase) ||
+            if (!intensivePractice.active || intensivePractice.phase !== 'listening' ||
                 intensivePractice.rec !== rec || attemptToken !== phraseSessionId) return;
             intensivePractice.restartTimer = setTimeout(() => {
               intensivePractice.restartTimer = null;
               if (!intensivePractice.active || intensivePractice.rec !== rec ||
-                  !['listening', 'reading'].includes(intensivePractice.phase) ||
+                  intensivePractice.phase !== 'listening' ||
                   rec._intensiveToken !== phraseSessionId) return;
               rec._startIntensiveRecognition();
             }, 100);
@@ -5551,6 +5563,7 @@
         intensivePractice.forcedRetryAfterRead = intensivePractice.forcedRetryCount < courseState.forcedIntensiveChallengeRetries &&
           (!success || intensivePractice.forcedRetryCount > 0);
         intensivePractice.phase = 'reading';
+        stopIntensiveRecognition();
         setPracticeCardListening(intensivePractice.cardEl, false);
         clearIntensiveSilenceTimers();
 
@@ -5656,11 +5669,7 @@
           clearTimeout(intensivePractice.restartTimer);
           intensivePractice.restartTimer = null;
         }
-        if (intensivePractice.rec) {
-          try { intensivePractice.rec._suppressRestart = true; } catch {}
-          try { intensivePractice.rec.abort(); } catch {}
-          intensivePractice.rec = null;
-        }
+        stopIntensiveRecognition();
         if (intensivePractice.utterance) {
           intensivePractice.utterance.onend = null;
           intensivePractice.utterance.onerror = null;

@@ -46,7 +46,7 @@ Si el usuario cambia **Target Language** en **Settings > Languages** mientras el
 
 ## Reconocimiento y evaluación
 
-- El modo usa una misma instancia del reconocimiento de voz del navegador (`SpeechRecognition` o `webkitSpeechRecognition`) durante toda la sesión, con escucha continua, resultados intermedios y una alternativa de reconocimiento. La escucha permanece abierta mientras se lee la respuesta; los resultados solo se procesan durante el intento. Esto evita volver a iniciar el reconocimiento y solicitar acceso al micrófono por cada frase.
+- El modo usa el reconocimiento de voz del navegador (`SpeechRecognition` o `webkitSpeechRecognition`), con escucha continua, resultados intermedios y una alternativa de reconocimiento. Al terminar cada intento, detiene el reconocimiento mientras lee la respuesta y crea una instancia nueva para el siguiente intento. Así, el audio leído por la aplicación no se procesa como voz del usuario y cada intento comienza sin resultados ni transcripción acumulados anteriormente.
 - La transcripción y la puntuación se actualizan mientras el usuario habla. Los resultados intermedios sirven para mostrar el progreso, pero **solo un resultado final** puede cerrar el intento como éxito.
 - La comparación usa las reglas compartidas de Speaking Practice: normalización del texto, comparación de palabras en orden y similitud por palabra de al menos 70 % para marcar una coincidencia. El porcentaje de la frase es la proporción de palabras objetivo coincidentes, redondeada a un entero. Véase [Speaking Practice Rules](./speaking_practice.md) para los detalles compartidos del cálculo.
 - El contador de **Silence Wait (sec)** comienza al iniciar la escucha y se reinicia al recibir actividad de voz reconocida. Si el temporizador vence antes del éxito, el intento termina como fallido, incluso si hubo voz pero la puntuación no alcanzó el umbral.
@@ -59,7 +59,7 @@ Si el usuario cambia **Target Language** en **Settings > Languages** mientras el
 
 Cuando un resultado final alcanza **Min. Similarity (%)**:
 
-1. Se cierra la fase de escucha y se cancelan los temporizadores de silencio. La instancia de reconocimiento permanece activa durante la sesión, pero sus resultados se ignoran durante la lectura.
+1. Se cierra la fase de escucha, se aborta la instancia de reconocimiento del intento y se cancelan los temporizadores de silencio.
 2. Se revela la frase objetivo en **Target Language**.
 3. Se muestra la celebración visual de éxito y aumenta el contador de frases correctas de la sesión.
 4. La aplicación lee la frase objetivo con la voz y los ajustes configurados.
@@ -69,7 +69,7 @@ Cuando un resultado final alcanza **Min. Similarity (%)**:
 
 Cuando vence **Silence Wait (sec)** sin éxito:
 
-1. Se cierra la fase de escucha y se cancelan los temporizadores de silencio. La instancia de reconocimiento permanece activa durante la sesión, pero sus resultados se ignoran durante la lectura.
+1. Se cierra la fase de escucha, se aborta la instancia de reconocimiento del intento y se cancelan los temporizadores de silencio.
 2. Se revela la frase objetivo, sin celebración de éxito ni incremento del contador de frases correctas.
 3. La aplicación lee la frase objetivo con la voz y los ajustes configurados.
 4. Si es el primer intento y quedan reintentos forzados configurados, al terminar la lectura se oculta la respuesta y comienza otra fase de escucha de la misma frase. La secuencia continúa hasta completar el número configurado de repeticiones; los éxitos o fallos de esas repeticiones no acortan ni extienden la secuencia. Al terminar la última, se selecciona y muestra la siguiente frase y comienza una nueva fase de escucha.
