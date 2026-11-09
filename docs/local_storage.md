@@ -33,14 +33,17 @@ Guarda la selección, configuración, progreso y sesiones de práctica de cursos
 | `practiceTypes` | Mapa `idCurso → idFormato`, con el formato de práctica seleccionado para cada curso. |
 | `thresholds` | Objeto con los umbrales de dominio `known`, `learning`, `learned` y `mastered`. |
 | `intensiveChallengeRetries` | Número entero no negativo de repeticiones forzadas tras un fallo en Intensive Challenge. Es el nombre usado al persistir; el código también reconoce `forcedIntensiveChallengeRetries` en datos previos. |
-| `wordProgress` | Mapa de progreso global por idioma y palabra. La clave combina el código del idioma destino, un separador nulo (`\u0000`) y la palabra normalizada (sin diferencias de mayúsculas, acentos ni puntuación). Cada valor contiene `practices` y `pronunciationCorrect`, ambos contadores. |
+| `wordProgress` | Mapa de progreso global por idioma y palabra. La clave combina el código del idioma destino, un separador nulo (`\u0000`) y la palabra normalizada (sin diferencias de mayúsculas, acentos ni puntuación). Cada valor contiene `practices` y `pronunciationCorrect`, ambos contadores; Statistics usa `practices` para el historial de palabras de cursos. |
+| `dailyPracticeGoal` | Cantidad entera de frases que se deben practicar al día para completar la meta; el valor inicial es 10 y el intervalo admitido es 1–1000. |
+| `practiceActivity` | Mapa de fecha local `AAAA-MM-DD` a frases practicadas. Conserva los 400 días más recientes; los calendarios Activity y Year Effort comparan estos conteos con la meta diaria actual. |
+| `practiceWordCounts` | Mapa de idioma y palabra normalizada a su palabra visible y cantidad acumulada de prácticas fuera de cursos. Statistics combina estos conteos con `wordProgress` para ordenar las palabras por frecuencia. |
 | `sessions` | Mapa `idCurso → idUnidad → sesión guardada`, descrito abajo. |
 | `activeSessionKey` | Clave de la sesión activa en formato `idCurso::idUnidad`. |
 | `progress` | Estructura heredada de progreso por curso, unidad y palabra (`progress[idCurso].units[idUnidad].words[palabra]`). Se migra a `wordProgress` para los cursos reconocidos; datos de cursos que no están disponibles pueden permanecer. |
 
 Una sesión incompleta conserva el CSV combinado y su posición para poder reanudarla. Incluye `courseId`, `unitId`, `practiceTypeId`, `languageNative`, `languageTarget`, `csv`, `metadata`, `focusWords`, `complementaryWords`, `currentIndex`, `phraseVisitId`, `lastCompletedPhraseVisitId`, `completedPhraseIndices` y `completed`. Cada elemento de `metadata` asocia una fila con `vocabulary`, `source` y `sourceRow`. Una sesión completada se reduce a `courseId`, `unitId`, `practiceTypeId`, `currentIndex`, `languageNative`, `languageTarget` y `completed: true`.
 
-El progreso de palabras es compartido entre cursos y unidades del mismo navegador. Se incrementan por separado las prácticas completadas y las pronunciaciones correctas; los umbrales determinan el nivel de dominio mostrado. La selección de curso o unidad no elimina el progreso guardado.
+El progreso de palabras es compartido entre cursos y unidades del mismo navegador. Se incrementan por separado las prácticas completadas y las pronunciaciones correctas; los umbrales determinan el nivel de dominio mostrado. La selección de curso o unidad no elimina el progreso guardado. Statistics registra actividad cuando se completa una frase al avanzar manualmente o al avanzar un modo de práctica; los conteos de palabras de cursos provienen de `wordProgress` y los de otros modos se guardan en `practiceWordCounts`.
 
 ## `openai_token`
 

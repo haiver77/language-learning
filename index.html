@@ -662,6 +662,22 @@
       transform: translateY(100%);
     }
 
+    .sheet.practice-page {
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: 0;
+      width: 100vw;
+      max-width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      max-height: 100vh;
+      max-height: 100dvh;
+      border-radius: 0;
+      border: none;
+      transform: translateY(100%);
+    }
+
     .sheet.open {
       display: block;
       transform: translateX(-50%) translateY(0);
@@ -672,6 +688,10 @@
     }
 
     .sheet.settings-page.open {
+      transform: translateY(0);
+    }
+
+    .sheet.practice-page.open {
       transform: translateY(0);
     }
 
@@ -2022,6 +2042,235 @@
     .sheet .check input { width: 20px; height: 20px; accent-color: var(--primary); }
     .sheet .badge { background: var(--surface); color: var(--ink); border-color: var(--border); min-height: 40px; font-size: 13px; line-height: 18px; }
     .sheet.settings-page .sheet-grab { display: none; }
+    .sheet.practice-page .sheet-grab { display: none; }
+    .sheet.practice-page .sheet-panel[data-panel="practice"],
+    .sheet.practice-page .sheet-panel[data-panel="statistics"] {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-height: 100%;
+      padding: 0;
+      overflow: hidden;
+    }
+    .practice-menu-scroll,
+    .statistics-shell {
+      position: absolute;
+      inset: 0;
+      overflow-x: hidden;
+      overflow-y: auto;
+      padding: calc(24px + env(safe-area-inset-top)) 16px calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
+      background: var(--panel);
+      scrollbar-width: thin;
+    }
+    .practice-menu-scroll { max-width: 760px; margin: 0 auto; }
+    .practice-menu-scroll .row { margin-bottom: 20px; }
+    .practice-statistics-section { margin-top: 24px; }
+    .practice-statistics-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      width: 100%;
+      min-height: 76px;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      color: var(--ink);
+      text-align: left;
+      cursor: pointer;
+    }
+    .practice-statistics-card:hover { background: var(--primary-soft); }
+    .practice-statistics-icon { font-size: 24px; }
+    .practice-statistics-copy { display: grid; gap: 4px; }
+    .practice-statistics-copy strong { font-size: 16px; }
+    .practice-statistics-copy span { color: var(--muted); font-size: 13px; }
+    .statistics-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: 980px;
+      margin: 0 auto 22px;
+    }
+    .statistics-back {
+      flex: 0 0 auto;
+      border: 0;
+      background: transparent;
+      color: var(--primary);
+      font: 700 16px/1 Arial, sans-serif;
+      cursor: pointer;
+    }
+    .statistics-title { margin: 0; color: var(--ink); font-size: clamp(26px, 6vw, 36px); }
+    .statistics-subtitle { margin: 5px 0 0; color: var(--muted); font-size: 14px; }
+    .statistics-tabs {
+      display: flex;
+      gap: 4px;
+      max-width: 980px;
+      margin: 0 auto 22px;
+      padding: 5px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface-soft);
+    }
+    .statistics-tab {
+      flex: 1;
+      min-height: 44px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font: 700 14px Arial, sans-serif;
+      cursor: pointer;
+    }
+    .statistics-tab[aria-selected="true"] { background: var(--surface); color: var(--primary); box-shadow: 0 2px 8px rgba(0,0,0,.1); }
+    .statistics-content { max-width: 980px; margin: 0 auto; }
+    .statistics-panel[hidden] { display: none; }
+    .statistics-panel-heading,
+    .statistics-month-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .statistics-panel-heading h2,
+    .statistics-month-heading h2 { margin: 0; color: var(--ink); font-size: 21px; }
+    .statistics-month-controls { display: flex; align-items: center; gap: 12px; }
+    .statistics-month-controls button {
+      width: 42px;
+      height: 42px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .statistics-month-controls button:disabled { opacity: .4; cursor: default; }
+    .statistics-calendar-card,
+    .statistics-words-card {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .activity-calendar {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 7px;
+    }
+    .activity-weekday {
+      padding: 2px 0 5px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .activity-day {
+      position: relative;
+      display: flex;
+      min-width: 0;
+      min-height: 64px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: var(--surface-soft);
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 700;
+    }
+    .activity-day.is-outside { opacity: .42; }
+    .activity-day.is-today { outline: 2px solid var(--primary); outline-offset: -2px; }
+    .activity-day.is-complete { background: color-mix(in srgb, #39d353 22%, var(--surface)); border-color: #39d353; }
+    .activity-day-star { color: #e6a23c; font-size: 15px; line-height: 1; }
+    .activity-day-count { color: var(--muted); font-size: 10px; line-height: 1; }
+    .statistics-summary { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
+    .statistics-description { margin: 0 0 16px; color: var(--muted); line-height: 1.5; }
+    .effort-period-list { display: grid; gap: 14px; --effort-cell-size: 12px; --effort-gap: 4px; }
+    .effort-period-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--ink);
+    }
+    .effort-calendar { width: 100%; overflow-x: hidden; }
+    .effort-calendar-layout { display: grid; grid-template-columns: 30px minmax(0, 1fr); column-gap: 6px; width: 100%; }
+    .effort-weekday-labels {
+      display: grid;
+      grid-template-rows: repeat(7, var(--effort-cell-size));
+      row-gap: var(--effort-gap);
+      align-items: center;
+      padding-top: 32px;
+      color: var(--muted);
+      font-size: 10px;
+    }
+    .effort-calendar-grid { width: 100%; min-width: 0; }
+    .effort-months,
+    .effort-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--week-count), minmax(0, 1fr));
+      column-gap: var(--effort-gap);
+    }
+    .effort-months { min-height: 29px; align-items: start; color: var(--muted); font-size: 11px; }
+    .effort-month-label { display: grid; gap: 1px; white-space: nowrap; line-height: 12px; }
+    .effort-month-year { color: var(--muted); font-size: 9px; }
+    .effort-grid {
+      grid-template-rows: repeat(7, var(--effort-cell-size));
+      grid-auto-flow: column;
+      justify-items: center;
+      row-gap: var(--effort-gap);
+    }
+    .effort-day {
+      width: var(--effort-cell-size);
+      height: var(--effort-cell-size);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      background: var(--surface-soft);
+    }
+    .effort-day.is-future { visibility: hidden; }
+    .effort-day:not(.is-empty) { border-color: color-mix(in srgb, var(--effort-color), transparent 35%); background: var(--effort-color); }
+    .effort-legend-card { margin-top: 12px; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface); }
+    .effort-legend { display: flex; align-items: center; justify-content: flex-end; gap: 5px; color: var(--muted); font-size: 12px; }
+    .effort-legend .effort-day { display: inline-block; width: 12px; height: 12px; flex: 0 0 12px; }
+    @media (max-width: 560px) {
+      #yearEffortCalendar { --effort-cell-size: 10px; --effort-gap: 1px; }
+      .effort-calendar-layout { grid-template-columns: 24px minmax(0, 1fr); column-gap: 4px; }
+      .effort-weekday-labels { padding-top: 32px; font-size: 9px; }
+      .effort-period-card { padding: 12px; }
+    }
+    @media (max-width: 380px) {
+      #yearEffortCalendar { --effort-cell-size: 7px; --effort-gap: 2px; }
+      .effort-calendar-layout { grid-template-columns: 20px minmax(0, 1fr); column-gap: 3px; }
+      .effort-period-card { padding: 10px; }
+    }
+    .statistics-language-select {
+      width: 100%;
+      min-height: 46px;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+    }
+    .statistics-word-list { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+    .statistics-word-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-soft);
+    }
+    .statistics-word-count { color: var(--primary); font-weight: 800; white-space: nowrap; }
+    .statistics-empty { padding: 24px 12px; color: var(--muted); text-align: center; }
     .sheet-panel[data-panel="settings"] {
       position: relative;
       height: 100%;
@@ -2733,23 +2982,80 @@
         <div class="sheet-grab"></div>
 
         <div class="sheet-panel active" data-panel="practice">
-          <div class="sheet-header">Practice Mode</div>
-          <section class="row" id="row-modes">
-            <select id="modeSelect" aria-label="Mode" style="display:none;">
-              <option>Manual Mode</option>
-              <option>Auto Mode</option>
-              <option>Speaking Practice Mode</option>
-              <option>Intensive Challenge</option>
-              <option>Writing Practice Mode</option>
-            </select>
-            <div class="mode-option-list" aria-label="Practice modes">
-              <button type="button" class="mode-option" data-mode="Manual Mode"><span class="emoji">🧠</span><span>Manual Mode</span></button>
-              <button type="button" class="mode-option" data-mode="Speaking Practice Mode"><span class="emoji">🎤</span><span>Speaking Practice</span></button>
-              <button type="button" class="mode-option" data-mode="Intensive Challenge"><span class="emoji">⚡</span><span>Intensive Challenge</span></button>
-              <button type="button" class="mode-option" data-mode="Writing Practice Mode"><span class="emoji">✍️</span><span>Dictate Practice</span></button>
+          <div class="practice-menu-scroll">
+            <div class="sheet-header">Practice Mode</div>
+            <section class="row" id="row-modes">
+              <select id="modeSelect" aria-label="Mode" style="display:none;">
+                <option>Manual Mode</option>
+                <option>Auto Mode</option>
+                <option>Speaking Practice Mode</option>
+                <option>Intensive Challenge</option>
+                <option>Writing Practice Mode</option>
+              </select>
+              <div class="mode-option-list" aria-label="Practice modes">
+                <button type="button" class="mode-option" data-mode="Manual Mode"><span class="emoji">🧠</span><span>Manual Mode</span></button>
+                <button type="button" class="mode-option" data-mode="Speaking Practice Mode"><span class="emoji">🎤</span><span>Speaking Practice</span></button>
+                <button type="button" class="mode-option" data-mode="Intensive Challenge"><span class="emoji">⚡</span><span>Intensive Challenge</span></button>
+                <button type="button" class="mode-option" data-mode="Writing Practice Mode"><span class="emoji">✍️</span><span>Dictate Practice</span></button>
+              </div>
+              <div id="modeContent" style="width:100%; margin-top:12px;"></div>
+            </section>
+            <section class="practice-statistics-section" aria-labelledby="practiceStatisticsHeading">
+              <h2 class="sheet-header" id="practiceStatisticsHeading">Statistics</h2>
+              <button type="button" class="practice-statistics-card" data-open-statistics>
+                <span class="practice-statistics-icon" aria-hidden="true">▦</span>
+                <span class="practice-statistics-copy"><strong>View Statistics</strong><span>Review your activity, effort, and practiced words</span></span>
+                <span class="settings-section-arrow" aria-hidden="true">›</span>
+              </button>
+            </section>
+          </div>
+        </div>
+
+        <div class="sheet-panel" data-panel="statistics" aria-label="Statistics">
+          <div class="statistics-shell">
+            <header class="statistics-header">
+              <button type="button" class="statistics-back" data-statistics-back>‹ Practice</button>
+              <div><h1 class="statistics-title">Statistics</h1><p class="statistics-subtitle">Your practice history and progress</p></div>
+            </header>
+            <div class="statistics-tabs" id="statisticsTabs" role="tablist" aria-label="Statistics categories">
+              <button type="button" class="statistics-tab" id="statisticsTabActivity" role="tab" aria-selected="true" aria-controls="statisticsActivity" data-statistics-tab="activity">Activity</button>
+              <button type="button" class="statistics-tab" id="statisticsTabYear" role="tab" aria-selected="false" aria-controls="statisticsYear" data-statistics-tab="year" tabindex="-1">Year Effort</button>
+              <button type="button" class="statistics-tab" id="statisticsTabWords" role="tab" aria-selected="false" aria-controls="statisticsWords" data-statistics-tab="words" tabindex="-1">Words</button>
             </div>
-            <div id="modeContent" style="width:100%; margin-top:12px;"></div>
-          </section>
+            <div class="statistics-content">
+              <section class="statistics-panel" id="statisticsActivity" role="tabpanel" aria-labelledby="statisticsTabActivity" data-statistics-panel="activity">
+                <div class="statistics-month-heading">
+                  <h2 id="activityMonthLabel"></h2>
+                  <div class="statistics-month-controls">
+                    <button type="button" id="activityPreviousMonth" aria-label="Previous month">‹</button>
+                    <button type="button" id="activityNextMonth" aria-label="Next month">›</button>
+                  </div>
+                </div>
+                <div class="statistics-calendar-card">
+                  <div class="activity-calendar" id="activityCalendar" role="grid" aria-label="Monthly practice activity"></div>
+                  <p class="statistics-summary" id="activitySummary"></p>
+                </div>
+              </section>
+              <section class="statistics-panel" id="statisticsYear" role="tabpanel" aria-labelledby="statisticsTabYear" data-statistics-panel="year" hidden>
+                <div class="statistics-panel-heading"><h2>Year Effort</h2></div>
+                <p class="statistics-description" id="yearEffortDescription"></p>
+                <div class="effort-period-list" id="yearEffortCalendar"></div>
+                <div class="effort-legend-card">
+                  <div class="effort-legend" aria-label="Practice intensity scale">
+                    <span>Goal</span><span class="effort-day" style="--effort-color:#9be9a8"></span><span class="effort-day" style="--effort-color:#40c463"></span><span class="effort-day" style="--effort-color:#30a14e"></span><span class="effort-day" style="--effort-color:#216e39"></span><span>2× goal</span>
+                  </div>
+                </div>
+              </section>
+              <section class="statistics-panel" id="statisticsWords" role="tabpanel" aria-labelledby="statisticsTabWords" data-statistics-panel="words" hidden>
+                <div class="statistics-panel-heading"><h2>Words</h2></div>
+                <div class="statistics-words-card">
+                  <label class="sr-only" for="statisticsLanguageSelect">Language</label>
+                  <select class="statistics-language-select" id="statisticsLanguageSelect"></select>
+                  <div id="statisticsWordResults" aria-live="polite"></div>
+                </div>
+              </section>
+            </div>
+          </div>
         </div>
 
         <div class="sheet-panel" data-panel="voices">
@@ -2962,6 +3268,11 @@
                   <span class="settings-section-copy"><span class="settings-section-name">Course Settings</span><span class="settings-section-description">Configure learning milestones</span></span>
                   <span class="settings-section-arrow" aria-hidden="true">›</span>
                 </button>
+                <button class="settings-section-card" type="button" data-settings-open="goal" style="--settings-accent:#47b66b">
+                  <span class="settings-section-icon" aria-hidden="true">★</span>
+                  <span class="settings-section-copy"><span class="settings-section-name">Daily Practice Goal</span><span class="settings-section-description">Set your daily phrase target</span></span>
+                  <span class="settings-section-arrow" aria-hidden="true">›</span>
+                </button>
               </div>
             </section>
 
@@ -3085,6 +3396,21 @@
                 <p id="courseSettingsStatus" class="status" role="status" aria-live="polite"></p>
               </div>
             </section>
+
+            <section class="settings-page-view" data-settings-view="goal" aria-labelledby="settings-goal-title" aria-hidden="true" inert>
+              <header class="settings-detail-header">
+                <button class="settings-back-button" type="button" data-settings-back aria-label="Back to Settings">‹</button>
+                <div><h2 class="settings-detail-heading" id="settings-goal-title">Daily Practice Goal</h2><p class="settings-detail-description">Choose how many phrases count as a completed practice day.</p></div>
+              </header>
+              <div class="settings-detail-content speaking-option-list">
+                <div class="speaking-option-card">
+                  <div class="speaking-option-heading"><label for="dailyPracticeGoal">Phrases per day</label></div>
+                  <p class="speaking-option-description">Your activity calendars recalculate using this goal.</p>
+                  <div class="settings-stepper"><button type="button" data-step-target="dailyPracticeGoal" data-step="-1" aria-label="Decrease daily practice goal">−</button><input type="number" id="dailyPracticeGoal" min="1" max="1000" step="1" value="10" /><button type="button" data-step-target="dailyPracticeGoal" data-step="1" aria-label="Increase daily practice goal">+</button></div>
+                  <p id="dailyPracticeGoalStatus" class="status" role="status" aria-live="polite"></p>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </aside>
@@ -3197,6 +3523,8 @@
         coursesStatus: document.getElementById('coursesStatus'),
         courseSettingsStatus: document.getElementById('courseSettingsStatus'),
         intensiveChallengeForcedRetries: document.getElementById('courseIntensiveChallengeForcedRetries'),
+        dailyPracticeGoal: document.getElementById('dailyPracticeGoal'),
+        dailyPracticeGoalStatus: document.getElementById('dailyPracticeGoalStatus'),
         courseThresholds: {
           known: document.getElementById('courseKnownThreshold'),
           learning: document.getElementById('courseLearningThreshold'),
@@ -3308,6 +3636,9 @@
         practiceTypes: {},
         progress: {},
         wordProgress: {},
+        dailyPracticeGoal: 10,
+        practiceActivity: {},
+        practiceWordCounts: {},
         sessions: {},
         thresholds: { ...DEFAULT_COURSE_THRESHOLDS },
         forcedIntensiveChallengeRetries: DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES,
@@ -3321,6 +3652,11 @@
       let courseTab = 'focus';
       let pendingCoursePracticeTypeId = null;
       let activeCourseSession = null;
+      let phrasePracticeVisit = 0;
+      let lastRecordedPracticeVisit = -1;
+      let statisticsTab = 'activity';
+      let activityMonthOffset = 0;
+      let statisticsLanguage = null;
 
       // --- Utilities ---
       function normalizeForCompare(s) {
@@ -6183,6 +6519,13 @@
           if (storedIntensiveChallengeForcedRetries !== undefined && !validIntensiveChallengeForcedRetries) {
             console.warn('Invalid saved Intensive Challenge retries; the default was restored.');
           }
+          const dailyPracticeGoal = Number.isInteger(stored.dailyPracticeGoal) &&
+            stored.dailyPracticeGoal >= 1 && stored.dailyPracticeGoal <= 1000
+            ? stored.dailyPracticeGoal
+            : 10;
+          if (stored.dailyPracticeGoal !== undefined && dailyPracticeGoal !== stored.dailyPracticeGoal) {
+            console.warn('Invalid saved daily practice goal; the default was restored.');
+          }
           const restoredCourseState = { ...stored };
           delete restoredCourseState.intensiveChallengeRetries;
           delete restoredCourseState.forcedIntensiveChallengeRetries;
@@ -6192,6 +6535,13 @@
             practiceTypes: stored.practiceTypes && typeof stored.practiceTypes === 'object' ? stored.practiceTypes : {},
             progress: stored.progress && typeof stored.progress === 'object' ? stored.progress : {},
             wordProgress: stored.wordProgress && typeof stored.wordProgress === 'object' ? stored.wordProgress : {},
+            dailyPracticeGoal,
+            practiceActivity: stored.practiceActivity && typeof stored.practiceActivity === 'object' && !Array.isArray(stored.practiceActivity)
+              ? stored.practiceActivity
+              : {},
+            practiceWordCounts: stored.practiceWordCounts && typeof stored.practiceWordCounts === 'object' && !Array.isArray(stored.practiceWordCounts)
+              ? stored.practiceWordCounts
+              : {},
             sessions: stored.sessions && typeof stored.sessions === 'object' ? stored.sessions : {},
             thresholds,
             forcedIntensiveChallengeRetries,
@@ -6200,6 +6550,7 @@
             input.value = String(courseState.thresholds[key]);
           }
           els.intensiveChallengeForcedRetries.value = String(courseState.forcedIntensiveChallengeRetries);
+          if (els.dailyPracticeGoal) els.dailyPracticeGoal.value = String(courseState.dailyPracticeGoal);
         } catch (error) {
           console.error('Unable to restore course state:', error);
           setCourseStatus('Saved course data could not be read. Existing phrase data was left unchanged.', true);
@@ -6664,6 +7015,281 @@
       function getWordProgressKey(languageTarget, word) {
         const normalizedWord = normalizeForCompare(word);
         return normalizedWord ? `${String(languageTarget || '').toLowerCase()}\u0000${normalizedWord}` : '';
+      }
+
+      function getPracticeDateKey(date = new Date()) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        return `${year}-${month}-${day}`;
+      }
+
+      function getDailyPracticeCount(dateKey) {
+        const count = Number(courseState.practiceActivity?.[dateKey]);
+        return Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
+      }
+
+      function recordPracticeCompletion(index) {
+        const dateKey = getPracticeDateKey();
+        courseState.practiceActivity[dateKey] = getDailyPracticeCount(dateKey) + 1;
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 399);
+        const cutoffKey = getPracticeDateKey(cutoff);
+        for (const storedDate of Object.keys(courseState.practiceActivity)) {
+          if (/^\d{4}-\d{2}-\d{2}$/.test(storedDate) && storedDate < cutoffKey) {
+            delete courseState.practiceActivity[storedDate];
+          }
+        }
+
+        if (!activeCourseSession && parsedRows[index]) {
+          const language = getPracticeLanguage();
+          const phrase = parsedRows[index][language] || '';
+          const storedWords = courseState.practiceWordCounts[language];
+          const words = storedWords && typeof storedWords === 'object' && !Array.isArray(storedWords)
+            ? storedWords
+            : (courseState.practiceWordCounts[language] = {});
+          const practicedWords = new Map();
+          for (const word of phrase.match(/[\p{L}\p{N}]+(?:['’][\p{L}\p{N}]+)*/gu) || []) {
+            const normalizedWord = normalizeForCompare(word);
+            if (normalizedWord && !practicedWords.has(normalizedWord)) practicedWords.set(normalizedWord, word);
+          }
+          for (const [normalizedWord, word] of practicedWords) {
+            const storedEntry = words[normalizedWord];
+            const entry = storedEntry && typeof storedEntry === 'object' && !Array.isArray(storedEntry)
+              ? storedEntry
+              : (words[normalizedWord] = { word, count: 0 });
+            entry.word = entry.word || word;
+            entry.count = (Number(entry.count) || 0) + 1;
+          }
+        }
+
+        saveCourseState();
+        if (document.querySelector('.sheet-panel.active')?.dataset.panel === 'statistics') {
+          renderStatistics();
+        }
+      }
+
+      function interpolateStatisticsColor(start, end, amount) {
+        const startRgb = start.match(/[a-f\d]{2}/gi).map(value => parseInt(value, 16));
+        const endRgb = end.match(/[a-f\d]{2}/gi).map(value => parseInt(value, 16));
+        const rgb = startRgb.map((value, index) =>
+          Math.round(value + (endRgb[index] - value) * Math.max(0, Math.min(1, amount))));
+        return `#${rgb.map(value => value.toString(16).padStart(2, '0')).join('')}`;
+      }
+
+      function getEffortColor(count) {
+        const goal = Math.max(1, Number(courseState.dailyPracticeGoal) || 10);
+        const ratio = count / goal;
+        const palette = [
+          { ratio: 0, color: '#164b2a' },
+          { ratio: 1, color: '#9be9a8' },
+          { ratio: 1.25, color: '#40c463' },
+          { ratio: 1.5, color: '#30a14e' },
+          { ratio: 2, color: '#216e39' },
+        ];
+        for (let index = 1; index < palette.length; index++) {
+          const lower = palette[index - 1];
+          const upper = palette[index];
+          if (ratio <= upper.ratio) {
+            return interpolateStatisticsColor(
+              lower.color,
+              upper.color,
+              (ratio - lower.ratio) / (upper.ratio - lower.ratio),
+            );
+          }
+        }
+        return palette[palette.length - 1].color;
+      }
+
+      function renderActivityCalendar() {
+        const calendar = document.getElementById('activityCalendar');
+        const monthLabel = document.getElementById('activityMonthLabel');
+        const summary = document.getElementById('activitySummary');
+        if (!calendar || !monthLabel || !summary) return;
+
+        const today = new Date();
+        const monthDate = new Date(today.getFullYear(), today.getMonth() + activityMonthOffset, 1);
+        const year = monthDate.getFullYear();
+        const month = monthDate.getMonth();
+        monthLabel.textContent = monthDate.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+        document.getElementById('activityNextMonth').disabled = activityMonthOffset >= 0;
+
+        const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        const firstWeekday = (new Date(year, month, 1).getDay() + 6) % 7;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const precedingDays = new Date(year, month, 0).getDate();
+        let totalPhrases = 0;
+        let goalDays = 0;
+        const goal = Math.max(1, Number(courseState.dailyPracticeGoal) || 10);
+        const cells = weekdays.map(day => `<div class="activity-weekday" role="columnheader">${day}</div>`);
+
+        for (let index = 0; index < 42; index++) {
+          const dayOffset = index - firstWeekday + 1;
+          const isCurrentMonth = dayOffset >= 1 && dayOffset <= daysInMonth;
+          const dayNumber = dayOffset < 1
+            ? precedingDays + dayOffset
+            : dayOffset > daysInMonth ? dayOffset - daysInMonth : dayOffset;
+          const cellDate = new Date(year, month, dayOffset);
+          const dateKey = getPracticeDateKey(cellDate);
+          const count = isCurrentMonth ? getDailyPracticeCount(dateKey) : 0;
+          const metGoal = isCurrentMonth && count >= goal;
+          if (isCurrentMonth) {
+            totalPhrases += count;
+            if (metGoal) goalDays++;
+          }
+          const todayClass = dateKey === getPracticeDateKey(today) ? ' is-today' : '';
+          const completeClass = metGoal ? ' is-complete' : '';
+          const outsideClass = isCurrentMonth ? '' : ' is-outside';
+          const accessibleCount = count === 1 ? '1 phrase' : `${count} phrases`;
+          const goalLabel = metGoal ? ', daily goal met' : '';
+          const accessibleDate = cellDate.toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
+          cells.push(`<div class="activity-day${outsideClass}${todayClass}${completeClass}" role="gridcell" aria-label="${accessibleDate}: ${accessibleCount}${goalLabel}"><span>${dayNumber}</span>${metGoal ? '<span class="activity-day-star" aria-hidden="true">★</span>' : count ? `<span class="activity-day-count">${count}</span>` : ''}</div>`);
+        }
+
+        calendar.innerHTML = cells.join('');
+        summary.textContent = `${totalPhrases} ${totalPhrases === 1 ? 'phrase' : 'phrases'} practiced · ${goalDays} ${goalDays === 1 ? 'goal day' : 'goal days'}`;
+      }
+
+      function renderYearEffort() {
+        const calendar = document.getElementById('yearEffortCalendar');
+        const description = document.getElementById('yearEffortDescription');
+        if (!calendar || !description) return;
+        const goal = Math.max(1, Number(courseState.dailyPracticeGoal) || 10);
+        description.textContent = `A day meets your goal at ${goal} phrases. Green intensity increases as you practice up to twice your goal.`;
+
+        const today = new Date();
+        const todayKey = getPracticeDateKey(today);
+        const previousStart = new Date(today);
+        previousStart.setDate(previousStart.getDate() - 364);
+        const recentStart = new Date(today);
+        recentStart.setDate(recentStart.getDate() - 182);
+        const previousEnd = new Date(recentStart);
+        previousEnd.setDate(previousEnd.getDate() - 1);
+        const periods = [
+          { id: 'recent', title: 'Recent 6 Months', start: recentStart, end: today },
+          { id: 'previous', title: 'Previous 6 Months', start: previousStart, end: previousEnd },
+        ];
+        const weekdays = '<span>Mon</span><span></span><span>Wed</span><span></span><span>Fri</span><span></span><span></span>';
+
+        calendar.innerHTML = periods.map(period => {
+          const startKey = getPracticeDateKey(period.start);
+          const endKey = getPracticeDateKey(period.end);
+          const gridStart = new Date(period.start);
+          gridStart.setDate(gridStart.getDate() - ((gridStart.getDay() + 6) % 7));
+          const gridEnd = new Date(period.end);
+          gridEnd.setDate(gridEnd.getDate() + (6 - ((gridEnd.getDay() + 6) % 7)));
+          const weeks = [];
+          for (const weekStart = new Date(gridStart); weekStart <= gridEnd; weekStart.setDate(weekStart.getDate() + 7)) {
+            weeks.push(new Date(weekStart));
+          }
+
+          const monthStarts = [];
+          for (const monthStart = new Date(period.start.getFullYear(), period.start.getMonth(), 1);
+            monthStart <= period.end;
+            monthStart.setMonth(monthStart.getMonth() + 1)) {
+            monthStarts.push(new Date(monthStart));
+          }
+          const monthWeekIndices = monthStarts.map(monthStart => {
+            const monday = new Date(monthStart);
+            monday.setDate(monday.getDate() - ((monday.getDay() + 6) % 7));
+            const mondayKey = getPracticeDateKey(monday);
+            return weeks.findIndex(weekStart => getPracticeDateKey(weekStart) === mondayKey);
+          });
+          const months = monthStarts.map((monthStart, index) => {
+            const weekIndex = monthWeekIndices[index];
+            const nextWeekIndex = monthWeekIndices[index + 1] ?? weeks.length;
+            const span = Math.max(1, nextWeekIndex - weekIndex);
+            const monthName = monthStart.toLocaleDateString(undefined, { month: 'short' });
+            return `<span class="effort-month-label" style="grid-column:${weekIndex + 1} / span ${span}"><span>${monthName}</span><span class="effort-month-year">${monthStart.getFullYear()}</span></span>`;
+          });
+          const days = [];
+          for (let week = 0; week < weeks.length; week++) {
+            for (let weekday = 0; weekday < 7; weekday++) {
+              const date = new Date(weeks[week]);
+              date.setDate(date.getDate() + weekday);
+              const dateKey = getPracticeDateKey(date);
+              const inRange = dateKey >= startKey && dateKey <= endKey && dateKey <= todayKey;
+              const count = inRange ? getDailyPracticeCount(dateKey) : 0;
+              const intensity = count ? ` style="--effort-color:${getEffortColor(count)}"` : '';
+              const emptyClass = count ? '' : ' is-empty';
+              const hiddenClass = inRange ? '' : ' is-future';
+              const label = `${date.toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}: ${count} ${count === 1 ? 'phrase' : 'phrases'}`;
+              days.push(`<span class="effort-day${emptyClass}${hiddenClass}" data-date="${dateKey}"${intensity} title="${label}" aria-label="${label}"></span>`);
+            }
+          }
+
+          return `<section class="effort-period-card" aria-label="${period.title} practice activity"><div class="effort-calendar"><div class="effort-calendar-layout"><div class="effort-weekday-labels" aria-hidden="true">${weekdays}</div><div class="effort-calendar-grid"><div class="effort-months" style="--week-count:${weeks.length}">${months.join('')}</div><div class="effort-grid" style="--week-count:${weeks.length}">${days.join('')}</div></div></div></div></section>`;
+        }).join('');
+      }
+
+      function getStatisticsWordCounts() {
+        const wordsByLanguage = new Map();
+        const addWordCount = (language, normalizedWord, word, count) => {
+          const safeCount = Number(count);
+          if (!language || !normalizedWord || !Number.isFinite(safeCount) || safeCount <= 0) return;
+          if (!wordsByLanguage.has(language)) wordsByLanguage.set(language, new Map());
+          const languageWords = wordsByLanguage.get(language);
+          const existing = languageWords.get(normalizedWord);
+          if (existing) existing.count += Math.floor(safeCount);
+          else languageWords.set(normalizedWord, { word: word || normalizedWord, count: Math.floor(safeCount) });
+        };
+
+        for (const [language, words] of Object.entries(courseState.practiceWordCounts || {})) {
+          if (!words || typeof words !== 'object' || Array.isArray(words)) continue;
+          for (const [normalizedWord, entry] of Object.entries(words)) {
+            addWordCount(language, normalizedWord, entry?.word, entry?.count);
+          }
+        }
+        for (const [key, progress] of Object.entries(courseState.wordProgress || {})) {
+          const [language, normalizedWord] = key.split('\u0000');
+          addWordCount(language, normalizedWord, normalizedWord, progress?.practices);
+        }
+        return wordsByLanguage;
+      }
+
+      function renderStatisticsWords() {
+        const languageSelect = document.getElementById('statisticsLanguageSelect');
+        const results = document.getElementById('statisticsWordResults');
+        if (!languageSelect || !results) return;
+        const wordCounts = getStatisticsWordCounts();
+        const selectedLanguage = statisticsLanguage || getPracticeLanguage();
+        languageSelect.innerHTML = Object.entries(LANGUAGE_NAMES)
+          .map(([code, name]) => `<option value="${code}">${name}</option>`)
+          .join('');
+        statisticsLanguage = Object.prototype.hasOwnProperty.call(LANGUAGE_NAMES, selectedLanguage)
+          ? selectedLanguage
+          : getPracticeLanguage();
+        languageSelect.value = statisticsLanguage;
+        const languageWords = wordCounts.get(statisticsLanguage);
+        const sortedWords = languageWords
+          ? [...languageWords.values()].sort((first, second) =>
+            second.count - first.count || first.word.localeCompare(second.word))
+          : [];
+        if (!sortedWords.length) {
+          results.innerHTML = '<p class="statistics-empty">No practiced words recorded for this language yet.</p>';
+          return;
+        }
+        results.innerHTML = `<ol class="statistics-word-list">${sortedWords.map(entry =>
+          `<li class="statistics-word-item"><span>${escapeCourseHtml(entry.word)}</span><span class="statistics-word-count">${entry.count} ${entry.count === 1 ? 'practice' : 'practices'}</span></li>`
+        ).join('')}</ol>`;
+      }
+
+      function renderStatistics() {
+        renderActivityCalendar();
+        renderYearEffort();
+        renderStatisticsWords();
+      }
+
+      function setStatisticsTab(tab) {
+        statisticsTab = tab;
+        document.querySelectorAll('[data-statistics-tab]').forEach(button => {
+          const isCurrent = button.dataset.statisticsTab === tab;
+          button.setAttribute('aria-selected', String(isCurrent));
+          button.tabIndex = isCurrent ? 0 : -1;
+        });
+        document.querySelectorAll('[data-statistics-panel]').forEach(panel => {
+          panel.hidden = panel.dataset.statisticsPanel !== tab;
+        });
       }
 
       function migrateLegacyCourseProgress() {
@@ -7161,11 +7787,16 @@
       }
 
       function setCoursePhraseIndex(index, completeCurrent = false) {
+        const recorded = completeCurrent && recordCoursePhraseCompletion(currentIndex);
+        if (completeCurrent && currentIndex >= 0 && lastRecordedPracticeVisit !== phrasePracticeVisit) {
+          recordPracticeCompletion(currentIndex);
+          lastRecordedPracticeVisit = phrasePracticeVisit;
+        }
+        phrasePracticeVisit++;
         if (!activeCourseSession) {
           currentIndex = index;
           return;
         }
-        const recorded = completeCurrent && recordCoursePhraseCompletion(currentIndex);
         activeCourseSession.phraseVisitId = (Number(activeCourseSession.phraseVisitId) || 1) + 1;
         currentIndex = index;
         activeCourseSession.currentIndex = index;
@@ -7377,6 +8008,37 @@
         }
       }
 
+      function saveDailyPracticeGoal() {
+        const rawValue = els.dailyPracticeGoal.value.trim();
+        const nextGoal = Number(rawValue);
+        const status = els.dailyPracticeGoalStatus;
+        if (!rawValue || !Number.isInteger(nextGoal) || nextGoal < 1 || nextGoal > 1000) {
+          els.dailyPracticeGoal.value = String(courseState.dailyPracticeGoal);
+          if (status) {
+            status.className = 'course-error';
+            status.textContent = 'Enter a whole number between 1 and 1000.';
+          }
+          return;
+        }
+
+        const previousGoal = courseState.dailyPracticeGoal;
+        courseState.dailyPracticeGoal = nextGoal;
+        if (!saveCourseState()) {
+          courseState.dailyPracticeGoal = previousGoal;
+          els.dailyPracticeGoal.value = String(previousGoal);
+          if (status) {
+            status.className = 'course-error';
+            status.textContent = 'The daily practice goal could not be saved.';
+          }
+          return;
+        }
+        if (status) {
+          status.className = 'status';
+          status.textContent = 'Daily practice goal saved.';
+        }
+        renderStatistics();
+      }
+
       function saveForcedIntensiveChallengeRetries() {
         const rawValue = els.intensiveChallengeForcedRetries.value.trim();
         const next = Number(rawValue);
@@ -7557,7 +8219,7 @@
         const sheet = document.getElementById('bottomSheet');
         const sheetBackdrop = document.getElementById('sheetBackdrop');
         const navItems = document.querySelectorAll('.nav-item');
-        const fullPageSheets = new Set(['settings', 'load', 'csv']);
+        const fullPageSheets = new Set(['practice', 'statistics', 'settings', 'load', 'csv']);
         const settingsPanel = document.getElementById('settingsPanel');
         const settingsMenu = settingsPanel?.querySelector('[data-settings-view="menu"]');
         const settingsViews = settingsPanel ? [...settingsPanel.querySelectorAll('.settings-page-view')] : [];
@@ -7620,6 +8282,7 @@
           });
           if (sheet) {
             sheet.classList.toggle('settings-page', fullPageSheets.has(sheetKey));
+            sheet.classList.toggle('practice-page', sheetKey === 'practice' || sheetKey === 'statistics');
             sheet.classList.toggle('load-page', sheetKey === 'load');
             sheet.classList.add('open');
             sheet.style.transition = '';
@@ -7636,6 +8299,7 @@
           if (sheet) {
             sheet.classList.remove('open');
             sheet.classList.remove('settings-page');
+            sheet.classList.remove('practice-page');
             sheet.classList.remove('load-page');
             sheet.style.transition = '';
             sheet.style.transform = '';
@@ -7653,6 +8317,42 @@
         };
         window._trainer.openSheet = openSheet;
         window._trainer.closeSheet = closeSheet;
+        const openStatisticsButton = document.querySelector('[data-open-statistics]');
+        if (openStatisticsButton) {
+          openStatisticsButton.onclick = () => {
+            activityMonthOffset = 0;
+            setStatisticsTab('activity');
+            openSheet('statistics');
+            renderStatistics();
+          };
+        }
+        document.querySelector('[data-statistics-back]')?.addEventListener('click', () => openSheet('practice'));
+        document.querySelectorAll('[data-statistics-tab]').forEach(button => {
+          button.addEventListener('click', () => setStatisticsTab(button.dataset.statisticsTab));
+        });
+        document.getElementById('activityPreviousMonth')?.addEventListener('click', () => {
+          activityMonthOffset--;
+          renderActivityCalendar();
+        });
+        document.getElementById('activityNextMonth')?.addEventListener('click', () => {
+          if (activityMonthOffset < 0) activityMonthOffset++;
+          renderActivityCalendar();
+        });
+        document.getElementById('statisticsLanguageSelect')?.addEventListener('change', event => {
+          statisticsLanguage = event.currentTarget.value;
+          renderStatisticsWords();
+        });
+        document.getElementById('statisticsTabs')?.addEventListener('keydown', event => {
+          if (!['ArrowLeft', 'ArrowRight'].includes(event.key)) return;
+          const tabs = [...document.querySelectorAll('[data-statistics-tab]')];
+          const currentIndex = tabs.indexOf(document.activeElement);
+          if (currentIndex < 0) return;
+          event.preventDefault();
+          const direction = event.key === 'ArrowRight' ? 1 : -1;
+          const next = tabs[(currentIndex + direction + tabs.length) % tabs.length];
+          next.focus();
+          setStatisticsTab(next.dataset.statisticsTab);
+        });
         window.addEventListener('popstate', () => {
           if (ignoreLoadPopstate) {
             ignoreLoadPopstate = false;
@@ -7688,7 +8388,7 @@
         if (sheet) {
           sheet.addEventListener('pointerdown', (event) => {
             if (!sheet.classList.contains('open')) return;
-            if (sheet.classList.contains('load-page')) return;
+            if (sheet.classList.contains('load-page') || sheet.classList.contains('practice-page')) return;
             const interactiveSelector = 'button, input, select, textarea, label, a, .panel-title, .accordion-trigger';
             if (event.target.closest(interactiveSelector)) return;
             dragState.active = true;
@@ -7841,6 +8541,7 @@
           });
         });
         Object.values(els.courseThresholds).forEach(input => input.addEventListener('change', saveCourseThresholds));
+        els.dailyPracticeGoal?.addEventListener('change', saveDailyPracticeGoal);
         els.intensiveChallengeForcedRetries.addEventListener('change', saveForcedIntensiveChallengeRetries);
 
         if (sheetBackdrop) sheetBackdrop.onclick = closeSheet;
@@ -7904,7 +8605,7 @@
           }
           ensureParsed();
           if (!parsedRows.length) return;
-          setCoursePhraseIndex((currentIndex + 1) % parsedRows.length);
+          setCoursePhraseIndex((currentIndex + 1) % parsedRows.length, true);
           setPhraseTexts(parsedRows[currentIndex]);
           applyShowVisibility();
           await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
