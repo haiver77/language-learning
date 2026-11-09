@@ -2631,6 +2631,30 @@
     body.practice-focus-mode .transport-bar {
       bottom: calc(18px + env(safe-area-inset-bottom));
     }
+    @media (display-mode: standalone) {
+      html, body {
+        height: 100%;
+        overflow: hidden;
+      }
+      body {
+        height: 100vh;
+        height: 100dvh;
+      }
+      .app-shell {
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+      }
+      .phone-frame {
+        height: 100%;
+        min-height: 0;
+      }
+      .main-view {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        overscroll-behavior-y: contain;
+      }
+    }
   </style>
 </head>
 
