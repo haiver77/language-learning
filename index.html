@@ -106,6 +106,8 @@
     }
 
     .phone-frame {
+      display: flex;
+      flex-direction: column;
       min-height: 100vh;
       min-height: 100dvh;
       padding-bottom: 0;
@@ -1714,8 +1716,8 @@
       background: radial-gradient(ellipse at 100% 0, transparent 46%, rgba(22,134,109,.3) 48% 58%, transparent 60%), radial-gradient(ellipse at 0 100%, transparent 46%, rgba(112,189,85,.35) 48% 58%, transparent 60%);
     }
     .language-pair-indicator { color: var(--muted); font: 700 12px/1.2 Arial, sans-serif; margin-left: auto; margin-right: 60px; }
-    .main-view { min-height: 0; padding-left: 20px; padding-right: 20px; padding-bottom: calc(var(--bottom-nav-height) + 72px + env(safe-area-inset-bottom)); }
-    #row-phrases { flex: 0 0 auto; }
+    .main-view { flex: 1 0 auto; min-height: 0; padding-left: 20px; padding-right: 20px; padding-bottom: calc(var(--bottom-nav-height) + 72px + env(safe-area-inset-bottom)); }
+    #row-phrases { flex: 1 1 0; min-height: 0; }
     .phrases { gap: 18px; }
     .phrase-line {
       position: relative;
