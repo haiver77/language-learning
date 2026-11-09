@@ -9,6 +9,7 @@ applyTo:
 # Mantener la documentación funcional
 
 - Cuando un cambio afecte una funcionalidad documentada, actualiza en el mismo cambio todos los documentos de `docs/` que describan ese comportamiento.
+- Siempre que se cree, modifique o elimine funcionalidad de almacenamiento local del lado del cliente, actualiza `docs/local_storage.md` en el mismo cambio para que refleje con precisión la implementación real.
 - Usa el código y el comportamiento implementado como fuente de verdad. No documentes propuestas que aún no estén implementadas ni cambies el código para ajustarlo a documentación desactualizada, salvo que la tarea lo solicite.
 - Revisa los documentos relacionados según el alcance:
   - `docs/cursos.md`: catálogo, selección de cursos y unidades, formatos, sesiones, progreso y configuración de cursos.

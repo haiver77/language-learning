@@ -40,6 +40,8 @@ The next phrase is taken when any of these rules is met:
 
 All successful transitions keep the completed phrase visible for at least the configured match celebration time. If the configured similarity wait is longer, that longer wait is preserved. The same guarded transition path is used for all advance rules.
 
+In a course session, this successful transition increments the associated vocabulary word's global practice count once. When the recognized target vocabulary is correct, its global pronunciation-correct count also increments once; see [Course functionality](./cursos.md).
+
 ## Success feedback and streak
 
 - A final speech result that meets the configured `Min. Similarity (%)` threshold triggers a silent visual success celebration, regardless of which advance rule applies.

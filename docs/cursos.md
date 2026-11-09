@@ -20,14 +20,15 @@ Los idiomas del curso se aplican automáticamente: el idioma nativo ocupa la pri
 
 ## Progreso y configuración
 
-- Al completar secuencialmente una sesión hasta su última frase, aumenta una vez el contador de prácticas de cada palabra única asignada a la unidad, tanto foco como complementaria. Una sesión incompleta no lo aumenta.
-- En **Speaking Practice** e **Intensive Challenge**, una pronunciación correcta de la palabra foco suma una vez al contador de pronunciaciones correctas. Los demás modos no incrementan este contador.
+- Al completar una frase de una sesión de curso, aumenta una vez el contador de prácticas de la palabra de vocabulario asociada a esa frase. El avance tras una pronunciación correcta, una respuesta escrita correcta, la finalización de la reproducción o el cierre del ciclo de **Intensive Challenge** completan la frase; sus reintentos forzados cuentan como un solo ciclo. Cambiar de frase manualmente, detener o abandonar la práctica no cuenta como completar la frase.
+- Los contadores de prácticas, pronunciaciones correctas y niveles son globales para la persona usuaria en este navegador: la misma palabra del mismo idioma comparte progreso en todos los cursos y unidades donde aparezca. Se normalizan mayúsculas, acentos y puntuación para identificar la palabra; palabras iguales en idiomas distintos conservan progreso separado.
+- En **Speaking Practice** e **Intensive Challenge**, una pronunciación correcta de la palabra foco suma una vez al contador global de pronunciaciones correctas. Los demás modos no incrementan este contador.
 - Los niveles se calculan a partir del contador de prácticas: **Sin practicar**, **Conocida**, **En aprendizaje**, **Aprendida** y **Mastered**. Los umbrales iniciales son 1, 2, 6 y 8 prácticas, respectivamente.
 - **Settings > Course Settings** permite cambiar esos cuatro umbrales. Deben ser enteros positivos en orden estrictamente creciente; al guardarlos se recalculan los niveles y porcentajes sin alterar los contadores.
 - **Forced retries after failure** configura cuántas veces adicionales se repite obligatoriamente la frase en Intensive Challenge tras un fallo por silencio en el primer intento. Las repeticiones continúan aunque los intentos posteriores sean correctos. Acepta enteros no negativos y su valor inicial es 2.
-- El porcentaje de unidad y curso se calcula con el vocabulario foco, limitando los puntos por palabra al umbral **Mastered**. El vocabulario complementario tiene niveles y contadores propios, pero no determina esos porcentajes ni el estado de dominio de la unidad o del curso.
+- El porcentaje de unidad y curso se calcula con el vocabulario foco, limitando los puntos por palabra al umbral **Mastered**. El progreso del vocabulario complementario también se muestra y comparte globalmente, pero no determina esos porcentajes ni el estado de dominio de la unidad o del curso.
 
-La selección, los umbrales, los reintentos forzados de Intensive Challenge, el progreso y las sesiones se guardan en el navegador. Los recursos de curso descargados se almacenan localmente para reutilizarlos; los que todavía no se han cargado requieren conexión.
+La selección, los umbrales, los reintentos forzados de Intensive Challenge, el progreso global y las sesiones se guardan en el almacenamiento local del navegador. El progreso compartido es entre cursos en ese navegador; no se sincroniza entre dispositivos. Los recursos de curso descargados se almacenan localmente para reutilizarlos; los que todavía no se han cargado requieren conexión.
 
 ## Datos de los cursos
 

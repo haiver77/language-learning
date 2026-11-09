@@ -76,6 +76,8 @@ Cuando vence **Silence Wait (sec)** sin éxito:
 
 El valor inicial permite dos repeticiones forzadas adicionales tras un fallo inicial, es decir, hasta tres intentos por frase. Si el primer intento tiene éxito, la práctica continúa después de leer la respuesta sin repeticiones adicionales. Si falla, la práctica avanza al terminar las repeticiones configuradas, independientemente de si fueron correctas o no. El efecto visual de éxito puede desaparecer según su duración configurada, pero no agrega una espera independiente al avance. Si la síntesis de voz falla, el modo informa el error y no inicia otro intento ni avanza a otra frase.
 
+En una sesión de curso, al avanzar después de leer la respuesta se suma una práctica a la palabra asociada con esa frase, tanto si el ciclo terminó con éxito como por silencio. Los reintentos forzados son parte del mismo ciclo y no generan prácticas adicionales. La pronunciación correcta, cuando corresponde, se registra por separado en el progreso global de la palabra; véase [Funcionalidad de cursos](./cursos.md).
+
 ## Límites de la sesión
 
 - **Stop** o el cambio a otro modo interrumpe el intento actual, cancela la síntesis de voz y aborta el reconocimiento. Los eventos tardíos de un intento detenido no pueden avanzar la sesión.

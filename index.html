@@ -2600,10 +2600,11 @@
     }
     body.practice-focus-mode .main-view {
       min-height: 100vh;
-      padding-bottom: calc(96px + env(safe-area-inset-bottom));
+      padding-top: 10px;
+      padding-bottom: calc(106px + env(safe-area-inset-bottom));
     }
     body.practice-focus-mode .transport-bar {
-      bottom: calc(8px + env(safe-area-inset-bottom));
+      bottom: calc(18px + env(safe-area-inset-bottom));
     }
   </style>
 </head>
@@ -3255,6 +3256,7 @@
         selectedUnitId: null,
         practiceTypes: {},
         progress: {},
+        wordProgress: {},
         sessions: {},
         thresholds: { ...DEFAULT_COURSE_THRESHOLDS },
         forcedIntensiveChallengeRetries: DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES,
@@ -4251,12 +4253,13 @@
           random = getRandomSelectionEnabled();
         }
 
+        let nextIndex;
         if (random) {
-          currentIndex = pickRandomIndex(parsedRows.length);
+          nextIndex = pickRandomIndex(parsedRows.length);
         } else {
-          if (currentIndex < 0) currentIndex = 0;
-          else currentIndex = (currentIndex + 1) % parsedRows.length;
+          nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % parsedRows.length;
         }
+        setCoursePhraseIndex(nextIndex);
 
         const row = parsedRows[currentIndex];
         setPhraseTexts(row);
@@ -4293,11 +4296,10 @@
           await speakCurrentRowSequence(++phraseSessionId, row);
           if (!manualPlaybackLoop.active) break;
 
-          if (getRandomSelectionEnabled()) {
-            currentIndex = pickRandomIndex(parsedRows.length);
-          } else {
-            currentIndex = (currentIndex + 1) % parsedRows.length;
-          }
+          const nextIndex = getRandomSelectionEnabled()
+            ? pickRandomIndex(parsedRows.length)
+            : (currentIndex + 1) % parsedRows.length;
+          setCoursePhraseIndex(nextIndex, true);
         }
 
         manualPlaybackLoop.active = false;
@@ -4308,7 +4310,7 @@
       function goToFirstRow({ speak = true } = {}) {
         ensureParsed();
         if (!parsedRows.length) return Promise.resolve();
-        currentIndex = 0;
+        setCoursePhraseIndex(0);
         const row = parsedRows[currentIndex];
         setPhraseTexts(row);
         applyShowVisibility();
@@ -4518,12 +4520,10 @@
               await showCurrentDisplayedRow({ speak: true });
               if (!running) return;
               const random = getRandomSelectionEnabled();
-              if (random) {
-                currentIndex = pickRandomIndex(parsedRows.length);
-              } else {
-                if (currentIndex < 0) currentIndex = 0;
-                else currentIndex = (currentIndex + 1) % parsedRows.length;
-              }
+              const nextIndex = random
+                ? pickRandomIndex(parsedRows.length)
+                : (currentIndex < 0 ? 0 : (currentIndex + 1) % parsedRows.length);
+              setCoursePhraseIndex(nextIndex, true);
               if (parsedRows.length) {
                 const row = parsedRows[currentIndex];
                 if (row) {
@@ -5125,12 +5125,10 @@
         }
         const newToken = ++phraseSessionId;
         if (!speakingPractice.active) return;
-        if (getRandomSelectionEnabled()) {
-          currentIndex = pickRandomIndex(parsedRows.length);
-        } else {
-          if (currentIndex < 0) currentIndex = 0;
-          else currentIndex = (currentIndex + 1) % parsedRows.length;
-        }
+        const nextIndex = getRandomSelectionEnabled()
+          ? pickRandomIndex(parsedRows.length)
+          : (currentIndex < 0 ? 0 : (currentIndex + 1) % parsedRows.length);
+        setCoursePhraseIndex(nextIndex, true);
         await showCurrentDisplayedRow({ speak: true });
         if (!speakingPractice.active) return;
         await startSpeakingPracticeCycleOnly(true);
@@ -5634,9 +5632,10 @@
           stopIntensivePractice();
           return;
         }
-        currentIndex = !activeCourseSession && intensiveRandomEnabled
+        const nextIndex = !activeCourseSession && intensiveRandomEnabled
           ? pickRandomIndex(parsedRows.length)
           : (currentIndex + 1) % parsedRows.length;
+        setCoursePhraseIndex(nextIndex, true);
         intensivePractice.forcedRetryCount = 0;
         intensivePractice.forcedRetryAfterRead = false;
         const nextToken = ++phraseSessionId;
@@ -5713,12 +5712,10 @@
             writingPractice.writingBusy = true;
             // Advance to next phrase safely; ensure single playback
             try { speechSynthesis.cancel(); } catch { }
-            if (getRandomSelectionEnabled()) {
-              currentIndex = pickRandomIndex(parsedRows.length);
-            } else {
-              if (currentIndex < 0) currentIndex = 0;
-              else currentIndex = (currentIndex + 1) % parsedRows.length;
-            }
+            const nextIndex = getRandomSelectionEnabled()
+              ? pickRandomIndex(parsedRows.length)
+              : (currentIndex < 0 ? 0 : (currentIndex + 1) % parsedRows.length);
+            setCoursePhraseIndex(nextIndex, true);
             await showCurrentDisplayedRow({ speak: true });
             updateCurrentWriteTarget();
             e.target.value = '';
@@ -6022,6 +6019,7 @@
             ...restoredCourseState,
             practiceTypes: stored.practiceTypes && typeof stored.practiceTypes === 'object' ? stored.practiceTypes : {},
             progress: stored.progress && typeof stored.progress === 'object' ? stored.progress : {},
+            wordProgress: stored.wordProgress && typeof stored.wordProgress === 'object' ? stored.wordProgress : {},
             sessions: stored.sessions && typeof stored.sessions === 'object' ? stored.sessions : {},
             thresholds,
             forcedIntensiveChallengeRetries,
@@ -6392,6 +6390,7 @@
             }
           }));
           courseCatalog = courses.filter(Boolean);
+          migrateLegacyCourseProgress();
           courseDataCache.clear();
           if (warnings.length) setCourseStatus(`Some courses could not be loaded: ${warnings.join(' ')}`, true);
           else setCourseStatus('');
@@ -6482,11 +6481,48 @@
         return course?.practiceType.find(type => type.id === typeId) || course?.practiceType[0] || null;
       }
 
-      function getCourseWordProgress(courseId, unitId, word) {
-        return courseState.progress?.[courseId]?.units?.[unitId]?.words?.[word] || {
+      function getCourseWordProgress(languageTarget, word) {
+        const key = getWordProgressKey(languageTarget, word);
+        return courseState.wordProgress?.[key] || {
           practices: 0,
           pronunciationCorrect: 0,
         };
+      }
+
+      function getWordProgressKey(languageTarget, word) {
+        const normalizedWord = normalizeForCompare(word);
+        return normalizedWord ? `${String(languageTarget || '').toLowerCase()}\u0000${normalizedWord}` : '';
+      }
+
+      function migrateLegacyCourseProgress() {
+        let migrated = false;
+        const legacyProgress = courseState.progress || {};
+        for (const [courseId, courseProgress] of Object.entries(legacyProgress)) {
+          const course = findCourse(courseId);
+          if (!course) continue;
+          const units = courseProgress?.units || {};
+          for (const unitProgress of Object.values(units)) {
+            const words = unitProgress?.words || {};
+            for (const [word, progress] of Object.entries(words)) {
+              const key = getWordProgressKey(course.idioma_destino, word);
+              if (!key) continue;
+              const wordProgress = courseState.wordProgress[key] ||
+                (courseState.wordProgress[key] = { practices: 0, pronunciationCorrect: 0 });
+              for (const field of ['practices', 'pronunciationCorrect']) {
+                const count = Number(progress?.[field]);
+                if (Number.isFinite(count) && count > 0) {
+                  wordProgress[field] = (Number(wordProgress[field]) || 0) + count;
+                }
+              }
+            }
+          }
+          delete legacyProgress[courseId];
+          migrated = true;
+        }
+        if (migrated) {
+          if (!Object.keys(legacyProgress).length) delete courseState.progress;
+          saveCourseState();
+        }
       }
 
       function getVocabularyMastery(practices) {
@@ -6498,13 +6534,13 @@
         return 'Mastered';
       }
 
-      function getProgressStats(courseId, unitId, words) {
+      function getProgressStats(languageTarget, words) {
         const masteredThreshold = courseState.thresholds.mastered;
         if (!words.length) return { points: 0, percent: 0, mastered: false };
         let points = 0;
         let allMastered = true;
         for (const word of words) {
-          const practices = getCourseWordProgress(courseId, unitId, word).practices;
+          const practices = getCourseWordProgress(languageTarget, word).practices;
           points += Math.min(practices, masteredThreshold);
           if (practices < masteredThreshold) allMastered = false;
         }
@@ -6579,18 +6615,18 @@
 
       function courseProgressSummary(course, assignments) {
         const words = assignments.focus;
-        const progress = getProgressStatsForAssignments(course.id, words);
+        const progress = getProgressStatsForAssignments(course, words);
         return { ...progress, total: words.length };
       }
 
-      function getProgressStatsForAssignments(courseId, assignments) {
+      function getProgressStatsForAssignments(course, assignments) {
         const masteredThreshold = courseState.thresholds.mastered;
         const words = [...new Map(assignments.map(item => [`${item.unitId}\u0000${item.word}`, item])).values()];
         if (!words.length) return { points: 0, percent: 0, mastered: false };
         let points = 0;
         let allMastered = true;
         for (const item of words) {
-          const practices = getCourseWordProgress(courseId, item.unitId, item.word).practices;
+          const practices = getCourseWordProgress(course.idioma_destino, item.word).practices;
           points += Math.min(practices, masteredThreshold);
           if (practices < masteredThreshold) allMastered = false;
         }
@@ -6682,7 +6718,7 @@
         if (assignments.warnings.length) setCourseStatus(assignments.warnings.join(' '), true);
         const units = course.units.map(unit => {
           const focusWords = getUnitWords(assignments, unit.id, 'focus');
-          const stats = getProgressStats(course.id, unit.id, focusWords);
+          const stats = getProgressStats(course.idioma_destino, focusWords);
           const current = unit.id === courseState.selectedUnitId && course.id === courseState.selectedCourseId;
           return `
             <article class="course-unit-card${current ? ' current' : ''}">
@@ -6725,7 +6761,7 @@
         const words = getUnitWords(assignments, unitId, courseTab);
         const title = courseTab === 'focus' ? 'Focus vocabulary' : 'Supplementary vocabulary';
         const rows = words.map((word, index) => {
-          const progress = getCourseWordProgress(course.id, unit.id, word);
+          const progress = getCourseWordProgress(course.idioma_destino, word);
           return `<div class="course-word-row course-card-top">
             <span class="course-badge">${String(index + 1).padStart(2, '0')}</span>
             <strong>${escapeCourseHtml(word)}</strong>
@@ -6802,9 +6838,13 @@
           window._trainer?.closeSheet?.();
           return;
         }
+        const assignments = await loadCourseAssignments(course);
         const latestProgressUnit = [...course.units].reverse().find(unit => {
-          const words = courseState.progress?.[courseId]?.units?.[unit.id]?.words || {};
-          return Object.values(words).some(item => item.practices > 0);
+          const words = [
+            ...getUnitWords(assignments, unit.id, 'focus'),
+            ...getUnitWords(assignments, unit.id, 'complementary'),
+          ];
+          return words.some(word => getCourseWordProgress(course.idioma_destino, word).practices > 0);
         });
         courseState.selectedUnitId = latestProgressUnit?.id || course.units[0].id;
         courseState.practiceTypes[courseId] = courseState.practiceTypes[courseId] || course.practiceType[0].id;
@@ -6873,7 +6913,9 @@
           focusWords: [...new Set(focusWords)],
           complementaryWords: [...new Set(complementaryWords)],
           currentIndex: 0,
-          lastSequentialIndex: 0,
+          phraseVisitId: 1,
+          lastCompletedPhraseVisitId: null,
+          completedPhraseIndices: [],
           completed: false,
         };
       }
@@ -6907,41 +6949,60 @@
         saveCourseSession(activeCourseSession);
       }
 
-      function addCourseWordPractice(courseId, unitId, word, field) {
-        if (!word) return;
-        courseState.progress[courseId] = courseState.progress[courseId] || { units: {} };
-        courseState.progress[courseId].units = courseState.progress[courseId].units || {};
-        courseState.progress[courseId].units[unitId] = courseState.progress[courseId].units[unitId] || { words: {} };
-        const words = courseState.progress[courseId].units[unitId].words;
-        words[word] = words[word] || { practices: 0, pronunciationCorrect: 0 };
-        words[word][field] = (Number(words[word][field]) || 0) + 1;
+      function addCourseWordPractice(languageTarget, word, field) {
+        const key = getWordProgressKey(languageTarget, word);
+        if (!key) return;
+        const wordProgress = courseState.wordProgress[key] ||
+          (courseState.wordProgress[key] = { practices: 0, pronunciationCorrect: 0 });
+        wordProgress[field] = (Number(wordProgress[field]) || 0) + 1;
       }
 
-      function completeCourseSession() {
-        if (!activeCourseSession || activeCourseSession.completed) return;
-        activeCourseSession.completed = true;
-        const uniqueWords = new Set([
-          ...(activeCourseSession.focusWords || []),
-          ...(activeCourseSession.complementaryWords || []),
-        ]);
-        for (const word of uniqueWords) {
-          addCourseWordPractice(activeCourseSession.courseId, activeCourseSession.unitId, word, 'practices');
+      function refreshVisibleCourseProgress() {
+        if (!activeCourseSession || !els.coursesApp || els.coursesApp.hidden) return;
+        let renderPromise = null;
+        if (courseScreen === 'details') {
+          renderPromise = renderCourseDetails(activeCourseSession.courseId);
+        } else if (courseScreen === 'unit') {
+          renderPromise = renderUnitDetails(activeCourseSession.courseId, activeCourseSession.unitId);
+        } else if (courseScreen === 'catalog') {
+          renderPromise = renderCourseCatalog();
         }
+        renderPromise?.catch(error => setCourseStatus(error.message, true));
+      }
+
+      function recordCoursePhraseCompletion(index) {
+        if (!activeCourseSession || index < 0) return false;
+        const metadata = activeCourseSession.metadata?.[index];
+        const visitId = Number(activeCourseSession.phraseVisitId) || 1;
+        if (!metadata?.vocabulary || activeCourseSession.lastCompletedPhraseVisitId === visitId) return false;
+
+        addCourseWordPractice(activeCourseSession.languageTarget, metadata.vocabulary, 'practices');
+        activeCourseSession.lastCompletedPhraseVisitId = visitId;
+        const completedPhraseIndices = new Set(activeCourseSession.completedPhraseIndices || []);
+        completedPhraseIndices.add(index);
+        activeCourseSession.completedPhraseIndices = [...completedPhraseIndices];
+        if (completedPhraseIndices.size >= activeCourseSession.metadata.length) {
+          activeCourseSession.completed = true;
+        }
+        return true;
+      }
+
+      function setCoursePhraseIndex(index, completeCurrent = false) {
+        if (!activeCourseSession) {
+          currentIndex = index;
+          return;
+        }
+        const recorded = completeCurrent && recordCoursePhraseCompletion(currentIndex);
+        activeCourseSession.phraseVisitId = (Number(activeCourseSession.phraseVisitId) || 1) + 1;
+        currentIndex = index;
+        activeCourseSession.currentIndex = index;
         saveCourseSession(activeCourseSession);
-        if (courseScreen !== 'options' && els.coursesApp && !els.coursesApp.hidden) {
-          if (courseScreen === 'details') renderCourseDetails(activeCourseSession.courseId);
-          else renderCourseCatalog();
-        }
+        if (recorded) refreshVisibleCourseProgress();
       }
 
       function trackCoursePhrasePosition(index) {
         if (!activeCourseSession || activeCourseSession.completed || index < 0) return;
-        const previousIndex = activeCourseSession.lastSequentialIndex;
-        const completesSession = index === previousIndex + 1 && index === parsedRows.length - 1;
-        activeCourseSession.lastSequentialIndex = index;
-        activeCourseSession.currentIndex = index;
-        if (completesSession) completeCourseSession();
-        else persistCourseSessionPosition(index);
+        persistCourseSessionPosition(index);
       }
 
       function courseVocabularyWasRecognized(vocabulary, validation) {
@@ -6957,7 +7018,7 @@
       function recordCoursePronunciation(index) {
         const metadata = activeCourseSession?.metadata?.[index];
         if (!metadata || !activeCourseSession) return;
-        addCourseWordPractice(activeCourseSession.courseId, activeCourseSession.unitId, metadata.vocabulary, 'pronunciationCorrect');
+        addCourseWordPractice(activeCourseSession.languageTarget, metadata.vocabulary, 'pronunciationCorrect');
         saveCourseSession(activeCourseSession);
       }
 
@@ -6972,12 +7033,17 @@
         const assignments = await loadCourseAssignments(course);
         session.focusWords = session.focusWords || getUnitWords(assignments, unit.id, 'focus');
         session.complementaryWords = session.complementaryWords || getUnitWords(assignments, unit.id, 'complementary');
+        session.phraseVisitId = Number.isInteger(session.phraseVisitId) && session.phraseVisitId > 0
+          ? session.phraseVisitId
+          : 1;
+        session.completedPhraseIndices = Array.isArray(session.completedPhraseIndices)
+          ? session.completedPhraseIndices.filter(index => Number.isInteger(index) && index >= 0 && index < session.metadata.length)
+          : [];
         stopSelectedMode();
         if (courseState.selectedCourseId === course.id) courseState.selectedUnitId = unit.id;
         courseState.practiceTypes[course.id] = session.practiceTypeId;
         activeCourseSession = session;
-        activeCourseSession.lastSequentialIndex = Number.isInteger(session.currentIndex) ? session.currentIndex : 0;
-        activeCourseSession.currentIndex = activeCourseSession.lastSequentialIndex;
+        activeCourseSession.currentIndex = Number.isInteger(session.currentIndex) ? session.currentIndex : 0;
         els.lang1Select.value = session.languageNative;
         els.lang2Select.value = session.languageTarget;
         updateLangLabels();
@@ -6989,7 +7055,6 @@
         }
         currentIndex = Math.max(0, Math.min(parsedRows.length - 1, activeCourseSession.currentIndex));
         activeCourseSession.currentIndex = currentIndex;
-        activeCourseSession.lastSequentialIndex = currentIndex;
         els.csvBox.readOnly = true;
         if (els.randomToggle) els.randomToggle.disabled = true;
         intensiveRandomEnabled = false;
@@ -7613,9 +7678,10 @@
             if (intensivePractice.active) return;
             ensureParsed();
             if (!parsedRows.length) return;
-            currentIndex = getRandomSelectionEnabled()
+            const nextIndex = getRandomSelectionEnabled()
               ? pickRandomIndex(parsedRows.length)
               : (currentIndex + 1 + parsedRows.length) % parsedRows.length;
+            setCoursePhraseIndex(nextIndex);
             displayIntensivePhrase(parsedRows[currentIndex], false);
             return;
           }
@@ -7626,7 +7692,7 @@
             if (intensivePractice.active) return;
             ensureParsed();
             if (!parsedRows.length) return;
-            currentIndex = 0;
+            setCoursePhraseIndex(0);
             displayIntensivePhrase(parsedRows[currentIndex], false);
             return;
           }
@@ -7643,13 +7709,13 @@
             if (intensivePractice.active) return;
             ensureParsed();
             if (!parsedRows.length) return;
-            currentIndex = currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1;
+            setCoursePhraseIndex(currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1);
             displayIntensivePhrase(parsedRows[currentIndex], false);
             return;
           }
           ensureParsed();
           if (!parsedRows.length) return;
-          currentIndex = currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1;
+          setCoursePhraseIndex(currentIndex <= 0 ? parsedRows.length - 1 : currentIndex - 1);
           setPhraseTexts(parsedRows[currentIndex]);
           applyShowVisibility();
           await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
@@ -7659,13 +7725,13 @@
             if (intensivePractice.active) return;
             ensureParsed();
             if (!parsedRows.length) return;
-            currentIndex = (currentIndex + 1) % parsedRows.length;
+            setCoursePhraseIndex((currentIndex + 1) % parsedRows.length);
             displayIntensivePhrase(parsedRows[currentIndex], false);
             return;
           }
           ensureParsed();
           if (!parsedRows.length) return;
-          currentIndex = (currentIndex + 1) % parsedRows.length;
+          setCoursePhraseIndex((currentIndex + 1) % parsedRows.length);
           setPhraseTexts(parsedRows[currentIndex]);
           applyShowVisibility();
           await speakCurrentRowSequence(++phraseSessionId, parsedRows[currentIndex]);
