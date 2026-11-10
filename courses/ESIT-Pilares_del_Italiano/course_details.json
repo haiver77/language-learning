@@ -1,0 +1,30 @@
+{
+  "id": "ESIT-Pilares_del_Italiano",
+  "title": "ESIT-Pilares_del_Italiano",
+  "description": "Curso de italiano para hablantes de español, nivel A1, centrado en vocabulario simple y básico organizado por categorías.",
+  "idioma_nativo": "es",
+  "idioma_destino": "it",
+  "focusVocabularyCount": 340,
+  "supplementaryVocabularyCount": 858,
+  "level": "A1",
+  "practiceType": [
+    {
+      "id": "individual_practice",
+      "name": "Práctica individual",
+      "description": "Presenta únicamente la primera frase de cada archivo CSV.",
+      "rows": [1]
+    },
+    {
+      "id": "simple_usage",
+      "name": "Uso simple",
+      "description": "Presenta las tres primeras frases de cada archivo CSV.",
+      "rows": [1, 2, 3]
+    },
+    {
+      "id": "question_usage",
+      "name": "Uso en preguntas",
+      "description": "Presenta únicamente la frase de la fila 4 de cada archivo CSV.",
+      "rows": [4]
+    }
+  ]
+}
