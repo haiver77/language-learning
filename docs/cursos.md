@@ -4,15 +4,19 @@
 
 Abre **Load Phrases > Courses** para consultar los cursos disponibles. El catálogo se descubre a partir de las carpetas de `courses/`; permite buscar por nombre o descripción, filtrar por nivel y consultar título, idioma objetivo, nivel, descripción, vocabulario y progreso. **View details** abre las unidades. **Select** selecciona el curso y reanuda directamente una sesión incompleta si existe; de lo contrario, abre sus detalles. En ese caso queda seleccionada la unidad con progreso más reciente o, si no hay progreso, la primera unidad. **Deselect** quita la selección y oculta el contexto del curso, sin borrar el progreso guardado.
 
+Las pantallas Courses, Course details y Unit details no muestran el encabezado contextual del curso. La información del curso se presenta separada visualmente de las tarjetas de unidades. Al pulsar una tarjeta de unidad se abren sus detalles; sus botones de acción mantienen sus funciones independientes. El botón Atrás del dispositivo vuelve de Unit details a Course details y de Course details al catálogo, antes de cerrar Load Phrases.
+
+La selección actual se guarda como un único par curso/unidad. Solo esa unidad, dentro de ese curso, muestra la etiqueta **Current**; cambiar de curso no reutiliza el identificador de unidad anterior.
+
 ## Unidades y vocabulario
 
-Las unidades `Unit_N` se presentan en orden numérico. Sus tarjetas muestran título, descripción, cantidades de vocabulario foco y complementario, progreso y estado de dominio. **Select** inicia o reanuda la práctica de la unidad; **Details** abre su vocabulario.
+Las unidades `Unit_N` se presentan en orden numérico. Sus tarjetas muestran título, descripción, cantidades de vocabulario foco y complementario, progreso y estado de dominio. Al pulsar en cualquier parte de una tarjeta se abre Unit details. **Select** inicia o reanuda la práctica de la unidad.
 
 Los detalles de unidad tienen pestañas para vocabulario foco y complementario. Las palabras aparecen en el orden de los CSV de asignación, con su nivel de dominio, prácticas completadas y pronunciaciones correctas. Si el curso declara cero palabras complementarias y no tiene el CSV correspondiente, la pestaña informa que no hay vocabulario complementario.
 
 ## Formato y sesión de práctica
 
-El encabezado del curso muestra el curso, la unidad y el formato de práctica activo. Al pulsar el formato se pueden consultar sus opciones y descripciones. Al aplicar otra opción, la aplicación reconstruye la sesión de la unidad y la reinicia desde la primera frase.
+Durante la práctica, el encabezado contextual muestra el curso, la unidad y el formato activo. Practice Format presenta las opciones disponibles y marca el formato actual. Se cierra al volver a pulsar Practice Type o con el botón Atrás del dispositivo; vuelve a la pantalla desde la que se abrió y no incluye un botón Atrás propio. Al aplicar otra opción, la aplicación reconstruye la sesión de la unidad y la reinicia desde la primera frase.
 
 El formato (`practiceType`) determina qué filas de las lecciones se incluyen; el modo de práctica general determina cómo se ejercitan esas frases. Para construir la sesión, la aplicación mezcla el orden de las palabras foco de la unidad, carga el CSV de cada palabra y agrega las filas indicadas por `rows`, en el orden configurado. La numeración de filas empieza en 1 y no cuenta encabezado. La sesión resultante avanza secuencialmente; el control **Random** queda desactivado mientras esté activa una sesión de curso.
 
@@ -36,4 +40,4 @@ Cada curso reside en `courses/<id>/` y contiene `course_details.json`, `course_v
 
 El JSON del curso define sus metadatos, los códigos de `idioma_nativo` y `idioma_destino`, cantidades de vocabulario y al menos un `practiceType` con `id`, `name`, `description` y una lista no vacía de filas positivas. Los CSV de lecciones tienen dos columnas —idioma nativo y destino—, separadas por punto y coma y sin encabezado. Los CSV de asignación relacionan palabras con unidades mediante columnas de vocabulario y unidad.
 
-La aplicación valida metadatos, unidades, asignaciones y filas solicitadas. Si falta un recurso requerido, una fila seleccionada o el CSV combinado queda vacío, muestra el error y no inicia una sesión incompleta. Las diferencias entre cantidades declaradas y CSV de asignación se notifican como inconsistencias.
+La aplicación valida metadatos, unidades, asignaciones y filas solicitadas. Para localizar un CSV de lección, prioriza el nombre exacto y permite equivalencias no ambiguas entre espacios, guiones bajos, apóstrofes, mayúsculas y diacríticos; si más de un archivo coincide, muestra un error en lugar de escoger uno arbitrariamente. Si falta un recurso requerido, una fila seleccionada o el CSV combinado queda vacío, muestra el error y no inicia una sesión incompleta. Las diferencias entre cantidades declaradas y CSV de asignación se notifican como inconsistencias.

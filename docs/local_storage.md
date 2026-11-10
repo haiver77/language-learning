@@ -29,7 +29,7 @@ Guarda la selección, configuración, progreso y sesiones de práctica de cursos
 
 | Campo | Estructura y función |
 |---|---|
-| `selectedCourseId`, `selectedUnitId` | Identificadores del curso y la unidad seleccionados; pueden ser `null`. |
+| `selectedCourseId`, `selectedUnitId` | Identificadores del curso y la unidad seleccionados; forman un único par. Si uno falta o no es una cadena no vacía, ambos se restauran como `null`. La etiqueta **Current** compara el curso y la unidad juntos, para no marcar unidades con el mismo ID en otros cursos. |
 | `practiceTypes` | Mapa `idCurso → idFormato`, con el formato de práctica seleccionado para cada curso. |
 | `thresholds` | Objeto con los umbrales de dominio `known`, `learning`, `learned` y `mastered`. |
 | `intensiveChallengeRetries` | Número entero no negativo de repeticiones forzadas tras un fallo en Intensive Challenge. Es el nombre usado al persistir; el código también reconoce `forcedIntensiveChallengeRetries` en datos previos. |
@@ -38,7 +38,7 @@ Guarda la selección, configuración, progreso y sesiones de práctica de cursos
 | `practiceActivity` | Mapa de fecha local `AAAA-MM-DD` a frases practicadas. Conserva los 400 días más recientes; los calendarios Activity y Year Effort comparan estos conteos con la meta diaria actual. |
 | `practiceWordCounts` | Mapa de idioma y palabra normalizada a su palabra visible y cantidad acumulada de prácticas fuera de cursos. Statistics combina estos conteos con `wordProgress` para ordenar las palabras por frecuencia. |
 | `sessions` | Mapa `idCurso → idUnidad → sesión guardada`, descrito abajo. |
-| `activeSessionKey` | Clave de la sesión activa en formato `idCurso::idUnidad`. |
+| `activeSessionKey` | Clave de la sesión de curso guardada en formato `idCurso::idUnidad`. La etiqueta **Current** se basa en el par `selectedCourseId`/`selectedUnitId`, no en esta clave de sesión. |
 | `progress` | Estructura heredada de progreso por curso, unidad y palabra (`progress[idCurso].units[idUnidad].words[palabra]`). Se migra a `wordProgress` para los cursos reconocidos; datos de cursos que no están disponibles pueden permanecer. |
 
 Una sesión incompleta conserva el CSV combinado y su posición para poder reanudarla. Incluye `courseId`, `unitId`, `practiceTypeId`, `languageNative`, `languageTarget`, `csv`, `metadata`, `focusWords`, `complementaryWords`, `currentIndex`, `phraseVisitId`, `lastCompletedPhraseVisitId`, `completedPhraseIndices` y `completed`. Cada elemento de `metadata` asocia una fila con `vocabulary`, `source` y `sourceRow`. Una sesión completada se reduce a `courseId`, `unitId`, `practiceTypeId`, `currentIndex`, `languageNative`, `languageTarget` y `completed: true`.
