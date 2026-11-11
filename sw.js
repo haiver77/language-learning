@@ -1,5 +1,5 @@
 const CACHE_PREFIX = 'language-practice-';
-const SHELL_CACHE = `${CACHE_PREFIX}shell-v5`;
+const SHELL_CACHE = `${CACHE_PREFIX}shell-v6`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const APP_ROOT = new URL('./', self.registration.scope);
 const APP_SHELL = [
@@ -15,7 +15,17 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(SHELL_CACHE)
       .then(cache => cache.addAll(APP_SHELL))
-      .then(() => self.skipWaiting())
+  );
+});
+
+self.addEventListener('message', event => {
+  if (event.data?.type !== 'ACTIVATE_UPDATE') return;
+
+  event.waitUntil(
+    self.skipWaiting().catch(error => {
+      console.error('Service worker update activation failed:', error);
+      throw error;
+    })
   );
 });
 

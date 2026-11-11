@@ -3119,6 +3119,50 @@
         overscroll-behavior-y: contain;
       }
     }
+    .update-notice {
+      position: fixed;
+      z-index: 10000;
+      right: max(16px, env(safe-area-inset-right));
+      bottom: max(16px, env(safe-area-inset-bottom));
+      left: max(16px, env(safe-area-inset-left));
+      display: flex;
+      width: min(440px, calc(100vw - 32px));
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-inline: auto;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: 0 8px 24px var(--shadow);
+      font-size: 1.3rem;
+    }
+    .update-notice[hidden] { display: none; }
+    .update-notice-message { flex: 1 1 auto; }
+    .update-notice-actions { display: flex; flex: 0 0 auto; gap: 8px; }
+    .update-notice-button {
+      min-height: 44px;
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface-soft);
+      color: var(--ink);
+      font-size: 1.2rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .update-notice-button.primary {
+      border-color: transparent;
+      background: var(--primary);
+      color: #111827;
+    }
+    .update-notice-button:focus-visible { outline: none; box-shadow: var(--focus); }
+    @media (max-width: 380px) {
+      .update-notice { align-items: stretch; flex-direction: column; }
+      .update-notice-actions > button { flex: 1 1 0; }
+    }
   </style>
 </head>
 
@@ -9336,10 +9380,88 @@
       init();
     })();
   </script>
+  <div id="updateNotice" class="update-notice" role="region" aria-label="App update available" hidden>
+    <span id="updateNoticeMessage" class="update-notice-message" role="status" aria-live="polite">An update is ready to install.</span>
+    <div class="update-notice-actions">
+      <button id="updateNowButton" class="update-notice-button primary" type="button">Update now</button>
+      <button id="updateLaterButton" class="update-notice-button" type="button">Later</button>
+    </div>
+  </div>
   <script>
+    const updateNotice = document.getElementById('updateNotice');
+    const updateNoticeMessage = document.getElementById('updateNoticeMessage');
+    const updateNowButton = document.getElementById('updateNowButton');
+    const updateLaterButton = document.getElementById('updateLaterButton');
+
     if ('serviceWorker' in navigator) {
+      let deferredWorker = null;
+      let updateAccepted = false;
+      let hasReloadedForUpdate = false;
+
+      const showUpdateNotice = worker => {
+        if (!worker || worker.state !== 'installed' || !navigator.serviceWorker.controller) return;
+        if (worker === deferredWorker) return;
+        updateNotice.hidden = false;
+        updateNoticeMessage.textContent = 'An update is ready to install.';
+        updateNowButton.disabled = false;
+        updateLaterButton.disabled = false;
+      };
+
       navigator.serviceWorker.register('./sw.js')
+        .then(registration => {
+          let watchedInstallingWorker = null;
+          const watchInstallingWorker = () => {
+            const installingWorker = registration.installing;
+            if (!installingWorker || installingWorker === watchedInstallingWorker) return;
+            watchedInstallingWorker = installingWorker;
+
+            installingWorker.addEventListener('statechange', () => {
+              if (installingWorker.state === 'installed') showUpdateNotice(registration.waiting);
+            });
+            installingWorker.addEventListener('error', error => {
+              console.error('Service worker update failed:', error);
+            });
+            if (installingWorker.state === 'installed') showUpdateNotice(registration.waiting);
+          };
+          registration.addEventListener('updatefound', watchInstallingWorker);
+
+          watchInstallingWorker();
+          showUpdateNotice(registration.waiting);
+
+          updateNowButton.addEventListener('click', () => {
+            const waitingWorker = registration.waiting;
+            if (!waitingWorker) {
+              updateNotice.hidden = true;
+              return;
+            }
+
+            updateAccepted = true;
+            updateNowButton.disabled = true;
+            updateLaterButton.disabled = true;
+            updateNoticeMessage.textContent = 'Installing update…';
+            try {
+              waitingWorker.postMessage({ type: 'ACTIVATE_UPDATE' });
+            } catch (error) {
+              updateAccepted = false;
+              updateNowButton.disabled = false;
+              updateLaterButton.disabled = false;
+              updateNoticeMessage.textContent = 'The update could not be started. Please try again.';
+              console.error('Service worker update activation failed:', error);
+            }
+          });
+
+          updateLaterButton.addEventListener('click', () => {
+            deferredWorker = registration.waiting;
+            updateNotice.hidden = true;
+          });
+        })
         .catch(error => console.error('Service worker registration failed:', error));
+
+      navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (!updateAccepted || hasReloadedForUpdate) return;
+        hasReloadedForUpdate = true;
+        window.location.reload();
+      });
     }
   </script>
 </body>
