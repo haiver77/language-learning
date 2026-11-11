@@ -2,11 +2,11 @@
 
 ## Acceso y catálogo
 
-Abre **Load Phrases > Courses** para consultar los cursos disponibles. El catálogo se descubre a partir de las carpetas de `courses/`; permite buscar por nombre o descripción, filtrar por nivel y consultar título, idioma objetivo, nivel, descripción, vocabulario y progreso. **View details** abre las unidades sin cambiar el curso seleccionado. **Select** selecciona el curso y reanuda directamente una sesión incompleta si existe; de lo contrario, abre sus detalles. En ese caso queda seleccionada la unidad con progreso más reciente o, si no hay progreso, la primera unidad. **Deselect** quita la selección y oculta el contexto del curso, sin borrar el progreso guardado.
+Abre **Load Phrases > Courses** para consultar los cursos disponibles. El catálogo se descubre a partir de las carpetas de `courses/`; permite buscar por nombre o descripción, filtrar por nivel y consultar título, idioma objetivo, nivel, descripción, vocabulario y progreso. Abrir una tarjeta o pulsar **View details** muestra sus unidades sin cambiar la selección actual. Solo **Select** en una tarjeta del catálogo selecciona ese curso: reanuda directamente una sesión incompleta si existe; de lo contrario, abre sus detalles y selecciona la unidad con progreso más reciente o, si no hay progreso, la primera unidad. **Deselect** quita la selección y oculta el contexto del curso, sin borrar el progreso guardado.
 
 Las pantallas Courses, Course details y Unit details no muestran el encabezado contextual del curso. La información del curso se presenta separada visualmente de las tarjetas de unidades. Al pulsar una tarjeta de unidad se abren sus detalles; sus botones de acción mantienen sus funciones independientes. El botón Atrás del dispositivo vuelve de Unit details a Course details y de Course details al catálogo, antes de cerrar Load Phrases.
 
-La selección actual se guarda como un único par curso/unidad. Solo esa unidad, dentro de ese curso, muestra la etiqueta **Current**; cambiar de curso no reutiliza el identificador de unidad anterior.
+La selección actual se guarda como un único par válido curso/unidad. La etiqueta **Current** aparece solo en el curso y la unidad de ese par; cambiar de curso no reutiliza el identificador de unidad anterior.
 
 ## Unidades y vocabulario
 
@@ -16,7 +16,7 @@ Los detalles de unidad tienen pestañas para vocabulario foco y complementario. 
 
 ## Formato y sesión de práctica
 
-Durante la práctica, el encabezado contextual muestra el curso, la unidad y el formato activo. Practice Format presenta las opciones disponibles y marca el formato actual; el encabezado permanece en la parte superior y en la misma posición. Se cierra al volver a pulsar Practice Type o con el botón Atrás del dispositivo, y puede volver a abrirse después del cierre. Vuelve a la pantalla desde la que se abrió y no incluye un botón Atrás propio. Al aplicar otra opción, la aplicación reconstruye la sesión de la unidad y la reinicia desde la primera frase.
+En la pantalla principal de práctica, el encabezado contextual muestra el curso, la unidad y el formato activo, incluso antes de iniciar la práctica de la unidad. Se oculta al abrir Settings, Load Phrases u otra hoja. Practice Format presenta las opciones disponibles y marca el formato actual; el encabezado permanece en la parte superior y en la misma posición mientras se muestra esta pantalla. Se cierra al volver a pulsar Practice Type o con el botón Atrás del dispositivo, y puede volver a abrirse después del cierre. Vuelve a la pantalla desde la que se abrió y no incluye un botón Atrás propio. Al aplicar otra opción, la aplicación reconstruye la sesión de la unidad y la reinicia desde la primera frase.
 
 El formato (`practiceType`) determina qué filas de las lecciones se incluyen; el modo de práctica general determina cómo se ejercitan esas frases. Para construir la sesión, la aplicación mezcla el orden de las palabras foco de la unidad, carga el CSV de cada palabra y agrega las filas indicadas por `rows`, en el orden configurado. La numeración de filas empieza en 1 y no cuenta encabezado. La sesión resultante avanza secuencialmente; el control **Random** queda desactivado mientras esté activa una sesión de curso.
 

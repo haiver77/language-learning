@@ -759,6 +759,9 @@
       max-height: 100%;
       padding: 20px 20px calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
     }
+    #bottomSheet.practice-format-page .sheet-panel[data-panel="load"] {
+      padding-top: 68px;
+    }
 
     .sheet.load-page .sheet-panel[data-panel="load"].courses-active {
       padding-bottom: calc(20px + env(safe-area-inset-bottom));
@@ -6562,7 +6565,8 @@
 
       function saveCourseState() {
         try {
-          if (!courseState.selectedCourseId || !courseState.selectedUnitId) {
+          if (typeof courseState.selectedCourseId !== 'string' || !courseState.selectedCourseId ||
+              typeof courseState.selectedUnitId !== 'string' || !courseState.selectedUnitId) {
             setSelectedCourseUnit(null, null);
           }
           const { forcedIntensiveChallengeRetries, ...persistedCourseState } = courseState;
@@ -7021,6 +7025,11 @@
             }
           }));
           courseCatalog = courses.filter(Boolean);
+          if ((courseState.selectedCourseId || courseState.selectedUnitId) &&
+              !hasValidCourseUnitPair(courseState.selectedCourseId, courseState.selectedUnitId)) {
+            setSelectedCourseUnit(null, null);
+            saveCourseState();
+          }
           migrateLegacyCourseProgress();
           courseDataCache.clear();
           if (warnings.length) setCourseStatus(`Some courses could not be loaded: ${warnings.join(' ')}`, true);
@@ -7513,10 +7522,20 @@
       }
 
       function setSelectedCourseUnit(courseId, unitId) {
-        const hasPair = typeof courseId === 'string' && courseId.length > 0 &&
-          typeof unitId === 'string' && unitId.length > 0;
+        const hasPair = hasValidCourseUnitPair(courseId, unitId);
         courseState.selectedCourseId = hasPair ? courseId : null;
         courseState.selectedUnitId = hasPair ? unitId : null;
+      }
+
+      function hasValidCourseUnitPair(courseId, unitId) {
+        return typeof courseId === 'string' && courseId.length > 0 &&
+          typeof unitId === 'string' && unitId.length > 0 &&
+          !!getCourseUnit(findCourse(courseId), unitId);
+      }
+
+      function isCurrentCourse(courseId) {
+        return courseState.selectedCourseId === courseId &&
+          hasValidCourseUnitPair(courseState.selectedCourseId, courseState.selectedUnitId);
       }
 
       function isCurrentCourseUnit(courseId, unitId) {
@@ -7527,15 +7546,16 @@
         const course = findCourse(courseState.selectedCourseId);
         const unit = getCourseUnit(course, courseState.selectedUnitId);
         const visible = !!(course && unit);
+        const sheet = document.getElementById('bottomSheet');
+        const sheetOpen = !!sheet?.classList.contains('open');
         const loadSheet = document.querySelector('.sheet-panel.active[data-panel="load"]');
-        const loadSheetOpen = !!(loadSheet && document.getElementById('bottomSheet')?.classList.contains('open'));
+        const loadSheetOpen = !!(loadSheet && sheetOpen);
         const coursesAppVisible = loadSheetOpen && els.coursesApp && !els.coursesApp.hidden;
-        const browsingCourseScreen = coursesAppVisible && courseScreen !== 'practiceTypes';
+        const practiceFormatVisible = coursesAppVisible && courseScreen === 'practiceTypes';
         for (const header of els.courseContextHeaders) {
           const inCourseSheet = header.id === 'courseContextHeaderInSheet';
-          const shouldShow = visible && (inCourseSheet
-            ? false
-            : !browsingCourseScreen);
+          const shouldShow = visible && !inCourseSheet &&
+            (!sheetOpen || practiceFormatVisible);
           header.classList.toggle('visible', shouldShow);
           header.setAttribute('aria-hidden', String(!shouldShow));
           if (!visible) continue;
@@ -7564,6 +7584,7 @@
 
       function setCourseScreen(screen) {
         courseScreen = screen;
+        document.getElementById('bottomSheet')?.classList.toggle('practice-format-page', screen === 'practiceTypes');
         setLoadScreen(screen === 'options' ? 'options' : 'courses');
         if (els.coursesContent) els.coursesContent.dataset.courseScreen = screen;
         if (els.coursesPageTitle) {
@@ -7633,7 +7654,7 @@
           return a.course.title.localeCompare(b.course.title);
         });
         const cards = ordered.map(({ course, progress, loadError }) => {
-          const current = course.id === selectedCourseId;
+          const current = isCurrentCourse(course.id);
           return `
             <article class="course-card${current ? ' current' : ''}" data-course-card="${escapeCourseHtml(course.id)}" tabindex="0">
               <div class="course-card-top">
@@ -7796,14 +7817,14 @@
         }
       }
 
-      async function openCourseDetails(courseId, allowResume = false) {
+      async function openCourseDetails(courseId, selectCourse = false) {
         const course = findCourse(courseId);
         if (!course) throw new Error(`Course ${courseId} is not available.`);
         const activeSavedSession = [...course.units].reverse().map(unit => ({
           unitId: unit.id,
           session: getSavedCourseSession(courseId, unit.id),
         })).find(item => item.session && !item.session.completed);
-        if (allowResume && activeSavedSession) {
+        if (selectCourse && activeSavedSession) {
           setSelectedCourseUnit(courseId, activeSavedSession.unitId);
           saveCourseState();
           updateCourseContext();
@@ -7813,14 +7834,14 @@
         }
         pushCourseNavigationState('details', courseId);
         const assignments = await loadCourseAssignments(course);
-        const latestProgressUnit = [...course.units].reverse().find(unit => {
-          const words = [
-            ...getUnitWords(assignments, unit.id, 'focus'),
-            ...getUnitWords(assignments, unit.id, 'complementary'),
-          ];
-          return words.some(word => getCourseWordProgress(course.idioma_destino, word).practices > 0);
-        });
-        if (allowResume) {
+        if (selectCourse) {
+          const latestProgressUnit = [...course.units].reverse().find(unit => {
+            const words = [
+              ...getUnitWords(assignments, unit.id, 'focus'),
+              ...getUnitWords(assignments, unit.id, 'complementary'),
+            ];
+            return words.some(word => getCourseWordProgress(course.idioma_destino, word).practices > 0);
+          });
           setSelectedCourseUnit(courseId, latestProgressUnit?.id || course.units[0].id);
         }
         courseState.practiceTypes[courseId] = courseState.practiceTypes[courseId] || course.practiceType[0].id;
@@ -8514,6 +8535,7 @@
             sheet.classList.remove('settings-page');
             sheet.classList.remove('practice-page');
             sheet.classList.remove('load-page');
+            sheet.classList.remove('practice-format-page');
             sheet.style.transition = '';
             sheet.style.transform = '';
           }
@@ -8611,6 +8633,7 @@
               .then(restored => {
                 if (!restored) {
                   if (previousScreen) courseScreen = previousScreen;
+                  document.getElementById('bottomSheet')?.classList.remove('practice-format-page');
                   setLoadScreen(previousLoadScreen);
                   updateCourseContext();
                 }

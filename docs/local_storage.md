@@ -29,7 +29,7 @@ Guarda la selección, configuración, progreso y sesiones de práctica de cursos
 
 | Campo | Estructura y función |
 |---|---|
-| `selectedCourseId`, `selectedUnitId` | Identificadores del curso y la unidad seleccionados; forman un único par. Si uno falta o no es una cadena no vacía, ambos se restauran como `null`. La etiqueta **Current** compara el curso y la unidad juntos, para no marcar unidades con el mismo ID en otros cursos. |
+| `selectedCourseId`, `selectedUnitId` | Identificadores del curso y la unidad seleccionados; forman un único par y solo se conserva si ambos corresponden a un curso y una unidad disponibles. Si falta uno o el par no es válido, ambos se restauran como `null`. Solo **Select** en una tarjeta del catálogo elige la unidad con progreso más reciente (o la primera si ninguna tiene progreso); abrir la tarjeta o **View details** no cambia el par. La etiqueta **Current** identifica el curso y la unidad exactos del par. |
 | `practiceTypes` | Mapa `idCurso → idFormato`, con el formato de práctica seleccionado para cada curso. |
 | `thresholds` | Objeto con los umbrales de dominio `known`, `learning`, `learned` y `mastered`. |
 | `intensiveChallengeRetries` | Número entero no negativo de repeticiones forzadas tras un fallo en Intensive Challenge. Es el nombre usado al persistir; el código también reconoce `forcedIntensiveChallengeRetries` en datos previos. |
