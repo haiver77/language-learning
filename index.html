@@ -2732,6 +2732,7 @@
       background: var(--surface);
       border-bottom: 1px solid var(--border);
     }
+    #courseContextHeader { z-index: 100; }
     .course-context-header.visible { display: flex; }
     .courses-sticky-header {
       position: sticky;
@@ -7533,8 +7534,8 @@
         for (const header of els.courseContextHeaders) {
           const inCourseSheet = header.id === 'courseContextHeaderInSheet';
           const shouldShow = visible && (inCourseSheet
-            ? coursesAppVisible && courseScreen === 'practiceTypes'
-            : !browsingCourseScreen && !coursesAppVisible);
+            ? false
+            : !browsingCourseScreen);
           header.classList.toggle('visible', shouldShow);
           header.setAttribute('aria-hidden', String(!shouldShow));
           if (!visible) continue;
@@ -7613,12 +7614,7 @@
           return;
         }
         const levels = [...new Set(courses.map(course => course.level))].sort();
-        const ordered = [...courses].sort((a, b) => {
-          if (a.id === courseState.selectedCourseId) return -1;
-          if (b.id === courseState.selectedCourseId) return 1;
-          return a.title.localeCompare(b.title);
-        });
-        const cards = await Promise.all(ordered.map(async course => {
+        const courseSummaries = await Promise.all(courses.map(async course => {
           let assignments = [];
           let loadError = '';
           try {
@@ -7628,7 +7624,16 @@
             console.error(`Course metrics unavailable for ${course.id}:`, error);
           }
           const progress = courseProgressSummary(course, { focus: assignments });
-          const current = course.id === courseState.selectedCourseId;
+          return { course, progress, loadError };
+        }));
+        const selectedCourseId = courseState.selectedCourseId;
+        const ordered = courseSummaries.sort((a, b) => {
+          if (a.course.id === selectedCourseId) return -1;
+          if (b.course.id === selectedCourseId) return 1;
+          return a.course.title.localeCompare(b.course.title);
+        });
+        const cards = ordered.map(({ course, progress, loadError }) => {
+          const current = course.id === selectedCourseId;
           return `
             <article class="course-card${current ? ' current' : ''}" data-course-card="${escapeCourseHtml(course.id)}" tabindex="0">
               <div class="course-card-top">
@@ -7650,7 +7655,7 @@
                 ${current ? `<button type="button" class="course-action" data-action="deselect-course" data-course-id="${escapeCourseHtml(course.id)}">Deselect</button>` : ''}
               </div>
             </article>`;
-        }));
+        });
         els.coursesContent.innerHTML = `
           <div class="course-toolbar">
             <input id="courseSearch" type="search" placeholder="Search courses" aria-label="Search courses" />
@@ -7792,7 +7797,6 @@
       }
 
       async function openCourseDetails(courseId, allowResume = false) {
-        if (courseState.selectedCourseId !== courseId) setSelectedCourseUnit(null, null);
         const course = findCourse(courseId);
         if (!course) throw new Error(`Course ${courseId} is not available.`);
         const activeSavedSession = [...course.units].reverse().map(unit => ({
@@ -7816,7 +7820,9 @@
           ];
           return words.some(word => getCourseWordProgress(course.idioma_destino, word).practices > 0);
         });
-        setSelectedCourseUnit(courseId, latestProgressUnit?.id || course.units[0].id);
+        if (allowResume) {
+          setSelectedCourseUnit(courseId, latestProgressUnit?.id || course.units[0].id);
+        }
         courseState.practiceTypes[courseId] = courseState.practiceTypes[courseId] || course.practiceType[0].id;
         saveCourseState();
         await renderCourseDetails(courseId);
@@ -8100,7 +8106,7 @@
       }
 
       async function openPracticeTypePicker() {
-        if (courseScreen === 'practiceTypes') {
+        if (practiceFormatContext) {
           window._trainer?.dismissPracticeFormat?.();
           return;
         }
@@ -8495,6 +8501,9 @@
         const closeSheet = (fromPopState = false) => {
           const restoreHistory = loadHistoryEntryActive && !fromPopState;
           const historyDepth = loadHistoryDepth;
+          if (practiceFormatContext?.previousScreen) {
+            courseScreen = practiceFormatContext.previousScreen;
+          }
           loadHistoryEntryActive = false;
           loadHistoryDepth = 0;
           practiceFormatHistoryActive = false;
@@ -8596,15 +8605,22 @@
             practiceFormatHistoryActive = false;
             const previousRoute = event.state?.courseNavigation || practiceFormatContext?.previousRoute;
             const previousLoadScreen = practiceFormatContext?.previousLoadScreen || 'options';
+            const previousScreen = practiceFormatContext?.previousScreen;
             practiceFormatContext = null;
             restoreCourseNavigation(previousRoute)
               .then(restored => {
                 if (!restored) {
+                  if (previousScreen) courseScreen = previousScreen;
                   setLoadScreen(previousLoadScreen);
                   updateCourseContext();
                 }
               })
               .catch(error => setCourseStatus(error.message, true));
+            return;
+          }
+          if (loadHistoryEntryActive &&
+              (!event.state?.loadPhrasesOverlay || loadHistoryDepth === 0)) {
+            closeSheet(true);
             return;
           }
           if (event.state?.courseNavigation) {
