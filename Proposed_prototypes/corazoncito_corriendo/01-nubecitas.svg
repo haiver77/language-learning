@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Corazoncito corredor entre nubes</title>
+  <desc id="desc">Un corazón bebé sonriente corre hacia la derecha mientras nubes suaves se desplazan hacia la izquierda.</desc>
+  <style>
+    .sky{animation:drift 7s linear infinite}.runner{transform-box:fill-box;transform-origin:center;animation:bob .38s ease-in-out infinite alternate}
+    .arm,.leg{transform-box:fill-box;transform-origin:top center;animation:swing .38s ease-in-out infinite alternate}.reverse{animation-direction:alternate-reverse}
+    .ground{animation:ground .55s linear infinite}
+    @keyframes drift{to{transform:translateX(-400px)}}@keyframes ground{to{stroke-dashoffset:-45}}
+    @keyframes bob{to{transform:translateY(-8px) rotate(2deg)}}@keyframes swing{to{transform:rotate(27deg)}}
+    @media(prefers-reduced-motion:reduce){.sky,.runner,.arm,.leg,.ground{animation:none}}
+  </style>
+  <rect width="400" height="320" fill="#fff9f1"/>
+  <g class="sky" fill="#f8d9cf" opacity=".8">
+    <g><path d="M25 69c0-10 8-18 18-18 4-15 26-18 34-4 14-3 23 14 13 24H29z"/><path d="M207 43c0-9 7-16 16-16 5-15 25-16 32-3 15-2 23 15 13 24h-55z"/><path d="M324 95c0-8 7-15 15-15 4-12 21-14 28-2 12-2 19 12 11 20h-50z"/></g>
+    <g transform="translate(400 0)"><path d="M25 69c0-10 8-18 18-18 4-15 26-18 34-4 14-3 23 14 13 24H29z"/><path d="M207 43c0-9 7-16 16-16 5-15 25-16 32-3 15-2 23 15 13 24h-55z"/><path d="M324 95c0-8 7-15 15-15 4-12 21-14 28-2 12-2 19 12 11 20h-50z"/></g>
+  </g>
+  <path d="M0 266h400" stroke="#f4d8c8" stroke-width="3"/><path class="ground" d="M0 279h400" stroke="#e9b99b" stroke-width="5" stroke-dasharray="10 25"/>
+  <ellipse cx="204" cy="271" rx="88" ry="10" fill="#f1d8cb"/>
+  <g class="leg arm" fill="none" stroke="#e98b83" stroke-width="14" stroke-linecap="round"><path d="M178 218q-4 30-28 40"/><path d="M148 258q-17 1-17 13 0 8 16 8h20q10-2 5-10z" fill="#ffd087" stroke-width="5"/></g>
+  <g class="leg reverse" fill="none" stroke="#d97871" stroke-width="14" stroke-linecap="round"><path d="M225 215q12 28 40 22"/><path d="M265 232q15-9 22 0 7 8-2 16l-19 13q-9 5-14-3l-7-15z" fill="#ffd087" stroke-width="5"/></g>
+  <g class="arm reverse" fill="none" stroke="#ee9c92" stroke-width="12" stroke-linecap="round"><path d="M133 143q-25-10-37-29"/><circle cx="92" cy="111" r="8" fill="#ffc4b7" stroke-width="4"/></g>
+  <g class="arm" fill="none" stroke="#ee9c92" stroke-width="12" stroke-linecap="round"><path d="M271 140q24-8 35-27"/><circle cx="307" cy="109" r="8" fill="#ffc4b7" stroke-width="4"/></g>
+  <g class="runner">
+    <path d="M201 224c-24-21-83-60-83-101 0-27 21-47 47-47 16 0 29 8 37 22 9-17 25-25 43-22 28 4 43 29 37 54-8 34-52 70-81 94z" fill="#ff9f9e" stroke="#d66f76" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M155 188q44 18 89-3l-11 20q-36 19-69-1z" fill="#ffe2c4" opacity=".95"/>
+    <path d="M176 119q7-6 15 0m26-2q8-6 15 1" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+    <ellipse cx="185" cy="133" rx="4" ry="7" fill="#513b43"/><ellipse cx="224" cy="132" rx="4" ry="7" fill="#513b43"/>
+    <ellipse cx="166" cy="144" rx="9" ry="5" fill="#f27f88"/><ellipse cx="243" cy="143" rx="9" ry="5" fill="#f27f88"/>
+    <path d="M194 148q13 16 26-1" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M196 76q-7-15 5-21 7 10 2 19" fill="#ffc86f" stroke="#d88768" stroke-width="3"/>
+  </g>
+  <path d="M72 179h25m-14 14h18m211-39h20" stroke="#f2bc76" stroke-width="4" stroke-linecap="round"/>
+</svg>

@@ -4,7 +4,7 @@
 
 - Speaking Practice uses the browser Speech Recognition API (`SpeechRecognition` or `webkitSpeechRecognition`). If neither API is available, the practice stops and reports that speech recognition is unsupported.
 - Starting practice speaks the current phrase, then listens for the language configured as **Target Language** in **Settings > Languages**.
-- In a course session, if native-language reading is enabled, each new phrase is read in the native language and then **Target Language** before recognition starts. This order applies even when the saved target-language reading preference is off.
+- In a course session, if native-language reading is enabled, each newly presented phrase is read only in the native language; recognition starts as soon as that utterance ends. The saved target-language reading preference does not add a target-language cue.
 - Stopping practice cancels speech synthesis, aborts recognition, clears practice timers, and marks the practice as stopped.
 - A recognition result is ignored if practice is no longer active or if it belongs to an older phrase session.
 - Recognition uses continuous listening, interim results, and one recognition alternative.

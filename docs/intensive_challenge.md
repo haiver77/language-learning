@@ -2,7 +2,7 @@
 
 ## Propósito
 
-**Intensive Challenge** es un modo de práctica oral por turnos. Para cada fila del CSV, la aplicación presenta la frase en el idioma nativo y empieza a escuchar. En una sesión de curso con lectura del idioma nativo activada, antes de escuchar lee la frase en idioma nativo y luego en el idioma destino. El usuario intenta decir la traducción en el **Target Language** configurado. Al completar el intento, la aplicación revela y lee la frase objetivo. Si el primer intento falla por silencio, repite la misma frase tantas veces como reintentos forzados adicionales estén configurados, aunque las repeticiones posteriores sean correctas; luego pasa a otra fila.
+**Intensive Challenge** es un modo de práctica oral por turnos. Para cada fila del CSV, la aplicación presenta la frase en el idioma nativo y empieza a escuchar. En una sesión de curso con lectura del idioma nativo activada, antes de escuchar lee únicamente la frase en idioma nativo; el reconocimiento comienza al terminar esa lectura. El usuario intenta decir la traducción en el **Target Language** configurado. Al completar el intento, la aplicación revela y lee la frase objetivo. Si el primer intento falla por silencio, repite la misma frase tantas veces como reintentos forzados adicionales estén configurados, aunque las repeticiones posteriores sean correctas; luego pasa a otra fila.
 
 El intento se cierra de una de estas dos maneras:
 
@@ -21,7 +21,7 @@ El modo reutiliza el reconocimiento, la comparación de palabras, las opciones d
 - **Forced retries after failure**, en **Settings > Course Settings**, determina cuántas veces adicionales se repite obligatoriamente la misma frase después de un fallo por silencio en el primer intento. Las repeticiones se completan aunque alguna pronunciación posterior sea correcta. Acepta enteros no negativos, su valor inicial es 2 y se guarda en el navegador.
 - La voz, velocidad y tono configurados en la aplicación se usan para leer la frase objetivo.
 - Al completar cada intento, incluida cada repetición forzada, Intensive Challenge lee únicamente la frase en **Target Language**. Esta lectura no depende de las casillas **Read Aloud Languages** y nunca repite el idioma nativo.
-- En una sesión de curso, si está activa la casilla de lectura del idioma nativo, cada frase nueva se lee primero en idioma nativo y después en **Target Language** antes de empezar a escuchar. La casilla guardada del idioma destino no altera esta secuencia. Los reintentos forzados no vuelven a leer el idioma nativo.
+- En una sesión de curso, si está activa la casilla de lectura del idioma nativo, cada frase nueva se lee solo en idioma nativo y el reconocimiento empieza al terminar esa lectura. La preferencia guardada para leer **Target Language** no añade una lectura inicial del idioma destino. Los reintentos forzados siguen leyendo solo el idioma destino.
 - Este modo no usa **Wait After Reach Min. Similarity (sec)** para decidir cuándo avanzar: después de un éxito, espera a que termine la lectura en voz alta.
 
 ## Controles e interacción
@@ -42,7 +42,7 @@ Si el usuario cambia **Target Language** en **Settings > Languages** mientras el
 
 1. Al seleccionar el modo, la aplicación posiciona la selección en la primera fila del CSV y establece el orden secuencial para Intensive Challenge.
 2. Al pulsar **Start**, se muestran ambas frases internamente, pero solo queda visible el texto en **Idioma nativo**. La frase objetivo permanece oculta.
-3. En una sesión de curso con lectura del idioma nativo activada, la aplicación lee primero el idioma nativo y luego **Target Language**, y empieza el reconocimiento al terminar. Fuera de una sesión de curso, o si esa casilla está desactivada, inicia el reconocimiento inmediatamente sin leer el estímulo inicial.
+3. En una sesión de curso con lectura del idioma nativo activada, la aplicación lee solo el idioma nativo y empieza el reconocimiento al terminar esa lectura. Fuera de una sesión de curso, o si esa casilla está desactivada, inicia el reconocimiento inmediatamente sin leer el estímulo inicial.
 4. Después de cada intento, la siguiente fila es la siguiente del CSV en modo secuencial, con retorno a la primera fila al llegar al final. Si **Random** está activo, se elige aleatoriamente una fila del CSV para el siguiente intento. La elección aleatoria puede repetir la misma fila.
 5. Cambiar Random durante un intento no altera la frase actual; determina cómo se elige la siguiente.
 

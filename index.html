@@ -4853,12 +4853,10 @@
         if (!activeCourseSession) return null;
         const languages = getSelectedLangCodes();
         const nativeSlot = languages.indexOf(activeCourseSession.languageNative) + 1;
-        const targetSlot = languages.indexOf(activeCourseSession.languageTarget) + 1;
-        if (nativeSlot < 1 || targetSlot < 1 || nativeSlot === targetSlot ||
-            !els.read[nativeSlot].checked) return null;
+        if (nativeSlot < 1 || !els.read[nativeSlot].checked) return null;
         return {
-          readSlots: { [nativeSlot]: true, [targetSlot]: true },
-          order: [nativeSlot, targetSlot],
+          readSlots: { [nativeSlot]: true },
+          order: [nativeSlot],
         };
       }
 
@@ -6499,7 +6497,7 @@
         }
 
         intensivePractice.phase = 'reading';
-        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Reading the native and target phrases…';
+        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Reading the native phrase…';
         const failRead = (error) => {
           if (!intensivePractice.active || token !== phraseSessionId) return;
           intensivePractice.active = false;

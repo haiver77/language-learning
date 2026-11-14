@@ -24,7 +24,7 @@ Los idiomas del curso se aplican automáticamente: el idioma nativo ocupa la pri
 
 Con un par válido de curso y unidad seleccionado, aunque no haya una sesión activa, **Read Aloud Languages** mantiene habilitada la casilla del idioma nativo y deshabilita la del idioma destino. La selección no cambia el valor marcado ni sobrescribe las preferencias guardadas; al quitarla, ambas casillas vuelven a estar disponibles con sus valores anteriores. Si el par de idiomas se invierte, los controles siguen los idiomas correspondientes.
 
-En una sesión de curso, si está activada la lectura del idioma nativo, al mostrar por primera vez cada frase se leen primero el idioma nativo y luego el idioma destino. Esto también se aplica en Intensive Challenge antes de empezar a escuchar, aunque la preferencia guardada de lectura del idioma destino esté desactivada. Los reintentos forzados de Intensive Challenge siguen leyendo solo el idioma destino.
+En una sesión de curso, si está activada la lectura del idioma nativo, cada frase nueva se lee únicamente en el idioma nativo y el reconocimiento empieza cuando termina esa lectura. Esto también se aplica en Intensive Challenge, aunque la preferencia guardada de lectura del idioma destino esté activada. La preferencia guardada del idioma destino no añade una lectura a este aviso inicial. La lectura de la respuesta revelada en Intensive Challenge y sus reintentos forzados siguen siendo solo en el idioma destino.
 
 ## Progreso y configuración
 
