@@ -22,6 +22,10 @@ El formato (`practiceType`) determina qué filas de las lecciones se incluyen; e
 
 Los idiomas del curso se aplican automáticamente: el idioma nativo ocupa la primera columna y el idioma destino es el objetivo de práctica. Una sesión incompleta conserva su CSV combinado, formato y posición para reanudarla sin volver a mezclar el orden.
 
+Con un par válido de curso y unidad seleccionado, aunque no haya una sesión activa, **Read Aloud Languages** mantiene habilitada la casilla del idioma nativo y deshabilita la del idioma destino. La selección no cambia el valor marcado ni sobrescribe las preferencias guardadas; al quitarla, ambas casillas vuelven a estar disponibles con sus valores anteriores. Si el par de idiomas se invierte, los controles siguen los idiomas correspondientes.
+
+En una sesión de curso, si está activada la lectura del idioma nativo, al mostrar por primera vez cada frase se leen primero el idioma nativo y luego el idioma destino. Esto también se aplica en Intensive Challenge antes de empezar a escuchar, aunque la preferencia guardada de lectura del idioma destino esté desactivada. Los reintentos forzados de Intensive Challenge siguen leyendo solo el idioma destino.
+
 ## Progreso y configuración
 
 - Al completar una frase de una sesión de curso, aumenta una vez el contador de prácticas de la palabra de vocabulario asociada a esa frase. El avance tras una pronunciación correcta, una respuesta escrita correcta, la finalización de la reproducción o el cierre del ciclo de **Intensive Challenge** completan la frase; sus reintentos forzados cuentan como un solo ciclo. Cambiar de frase manualmente, detener o abandonar la práctica no cuenta como completar la frase.

@@ -4,10 +4,12 @@
 
 - Speaking Practice uses the browser Speech Recognition API (`SpeechRecognition` or `webkitSpeechRecognition`). If neither API is available, the practice stops and reports that speech recognition is unsupported.
 - Starting practice speaks the current phrase, then listens for the language configured as **Target Language** in **Settings > Languages**.
+- In a course session, if native-language reading is enabled, each new phrase is read in the native language and then **Target Language** before recognition starts. This order applies even when the saved target-language reading preference is off.
 - Stopping practice cancels speech synthesis, aborts recognition, clears practice timers, and marks the practice as stopped.
 - A recognition result is ignored if practice is no longer active or if it belongs to an older phrase session.
 - Recognition uses continuous listening, interim results, and one recognition alternative.
 - The target language is always **Target Language** from **Settings > Languages** and is mapped to the first configured locale for that language. Speaking and Writing Practice have no separate language selector.
+- When a valid course and unit are selected, the shared **Read Aloud Languages** controls keep the native-language checkbox adjustable and disable the target-language checkbox without changing either saved preference. See [Course functionality](./cursos.md).
 
 ## Phrase selection
 
@@ -45,9 +47,12 @@ In a course session, this successful transition increments the associated vocabu
 
 ## Success feedback and streak
 
-- A final speech result that meets the configured `Min. Similarity (%)` threshold triggers a silent visual success celebration, regardless of which advance rule applies.
+- A final speech result that meets the configured `Min. Similarity (%)` threshold triggers the visual success celebration, regardless of which advance rule applies.
+- Each newly finalized recognized word plays its selected success or incorrect sound. A separate transition sound plays immediately before the next phrase begins.
+- **Settings > Speaking Recognition Options** provides three playable sound prototypes for each event (correct word, incorrect word, and phrase transition). The selected prototype for each event is applied to Speaking Practice and Intensive Challenge.
 - The phrase streak increments once per phrase session; repeated recognition results for the same phrase do not increment it again.
-- The card displays the current phrase progress and run streak. The streak carries across phrase transitions and resets when practice is stopped or a new practice run starts.
+- The card displays the number of phrases practiced today, using the same daily count shown by Statistics across practice modes. It initializes when the card appears, updates when a phrase is recorded as completed, and refreshes when the app returns after the date changes.
+- The run streak still carries across phrase transitions and resets when practice is stopped or a new practice run starts; it remains part of the success celebration but is no longer displayed as the card indicator.
 - Success highlights and animates the phrase card for the selected speaking language and displays page-wide confetti for the configured match celebration time. The confetti is non-interactive and is omitted when the system's `prefers-reduced-motion` setting is enabled; the phrase retains a static success highlight.
 - The phrase animation and confetti clear automatically, and any remaining success message and card highlight clear when the next phrase begins or practice stops.
 

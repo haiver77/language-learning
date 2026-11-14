@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Cloud-step baby brain runner</title>
+  <desc id="desc">A rosy baby brain runs cheerfully in place with alternating arms and legs and a soft bouncing rhythm.</desc>
+  <style>
+    .bob{transform-box:fill-box;transform-origin:center;animation:bob .48s ease-in-out infinite alternate}
+    .arm-a,.leg-a{transform-box:fill-box;transform-origin:top center;animation:swing .48s ease-in-out infinite alternate}
+    .arm-b,.leg-b{transform-box:fill-box;transform-origin:top center;animation:swing .48s ease-in-out infinite alternate-reverse}
+    .shadow{transform-box:fill-box;transform-origin:center;animation:shade .48s ease-in-out infinite alternate}
+    @keyframes bob{to{transform:translateY(-9px) rotate(-2deg)}} @keyframes swing{to{transform:rotate(28deg)}}
+    @keyframes shade{to{transform:scaleX(.82);opacity:.28}}
+    @media(prefers-reduced-motion:reduce){.bob,.arm-a,.arm-b,.leg-a,.leg-b,.shadow{animation:none}}
+  </style>
+  <ellipse class="shadow" cx="202" cy="286" rx="93" ry="13" fill="#d8a4a0" opacity=".48"/>
+  <g class="leg-a" fill="none" stroke="#e88478" stroke-width="17" stroke-linecap="round"><path d="M174 224Q170 252 147 264"/><path d="M143 265q-14 3-13 14 2 9 23 7l19-5q7-3 3-9l-16-12z" fill="#ffcf82" stroke="#dc7d71" stroke-width="5"/></g>
+  <g class="leg-b" fill="none" stroke="#e88478" stroke-width="17" stroke-linecap="round"><path d="M228 222Q244 246 269 247"/><path d="M267 242q15-7 22 2 5 7-5 17l-15 12q-8 5-12-2l-7-18z" fill="#ffcf82" stroke="#dc7d71" stroke-width="5"/></g>
+  <g class="arm-b" fill="none" stroke="#ee9b91" stroke-width="15" stroke-linecap="round"><path d="M134 165Q111 180 104 199"/><path d="M104 198q-12 5-10-7l4-12q5-11 13-7l7 10z" fill="#ffc5b6" stroke="#e9877b" stroke-width="5"/></g>
+  <g class="arm-a" fill="none" stroke="#ee9b91" stroke-width="15" stroke-linecap="round"><path d="M263 166Q288 153 300 135"/><path d="M298 137q-2-14 9-14 9 0 10 11l-2 12q-2 9-10 7l-10-8z" fill="#ffc5b6" stroke="#e9877b" stroke-width="5"/></g>
+  <g class="bob">
+    <path d="M119 126c-8-22 8-39 29-40 5-28 37-41 59-24 19-25 55-17 63 10 27-1 43 23 30 45 18 14 14 42-7 50 7 28-13 48-40 43-14 24-46 25-62 6-24 17-54 4-56-22-25-3-37-29-24-49-13-5-17-12-12-19z" fill="#ffb5ad" stroke="#d97871" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M155 103q-7 14 6 22m22-40q-4 14 8 20m28-30q-9 12 0 24m29-12q-12 10-5 22m30 7q-14 4-15 17m15 26q-14-6-23 4m-24 21q-4-14-17-13m-37 12q7-12 0-22" fill="none" stroke="#f08e87" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="187" cy="147" rx="6" ry="8" fill="#533b42"/><ellipse cx="239" cy="147" rx="6" ry="8" fill="#533b42"/>
+    <path d="M197 163q15 18 30-1" fill="none" stroke="#a94f58" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="169" cy="162" rx="10" ry="6" fill="#f28e91" opacity=".8"/><ellipse cx="255" cy="162" rx="10" ry="6" fill="#f28e91" opacity=".8"/>
+    <path d="M164 121q8-7 17 0m47 0q8-7 17 0" fill="none" stroke="#9e5961" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <path d="M79 224l-15 7m26 8-18 10m231-90 17-5m-18 18 16 1" stroke="#f2b66f" stroke-width="5" stroke-linecap="round"/>
+</svg>

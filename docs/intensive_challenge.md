@@ -2,7 +2,7 @@
 
 ## Propósito
 
-**Intensive Challenge** es un modo de práctica oral por turnos. Para cada fila del CSV, la aplicación presenta la frase en el idioma nativo y empieza a escuchar. El usuario intenta decir la traducción en el **Target Language** configurado. Al completar el intento, la aplicación revela y lee la frase objetivo. Si el primer intento falla por silencio, repite la misma frase tantas veces como reintentos forzados adicionales estén configurados, aunque las repeticiones posteriores sean correctas; luego pasa a otra fila.
+**Intensive Challenge** es un modo de práctica oral por turnos. Para cada fila del CSV, la aplicación presenta la frase en el idioma nativo y empieza a escuchar. En una sesión de curso con lectura del idioma nativo activada, antes de escuchar lee la frase en idioma nativo y luego en el idioma destino. El usuario intenta decir la traducción en el **Target Language** configurado. Al completar el intento, la aplicación revela y lee la frase objetivo. Si el primer intento falla por silencio, repite la misma frase tantas veces como reintentos forzados adicionales estén configurados, aunque las repeticiones posteriores sean correctas; luego pasa a otra fila.
 
 El intento se cierra de una de estas dos maneras:
 
@@ -20,6 +20,8 @@ El modo reutiliza el reconocimiento, la comparación de palabras, las opciones d
 - **Silence Wait (sec)** también es compartido. Su valor mínimo es un segundo y el valor inicial es 3 segundos.
 - **Forced retries after failure**, en **Settings > Course Settings**, determina cuántas veces adicionales se repite obligatoriamente la misma frase después de un fallo por silencio en el primer intento. Las repeticiones se completan aunque alguna pronunciación posterior sea correcta. Acepta enteros no negativos, su valor inicial es 2 y se guarda en el navegador.
 - La voz, velocidad y tono configurados en la aplicación se usan para leer la frase objetivo.
+- Al completar cada intento, incluida cada repetición forzada, Intensive Challenge lee únicamente la frase en **Target Language**. Esta lectura no depende de las casillas **Read Aloud Languages** y nunca repite el idioma nativo.
+- En una sesión de curso, si está activa la casilla de lectura del idioma nativo, cada frase nueva se lee primero en idioma nativo y después en **Target Language** antes de empezar a escuchar. La casilla guardada del idioma destino no altera esta secuencia. Los reintentos forzados no vuelven a leer el idioma nativo.
 - Este modo no usa **Wait After Reach Min. Similarity (sec)** para decidir cuándo avanzar: después de un éxito, espera a que termine la lectura en voz alta.
 
 ## Controles e interacción
@@ -32,7 +34,7 @@ Los controles de la barra de navegación inferior son los mismos para todos los 
 - El ajuste secuencial inicial de Intensive Challenge no cambia la preferencia Random guardada para los demás modos.
 - Los controles **First**, **Previous** y **Next** permiten cambiar la frase mientras la práctica está detenida. No cambian la frase durante un intento activo o durante la lectura de la respuesta.
 
-El panel de Intensive Challenge muestra el progreso y porcentaje de la frase, la transcripción reconocida, el estado del intento, el contador de silencio y el número de frases correctas de la sesión. No incluye controles propios de idioma, Random, Start ni Stop.
+El panel de Intensive Challenge muestra la cantidad de frases practicadas hoy, el progreso y porcentaje de la frase, la transcripción reconocida, el estado del intento, el contador de silencio y la celebración. La cantidad diaria usa el mismo total que Statistics para todos los modos; se inicializa al mostrar la tarjeta, se actualiza al registrar una frase completada y se refresca al volver a la aplicación tras cambiar la fecha. No incluye controles propios de idioma, Random, Start ni Stop.
 
 Si el usuario cambia **Target Language** en **Settings > Languages** mientras el modo está activo, la práctica se detiene y la frase visible se actualiza al nuevo idioma. Para continuar, debe iniciar de nuevo.
 
@@ -40,7 +42,7 @@ Si el usuario cambia **Target Language** en **Settings > Languages** mientras el
 
 1. Al seleccionar el modo, la aplicación posiciona la selección en la primera fila del CSV y establece el orden secuencial para Intensive Challenge.
 2. Al pulsar **Start**, se muestran ambas frases internamente, pero solo queda visible el texto en **Idioma nativo**. La frase objetivo permanece oculta.
-3. La aplicación inicia el reconocimiento de voz en **Target Language** inmediatamente; no lee el estímulo inicial en voz alta.
+3. En una sesión de curso con lectura del idioma nativo activada, la aplicación lee primero el idioma nativo y luego **Target Language**, y empieza el reconocimiento al terminar. Fuera de una sesión de curso, o si esa casilla está desactivada, inicia el reconocimiento inmediatamente sin leer el estímulo inicial.
 4. Después de cada intento, la siguiente fila es la siguiente del CSV en modo secuencial, con retorno a la primera fila al llegar al final. Si **Random** está activo, se elige aleatoriamente una fila del CSV para el siguiente intento. La elección aleatoria puede repetir la misma fila.
 5. Cambiar Random durante un intento no altera la frase actual; determina cómo se elige la siguiente.
 
@@ -49,6 +51,7 @@ Si el usuario cambia **Target Language** en **Settings > Languages** mientras el
 - El modo usa el reconocimiento de voz del navegador (`SpeechRecognition` o `webkitSpeechRecognition`), con escucha continua, resultados intermedios y una alternativa de reconocimiento. Al terminar cada intento, detiene el reconocimiento mientras lee la respuesta y crea una instancia nueva para el siguiente intento. Así, el audio leído por la aplicación no se procesa como voz del usuario y cada intento comienza sin resultados ni transcripción acumulados anteriormente.
 - La transcripción y la puntuación se actualizan mientras el usuario habla. Los resultados intermedios sirven para mostrar el progreso, pero **solo un resultado final** puede cerrar el intento como éxito.
 - La comparación usa las reglas compartidas de Speaking Practice: normalización del texto, comparación de palabras en orden y similitud por palabra de al menos 70 % para marcar una coincidencia. El porcentaje de la frase es la proporción de palabras objetivo coincidentes, redondeada a un entero. Véase [Speaking Practice Rules](./speaking_practice.md) para los detalles compartidos del cálculo.
+- Cada palabra nueva confirmada por un resultado final reproduce el sonido seleccionado para pronunciación correcta o incorrecta. Antes de pasar a otra frase se reproduce el sonido de transición configurado en **Settings > Speaking Recognition Options**; los tres tipos de sonido ofrecen tres prototipos para escuchar y seleccionar.
 - El contador de **Silence Wait (sec)** comienza al iniciar la escucha y se reinicia al recibir actividad de voz reconocida. Si el temporizador vence antes del éxito, el intento termina como fallido, incluso si hubo voz pero la puntuación no alcanzó el umbral.
 - Si el primer intento termina por silencio y quedan reintentos forzados, la respuesta se revela y se lee; al terminar la lectura, se oculta de nuevo y comienza la primera repetición con la misma frase. Una vez iniciada esa secuencia, cada repetición se completa incluso si se pronuncia correctamente. Después de cada intento se vuelve a leer la respuesta antes de la siguiente repetición o de avanzar. Cada intento tiene su propio contador de silencio.
 - Si el navegador no ofrece reconocimiento, se informa que la función no está disponible. Si se deniega el micrófono, se informa que hay que permitir su acceso. En ambos casos, el modo no avanza automáticamente.
@@ -64,6 +67,8 @@ Cuando un resultado final alcanza **Min. Similarity (%)**:
 3. Se muestra la celebración visual de éxito y aumenta el contador de frases correctas de la sesión.
 4. La aplicación lee la frase objetivo con la voz y los ajustes configurados.
 5. Si es el primer intento de la frase, cuando termina la lectura se selecciona y muestra la siguiente frase y comienza una nueva fase de escucha. Si ocurre durante la secuencia forzada de repeticiones iniciada por un fallo inicial, la lectura termina y comienza la siguiente repetición de la misma frase, si aún quedan.
+
+Los sonidos de pronunciación correcta e incorrecta acompañan cada palabra nueva reconocida en un resultado final. El sonido de transición se reproduce al avanzar a una frase nueva, no al repetir la frase actual.
 
 ### Fallo por silencio
 

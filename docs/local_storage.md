@@ -9,7 +9,7 @@ Guarda preferencias generales de práctica y la sesión de frases que se está u
 | Campo | Qué representa |
 |---|---|
 | `lang1`, `lang2` | Códigos de los idiomas seleccionados para las dos columnas. |
-| `show`, `read`, `voices` | Objetos indexados por código de idioma. Guardan, respectivamente, si se muestra cada columna, si se lee en voz alta y la voz de síntesis seleccionada. |
+| `show`, `read`, `voices` | Objetos indexados por código de idioma. Guardan, respectivamente, si se muestra cada columna, si se lee en voz alta y la voz de síntesis seleccionada. Las preferencias de `read` se conservan por idioma; con un curso y unidad seleccionados, cambiar el par de idiomas restaura las preferencias existentes, y deshabilitar una casilla no cambia su valor guardado. |
 | `rate`, `pitch` | Velocidad y tono de la voz. |
 | `font` | Tamaño de fuente de las frases. |
 | `themeDark`, `visualTheme` | Tema claro/oscuro y tema visual seleccionado. |
@@ -20,6 +20,7 @@ Guarda preferencias generales de práctica y la sesión de frases que se está u
 | `wrapCsv` | Si el texto CSV se ajusta visualmente en el área de edición. |
 | `color1`, `color2` | Colores usados para resaltar las dos columnas del CSV. |
 | `speakingMin`, `speakingWait`, `speakingAfterMin`, `speakingCelebrationSeconds` | Umbral de similitud, espera por silencio, espera adicional y duración de la celebración de Speaking Practice. |
+| `speakingSoundSelections` | Variante elegida (1–3) para los sonidos de palabra correcta, palabra incorrecta y transición de frase en las prácticas orales. |
 
 Las preferencias se guardan al cambiar los controles relacionados. La selección de un conjunto predefinido también guarda su identificador y el CSV cargado. El contenido CSV, incluidas frases generadas con IA, queda persistido cuando se ejecuta un guardado de configuración; la carga de IA por sí sola no guarda inmediatamente ese contenido.
 

@@ -4,6 +4,7 @@ applyTo:
   - "index.html"
   - "courses/**"
   - "docs/**"
+  - "docs/elementos-visuales.md"
 ---
 
 # Mantener la documentación funcional
@@ -18,4 +19,5 @@ applyTo:
   - Revisa los demás documentos de `docs/` cuando el cambio afecte la funcionalidad que describen.
 - Si un cambio compartido afecta varias funcionalidades, actualiza todas las guías afectadas y mantén consistentes las reglas compartidas. Evita repetir detalles: enlaza la documentación relacionada cuando sea suficiente.
 - Mantén la documentación concisa y precisa. No modifiques documentos que no estén afectados por el cambio.
+- Si se agregan, eliminan, renombran o reorganizan elementos de interfaz, actualiza `elementos-visuales.md` en el mismo cambio y usa la aplicación implementada como fuente de verdad.
 - Antes de terminar, comprueba que las afirmaciones actualizadas correspondan al código y que no contradigan otras guías relacionadas.

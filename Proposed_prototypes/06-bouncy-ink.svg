@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Bouncy-ink baby brain</title>
+  <desc id="desc">A hand-drawn, softly irregular baby brain runs with a loose, elastic squash-and-bounce motion.</desc>
+  <style>
+    .whole{transform-box:fill-box;transform-origin:center;animation:elastic .58s cubic-bezier(.36,.07,.45,.98) infinite}
+    .legs{transform-box:fill-box;transform-origin:center;animation:pedal .58s ease-in-out infinite alternate}
+    .arm{transform-box:fill-box;transform-origin:top center;animation:pedal .58s ease-in-out infinite alternate-reverse}
+    .ink{stroke-linecap:round;stroke-linejoin:round}
+    @keyframes elastic{0%,100%{transform:translateY(3px) scale(1.02,.96) rotate(-2deg)}48%{transform:translateY(-13px) scale(.97,1.04) rotate(2deg)}}
+    @keyframes pedal{to{transform:rotate(32deg)}}
+    @media(prefers-reduced-motion:reduce){.whole,.legs,.arm{animation:none}}
+  </style>
+  <ellipse cx="198" cy="285" rx="88" ry="12" fill="#d8a4a0" opacity=".4"/>
+  <g class="legs ink" fill="none" stroke="#d97871" stroke-width="16">
+    <path d="M170 220q-4 30-28 43"/><path d="M228 219q16 27 41 22"/>
+    <path d="M143 262q-16 1-15 12 1 9 20 9l21-4q8-2 4-9l-13-11z" fill="#ffd18a" stroke-width="5"/>
+    <path d="M264 235q12-12 21-4 7 7-1 16l-19 18q-8 7-14-1l-9-17z" fill="#ffd18a" stroke-width="5"/>
+  </g>
+  <g class="arm ink" fill="none" stroke="#e98c83" stroke-width="15">
+    <path d="M137 166q-22 8-29 28"/><path d="M266 164q20-14 25-32"/>
+    <path d="M108 194q-10 12-17 4-5-7 2-17l10-8 9 7z" fill="#ffc5b6" stroke-width="5"/>
+    <path d="M290 132q1-13 11-11 9 2 7 13l-6 12q-5 8-12 2l-7-8z" fill="#ffc5b6" stroke-width="5"/>
+  </g>
+  <g class="whole ink">
+    <path d="M118 127q-10-25 13-38 7-24 34-24 17-17 37-3 23-19 43 2 24-4 31 18 24 6 24 30 18 17 2 36 10 23-13 37 2 24-23 36-19 18-40 5-24 14-43-3-24 12-41-7-24 4-30-19-23-8-16-30-19-16-1-40z" fill="#ffb5ad" stroke="#d97871" stroke-width="6"/>
+    <path d="M154 96q-8 15 8 24m21-49q-5 16 11 22m26-28q-8 15 3 26m29-19q-12 13-4 26m24-6q-15 7-10 22m10 24q-15-6-24 8m-19 20q-4-16-19-13m-33 10q8-11 1-24m-26-12q14-7 9-21" fill="none" stroke="#ef8e87" stroke-width="5"/>
+    <ellipse cx="187" cy="146" rx="6" ry="8" fill="#533b42" stroke="none"/><ellipse cx="239" cy="146" rx="6" ry="8" fill="#533b42" stroke="none"/>
+    <path d="M195 161q16 19 33-1" fill="none" stroke="#a94f58" stroke-width="5"/>
+    <path d="M162 160q9-7 17 0m55 0q9-7 17 0" fill="none" stroke="#f08e87" stroke-width="4"/>
+    <circle cx="169" cy="162" r="6" fill="#f28e91" stroke="none"/><circle cx="255" cy="162" r="6" fill="#f28e91" stroke="none"/>
+  </g>
+  <path d="M76 167l13 0m233-41 13-4m-28 123 12 5" stroke="#f2b66f" stroke-width="5" stroke-linecap="round"/>
+</svg>

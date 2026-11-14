@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Lobed-linemate runner</title>
+  <desc id="desc">A cheerful baby brain outlined with clear, flowing lobes jogs in a smooth, steady cycle.</desc>
+  <style>
+    .head{transform-box:fill-box;transform-origin:center;animation:float .52s ease-in-out infinite alternate}
+    .frontleg,.frontarm{transform-box:fill-box;transform-origin:top center;animation:cycle .52s ease-in-out infinite alternate}
+    .backleg,.backarm{transform-box:fill-box;transform-origin:top center;animation:cycle .52s ease-in-out infinite alternate-reverse}
+    @keyframes float{to{transform:translateY(-8px)}} @keyframes cycle{to{transform:rotate(31deg)}}
+    @media(prefers-reduced-motion:reduce){.head,.frontleg,.frontarm,.backleg,.backarm{animation:none}}
+  </style>
+  <ellipse cx="201" cy="285" rx="90" ry="11" fill="#d8a4a0" opacity=".35"/>
+  <g class="backleg" fill="none" stroke="#d77a73" stroke-width="16" stroke-linecap="round"><path d="M174 223q-8 31-31 40"/><path d="M144 260q-14 2-13 12 1 9 19 8l23-4q7-2 4-8l-17-12z" fill="#ffd18a" stroke-width="5"/></g>
+  <g class="frontleg" fill="none" stroke="#e78378" stroke-width="17" stroke-linecap="round"><path d="M229 220q14 27 41 17"/><path d="M265 235q12-12 21-4 8 8-1 17l-18 17q-9 7-15-1l-9-16z" fill="#ffd18a" stroke-width="5"/></g>
+  <g class="backarm" fill="none" stroke="#e58f86" stroke-width="14" stroke-linecap="round"><path d="M139 163q-20 1-32-14"/><circle cx="104" cy="148" r="9" fill="#ffc5b6" stroke-width="5"/></g>
+  <g class="frontarm" fill="none" stroke="#ee9b91" stroke-width="15" stroke-linecap="round"><path d="M265 163q20-15 22-33"/><circle cx="288" cy="127" r="9" fill="#ffc5b6" stroke-width="5"/></g>
+  <g class="head">
+    <path d="M120 127c-8-22 8-39 29-40 5-28 37-41 59-24 19-25 55-17 63 10 27-1 43 23 30 45 18 14 14 42-7 50 7 28-13 48-40 43-14 24-46 25-62 6-24 17-54 4-56-22-25-3-37-29-24-49-13-5-17-12-12-19z" fill="#fff5ed" stroke="#d97871" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M155 103q-7 14 6 22m22-40q-4 14 8 20m28-30q-9 12 0 24m29-12q-12 10-5 22m30 7q-14 4-15 17m15 26q-14-6-23 4m-24 21q-4-14-17-13m-37 12q7-12 0-22" fill="none" stroke="#f0a19a" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="187" cy="147" rx="6" ry="8" fill="#533b42"/><ellipse cx="239" cy="147" rx="6" ry="8" fill="#533b42"/>
+    <path d="M197 163q15 18 30-1" fill="none" stroke="#a94f58" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="169" cy="162" rx="10" ry="6" fill="#f6a0a0"/><ellipse cx="255" cy="162" rx="10" ry="6" fill="#f6a0a0"/>
+  </g>
+  <path d="M74 210l13-4m232-88 13-5m-23 112 13 0" stroke="#efbc7c" stroke-width="5" stroke-linecap="round"/>
+</svg>

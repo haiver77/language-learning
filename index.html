@@ -171,7 +171,7 @@
       margin: 8px 0 4px;
     }
 
-    .speaking-streak {
+    .speaking-daily-count {
       display: inline-flex;
       align-items: center;
       gap: 9px;
@@ -183,20 +183,20 @@
       color: var(--ink);
     }
 
-    .speaking-streak-icon {
+    .speaking-daily-count-icon {
       color: var(--success);
       font-size: 1.5rem;
       line-height: 1;
     }
 
-    .speaking-streak-label {
+    .speaking-daily-count-label {
       display: block;
       color: var(--muted);
       font-size: 0.85rem;
       font-weight: 700;
     }
 
-    .speaking-streak-count {
+    .speaking-daily-count-value {
       display: block;
       font-size: 1.15rem;
       font-weight: 900;
@@ -258,7 +258,7 @@
         gap: 8px;
       }
 
-      .speaking-streak {
+      .speaking-daily-count {
         min-width: 96px;
         padding: 7px 9px;
       }
@@ -766,7 +766,7 @@
     }
 
     .sheet.load-page .sheet-panel[data-panel="load"].courses-active {
-      padding-bottom: calc(20px + env(safe-area-inset-bottom));
+      padding-bottom: calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
     }
 
     .load-source-page,
@@ -1829,18 +1829,18 @@
       gap: 10px;
       margin: 4px 0 0;
     }
-    .speaking-streak {
+    .speaking-daily-count {
       flex: 0 0 auto;
       min-width: 94px;
       padding: 6px 9px;
       gap: 7px;
     }
-    .speaking-practice-card .speaking-streak-label,
+    .speaking-practice-card .speaking-daily-count-label,
     .speaking-practice-card .speaking-progress-label {
       font-size: 11px;
       line-height: 14px;
     }
-    .speaking-streak-icon {
+    .speaking-daily-count-icon {
       display: block;
       flex: 0 0 22px;
       width: 22px;
@@ -1928,7 +1928,7 @@
         gap: 6px;
       }
 
-      .speaking-streak {
+      .speaking-daily-count {
         min-width: 82px;
         padding: 6px 7px;
         gap: 5px;
@@ -2427,9 +2427,20 @@
     }
     .speaking-option-heading { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
     .speaking-option-heading label { color: var(--ink); font: 700 14px/19px Arial, sans-serif; }
+    .speaking-option-heading-label { color: var(--ink); font: 700 14px/19px Arial, sans-serif; }
     .speaking-option-description { margin: -5px 0 0; color: var(--muted); font: 12px/17px Arial, sans-serif; }
     .speaking-option-value { color: var(--primary); font: 700 15px/20px Arial, sans-serif; }
     .speaking-option-card input[type="range"] { width: 100%; accent-color: var(--primary); }
+    .speaking-sound-group { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 14px; border: 1px solid var(--border); border-radius: 17px; background: var(--surface-soft); }
+    .speaking-sound-group legend { padding: 0 5px; color: var(--ink); font: 700 14px/19px Arial, sans-serif; }
+    .speaking-sound-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 9px; }
+    .speaking-sound-choice { display: grid; gap: 9px; padding: 11px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface); }
+    .speaking-sound-choice.is-selected { border-color: var(--primary); box-shadow: var(--focus); }
+    .speaking-sound-choice label { display: flex; gap: 8px; align-items: flex-start; color: var(--ink); font: 700 12px/17px Arial, sans-serif; cursor: pointer; }
+    .speaking-sound-choice input { margin: 2px 0 0; accent-color: var(--primary); }
+    .speaking-sound-choice small { display: block; color: var(--muted); font: 11px/15px Arial, sans-serif; }
+    .speaking-sound-choice button { min-height: 36px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-soft); color: var(--ink); font: 700 12px Arial, sans-serif; cursor: pointer; }
+    .speaking-sound-status { min-height: 18px; margin: 0; color: var(--muted); font: 12px/18px Arial, sans-serif; }
     .speaking-range-limits { display: flex; justify-content: space-between; margin-top: -8px; color: var(--muted); font: 11px/15px Arial, sans-serif; }
     .settings-stepper { display: grid; grid-template-columns: 42px minmax(60px, 1fr) 42px; gap: 8px; align-items: center; }
     .settings-stepper button {
@@ -2474,11 +2485,11 @@
     @media (prefers-reduced-motion: reduce) {
       .settings-menu, .settings-page-view, .settings-section-card { transition-duration: .01ms; }
     }
-    .status, .sheet .status, .speaking-streak-label, .speaking-progress-label,
+    .status, .sheet .status, .speaking-daily-count-label, .speaking-progress-label,
     .speaking-practice-card .status-row .status, .writing-practice-card .status-row .status {
       font: 600 12px/18px Arial, sans-serif;
     }
-    .speaking-streak-count { font-size: 16px; line-height: 18px; }
+    .speaking-daily-count-value { font-size: 16px; line-height: 18px; }
     .mode-option { background: var(--surface); color: var(--ink); border-color: var(--border); min-height: 58px; }
     .mode-option.active { background: var(--primary-soft); border-color: var(--primary); box-shadow: inset 0 0 0 1px var(--primary); }
     body.theme-dark[data-visual-theme] .action-btn.secondary,
@@ -3627,6 +3638,35 @@
                   <p class="speaking-option-description">Duration of the success animation.</p>
                   <div class="settings-stepper"><button type="button" data-step-target="sp-celebration-settings" data-step="-1" aria-label="Decrease match celebration time">−</button><input type="number" id="sp-celebration-settings" min="0.5" max="10" step="0.1" value="1.2" /><button type="button" data-step-target="sp-celebration-settings" data-step="1" aria-label="Increase match celebration time">+</button></div>
                 </div>
+                <div class="speaking-option-card">
+                  <div class="speaking-option-heading"><span class="speaking-option-heading-label">Pronunciation sounds</span></div>
+                  <p class="speaking-option-description">Preview three prototypes for each event, then select the sound to use.</p>
+                  <fieldset class="speaking-sound-group" data-speaking-sound-group="success">
+                    <legend>Word pronounced correctly</legend>
+                    <div class="speaking-sound-grid">
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="1" checked /><span>Bright rise<small>Two clear notes climbing upward</small></span></label><button type="button" data-sound-preview="success" data-sound-variant="1" data-sound-name="Bright rise">▶ Preview</button></div>
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="2" /><span>Three-note chime<small>A light, playful sequence</small></span></label><button type="button" data-sound-preview="success" data-sound-variant="2" data-sound-name="Three-note chime">▶ Preview</button></div>
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="3" /><span>Warm chord<small>A soft, sustained harmony</small></span></label><button type="button" data-sound-preview="success" data-sound-variant="3" data-sound-name="Warm chord">▶ Preview</button></div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="speaking-sound-group" data-speaking-sound-group="incorrect">
+                    <legend>Word pronounced incorrectly</legend>
+                    <div class="speaking-sound-grid">
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="1" checked /><span>Gentle fall<small>Two soft descending notes</small></span></label><button type="button" data-sound-preview="incorrect" data-sound-variant="1" data-sound-name="Gentle fall">▶ Preview</button></div>
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="2" /><span>Low pulse<small>A single muted low tone</small></span></label><button type="button" data-sound-preview="incorrect" data-sound-variant="2" data-sound-name="Low pulse">▶ Preview</button></div>
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="3" /><span>Double tap<small>Two brief, quiet tones</small></span></label><button type="button" data-sound-preview="incorrect" data-sound-variant="3" data-sound-name="Double tap">▶ Preview</button></div>
+                    </div>
+                  </fieldset>
+                  <fieldset class="speaking-sound-group" data-speaking-sound-group="transition">
+                    <legend>Moving to the next word or phrase</legend>
+                    <div class="speaking-sound-grid">
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="1" checked /><span>Rising scale<small>Three quick notes leading forward</small></span></label><button type="button" data-sound-preview="transition" data-sound-variant="1" data-sound-name="Rising scale">▶ Preview</button></div>
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="2" /><span>Soft turn<small>A short two-tone transition</small></span></label><button type="button" data-sound-preview="transition" data-sound-variant="2" data-sound-name="Soft turn">▶ Preview</button></div>
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="3" /><span>Gentle chime<small>Two light notes to signal the change</small></span></label><button type="button" data-sound-preview="transition" data-sound-variant="3" data-sound-name="Gentle chime">▶ Preview</button></div>
+                    </div>
+                  </fieldset>
+                  <p class="speaking-sound-status" id="speaking-sound-status" role="status" aria-live="polite"></p>
+                </div>
                 <p class="settings-detail-description">Changes apply to speaking practice.</p>
               </div>
             </section>
@@ -3823,6 +3863,25 @@
       const DEFAULT_SPEAKING_CELEBRATION_SECONDS = 1.2;
       const MIN_SPEAKING_CELEBRATION_SECONDS = 0.5;
       const MAX_SPEAKING_CELEBRATION_SECONDS = 10;
+      const SPEAKING_SOUND_PROTOTYPES = {
+        success: [
+          { wave: 'sine', volume: 0.045, notes: [{ frequency: 659, offset: 0, duration: 0.11 }, { frequency: 988, offset: 0.12, duration: 0.16 }] },
+          { wave: 'triangle', volume: 0.035, notes: [{ frequency: 523, offset: 0, duration: 0.09 }, { frequency: 659, offset: 0.1, duration: 0.09 }, { frequency: 784, offset: 0.2, duration: 0.13 }] },
+          { wave: 'sine', volume: 0.025, notes: [{ frequency: 392, offset: 0, duration: 0.28 }, { frequency: 494, offset: 0, duration: 0.28 }, { frequency: 587, offset: 0, duration: 0.28 }] },
+        ],
+        incorrect: [
+          { wave: 'sine', volume: 0.035, notes: [{ frequency: 330, offset: 0, duration: 0.13 }, { frequency: 247, offset: 0.14, duration: 0.15 }] },
+          { wave: 'triangle', volume: 0.04, notes: [{ frequency: 220, offset: 0, duration: 0.24 }] },
+          { wave: 'square', volume: 0.012, notes: [{ frequency: 294, offset: 0, duration: 0.06 }, { frequency: 294, offset: 0.14, duration: 0.06 }] },
+        ],
+        transition: [
+          { wave: 'triangle', volume: 0.03, notes: [{ frequency: 440, offset: 0, duration: 0.07 }, { frequency: 660, offset: 0.08, duration: 0.07 }, { frequency: 880, offset: 0.16, duration: 0.1 }] },
+          { wave: 'sine', volume: 0.035, notes: [{ frequency: 700, offset: 0, duration: 0.09 }, { frequency: 520, offset: 0.11, duration: 0.1 }] },
+          { wave: 'sine', volume: 0.03, notes: [{ frequency: 523, offset: 0, duration: 0.13 }, { frequency: 784, offset: 0.16, duration: 0.16 }] },
+        ],
+      };
+      let speakingSoundSelections = { success: 1, incorrect: 1, transition: 1 };
+      let speakingAudioContext = null;
       let sharedRandomEnabled = !!els.randomToggle?.checked;
       let intensiveRandomEnabled = false;
       let renderedMode = null;
@@ -3884,6 +3943,7 @@
         currentWriteTarget: '',
       };
       let savedConfig = null;
+      let readAloudPreferences = {};
       const COURSES_STORAGE_KEY = 'language_courses_state_v1';
       const COURSE_FILES_DB_NAME = 'language-practice-course-files';
       const COURSE_FILES_DB_VERSION = 1;
@@ -4350,6 +4410,19 @@
         els.showLabel[1].textContent = (langMeta[l1] && langMeta[l1].label) || l1.toUpperCase();
         els.showLabel[2].textContent = (langMeta[l2] && langMeta[l2].label) || l2.toUpperCase();
         syncTargetLanguage();
+        restoreCourseReadAloudPreferences();
+        syncReadAloudCourseControls();
+      }
+
+      function restoreCourseReadAloudPreferences() {
+        if (!hasValidCourseUnitPair(courseState.selectedCourseId, courseState.selectedUnitId)) return;
+        const [l1, l2] = getSelectedLangCodes();
+        if (Object.prototype.hasOwnProperty.call(readAloudPreferences, l1)) {
+          els.read[1].checked = !!readAloudPreferences[l1];
+        }
+        if (Object.prototype.hasOwnProperty.call(readAloudPreferences, l2)) {
+          els.read[2].checked = !!readAloudPreferences[l2];
+        }
       }
 
       function parseCSV(text) {
@@ -4650,7 +4723,7 @@
       function saveConfig() {
         try {
           const cfg = {
-            show: {}, read: {}, voices: {},
+            show: {}, read: { ...readAloudPreferences }, voices: {},
             rate: els.rate.value, pitch: els.pitch.value,
             font: els.fontRange.value,
             themeDark: !!els.themeToggle.checked,
@@ -4667,11 +4740,13 @@
             speakingWait: getSpeechSilenceWaitSeconds(),
             speakingAfterMin: getSpeakingAfterMinSeconds(),
             speakingCelebrationSeconds: speakingPractice.celebrationSeconds,
+            speakingSoundSelections: { ...speakingSoundSelections },
           };
           const [l1, l2] = getSelectedLangCodes();
           cfg.lang1 = l1; cfg.lang2 = l2;
           cfg.show[l1] = !!els.show[1].checked; cfg.show[l2] = !!els.show[2].checked;
-          cfg.read[l1] = !!els.read[1].checked; cfg.read[l2] = !!els.read[2].checked;
+          readAloudPreferences[l1] = cfg.read[l1] = !!els.read[1].checked;
+          readAloudPreferences[l2] = cfg.read[l2] = !!els.read[2].checked;
           cfg.voices[l1] = els.voices[1].value || ''; cfg.voices[l2] = els.voices[2].value || '';
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cfg));
           return true;
@@ -4684,6 +4759,9 @@
           if (!raw) return;
           const cfg = JSON.parse(raw);
           savedConfig = cfg; // keep for populateVoices which runs later
+          readAloudPreferences = cfg.read && typeof cfg.read === 'object' && !Array.isArray(cfg.read)
+            ? { ...cfg.read }
+            : {};
           applyVisualTheme(cfg && typeof cfg.visualTheme === 'string' && Object.prototype.hasOwnProperty.call(THEME_NAMES, cfg.visualTheme)
             ? cfg.visualTheme
             : 'rainbow-playground');
@@ -4714,6 +4792,12 @@
           if (cfg.speakingCelebrationSeconds != null) {
             speakingPractice.celebrationSeconds = normalizeSpeakingCelebrationSeconds(cfg.speakingCelebrationSeconds);
           }
+          if (cfg.speakingSoundSelections && typeof cfg.speakingSoundSelections === 'object') {
+            for (const type of Object.keys(speakingSoundSelections)) {
+              speakingSoundSelections[type] = normalizeSpeakingSoundVariant(cfg.speakingSoundSelections[type]);
+            }
+          }
+          syncSpeakingSoundControls();
           if (els.speakingCelebration) {
             els.speakingCelebration.value = speakingPractice.celebrationSeconds.toFixed(1);
           }
@@ -4765,9 +4849,26 @@
       } catch (e) { /* ignore */ }
 
       // --- Speech Synthesis: robust sequence with session token and timeouts ---
-      async function speakCurrentRowSequence(sessionToken, row) {
+      function getCourseNativeTargetReadSequence() {
+        if (!activeCourseSession) return null;
+        const languages = getSelectedLangCodes();
+        const nativeSlot = languages.indexOf(activeCourseSession.languageNative) + 1;
+        const targetSlot = languages.indexOf(activeCourseSession.languageTarget) + 1;
+        if (nativeSlot < 1 || targetSlot < 1 || nativeSlot === targetSlot ||
+            !els.read[nativeSlot].checked) return null;
+        return {
+          readSlots: { [nativeSlot]: true, [targetSlot]: true },
+          order: [nativeSlot, targetSlot],
+        };
+      }
+
+      async function speakCurrentRowSequence(sessionToken, row, onSpeechError = null, courseReadSequenceOverride = null) {
         // Gather settings per slot
-        const readSlots = { 1: !!els.read[1].checked, 2: !!els.read[2].checked };
+        const courseReadSequence = courseReadSequenceOverride || getCourseNativeTargetReadSequence();
+        const readSlots = courseReadSequence?.readSlots || {
+          1: !!els.read[1].checked,
+          2: !!els.read[2].checked,
+        };
         const any = readSlots[1] || readSlots[2];
         if (!any) return; // resolve immediately
 
@@ -4799,6 +4900,7 @@
           // Poll as well so we resolve as soon as voices appear, and cap at 1000ms.
           tryNow();
         });
+        if (sessionToken !== phraseSessionId) return;
 
         // Cancel anything pending, then enqueue sequence
         try { speechSynthesis.cancel(); } catch { }
@@ -4806,7 +4908,7 @@
         const voices = speechSynthesis.getVoices();
         const voiceIds = getVoicesMap();
         const { rate, pitch } = getRatePitch();
-        const order = getReadOrder().filter(pos => readSlots[pos]);
+        const order = courseReadSequence?.order || getReadOrder().filter(pos => readSlots[pos]);
 
         let totalChars = 0;
         const utters = [];
@@ -4889,9 +4991,10 @@
               endedCount++;
               maybeFinish();
             };
-            u.onerror = () => {
+            u.onerror = (event) => {
               if (resolved) return;
               if (sessionToken !== phraseSessionId) return;
+              if (typeof onSpeechError === 'function') onSpeechError(event);
               endedCount++;
               maybeFinish();
             };
@@ -5204,12 +5307,12 @@
         `;
       }
 
-      function buildSpeakingStreakIcon() {
+      function buildSpeakingDailyCountIcon() {
         return `
-          <svg class="speaking-streak-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-            <path d="M12 21V10" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-            <path d="M12 14c-8-1-8-9 0-8 3 2 3 6 0 8z" fill="#79c293"/>
-            <path d="M12 17c8-1 8-9 0-8" fill="#a3d8ad"/>
+          <svg class="speaking-daily-count-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <rect x="4" y="5" width="16" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 3v4M16 3v4M4 10h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <path d="m8 15 2.5 2.5L16 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         `;
       }
@@ -5346,9 +5449,9 @@
             ${buildSpeakingCloudBackdrop('sp')}
             <div class="panel-title">Live transcription and scoring</div>
             <div class="speaking-reward-row">
-              <div class="speaking-streak" aria-label="Current phrase streak">
-                ${buildSpeakingStreakIcon()}
-                <span><span class="speaking-streak-label">Streak</span><strong id="sp-streak-host" class="speaking-streak-count">0</strong></span>
+              <div class="speaking-daily-count" role="group" aria-label="Phrases practiced today">
+                ${buildSpeakingDailyCountIcon()}
+                <span><span class="speaking-daily-count-label">Today</span><strong id="sp-practiced-today" class="speaking-daily-count-value" aria-live="polite" aria-atomic="true">0</strong></span>
               </div>
               <div class="speaking-progress">
                 <div class="speaking-progress-label"><span>Phrase progress</span><span id="sp-score-host" class="status">0%</span></div>
@@ -5373,7 +5476,7 @@
           speakingPractice.progressEl = hostPanel.querySelector('#sp-progress-host');
           speakingPractice.scoreEl = hostPanel.querySelector('#sp-score-host');
           speakingPractice.statusEl = hostPanel.querySelector('#sp-status-host');
-          speakingPractice.streakEl = hostPanel.querySelector('#sp-streak-host');
+          speakingPractice.streakEl = null;
           speakingPractice.celebrationEl = hostPanel.querySelector('#sp-celebration-host');
           speakingPractice.cardEl = hostPanel;
 
@@ -5411,9 +5514,9 @@
             ${buildSpeakingCloudBackdrop('ic')}
             <div class="panel-title">Intensive Challenge</div>
             <div class="speaking-reward-row">
-              <div class="speaking-streak" aria-label="Current successful phrase streak">
-                ${buildSpeakingStreakIcon()}
-                <span><span class="speaking-streak-label">Streak</span><strong id="ic-streak" class="speaking-streak-count">0</strong></span>
+              <div class="speaking-daily-count" role="group" aria-label="Phrases practiced today">
+                ${buildSpeakingDailyCountIcon()}
+                <span><span class="speaking-daily-count-label">Today</span><strong id="ic-practiced-today" class="speaking-daily-count-value" aria-live="polite" aria-atomic="true">0</strong></span>
               </div>
               <div class="speaking-progress">
                 <div class="speaking-progress-label"><span>Phrase progress</span><span id="ic-score" class="status">0%</span></div>
@@ -5442,7 +5545,7 @@
           intensivePractice.silenceCounterEl = hostPanel.querySelector('#ic-silence-counter');
           intensivePractice.celebrationEl = hostPanel.querySelector('#ic-celebration');
           intensivePractice.cardEl = hostPanel;
-          intensivePractice.streakEl = hostPanel.querySelector('#ic-streak');
+          intensivePractice.streakEl = null;
           intensivePractice.lang = getPracticeLanguage();
         } else if (m === 'Writing Practice Mode') {
           const div = document.createElement('div');
@@ -5489,6 +5592,7 @@
           div.querySelector('#wr-stop').onclick = stopWritingPractice;
           writingPractice.lang = getPracticeLanguage();
         }
+        refreshDailyPracticeCountIndicators();
         syncRandomModeCheckboxes();
         bindRandomModeCheckboxes();
       }
@@ -5553,6 +5657,95 @@
 
       function getSpeakingCelebrationMs() {
         return Math.round(speakingPractice.celebrationSeconds * 1000);
+      }
+
+      function normalizeSpeakingSoundVariant(value) {
+        const variant = Number(value);
+        return Number.isInteger(variant) && variant >= 1 && variant <= 3 ? variant : 1;
+      }
+
+      function syncSpeakingSoundControls() {
+        document.querySelectorAll('[data-speaking-sound-group]').forEach((group) => {
+          const type = group.dataset.speakingSoundGroup;
+          group.querySelectorAll('.speaking-sound-choice').forEach((choice) => {
+            const input = choice.querySelector('input[type="radio"]');
+            choice.classList.toggle('is-selected', !!input && Number(input.value) === speakingSoundSelections[type]);
+          });
+        });
+      }
+
+      function setSpeakingSoundStatus(message) {
+        const status = document.getElementById('speaking-sound-status');
+        if (status) status.textContent = message;
+      }
+
+      function getSpeakingAudioContext() {
+        const AudioContextConstructor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextConstructor) throw new Error('Web Audio is not supported in this browser.');
+        if (!speakingAudioContext) speakingAudioContext = new AudioContextConstructor();
+        return speakingAudioContext;
+      }
+
+      function unlockSpeakingAudio() {
+        try {
+          const context = getSpeakingAudioContext();
+          if (context.state === 'suspended') {
+            context.resume().catch((error) => {
+              console.error('Could not enable pronunciation sounds:', error);
+              setSpeakingSoundStatus(`Sound playback could not start: ${error.message || error}`);
+            });
+          }
+        } catch (error) {
+          console.error('Could not enable pronunciation sounds:', error);
+          setSpeakingSoundStatus(`Sound playback is unavailable: ${error.message || error}`);
+        }
+      }
+
+      async function playSpeakingSound(type, variant = speakingSoundSelections[type], delayMs = 0, waitForPlayback = false) {
+        const prototype = SPEAKING_SOUND_PROTOTYPES[type]?.[normalizeSpeakingSoundVariant(variant) - 1];
+        if (!prototype) {
+          console.error(`Unknown pronunciation sound type: ${type}`);
+          return false;
+        }
+        try {
+          const context = getSpeakingAudioContext();
+          if (context.state === 'suspended') await context.resume();
+          const startAt = context.currentTime + Math.max(0, delayMs) / 1000;
+          prototype.notes.forEach((note) => {
+            const oscillator = context.createOscillator();
+            const gain = context.createGain();
+            const noteStart = startAt + note.offset;
+            const noteEnd = noteStart + note.duration;
+            oscillator.type = prototype.wave;
+            oscillator.frequency.setValueAtTime(note.frequency, noteStart);
+            gain.gain.setValueAtTime(0.0001, noteStart);
+            gain.gain.linearRampToValueAtTime(prototype.volume, noteStart + 0.012);
+            gain.gain.exponentialRampToValueAtTime(0.0001, noteEnd);
+            oscillator.connect(gain);
+            gain.connect(context.destination);
+            oscillator.start(noteStart);
+            oscillator.stop(noteEnd + 0.01);
+          });
+          if (waitForPlayback) {
+            const durationMs = Math.max(...prototype.notes.map((note) => note.offset * 1000 + note.duration * 1000));
+            await new Promise((resolve) => setTimeout(resolve, Math.max(0, delayMs) + durationMs + 20));
+          }
+          return true;
+        } catch (error) {
+          console.error('Could not play pronunciation sound:', error);
+          setSpeakingSoundStatus(`Sound playback failed: ${error.message || error}`);
+          return false;
+        }
+      }
+
+      function playFinalWordFeedback(rec, validation, finalText) {
+        if (!finalText) return;
+        const previousWordCount = (rec._accTranscript.match(/\S+/g) || []).length;
+        const newWordCount = Math.max(0, validation.spokenCorrect.length - previousWordCount);
+        for (let offset = 0; offset < newWordCount; offset++) {
+          const type = validation.spokenCorrect[previousWordCount + offset] ? 'success' : 'incorrect';
+          void playSpeakingSound(type, speakingSoundSelections[type], offset * 140);
+        }
       }
 
       function updateSpeakingMinFromInput(inputEl, commit = false) {
@@ -5744,6 +5937,7 @@
 
       async function startSpeakingPractice() {
         if (speakingPractice.active) return;
+        unlockSpeakingAudio();
         speakingPractice.active = true;
         resetSpeakingRunFeedback();
         speakingPractice.lang = getPracticeLanguage();
@@ -5817,6 +6011,7 @@
           const slotPos = (getSelectedLangCodes()[0] === speakingPractice.lang) ? 1 : 2;
           const validation = compareAndHighlight(target, liveForCompare, slotPos);
           renderLiveValidation(liveForCompare, validation.spokenCorrect);
+          playFinalWordFeedback(rec, validation, finalText);
           const pct = validation.score;
           speakingPractice.progressEl.value = pct;
           speakingPractice.scoreEl.textContent = pct + '%';
@@ -5882,6 +6077,8 @@
         }
         const newToken = ++phraseSessionId;
         if (!speakingPractice.active) return;
+        await playSpeakingSound('transition', speakingSoundSelections.transition, 0, true);
+        if (!speakingPractice.active || phraseSessionId !== newToken) return;
         const nextIndex = getRandomSelectionEnabled()
           ? pickRandomIndex(parsedRows.length)
           : (currentIndex < 0 ? 0 : (currentIndex + 1) % parsedRows.length);
@@ -5949,6 +6146,7 @@
           const slotPos = (getSelectedLangCodes()[0] === speakingPractice.lang) ? 1 : 2;
           const validation = compareAndHighlight(target, liveForCompare, slotPos);
           renderLiveValidation(liveForCompare, validation.spokenCorrect);
+          playFinalWordFeedback(rec, validation, finalText);
           const pct = validation.score;
           speakingPractice.progressEl.value = pct;
           speakingPractice.scoreEl.textContent = pct + '%';
@@ -6221,6 +6419,7 @@
             const targetSlot = getSelectedLangCodes().indexOf(intensivePractice.lang) + 1;
             const validation = compareAndHighlight(target, liveForCompare, targetSlot);
             renderLiveValidation(liveForCompare, validation.spokenCorrect, intensivePractice.liveTextEl);
+            playFinalWordFeedback(rec, validation, finalText);
             intensivePractice.progressEl.value = validation.score;
             intensivePractice.scoreEl.textContent = `${validation.score}%`;
 
@@ -6291,8 +6490,39 @@
         }
       }
 
+      function startIntensivePhraseListening(token) {
+        const courseReadSequence = getCourseNativeTargetReadSequence();
+        if (!courseReadSequence) {
+          intensivePractice.phase = 'listening';
+          startIntensiveRecognition(token);
+          return;
+        }
+
+        intensivePractice.phase = 'reading';
+        if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Reading the native and target phrases…';
+        const failRead = (error) => {
+          if (!intensivePractice.active || token !== phraseSessionId) return;
+          intensivePractice.active = false;
+          intensivePractice.phase = 'error';
+          if (intensivePractice.statusEl) {
+            intensivePractice.statusEl.textContent = `Could not read the phrase aloud${error?.error ? `: ${error.error}` : error?.message ? `: ${error.message}` : '.'}`;
+          }
+          try { speechSynthesis.cancel(); } catch {}
+          syncPracticeFocusMode();
+        };
+        speakCurrentRowSequence(token, parsedRows[currentIndex], failRead, courseReadSequence)
+          .then(() => {
+            if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
+                token !== phraseSessionId) return;
+            intensivePractice.phase = 'listening';
+            startIntensiveRecognition(token);
+          })
+          .catch(failRead);
+      }
+
       function startIntensivePractice() {
         if (intensivePractice.active) return;
+        unlockSpeakingAudio();
         ensureParsed();
         if (!parsedRows.length) {
           if (intensivePractice.statusEl) intensivePractice.statusEl.textContent = 'Load phrases from a CSV to begin.';
@@ -6308,7 +6538,7 @@
         const configuredMin = Number(els.speakingMin?.value || 90);
         intensivePractice.min = Math.max(50, Math.min(100, Math.trunc(configuredMin) || 90));
         intensivePractice.active = true;
-        intensivePractice.phase = 'listening';
+        intensivePractice.phase = 'reading';
         intensivePractice.streak = 0;
         intensivePractice.forcedRetryCount = 0;
         intensivePractice.forcedRetryAfterRead = false;
@@ -6316,7 +6546,7 @@
         resetIntensiveFeedback();
         displayIntensivePhrase(parsedRows[currentIndex], false);
         const token = ++phraseSessionId;
-        startIntensiveRecognition(token);
+        startIntensivePhraseListening(token);
       }
 
       function finishIntensiveAttempt(success, token) {
@@ -6348,14 +6578,15 @@
             : 'Attempt failed. Reading the phrase…';
         }
 
-        const text = row?.[intensivePractice.lang] || '';
+        const targetLanguage = getPracticeLanguage();
+        const text = row?.[targetLanguage] || '';
         try {
           const utterance = new SpeechSynthesisUtterance(text);
           const voices = speechSynthesis.getVoices();
           const voiceIds = getVoicesMap();
-          const voice = findVoiceForLang(voices, voiceIds[intensivePractice.lang], intensivePractice.lang);
+          const voice = findVoiceForLang(voices, voiceIds[targetLanguage], targetLanguage);
           if (voice) utterance.voice = voice;
-          utterance.lang = voice?.lang || langMeta[intensivePractice.lang]?.localeGuess?.[0] || 'en-US';
+          utterance.lang = voice?.lang || langMeta[targetLanguage]?.localeGuess?.[0] || 'en-US';
           const { rate, pitch } = getRatePitch();
           utterance.rate = rate;
           utterance.pitch = pitch;
@@ -6400,11 +6631,15 @@
         startIntensiveRecognition(token);
       }
 
-      function advanceIntensivePractice(token) {
+      async function advanceIntensivePractice(token) {
         if (!intensivePractice.active || intensivePractice.phase !== 'reading' || token !== phraseSessionId) return;
         if (!parsedRows.length) {
           stopIntensivePractice();
           return;
+        }
+        const courseReadSequence = getCourseNativeTargetReadSequence();
+        if (!courseReadSequence) {
+          void playSpeakingSound('transition', speakingSoundSelections.transition);
         }
         const nextIndex = !activeCourseSession && intensiveRandomEnabled
           ? pickRandomIndex(parsedRows.length)
@@ -6413,10 +6648,15 @@
         intensivePractice.forcedRetryCount = 0;
         intensivePractice.forcedRetryAfterRead = false;
         const nextToken = ++phraseSessionId;
-        intensivePractice.phase = 'listening';
+        intensivePractice.phase = courseReadSequence ? 'reading' : 'listening';
         resetIntensiveFeedback();
         displayIntensivePhrase(parsedRows[currentIndex], false);
-        startIntensiveRecognition(nextToken);
+        if (courseReadSequence) {
+          await playSpeakingSound('transition', speakingSoundSelections.transition, 0, true);
+          if (!intensivePractice.active || intensivePractice.phase !== 'reading' ||
+              nextToken !== phraseSessionId) return;
+        }
+        startIntensivePhraseListening(nextToken);
       }
 
       function stopIntensivePractice() {
@@ -7326,6 +7566,14 @@
         return Number.isFinite(count) && count > 0 ? Math.floor(count) : 0;
       }
 
+      function refreshDailyPracticeCountIndicators() {
+        const count = String(getDailyPracticeCount(getPracticeDateKey()));
+        ['sp-practiced-today', 'ic-practiced-today'].forEach(id => {
+          const indicator = document.getElementById(id);
+          if (indicator && indicator.textContent !== count) indicator.textContent = count;
+        });
+      }
+
       function recordPracticeCompletion(index) {
         const dateKey = getPracticeDateKey();
         courseState.practiceActivity[dateKey] = getDailyPracticeCount(dateKey) + 1;
@@ -7361,6 +7609,7 @@
         }
 
         saveCourseState();
+        refreshDailyPracticeCountIndicators();
         if (document.querySelector('.sheet-panel.active')?.dataset.panel === 'statistics') {
           renderStatistics();
         }
@@ -7705,12 +7954,30 @@
         const hasPair = hasValidCourseUnitPair(courseId, unitId);
         courseState.selectedCourseId = hasPair ? courseId : null;
         courseState.selectedUnitId = hasPair ? unitId : null;
+        syncReadAloudCourseControls();
       }
 
       function hasValidCourseUnitPair(courseId, unitId) {
         return typeof courseId === 'string' && courseId.length > 0 &&
           typeof unitId === 'string' && unitId.length > 0 &&
           !!getCourseUnit(findCourse(courseId), unitId);
+      }
+
+      function syncReadAloudCourseControls() {
+        const course = hasValidCourseUnitPair(courseState.selectedCourseId, courseState.selectedUnitId)
+          ? findCourse(courseState.selectedCourseId)
+          : null;
+        els.read[1].disabled = false;
+        els.read[2].disabled = false;
+        if (!course) return;
+
+        const languages = getSelectedLangCodes();
+        const nativeIndex = languages.indexOf(course.idioma_nativo);
+        const targetIndex = languages.indexOf(course.idioma_destino);
+        const nativeSlot = nativeIndex >= 0 ? nativeIndex + 1 : targetIndex === 0 ? 2 : 1;
+        const targetSlot = targetIndex >= 0 ? targetIndex + 1 : nativeIndex === 0 ? 2 : 1;
+        els.read[nativeSlot].disabled = false;
+        els.read[targetSlot].disabled = true;
       }
 
       function isCurrentCourse(courseId) {
@@ -7723,6 +7990,7 @@
       }
 
       function updateCourseContext() {
+        syncReadAloudCourseControls();
         const course = findCourse(courseState.selectedCourseId);
         const unit = getCourseUnit(course, courseState.selectedUnitId);
         const visible = !!(course && unit);
@@ -7946,7 +8214,6 @@
         setCourseScreen('unit');
         els.coursesContent.innerHTML = `
           <section class="course-info-panel">
-            <button type="button" class="course-action" data-action="back-course-details" data-course-id="${escapeCourseHtml(course.id)}">‹ Course units</button>
             <h2>${escapeCourseHtml(unit.title)}</h2>
             <p class="course-description">${escapeCourseHtml(unit.description)}</p>
           </section>
@@ -9000,9 +9267,6 @@
             else if (action === 'deselect-course') deselectCourse(courseId);
             else if (action === 'select-unit') await startCourseUnit(courseId, unitId);
             else if (action === 'unit-details') await openUnitDetails(courseId, unitId);
-            else if (action === 'back-course-details') {
-              backCourseRoute(() => renderCourseDetails(courseId).catch(error => setCourseStatus(error.message, true)));
-            }
             else if (action === 'unit-tab') {
               courseTab = actionButton.dataset.tab;
               await renderUnitDetails(courseId || courseState.selectedCourseId, unitId || courseState.selectedUnitId);
@@ -9125,6 +9389,12 @@
           closeSheet();
         };
 
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden) refreshDailyPracticeCountIndicators();
+        });
+        window.addEventListener('focus', refreshDailyPracticeCountIndicators);
+        window.addEventListener('pageshow', refreshDailyPracticeCountIndicators);
+
         bindRandomModeCheckboxes();
 
         // Replay per language
@@ -9158,8 +9428,14 @@
         };
 
         // Read slot checkboxes
-        els.read[1].onchange = () => { saveConfig(); };
-        els.read[2].onchange = () => { saveConfig(); };
+        els.read[1].onchange = () => {
+          readAloudPreferences[getSelectedLangCodes()[0]] = !!els.read[1].checked;
+          saveConfig();
+        };
+        els.read[2].onchange = () => {
+          readAloudPreferences[getSelectedLangCodes()[1]] = !!els.read[2].checked;
+          saveConfig();
+        };
 
         // Speaking threshold is shared by Settings and the mode panel.
         if (els.speakingMin) {
@@ -9196,6 +9472,26 @@
             saveConfig();
           };
         }
+        syncSpeakingSoundControls();
+        document.querySelectorAll('input[name^="speaking-sound-"]').forEach((input) => {
+          input.addEventListener('change', () => {
+            const type = input.name.slice('speaking-sound-'.length);
+            if (!Object.prototype.hasOwnProperty.call(SPEAKING_SOUND_PROTOTYPES, type)) return;
+            speakingSoundSelections[type] = normalizeSpeakingSoundVariant(input.value);
+            syncSpeakingSoundControls();
+            saveConfig();
+            setSpeakingSoundStatus(`${input.closest('.speaking-sound-group')?.querySelector('legend')?.textContent || 'Sound'}: selection saved.`);
+          });
+        });
+        document.querySelectorAll('[data-sound-preview]').forEach((button) => {
+          button.addEventListener('click', async () => {
+            const type = button.dataset.soundPreview;
+            const variant = normalizeSpeakingSoundVariant(button.dataset.soundVariant);
+            setSpeakingSoundStatus(`Playing ${button.dataset.soundName || 'sound prototype'}…`);
+            const played = await playSpeakingSound(type, variant, 0, true);
+            if (played) setSpeakingSoundStatus(`Played ${button.dataset.soundName || 'sound prototype'}.`);
+          });
+        });
 
         // Font size
         const applyFont = () => {

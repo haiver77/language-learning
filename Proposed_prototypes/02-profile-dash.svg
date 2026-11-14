@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Profile dash baby brain</title>
+  <desc id="desc">A baby brain in a forward-leaning side-run pose, with pumping arms and a lively, quick stride.</desc>
+  <style>
+    .runner{transform-box:fill-box;transform-origin:center;animation:dash .42s ease-in-out infinite alternate}
+    .neararm,.nearleg{transform-box:fill-box;transform-origin:top center;animation:stride .42s ease-in-out infinite alternate}
+    .fararm,.farleg{transform-box:fill-box;transform-origin:top center;animation:stride .42s ease-in-out infinite alternate-reverse}
+    .streak{animation:drift .6s linear infinite}
+    @keyframes dash{to{transform:translate(5px,-7px) rotate(3deg)}} @keyframes stride{to{transform:rotate(42deg)}}
+    @keyframes drift{to{transform:translateX(-22px);opacity:.25}}
+    @media(prefers-reduced-motion:reduce){.runner,.neararm,.nearleg,.fararm,.farleg,.streak{animation:none}}
+  </style>
+  <path class="streak" d="M54 111h53M38 135h64M65 160h35" stroke="#f4c27e" stroke-width="5" stroke-linecap="round"/>
+  <ellipse cx="207" cy="281" rx="91" ry="12" fill="#d8a4a0" opacity=".38"/>
+  <g class="farleg" fill="none" stroke="#d97570" stroke-width="16" stroke-linecap="round"><path d="M188 225q-12 34-47 41"/><path d="M145 261q-12 2-13 12 0 8 16 8l26-4q8-2 5-9l-18-12z" fill="#ffcf82" stroke-width="5"/></g>
+  <g class="nearleg" fill="none" stroke="#e88478" stroke-width="18" stroke-linecap="round"><path d="M227 220q18 25 43 7"/><path d="M264 224q17-13 25-2 5 8-6 18l-17 13q-8 5-12-3l-5-18z" fill="#ffd18a" stroke-width="5"/></g>
+  <g class="fararm" fill="none" stroke="#e8948a" stroke-width="14" stroke-linecap="round"><path d="M161 159q-25-5-37-25"/><path d="M124 134q-12-5-7-14 5-8 14-1l9 9z" fill="#ffc5b6" stroke-width="5"/></g>
+  <g class="neararm" fill="none" stroke="#f09b90" stroke-width="16" stroke-linecap="round"><path d="M256 155q29 10 35 33"/><path d="M291 187q8 11 0 17-9 5-15-6l-4-12z" fill="#ffc5b6" stroke-width="5"/></g>
+  <g class="runner">
+    <path d="M121 126c-5-24 14-38 34-36 11-27 39-35 60-19 21-18 48-10 54 14 22 5 28 27 16 44 14 14 7 37-11 43-4 22-25 32-45 21-20 19-48 12-55-8-21 7-40-7-38-27-15-5-23-18-15-32z" fill="#ffb2a9" stroke="#d97871" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M159 106q-4 13 7 18m23-40q-2 14 10 18m31-17q-9 13 0 22m28 0q-13 7-11 19m6 22q-14-5-21 5m-29 17q-5-12-16-11m-32-14q9-9 5-19" fill="none" stroke="#ef8c84" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="192" cy="145" rx="6" ry="8" fill="#533b42"/><ellipse cx="240" cy="143" rx="6" ry="8" fill="#533b42"/>
+    <path d="M198 160q16 17 31-3" fill="none" stroke="#a94f58" stroke-width="5" stroke-linecap="round"/>
+    <ellipse cx="178" cy="160" rx="9" ry="5" fill="#f28e91"/><path d="M226 115q10-6 18 1" fill="none" stroke="#9e5961" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <path d="M319 119l11-8m-9 25 17 1m-28 14 13 7" stroke="#f2b66f" stroke-width="5" stroke-linecap="round"/>
+</svg>
