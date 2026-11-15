@@ -19,12 +19,6 @@
       "name": "Uso simple",
       "description": "Presenta las tres primeras frases de cada archivo CSV.",
       "rows": [1, 2, 3]
-    },
-    {
-      "id": "question_usage",
-      "name": "Uso en preguntas",
-      "description": "Presenta únicamente la frase de la fila 4 de cada archivo CSV.",
-      "rows": [4]
     }
   ]
 }

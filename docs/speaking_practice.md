@@ -49,7 +49,7 @@ In a course session, this successful transition increments the associated vocabu
 
 - A final speech result that meets the configured `Min. Similarity (%)` threshold triggers the visual success celebration, regardless of which advance rule applies.
 - Each newly finalized recognized word plays its selected success or incorrect sound. A separate transition sound plays immediately before the next phrase begins.
-- **Settings > Speaking Recognition Options** provides three playable sound prototypes for each event (correct word, incorrect word, and phrase transition). The selected prototype for each event is applied to Speaking Practice and Intensive Challenge.
+- **Settings > Speaking Recognition Options** provides six playable, high-volume sound prototypes for each event (correct word, incorrect word, and phrase transition), with distinctive chords, alerts, and rhythmic patterns. The selected prototype for each event is applied to Speaking Practice and Intensive Challenge.
 - The phrase streak increments once per phrase session; repeated recognition results for the same phrase do not increment it again.
 - The card displays the number of phrases practiced today, using the same daily count shown by Statistics across practice modes. It initializes when the card appears, updates when a phrase is recorded as completed, and refreshes when the app returns after the date changes.
 - The run streak still carries across phrase transitions and resets when practice is stopped or a new practice run starts; it remains part of the success celebration but is no longer displayed as the card indicator.
