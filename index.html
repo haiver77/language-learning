@@ -3964,7 +3964,9 @@
       let readAloudPreferences = {};
       const COURSES_STORAGE_KEY = 'language_courses_state_v1';
       const COURSE_FILES_DB_NAME = 'language-practice-course-files';
-      const COURSE_FILES_DB_VERSION = 1;
+      const COURSE_FILES_DB_VERSION = 2;
+      const COURSE_REVISION_STORAGE_KEY = 'course-version';
+      const COURSE_REVISION_CHECK_INTERVAL = 10 * 60 * 1000;
       const DEFAULT_COURSE_THRESHOLDS = { known: 1, learning: 2, learned: 6, mastered: 8 };
       const DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES = 2;
       let courseState = {
@@ -3983,6 +3985,10 @@
       let courseCatalog = [];
       const courseDataCache = new Map();
       let courseFilesDatabasePromise = null;
+      let courseRevision = null;
+      let courseRevisionCheckPromise = null;
+      let courseFreshnessMessage = '';
+      let courseFreshnessError = false;
       let courseScreen = 'catalog';
       let loadSourceFocusTarget = null;
       let coursePreviousScreen = 'details';
@@ -6989,8 +6995,11 @@
 
       function setCourseStatus(message, isError = false) {
         if (!els.coursesStatus) return;
-        els.coursesStatus.className = message ? (isError ? 'course-error' : 'course-empty') : '';
-        els.coursesStatus.textContent = message || '';
+        const messages = [message, courseFreshnessMessage].filter(Boolean);
+        els.coursesStatus.className = messages.length
+          ? (isError || courseFreshnessError ? 'course-error' : 'course-empty')
+          : '';
+        els.coursesStatus.textContent = messages.join(' ');
       }
 
       function setCourseSettingsStatus(message, isError = false) {
@@ -7107,6 +7116,9 @@
             if (!database.objectStoreNames.contains('directories')) {
               database.createObjectStore('directories', { keyPath: 'path' });
             }
+            if (!database.objectStoreNames.contains('metadata')) {
+              database.createObjectStore('metadata', { keyPath: 'path' });
+            }
           };
           request.onsuccess = () => resolve(request.result);
           request.onerror = () => reject(request.error || new Error('Could not open local course storage.'));
@@ -7135,6 +7147,99 @@
           transaction.onerror = () => reject(transaction.error || new Error(`Could not save local course resource ${record.path}.`));
           transaction.onabort = () => reject(transaction.error || new Error(`Could not save local course resource ${record.path}.`));
         });
+      }
+
+      async function invalidateCourseStorage() {
+        const database = await openCourseFilesDatabase();
+        await Promise.all(['files', 'directories'].map(storeName => new Promise((resolve, reject) => {
+          const transaction = database.transaction(storeName, 'readwrite');
+          const request = transaction.objectStore(storeName).openCursor();
+          request.onsuccess = () => {
+            const cursor = request.result;
+            if (!cursor) return;
+            if (typeof cursor.key === 'string' &&
+                (cursor.key === 'courses' || cursor.key.startsWith('courses/'))) cursor.delete();
+            cursor.continue();
+          };
+          transaction.oncomplete = () => resolve();
+          transaction.onerror = () => reject(transaction.error || new Error(`Could not invalidate cached course ${storeName}.`));
+          transaction.onabort = () => reject(transaction.error || new Error(`Could not invalidate cached course ${storeName}.`));
+        })));
+        courseDataCache.clear();
+        courseCatalog = [];
+        courseCatalogPromise = null;
+      }
+
+      async function checkCourseRevision() {
+        if (courseRevisionCheckPromise) return courseRevisionCheckPromise;
+        courseRevisionCheckPromise = (async () => {
+          let previous = null;
+          try {
+            previous = await readCourseStorage('metadata', COURSE_REVISION_STORAGE_KEY);
+            courseRevision = typeof previous?.revision === 'string' ? previous.revision : null;
+            if (previous?.checkedAt && Date.now() - previous.checkedAt < COURSE_REVISION_CHECK_INTERVAL &&
+                (previous.revision || previous.checkFailed)) {
+              if (previous.checkFailed) {
+                courseFreshnessError = true;
+                courseFreshnessMessage = 'Course freshness could not be verified; using locally cached course data when available.';
+              } else {
+                courseFreshnessError = false;
+                courseFreshnessMessage = '';
+              }
+              return courseRevision;
+            }
+          } catch (error) {
+            console.error('Could not read the saved course revision:', error);
+          }
+
+          try {
+            const response = await fetch(
+              'https://api.github.com/repos/haiver77/language_learning/commits?path=courses&per_page=1&sha=main',
+              { cache: 'no-store' },
+            );
+            if (!response.ok) throw new Error(`GitHub returned ${response.status} while checking course updates.`);
+            const commits = await response.json();
+            const latestRevision = Array.isArray(commits) && typeof commits[0]?.sha === 'string'
+              ? commits[0].sha
+              : null;
+            if (!latestRevision) throw new Error('GitHub returned no latest commit for courses/.');
+
+            const changed = !previous?.revision || previous.revision !== latestRevision;
+            if (changed) await invalidateCourseStorage();
+            courseRevision = latestRevision;
+            courseFreshnessError = false;
+            courseFreshnessMessage = changed
+              ? 'Course content changed or had no saved version marker; local course caches were refreshed.'
+              : '';
+            await writeCourseStorage('metadata', {
+              path: COURSE_REVISION_STORAGE_KEY,
+              revision: latestRevision,
+              checkedAt: Date.now(),
+              checkFailed: false,
+            });
+            return courseRevision;
+          } catch (error) {
+            console.error('Course freshness check failed:', error);
+            courseFreshnessError = true;
+            courseFreshnessMessage = 'Course freshness could not be verified; using locally cached course data when available.';
+            try {
+              await writeCourseStorage('metadata', {
+                path: COURSE_REVISION_STORAGE_KEY,
+                revision: courseRevision,
+                checkedAt: Date.now(),
+                checkFailed: true,
+              });
+            } catch (storageError) {
+              console.error('Could not save the course freshness check result:', storageError);
+            }
+            return courseRevision;
+          }
+        })();
+        try {
+          return await courseRevisionCheckPromise;
+        } finally {
+          courseRevisionCheckPromise = null;
+        }
       }
 
       async function readStoredCourseFile(path) {
@@ -7186,35 +7291,29 @@
         let githubError;
         try {
           const apiUrl = `https://api.github.com/repos/haiver77/language_learning/contents/${path}?ref=main`;
-          const response = await fetch(apiUrl);
+          const response = await fetch(apiUrl, { cache: 'no-store' });
           if (!response.ok) throw new Error(`GitHub Contents API returned ${response.status} for ${path}.`);
           const entries = await response.json();
           if (!Array.isArray(entries)) throw new Error(`GitHub Contents API returned an invalid listing for ${path}.`);
           const names = entries
             .filter(entry => entry && entry.type === 'dir' && typeof entry.name === 'string' && matcher.test(entry.name))
             .map(entry => entry.name);
-          if (names.length) {
-            const sortedNames = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-            await writeCourseStorage('directories', { path, names: sortedNames });
-            return sortedNames;
-          }
-          throw new Error(`GitHub Contents API found no matching folders in ${path}.`);
+          const sortedNames = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+          await writeCourseStorage('directories', { path, names: sortedNames });
+          return sortedNames;
         } catch (error) {
           githubError = error;
           console.warn('Course GitHub listing unavailable:', error);
         }
 
         try {
-          const response = await fetch(`./${path}/`);
+          const response = await fetch(`./${path}/`, { cache: 'no-store' });
           if (!response.ok) throw new Error(`Server directory listing returned ${response.status} for ${path}.`);
           const names = parseDirectoryListing(await response.text(), response.url)
             .filter(name => matcher.test(name));
-          if (names.length) {
-            const sortedNames = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
-            await writeCourseStorage('directories', { path, names: sortedNames });
-            return sortedNames;
-          }
-          throw new Error(`Server directory listing found no matching folders in ${path}.`);
+          const sortedNames = [...new Set(names)].sort((a, b) => a.localeCompare(b, undefined, { numeric: true }));
+          await writeCourseStorage('directories', { path, names: sortedNames });
+          return sortedNames;
         } catch (directoryError) {
           throw new Error(`Could not list ${path}. GitHub: ${githubError.message} Server: ${directoryError.message}`);
         }
@@ -7231,7 +7330,7 @@
           }
         }
         const url = courseResourceUrl(courseId, relativePath);
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: 'no-store' });
         if (!response.ok) {
           const error = new Error(`Could not load ${url} (${response.status}).`);
           error.status = response.status;
@@ -7254,7 +7353,7 @@
         const storedContent = await readStoredCourseFile(storagePath);
         if (storedContent !== null) return storedContent;
         const url = courseResourceUrl(courseId, relativePath);
-        const response = await fetch(url);
+        const response = await fetch(url, { cache: 'no-store' });
         if (!response.ok) {
           const error = new Error(`Could not load ${url} (${response.status}).`);
           error.status = response.status;
@@ -7313,7 +7412,7 @@
             .map(part => encodeURIComponent(part))
             .join('/');
           const apiUrl = `https://api.github.com/repos/haiver77/language_learning/contents/${apiPath}?ref=main`;
-          const listingResponse = await fetch(apiUrl);
+          const listingResponse = await fetch(apiUrl, { cache: 'no-store' });
           if (!listingResponse.ok) throw new Error(`GitHub Contents API returned ${listingResponse.status} for ${apiPath}.`);
           const entries = await listingResponse.json();
           if (!Array.isArray(entries)) throw new Error(`GitHub Contents API returned an invalid listing for ${apiPath}.`);
@@ -7327,7 +7426,7 @@
           const fileUrl = typeof entry.download_url === 'string'
             ? entry.download_url
             : courseResourceUrl(courseId, `${directoryPath}/${entry.name}`);
-          const response = await fetch(fileUrl);
+          const response = await fetch(fileUrl, { cache: 'no-store' });
           return await storeFetchedCsv(response);
         } catch (error) {
           githubError = error;
@@ -7337,7 +7436,7 @@
         let directoryError;
         try {
           const directoryUrl = courseResourceUrl(courseId, directoryPath);
-          const listingResponse = await fetch(`${directoryUrl.replace(/\/$/, '')}/`);
+          const listingResponse = await fetch(`${directoryUrl.replace(/\/$/, '')}/`, { cache: 'no-store' });
           if (!listingResponse.ok) throw new Error(`Server directory listing returned ${listingResponse.status} for ${directoryPath}.`);
           const baseUrl = new URL(listingResponse.url);
           if (!baseUrl.pathname.endsWith('/')) baseUrl.pathname += '/';
@@ -7362,7 +7461,7 @@
             courseId,
             directoryPath ? `${directoryPath}/${fileName}` : fileName,
           );
-          const response = await fetch(fileUrl);
+          const response = await fetch(fileUrl, { cache: 'no-store' });
           return await storeFetchedCsv(response);
         } catch (error) {
           directoryError = error;
@@ -7371,7 +7470,7 @@
 
         const url = courseResourceUrl(courseId, relativePath);
         try {
-          const response = await fetch(url);
+          const response = await fetch(url, { cache: 'no-store' });
           if (!response.ok) {
             const error = new Error(`Could not load ${url} (${response.status}). GitHub: ${githubError.message} Server: ${directoryError.message}`);
             error.status = response.status;
@@ -7443,6 +7542,7 @@
 
       let courseCatalogPromise = null;
       async function discoverCourses() {
+        await checkCourseRevision();
         if (courseCatalogPromise) return courseCatalogPromise;
         courseCatalogPromise = (async () => {
           setCourseStatus('Loading courses…');
@@ -7468,6 +7568,17 @@
           }
           migrateLegacyCourseProgress();
           courseDataCache.clear();
+          if (activeCourseSession && courseRevision &&
+              activeCourseSession.courseRevision !== courseRevision) {
+            const activeCourse = findCourse(activeCourseSession.courseId);
+            if (activeCourse && getCourseUnit(activeCourse, activeCourseSession.unitId)) {
+              await restoreCourseSession(activeCourseSession);
+            } else {
+              deactivateCourseSession();
+              courseFreshnessError = true;
+              courseFreshnessMessage = 'Course content changed, but the active course or unit is no longer available; the incomplete session could not be rebuilt.';
+            }
+          }
           if (warnings.length) setCourseStatus(`Some courses could not be loaded: ${warnings.join(' ')}`, true);
           else setCourseStatus('');
           if (!courseCatalog.length && !warnings.length) setCourseStatus('No courses are available in courses/.');
@@ -8376,6 +8487,7 @@
           lastCompletedPhraseVisitId: null,
           completedPhraseIndices: [],
           completed: false,
+          courseRevision,
         };
       }
 
@@ -8491,6 +8603,14 @@
         const course = findCourse(session.courseId);
         const unit = getCourseUnit(course, session.unitId);
         if (!course || !unit) throw new Error('The saved course session refers to a course or unit that is no longer available.');
+        if (courseRevision && session.courseRevision !== courseRevision) {
+          const practiceType = getCoursePracticeType(course, session.practiceTypeId);
+          if (!practiceType) throw new Error('The saved session practice type is no longer available in the updated course.');
+          session = await buildCourseCombinedSession(course, unit, practiceType);
+          courseState.practiceTypes[course.id] = practiceType.id;
+          courseFreshnessError = false;
+          courseFreshnessMessage = 'Course content changed. The incomplete session was rebuilt from the beginning; saved word progress was kept.';
+        }
         if (typeof session.csv !== 'string' || !Array.isArray(session.metadata)) {
           throw new Error('The saved course session does not contain its combined CSV and source metadata.');
         }
