@@ -1,0 +1,30 @@
+{
+  "id": "ESEN-Participar_conversaciones_cotidianas",
+  "title": "ESEN-Participar_conversaciones_cotidianas",
+  "description": "Curso de inglés para hablantes de español, nivel B2, centrado en chunks para participar en conversaciones cotidianas.",
+  "idioma_nativo": "es",
+  "idioma_destino": "en",
+  "focusVocabularyCount": 277,
+  "supplementaryVocabularyCount": 2631,
+  "level": "B2",
+  "practiceType": [
+    {
+      "id": "individual_practice",
+      "name": "Práctica individual",
+      "description": "Presenta únicamente la primera frase de cada archivo CSV.",
+      "rows": [1]
+    },
+    {
+      "id": "simple_usage",
+      "name": "Uso simple",
+      "description": "Presenta las tres primeras frases de cada archivo CSV.",
+      "rows": [1, 2, 3]
+    },
+    {
+      "id": "question_usage",
+      "name": "Uso en preguntas",
+      "description": "Presenta únicamente la frase de la fila 4 de cada archivo CSV.",
+      "rows": [4]
+    }
+  ]
+}

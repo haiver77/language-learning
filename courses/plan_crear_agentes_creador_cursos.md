@@ -46,6 +46,8 @@ Courses/
     └── ....
 ```
 
+`unit_details.json` debe incluir `id` con el nombre exacto de su carpeta (`Unit_N`), además de `title`, `description` y los conteos de vocabulario. Incluye `category` cuando la unidad tenga una categoría definida; puede omitirse cuando no aplique.
+
 - Archivo `course_details.json`:
 ```json
 {
@@ -81,12 +83,17 @@ Courses/
 - Archivo `unit_details.json`:
 ```json
 {
+  "id": "Unit_1",
+  "category": "Categoría de la unidad",
   "title": "Título unidad",
   "description": "Explicación unidad",
   "focusVocabularyCount": 25,
   "supplementaryVocabularyCount": 40
 }
 ```
+`category` es opcional; el resto de los campos mostrados es requerido. El valor de `id` debe coincidir con la carpeta de la unidad.
+
+Los CSV de asignación llevan encabezados y este orden exacto: el CSV de foco usa `unit;vocabulary_focus;native` y el complementario usa `unit;vocabulary_complementary;native`. La columna `native` contiene la traducción en el idioma nativo asociada al término. En `unit` se escribe el identificador de carpeta (`Unit_N`).
 
 # Agentes requeridos
 
@@ -109,11 +116,11 @@ Courses/
    - Si **no existe**, crear las carpetas y subcarpetas de la `estructura curso` y continuar con el flujo de creación normal (pasos 3 en adelante).
    - Si **ya existe**, no recrear el curso desde cero. En su lugar, revisar cuidadosamente las indicaciones y `Consideraciones especificas` que está dando el usuario para determinar cuál es el cambio, ajuste, mejora o modificación que desea realizar sobre la línea base del curso existente, y aplicar únicamente ese cambio sobre los artefactos correspondientes.
 3. Determinar cuántos `vocabulario foco` hay en total.
-4. Conservando el orden en el que se encuentra el origen del `vocabulario foco`, crear el archivo `course_vocabulary_focus_by_unit.csv` que contenga la lista del `vocabulario foco` (primera columna) y la unidad a la que pertenece (segunda columna), haciendo la separación en unidades según el `Criterio separación unidades` indicado en los datos de entrada. El agente debe interpretar el criterio ingresado por el usuario (por ejemplo, una cantidad fija por unidad o rangos explícitos de vocabulario por unidad) y aplicarlo respetando el orden del origen. Si al aplicar el criterio la última unidad queda con menos `vocabulario foco` del que normalmente contendría, dejarla incompleta con el `vocabulario foco` que falte.
+4. Conservando el orden en el que se encuentra el origen del `vocabulario foco`, crear `course_vocabulary_focus_by_unit.csv` con encabezado `unit;vocabulary_focus;native`. Cada fila contiene el identificador `Unit_N`, el término foco y su traducción al idioma nativo. Distribuir las filas por unidad según el `Criterio separación unidades` indicado en los datos de entrada. El agente debe interpretar el criterio ingresado por el usuario (por ejemplo, una cantidad fija por unidad o rangos explícitos de vocabulario por unidad) y aplicarlo respetando el orden del origen. Si al aplicar el criterio la última unidad queda con menos `vocabulario foco` del que normalmente contendría, dejarla incompleta con el `vocabulario foco` que falte.
 5. Crear la subcarpeta de cada unidad (`Units/Unit_N/` y su carpeta `Lessons/`) según la cantidad de unidades resultante de la separación anterior.
 6. Crear los archivos JSON de la estructura con información dummy cuando aún no exista información real para ellos:
    - `course_details.json` en la raíz del curso, con los datos conocidos del curso (`id`, `title`, `description`, `level`) y valores dummy o provisionales para los conteos (`focusVocabularyCount`, `supplementaryVocabularyCount`) que luego se completarán.
-   - `unit_details.json` dentro de cada `Unit_N/`, con `title`, `description` y conteos dummy o provisionales.
+   - `unit_details.json` dentro de cada `Unit_N/`, con `id` igual al nombre de la carpeta, `title`, `description` y conteos dummy o provisionales; incluir `category` cuando aplique.
 
 ### Salida
 - La `estructura curso` creada con sus carpetas y subcarpetas.
@@ -136,7 +143,7 @@ Courses/
 1. Leer el archivo 'catalogo_de_instrucciones.md' para tener el contexto de qué instrucciones se deberían usar para generar los CSVs dependiendo del tipo de `vocabulario foco`.
 2. Lee las `Consideraciones especificas` (Si hay).
 3. Leer el archivo 'course_vocabulary_focus_by_unit.csv' correspondiente al `Nombre curso` actual, y genera los CSVs por cada vocabulario del `vocabulario foco` que contiene, escribiendo los archivos csv dentro de la carpeta "/Lessons/" de la Unidad "/Unit_" correspondiente según la unidad indicada para el `vocabulario foco`.
-4. Luego de completar la generación de CSV de una unidad, identifica cuales palabras individuales únicas aparte del `vocabulario foco` hay en todos los CSVs de la unidad, y añade esta lista de estas palabras en el archivo 'course_vocabulary_complementary_by_unit.csv'. Este archivo debe estar ordenado por unidades.
+4. Luego de completar la generación de CSV de una unidad, identifica cuáles palabras individuales únicas aparte del `vocabulario foco` hay en todos los CSVs de la unidad, junto a su traducción al idioma nativo, y escribe `course_vocabulary_complementary_by_unit.csv` con encabezado `unit;vocabulary_complementary;native`. Este archivo debe estar ordenado por unidades.
 
 
 

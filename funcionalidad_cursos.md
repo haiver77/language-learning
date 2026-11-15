@@ -18,9 +18,9 @@ courses/<id-del-curso>/
             └── <vocabulario-foco>.csv
 ```
 
-Los campos utilizados de `course_details.json` son `id`, `title`, `description`, `level`, `idioma_nativo`, `idioma_destino`, `focusVocabularyCount`, `supplementaryVocabularyCount` y `practiceType`. `idioma_nativo` y `idioma_destino` contienen los códigos de idioma reconocidos por la aplicación y determinan cómo interpretar las dos columnas de los CSV de lecciones. Cada elemento de `practiceType` define una modalidad con `id`, `name`, `description` y `rows`. Cada `unit_details.json` aporta `title`, `description`, `focusVocabularyCount` y `supplementaryVocabularyCount`. Los conteos de estos JSON son metadatos del curso; no se deben deducir de la cantidad de archivos que se hayan cargado ni del progreso del usuario.
+Los campos utilizados de `course_details.json` son `id`, `title`, `description`, `level`, `idioma_nativo`, `idioma_destino`, `focusVocabularyCount`, `supplementaryVocabularyCount` y `practiceType`. `idioma_nativo` y `idioma_destino` contienen los códigos de idioma reconocidos por la aplicación y determinan cómo interpretar las dos columnas de los CSV de lecciones. Cada elemento de `practiceType` define una modalidad con `id`, `name`, `description` y `rows`. Cada `unit_details.json` requiere `id` (igual al nombre de la carpeta `Unit_N`), `title`, `description`, `focusVocabularyCount` y `supplementaryVocabularyCount`; `category` es opcional. La categoría se muestra en las tarjetas y en los detalles de la unidad solo cuando está presente. Los conteos de estos JSON son metadatos del curso; no se deben deducir de la cantidad de archivos que se hayan cargado ni del progreso del usuario.
 
-`course_vocabulary_focus_by_unit.csv` relaciona cada elemento de vocabulario foco con una unidad; en el curso de ejemplo usa las columnas `vocabulary_focus;unit`. El CSV complementario, cuando existe, contiene las palabras complementarias agrupadas por unidad. Su ausencia no impide abrir un curso si el JSON reporta cero vocabulario complementario.
+`course_vocabulary_focus_by_unit.csv` usa los encabezados `unit;vocabulary_focus;native`; `course_vocabulary_complementary_by_unit.csv`, cuando existe, usa `unit;vocabulary_complementary;native`. Cada fila asocia una unidad, un término del vocabulario y su traducción nativa. Las listas de detalles de unidad muestran cada término junto a su traducción; las prácticas, las lecciones, las búsquedas y el progreso siguen usando únicamente el término de vocabulario, nunca la traducción. La ausencia del CSV complementario no impide abrir un curso si el JSON reporta cero vocabulario complementario.
 
 Los CSV de `Lessons/` no tienen encabezado: cada fila contiene primero el texto en el idioma nativo y luego su traducción al idioma destino, separados por punto y coma. El curso de ejemplo contiene frases en español e italiano. Al cargarlos, la aplicación debe mantener ese orden y configurar los idiomas correspondientes para que la práctica y la lectura de voz no intercambien los idiomas.
 
@@ -48,6 +48,7 @@ Al seleccionar un curso sin progreso, se abre su pantalla de detalles y se selec
 Muestra el título y la descripción del curso y la lista de unidades encontradas en `Units/`, ordenadas numéricamente. Cada tarjeta de unidad muestra:
 
 - Título y descripción de `unit_details.json`.
+- `category` cuando está definida en `unit_details.json`.
 - Conteos de vocabulario foco y complementario de ese JSON.
 - El progreso de la unidad, si existe.
 - Una acción `Select` que establece la unidad actual del curso y permite comenzar o reanudar su práctica.
@@ -57,10 +58,10 @@ La unidad seleccionada debe quedar identificada visualmente. Seleccionar una uni
 
 ## Pantalla de detalles de unidad
 
-Muestra el título y la descripción de `unit_details.json` y dos pestañas:
+Muestra el título, la descripción y, cuando existe, `category` de `unit_details.json`, y dos pestañas:
 
-- `Vocabulario foco`: lista de palabras de esa unidad tomadas de `course_vocabulary_focus_by_unit.csv`.
-- `Vocabulario complementario`: lista de palabras de esa unidad tomadas de `course_vocabulary_complementary_by_unit.csv`.
+- `Vocabulario foco`: lista de términos y su traducción nativa tomados de `course_vocabulary_focus_by_unit.csv`.
+- `Vocabulario complementario`: lista de términos y su traducción nativa tomados de `course_vocabulary_complementary_by_unit.csv`.
 
 Cada palabra muestra su nivel de dominio, su cantidad de prácticas y, cuando corresponda, cuántas veces se pronunció correctamente. Si el curso declara cero vocabulario complementario y no incluye el CSV complementario, la pestaña muestra un estado vacío informativo.
 

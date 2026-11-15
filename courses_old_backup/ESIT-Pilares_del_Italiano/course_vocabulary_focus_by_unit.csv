@@ -1,0 +1,341 @@
+vocabulary_focus;unit
+Ciao;Unit_1
+Buongiorno;Unit_1
+Buonasera;Unit_1
+Buonanotte;Unit_1
+Arrivederci;Unit_1
+Grazie;Unit_1
+Prego;Unit_1
+Per favore;Unit_1
+Scusa;Unit_1
+Mi dispiace;Unit_1
+Salve;Unit_1
+Grazie mille;Unit_1
+io;Unit_2
+tu;Unit_2
+lui;Unit_2
+lei;Unit_2
+noi;Unit_2
+voi;Unit_2
+loro;Unit_2
+il;Unit_3
+lo;Unit_3
+la;Unit_3
+i;Unit_3
+gli;Unit_3
+le;Unit_3
+un;Unit_3
+uno;Unit_3
+una;Unit_3
+l';Unit_3
+sono;Unit_4
+sei;Unit_4
+è;Unit_4
+siamo;Unit_4
+siete;Unit_4
+sono;Unit_4
+ho;Unit_5
+hai;Unit_5
+ha;Unit_5
+abbiamo;Unit_5
+avete;Unit_5
+hanno;Unit_5
+Come stai;Unit_6
+Come ti chiami;Unit_6
+Di dove sei;Unit_6
+Dove vivi;Unit_6
+Che cosa fai;Unit_6
+Perché;Unit_6
+Quando;Unit_6
+Come;Unit_6
+Quanto costa;Unit_6
+Cosa;Unit_6
+Io sono stanco;Unit_7
+Io sono felice;Unit_7
+Io sono peruviano;Unit_7
+Io ho fame;Unit_7
+Io ho sete;Unit_7
+Io ho tempo;Unit_7
+Mi piace il calcio;Unit_7
+Mi piace la pizza;Unit_7
+Mi piace studiare italiano;Unit_7
+voglio;Unit_8
+vuoi;Unit_8
+vuole;Unit_8
+vorrei;Unit_8
+posso;Unit_8
+puoi;Unit_8
+può;Unit_8
+devo;Unit_8
+devi;Unit_8
+deve;Unit_8
+andare;Unit_9
+vado;Unit_9
+venire;Unit_9
+vengo;Unit_9
+stare;Unit_9
+sto;Unit_9
+parlare;Unit_9
+parlo;Unit_9
+mangiare;Unit_9
+mangio;Unit_9
+bere;Unit_9
+bevo;Unit_9
+volere;Unit_9
+voglio;Unit_9
+capire;Unit_9
+capisco;Unit_9
+sapere;Unit_9
+so;Unit_9
+vedere;Unit_9
+vedo;Unit_9
+dire;Unit_9
+dico;Unit_9
+dare;Unit_9
+do;Unit_9
+di;Unit_10
+a;Unit_10
+da;Unit_10
+in;Unit_10
+su;Unit_10
+per;Unit_10
+tra;Unit_10
+fra;Unit_10
+del;Unit_10
+nel;Unit_10
+nella;Unit_10
+al;Unit_10
+alla;Unit_10
+e;Unit_11
+o;Unit_11
+ma;Unit_11
+perché;Unit_11
+anche;Unit_11
+molto;Unit_11
+un po';Unit_11
+sempre;Unit_11
+mai;Unit_11
+qui;Unit_11
+lì;Unit_11
+con;Unit_11
+senza;Unit_11
+se;Unit_11
+allora;Unit_11
+inoltre;Unit_11
+più;Unit_11
+meno;Unit_11
+come;Unit_11
+quando;Unit_11
+faccio;Unit_12
+fai;Unit_12
+fa;Unit_12
+facciamo;Unit_12
+fate;Unit_12
+fanno;Unit_12
+Mi chiamo John;Unit_13
+Sono del Perù;Unit_13
+Vivo a Lima;Unit_13
+Lavoro come architetto;Unit_13
+Sto imparando l'italiano;Unit_13
+Non capisco;Unit_13
+Puoi ripetere per favore;Unit_13
+Parli più lentamente;Unit_13
+Come si dice in italiano;Unit_13
+Che significa;Unit_13
+E tu;Unit_13
+oggi;Unit_14
+ieri;Unit_14
+domani;Unit_14
+adesso;Unit_14
+dopo;Unit_14
+presto;Unit_14
+amico;Unit_14
+famiglia;Unit_14
+ragazzo;Unit_14
+ragazza;Unit_14
+casa;Unit_14
+lavoro;Unit_14
+scuola;Unit_14
+ristorante;Unit_14
+molto;Unit_14
+poco;Unit_14
+uomo;Unit_14
+donna;Unit_14
+bambino;Unit_14
+gente;Unit_14
+città;Unit_14
+strada;Unit_14
+negozio;Unit_14
+soldi;Unit_14
+tempo;Unit_14
+cosa;Unit_14
+bene;Unit_14
+male;Unit_14
+macchina;Unit_14
+telefono;Unit_14
+libro;Unit_14
+cibo;Unit_14
+nome;Unit_14
+cane;Unit_14
+oggigiorno;Unit_14
+madre;Unit_14
+padre;Unit_14
+fratello;Unit_14
+sorella;Unit_14
+moglie;Unit_14
+marito;Unit_14
+figlio;Unit_14
+figlia;Unit_14
+a sinistra;Unit_14
+a destra;Unit_14
+dritto;Unit_14
+vicino;Unit_14
+lontano;Unit_14
+uno;Unit_15
+due;Unit_15
+tre;Unit_15
+quattro;Unit_15
+cinque;Unit_15
+sei;Unit_15
+sette;Unit_15
+otto;Unit_15
+nove;Unit_15
+dieci;Unit_15
+undici;Unit_15
+dodici;Unit_15
+tredici;Unit_15
+quattordici;Unit_15
+quindici;Unit_15
+sedici;Unit_15
+diciassette;Unit_15
+diciotto;Unit_15
+diciannove;Unit_15
+venti;Unit_15
+trenta;Unit_15
+quaranta;Unit_15
+cinquanta;Unit_15
+sessanta;Unit_15
+settanta;Unit_15
+ottanta;Unit_15
+novanta;Unit_15
+cento;Unit_15
+lunedì;Unit_16
+martedì;Unit_16
+mercoledì;Unit_16
+giovedì;Unit_16
+venerdì;Unit_16
+sabato;Unit_16
+domenica;Unit_16
+giorno;Unit_16
+settimana;Unit_16
+fine settimana;Unit_16
+mese;Unit_16
+anno;Unit_16
+mattina;Unit_16
+notte;Unit_16
+Che ore sono;Unit_17
+È l'una;Unit_17
+Sono le due;Unit_17
+mezzogiorno;Unit_17
+mezzanotte;Unit_17
+e mezza;Unit_17
+e un quarto;Unit_17
+meno un quarto;Unit_17
+A che ora;Unit_17
+acqua;Unit_18
+pane;Unit_18
+caffè;Unit_18
+vino;Unit_18
+birra;Unit_18
+latte;Unit_18
+pizza;Unit_18
+pasta;Unit_18
+frutta;Unit_18
+carne;Unit_18
+pesce;Unit_18
+formaggio;Unit_18
+uovo;Unit_18
+riso;Unit_18
+verdura;Unit_18
+insalata;Unit_18
+zucchero;Unit_18
+sale;Unit_18
+gelato;Unit_18
+tè;Unit_18
+pollo;Unit_18
+prosciutto;Unit_18
+burro;Unit_18
+pomodoro;Unit_18
+patata;Unit_18
+mela;Unit_18
+arancia;Unit_18
+succo;Unit_18
+zuppa;Unit_18
+dolce;Unit_18
+Vorrei un caffè;Unit_19
+Posso avere il conto;Unit_19
+Quanto costa questo;Unit_19
+Un bicchiere d'acqua;Unit_19
+Una bottiglia di vino;Unit_19
+Cosa mi consiglia;Unit_19
+Vorrei prenotare un tavolo;Unit_19
+Il conto per favore;Unit_19
+Posso pagare con la carta;Unit_19
+Aiuto;Unit_20
+Dov'è il bagno;Unit_20
+Mi sono perso;Unit_20
+Chiama un medico;Unit_20
+Non mi sento bene;Unit_20
+Ho bisogno di aiuto;Unit_20
+Parli spagnolo;Unit_20
+Non parlo italiano;Unit_20
+rosso;Unit_21
+blu;Unit_21
+verde;Unit_21
+giallo;Unit_21
+nero;Unit_21
+bianco;Unit_21
+arancione;Unit_21
+rosa;Unit_21
+grigio;Unit_21
+stanco;Unit_22
+felice;Unit_22
+contento;Unit_22
+triste;Unit_22
+malato;Unit_22
+arrabbiato;Unit_22
+annoiato;Unit_22
+preoccupato;Unit_22
+occupato;Unit_22
+tranquillo;Unit_22
+pronto;Unit_22
+grande;Unit_23
+piccolo;Unit_23
+nuovo;Unit_23
+vecchio;Unit_23
+buono;Unit_23
+cattivo;Unit_23
+facile;Unit_23
+difficile;Unit_23
+importante;Unit_23
+caro;Unit_23
+economico;Unit_23
+carino;Unit_23
+caldo;Unit_24
+freddo;Unit_24
+pieno;Unit_24
+vuoto;Unit_24
+pulito;Unit_24
+sporco;Unit_24
+aperto;Unit_24
+chiuso;Unit_24
+alto;Unit_25
+basso;Unit_25
+bello;Unit_25
+brutto;Unit_25
+grasso;Unit_25
+magro;Unit_25
+giovane;Unit_25
+anziano;Unit_25
+forte;Unit_25
+debole;Unit_25

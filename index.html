@@ -7524,8 +7524,15 @@
         );
         const units = await Promise.all(unitNames.map(async id => {
           const details = await fetchCourseJson(course.id, `Units/${id}/unit_details.json`);
+          if (details?.id !== id) {
+            throw new Error(`${id}/unit_details.json id does not match its folder.`);
+          }
           for (const key of ['title', 'description']) {
             if (typeof details?.[key] !== 'string') throw new Error(`${id}/unit_details.json has an invalid ${key}.`);
+          }
+          if (Object.prototype.hasOwnProperty.call(details, 'category') &&
+              (typeof details.category !== 'string' || !details.category.trim())) {
+            throw new Error(`${id}/unit_details.json has an invalid category.`);
           }
           for (const key of ['focusVocabularyCount', 'supplementaryVocabularyCount']) {
             if (!Number.isInteger(details[key]) || details[key] < 0) {
@@ -7600,20 +7607,23 @@
           .map(line => parseCSVLine(line));
       }
 
-      function parseVocabularyAssignment(text, resource, allowEmpty = false) {
+      function parseVocabularyAssignment(text, resource, vocabularyHeader, allowEmpty = false) {
         const rows = parseCourseRows(text);
         if (rows.length < 2 && !allowEmpty) throw new Error(`${resource} has no vocabulary rows.`);
         if (!rows.length) throw new Error(`${resource} has no header row.`);
         const headers = rows[0].map(value => value.trim().toLowerCase());
-        const wordIndex = headers.findIndex(value => value.includes('vocabulary') || value === 'word');
-        const unitIndex = headers.findIndex(value => value === 'unit' || value.includes('unit'));
-        if (wordIndex < 0 || unitIndex < 0) throw new Error(`${resource} must contain vocabulary and unit columns.`);
+        const wordIndex = headers.indexOf(vocabularyHeader);
+        const unitIndex = headers.indexOf('unit');
+        const nativeIndex = headers.indexOf('native');
+        if (wordIndex < 0 || unitIndex < 0 || nativeIndex < 0) {
+          throw new Error(`${resource} must contain unit, ${vocabularyHeader}, and native columns.`);
+        }
         return rows.slice(1).map((row, index) => {
           const word = (row[wordIndex] || '').trim();
           const rawUnit = (row[unitIndex] || '').trim();
           const unitId = /^\d+$/.test(rawUnit) ? `Unit_${rawUnit}` : rawUnit.split('/').pop();
           if (!word || !/^Unit_\d+$/i.test(unitId)) throw new Error(`${resource} has an invalid row ${index + 2}.`);
-          return { word, unitId };
+          return { word, native: (row[nativeIndex] || '').trim(), unitId };
         });
       }
 
@@ -7622,13 +7632,18 @@
         if (course.assignmentsPromise) return course.assignmentsPromise;
         course.assignmentsPromise = (async () => {
           const focusPath = 'course_vocabulary_focus_by_unit.csv';
-          const focus = parseVocabularyAssignment(await fetchCourseText(course.id, focusPath), `${course.id}/${focusPath}`);
+          const focus = parseVocabularyAssignment(
+            await fetchCourseText(course.id, focusPath),
+            `${course.id}/${focusPath}`,
+            'vocabulary_focus',
+          );
           let complementary = [];
           try {
             const complementaryPath = 'course_vocabulary_complementary_by_unit.csv';
               complementary = parseVocabularyAssignment(
                 await fetchCourseText(course.id, complementaryPath),
                 `${course.id}/${complementaryPath}`,
+                'vocabulary_complementary',
                 course.supplementaryVocabularyCount === 0,
               );
           } catch (error) {
@@ -8039,6 +8054,10 @@
         return [...new Set(assignments[kind].filter(item => item.unitId === unitId).map(item => item.word))];
       }
 
+      function getUnitVocabularyAssignments(assignments, unitId, kind = 'focus') {
+        return assignments[kind].filter(item => item.unitId === unitId);
+      }
+
       function getSavedCourseSession(courseId, unitId) {
         return courseState.sessions?.[courseId]?.[unitId] || null;
       }
@@ -8291,7 +8310,7 @@
           const current = isCurrentCourseUnit(course.id, unit.id);
           return `
             <article class="course-unit-card${current ? ' current' : ''}" data-course-unit-card="${escapeCourseHtml(course.id)}" data-unit-id="${escapeCourseHtml(unit.id)}" tabindex="0" aria-label="Open Unit details for ${escapeCourseHtml(unit.title)}">
-              <div class="course-card-top"><span class="course-badge">${String(unit.order).padStart(2, '0')}</span>${current ? '<span class="course-badge current">Current</span>' : ''}</div>
+              <div class="course-card-top"><span class="course-badge">${String(unit.order).padStart(2, '0')}</span>${current ? '<span class="course-badge current">Current</span>' : ''}${unit.category ? `<span class="course-badge">${escapeCourseHtml(unit.category)}</span>` : ''}</div>
               <h3>${escapeCourseHtml(unit.title)}</h3>
               <p class="course-description">${escapeCourseHtml(unit.description)}</p>
               <div class="course-metrics">
@@ -8327,13 +8346,13 @@
         if (!course || !unit) throw new Error(`Unit ${unitId} is not available.`);
         const assignments = await loadCourseAssignments(course);
         if (assignments.warnings.length) setCourseStatus(assignments.warnings.join(' '), true);
-        const words = getUnitWords(assignments, unitId, courseTab);
+        const words = getUnitVocabularyAssignments(assignments, unitId, courseTab);
         const title = courseTab === 'focus' ? 'Focus vocabulary' : 'Supplementary vocabulary';
-        const rows = words.map((word, index) => {
-          const progress = getCourseWordProgress(course.idioma_destino, word);
+        const rows = words.map((item, index) => {
+          const progress = getCourseWordProgress(course.idioma_destino, item.word);
           return `<div class="course-word-row course-card-top">
             <span class="course-badge">${String(index + 1).padStart(2, '0')}</span>
-            <strong>${escapeCourseHtml(word)}</strong>
+            <strong>${escapeCourseHtml(item.word)}${item.native ? ` <small class="course-description">${escapeCourseHtml(item.native)}</small>` : ''}</strong>
             <span>${escapeCourseHtml(getVocabularyMastery(progress.practices))}</span>
             <span>${progress.practices} practices · ${progress.pronunciationCorrect} correct</span>
           </div>`;
@@ -8342,6 +8361,7 @@
         els.coursesContent.innerHTML = `
           <section class="course-info-panel">
             <h2>${escapeCourseHtml(unit.title)}</h2>
+            ${unit.category ? `<span class="course-badge">${escapeCourseHtml(unit.category)}</span>` : ''}
             <p class="course-description">${escapeCourseHtml(unit.description)}</p>
           </section>
           <div class="course-tabs" role="tablist">

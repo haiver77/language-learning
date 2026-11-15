@@ -1,499 +1,499 @@
-vocabulary_focus;unit
-anno;Unit_1
-parte;Unit_1
-lavoro;Unit_1
-legge;Unit_1
-articolo;Unit_1
-tempo;Unit_1
-caso;Unit_1
-giorno;Unit_1
-servizio;Unit_1
-volta;Unit_1
-attività;Unit_1
-modo;Unit_1
-fine;Unit_1
-persona;Unit_1
-punto;Unit_1
-vita;Unit_1
-diritto;Unit_1
-mondo;Unit_1
-cosa;Unit_1
-sistema;Unit_1
-senso;Unit_1
-ora;Unit_1
-problema;Unit_1
-progetto;Unit_1
-uomo;Unit_1
-base;Unit_1
-ricerca;Unit_1
-corso;Unit_1
-decreto;Unit_1
-scuola;Unit_1
-informazione;Unit_2
-fatto;Unit_2
-termine;Unit_2
-numero;Unit_2
-intervento;Unit_2
-gruppo;Unit_2
-livello;Unit_2
-momento;Unit_2
-mese;Unit_2
-rapporto;Unit_2
-paese;Unit_2
-atto;Unit_2
-storia;Unit_2
-casa;Unit_2
-programma;Unit_2
-disposizione;Unit_2
-dato;Unit_2
-parola;Unit_2
-materia;Unit_2
-forma;Unit_2
-settore;Unit_2
-posto;Unit_2
-società;Unit_2
-area;Unit_2
-titolo;Unit_2
-esempio;Unit_2
-opera;Unit_2
-condizione;Unit_2
-studio;Unit_2
-periodo;Unit_2
-sviluppo;Unit_3
-norma;Unit_3
-domanda;Unit_3
-impresa;Unit_3
-tipo;Unit_3
-situazione;Unit_3
-città;Unit_3
-territorio;Unit_3
-proposta;Unit_3
-valore;Unit_3
-donna;Unit_3
-esame;Unit_3
-presidente;Unit_3
-luogo;Unit_3
-funzione;Unit_3
-piano;Unit_3
-relazione;Unit_3
-formazione;Unit_3
-interesse;Unit_3
-data;Unit_3
-azione;Unit_3
-soggetto;Unit_3
-centro;Unit_3
-euro;Unit_3
-particolare;Unit_3
-nome;Unit_3
-politica;Unit_3
-risultato;Unit_3
-richiesta;Unit_3
-riferimento;Unit_3
-mercato;Unit_4
-via;Unit_4
-sede;Unit_4
-dicembre;Unit_4
-campo;Unit_4
-struttura;Unit_4
-effetto;Unit_4
-forza;Unit_4
-guerra;Unit_4
-ambito;Unit_4
-prodotto;Unit_4
-iniziativa;Unit_4
-sito;Unit_4
-ruolo;Unit_4
-processo;Unit_4
-bambino;Unit_4
-famiglia;Unit_4
-controllo;Unit_4
-governo;Unit_4
-milione;Unit_4
-rete;Unit_4
-questione;Unit_4
-strumento;Unit_4
-grado;Unit_4
-ordine;Unit_4
-misura;Unit_4
-gestione;Unit_4
-uso;Unit_4
-lavoratore;Unit_4
-cittadino;Unit_4
-stato;Unit_5
-conto;Unit_5
-realtà;Unit_5
-possibilità;Unit_5
-esperienza;Unit_5
-testo;Unit_5
-confronto;Unit_5
-lettera;Unit_5
-interno;Unit_5
-strada;Unit_5
-libro;Unit_5
-visto;Unit_5
-obiettivo;Unit_5
-sicurezza;Unit_5
-spesa;Unit_5
-tema;Unit_5
-mano;Unit_5
-amministrazione;Unit_5
-azienda;Unit_5
-luglio;Unit_5
-fondo;Unit_5
-film;Unit_5
-mezzo;Unit_5
-acqua;Unit_5
-marzo;Unit_5
-scelta;Unit_5
-accordo;Unit_5
-provvedimento;Unit_5
-contratto;Unit_5
-organizzazione;Unit_5
-ente;Unit_6
-maggio;Unit_6
-giugno;Unit_6
-idea;Unit_6
-oggetto;Unit_6
-comunicazione;Unit_6
-documento;Unit_6
-risorsa;Unit_6
-presenza;Unit_6
-qualità;Unit_6
-regione;Unit_6
-competenza;Unit_6
-ragione;Unit_6
-causa;Unit_6
-personale;Unit_6
-zona;Unit_6
-procedura;Unit_6
-potere;Unit_6
-ambiente;Unit_6
-prova;Unit_6
-posizione;Unit_6
-gennaio;Unit_6
-valutazione;Unit_6
-cultura;Unit_6
-spazio;Unit_6
-gioco;Unit_6
-vista;Unit_6
-rispetto;Unit_6
-associazione;Unit_6
-risposta;Unit_6
-fronte;Unit_7
-ufficio;Unit_7
-elemento;Unit_7
-inizio;Unit_7
-aspetto;Unit_7
-settembre;Unit_7
-figlio;Unit_7
-incontro;Unit_7
-applicazione;Unit_7
-aprile;Unit_7
-rischio;Unit_7
-linea;Unit_7
-immagine;Unit_7
-produzione;Unit_7
-cura;Unit_7
-serie;Unit_7
-modalità;Unit_7
-seguito;Unit_7
-limite;Unit_7
-febbraio;Unit_7
-contributo;Unit_7
-pagina;Unit_7
-modello;Unit_7
-ottobre;Unit_7
-motivo;Unit_7
-conoscenza;Unit_7
-costo;Unit_7
-occasione;Unit_7
-fase;Unit_7
-istituzione;Unit_7
-esercizio;Unit_8
-bisogno;Unit_8
-membro;Unit_8
-parto;Unit_8
-voce;Unit_8
-voto;Unit_8
-novembre;Unit_8
-natura;Unit_8
-esigenza;Unit_8
-amore;Unit_8
-prezzo;Unit_8
-bene;Unit_8
-terra;Unit_8
-contenuto;Unit_8
-ministro;Unit_8
-attenzione;Unit_8
-parere;Unit_8
-luce;Unit_8
-ragazzo;Unit_8
-occhio;Unit_8
-provincia;Unit_8
-amico;Unit_8
-agosto;Unit_8
-regolamento;Unit_8
-soluzione;Unit_8
-autore;Unit_8
-partecipazione;Unit_8
-categoria;Unit_8
-collaborazione;Unit_8
-capacità;Unit_8
-carattere;Unit_9
-bilancio;Unit_9
-settimana;Unit_9
-corpo;Unit_9
-percorso;Unit_9
-impegno;Unit_9
-giovane;Unit_9
-morte;Unit_9
-criterio;Unit_9
-classe;Unit_9
-operazione;Unit_9
-quota;Unit_9
-studente;Unit_9
-realizzazione;Unit_9
-musica;Unit_9
-accesso;Unit_9
-utente;Unit_9
-dichiarazione;Unit_9
-disciplina;Unit_9
-decisione;Unit_9
-tutela;Unit_9
-messaggio;Unit_9
-libertà;Unit_9
-necessità;Unit_9
-impianto;Unit_9
-lingua;Unit_9
-giudizio;Unit_9
-responsabilità;Unit_9
-emendamento;Unit_9
-riforma;Unit_9
-capo;Unit_10
-discussione;Unit_10
-movimento;Unit_10
-pace;Unit_10
-scopo;Unit_10
-trattamento;Unit_10
-attuazione;Unit_10
-previsto;Unit_10
-cuore;Unit_10
-regola;Unit_10
-genere;Unit_10
-codice;Unit_10
-favore;Unit_10
-gente;Unit_10
-secolo;Unit_10
-evento;Unit_10
-futuro;Unit_10
-comunità;Unit_10
-danno;Unit_10
-analisi;Unit_10
-concorso;Unit_10
-indirizzo;Unit_10
-notizia;Unit_10
-consiglio;Unit_10
-merito;Unit_10
-età;Unit_10
-obbligo;Unit_10
-quadro;Unit_10
-partito;Unit_10
-integrazione;Unit_10
-gara;Unit_11
-argomento;Unit_11
-istituto;Unit_11
-sezione;Unit_11
-economia;Unit_11
-compito;Unit_11
-offerta;Unit_11
-unità;Unit_11
-popolo;Unit_11
-popolazione;Unit_11
-rappresentante;Unit_11
-sinistra;Unit_11
-caratteristica;Unit_11
-stampa;Unit_11
-modifica;Unit_11
-giudice;Unit_11
-resto;Unit_11
-arte;Unit_11
-maggioranza;Unit_11
-tecnologia;Unit_11
-mare;Unit_11
-giornata;Unit_11
-entrata;Unit_11
-trasporto;Unit_11
-candidato;Unit_11
-notte;Unit_11
-passo;Unit_11
-conseguenza;Unit_11
-dimensione;Unit_11
-viaggio;Unit_11
-carico;Unit_12
-carta;Unit_12
-indicazione;Unit_12
-salute;Unit_12
-origine;Unit_12
-pensiero;Unit_12
-differenza;Unit_12
-componente;Unit_12
-considerazione;Unit_12
-disegno;Unit_12
-successo;Unit_12
-principio;Unit_12
-difesa;Unit_12
-ricorso;Unit_12
-lira;Unit_12
-minuto;Unit_12
-vigore;Unit_12
-padre;Unit_12
-dirigente;Unit_12
-energia;Unit_12
-difficoltà;Unit_12
-commissione;Unit_12
-personaggio;Unit_12
-prestazione;Unit_12
-presentazione;Unit_12
-manifestazione;Unit_12
-seduta;Unit_12
-colore;Unit_12
-pubblicazione;Unit_12
-comune;Unit_12
-operatore;Unit_13
-sera;Unit_13
-organo;Unit_13
-pubblico;Unit_13
-fenomeno;Unit_13
-istruzione;Unit_13
-guida;Unit_13
-pratica;Unit_13
-malattia;Unit_13
-normativa;Unit_13
-leggio;Unit_13
-autorità;Unit_13
-procedimento;Unit_13
-miliardo;Unit_13
-sentenza;Unit_13
-assistenza;Unit_13
-costruzione;Unit_13
-ipotesi;Unit_13
-maniera;Unit_13
-sole;Unit_13
-medico;Unit_13
-figura;Unit_13
-direzione;Unit_13
-testa;Unit_13
-sostegno;Unit_13
-definizione;Unit_13
-squadra;Unit_13
-crescita;Unit_13
-riguardo;Unit_13
-animale;Unit_13
-macchina;Unit_14
-aiuto;Unit_14
-metodo;Unit_14
-pagamento;Unit_14
-autorizzazione;Unit_14
-durata;Unit_14
-metro;Unit_14
-direttore;Unit_14
-responsabile;Unit_14
-materiale;Unit_14
-foto;Unit_14
-aumento;Unit_14
-direttiva;Unit_14
-verità;Unit_14
-protezione;Unit_14
-utilizzo;Unit_14
-docente;Unit_14
-campagna;Unit_14
-previsione;Unit_14
-commento;Unit_14
-versione;Unit_14
-capitale;Unit_14
-crisi;Unit_14
-finanziamento;Unit_14
-primo;Unit_14
-vendita;Unit_14
-comportamento;Unit_14
-giustizia;Unit_14
-modificazione;Unit_14
-requisito;Unit_14
-scena;Unit_15
-lista;Unit_15
-passato;Unit_15
-fonte;Unit_15
-riduzione;Unit_15
-sostanza;Unit_15
-principe;Unit_15
-rifiuto;Unit_15
-elezione;Unit_15
-opportunità;Unit_15
-genitore;Unit_15
-protagonista;Unit_15
-indagine;Unit_15
-passaggio;Unit_15
-giro;Unit_15
-memoria;Unit_15
-lotta;Unit_15
-lettura;Unit_15
-contesto;Unit_15
-porta;Unit_15
-tradizione;Unit_15
-dipendente;Unit_15
-metà;Unit_15
-fila;Unit_15
-proposito;Unit_15
-regime;Unit_15
-specie;Unit_15
-profilo;Unit_15
-polizia;Unit_15
-autonomia;Unit_15
-paura;Unit_16
-piede;Unit_16
-destra;Unit_16
-segno;Unit_16
-aria;Unit_16
-investimento;Unit_16
-errore;Unit_16
-arma;Unit_16
-verifica;Unit_16
-madre;Unit_16
-nota;Unit_16
-credito;Unit_16
-scienza;Unit_16
-distanza;Unit_16
-contatto;Unit_16
-lato;Unit_16
-concetto;Unit_16
-piazza;Unit_16
-imposta;Unit_16
-spettacolo;Unit_16
-insegnante;Unit_16
-opinione;Unit_16
-esecuzione;Unit_16
-importanza;Unit_16
-organismo;Unit_16
-reddito;Unit_16
-visita;Unit_16
-dubbio;Unit_16
-conclusione;Unit_16
-vicenda;Unit_16
-tecnica;Unit_17
-commercio;Unit_17
-discorso;Unit_17
-attesa;Unit_17
-garanzia;Unit_17
-estero;Unit_17
-espressione;Unit_17
-banca;Unit_17
-programmazione;Unit_17
-iscrizione;Unit_17
-conflitto;Unit_17
-mente;Unit_17
-elenco;Unit_17
-media;Unit_17
-riconoscimento;Unit_17
-dibattito;Unit_17
-acquisto;Unit_17
-edizione;Unit_17
+unit;vocabulary_focus;native
+Unit_1;anno;el año
+Unit_1;parte;la parte
+Unit_1;lavoro;el trabajo
+Unit_1;legge;la ley
+Unit_1;articolo;el artículo
+Unit_1;tempo;el tiempo
+Unit_1;caso;el caso
+Unit_1;giorno;el día
+Unit_1;servizio;el servicio
+Unit_1;volta;la vez
+Unit_1;attività;la actividad
+Unit_1;modo;el modo
+Unit_1;fine;el fin
+Unit_1;persona;la persona
+Unit_1;punto;el punto
+Unit_1;vita;la vida
+Unit_1;diritto;el derecho
+Unit_1;mondo;el mundo
+Unit_1;cosa;la cosa
+Unit_1;sistema;el sistema
+Unit_1;senso;el sentido
+Unit_1;ora;la hora
+Unit_1;problema;el problema
+Unit_1;progetto;el proyecto
+Unit_1;uomo;el hombre
+Unit_1;base;la base
+Unit_1;ricerca;la investigación
+Unit_1;corso;el curso
+Unit_1;decreto;el decreto
+Unit_1;scuola;la escuela
+Unit_2;informazione;la información
+Unit_2;fatto;el hecho
+Unit_2;termine;el término
+Unit_2;numero;el número
+Unit_2;intervento;la intervención
+Unit_2;gruppo;el grupo
+Unit_2;livello;el nivel
+Unit_2;momento;el momento
+Unit_2;mese;el mes
+Unit_2;rapporto;el informe
+Unit_2;paese;el país
+Unit_2;atto;el acto
+Unit_2;storia;la historia
+Unit_2;casa;la casa
+Unit_2;programma;el programa
+Unit_2;disposizione;la disposición
+Unit_2;dato;el dato
+Unit_2;parola;la palabra
+Unit_2;materia;la materia
+Unit_2;forma;la forma
+Unit_2;settore;el sector
+Unit_2;posto;el lugar
+Unit_2;società;la sociedad
+Unit_2;area;el área
+Unit_2;titolo;el título
+Unit_2;esempio;el ejemplo
+Unit_2;opera;la obra
+Unit_2;condizione;la condición
+Unit_2;studio;el estudio
+Unit_2;periodo;el período
+Unit_3;sviluppo;el desarrollo
+Unit_3;norma;la norma
+Unit_3;domanda;la pregunta
+Unit_3;impresa;la empresa
+Unit_3;tipo;el tipo
+Unit_3;situazione;la situación
+Unit_3;città;la ciudad
+Unit_3;territorio;el territorio
+Unit_3;proposta;la propuesta
+Unit_3;valore;el valor
+Unit_3;donna;la mujer
+Unit_3;esame;el examen
+Unit_3;presidente;el presidente
+Unit_3;luogo;el lugar
+Unit_3;funzione;la función
+Unit_3;piano;el plan
+Unit_3;relazione;la relación
+Unit_3;formazione;la formación
+Unit_3;interesse;el interés
+Unit_3;data;la fecha
+Unit_3;azione;la acción
+Unit_3;soggetto;el sujeto
+Unit_3;centro;el centro
+Unit_3;euro;el euro
+Unit_3;particolare;el detalle
+Unit_3;nome;el nombre
+Unit_3;politica;la política
+Unit_3;risultato;el resultado
+Unit_3;richiesta;la solicitud
+Unit_3;riferimento;la referencia
+Unit_4;mercato;el mercado
+Unit_4;via;la calle
+Unit_4;sede;la sede
+Unit_4;dicembre;diciembre
+Unit_4;campo;el campo
+Unit_4;struttura;la estructura
+Unit_4;effetto;el efecto
+Unit_4;forza;la fuerza
+Unit_4;guerra;la guerra
+Unit_4;ambito;el ámbito
+Unit_4;prodotto;el producto
+Unit_4;iniziativa;la iniciativa
+Unit_4;sito;el sitio
+Unit_4;ruolo;el papel
+Unit_4;processo;el proceso
+Unit_4;bambino;el niño
+Unit_4;famiglia;la familia
+Unit_4;controllo;el control
+Unit_4;governo;el gobierno
+Unit_4;milione;el millón
+Unit_4;rete;la red
+Unit_4;questione;la cuestión
+Unit_4;strumento;el instrumento
+Unit_4;grado;el grado
+Unit_4;ordine;el orden
+Unit_4;misura;la medida
+Unit_4;gestione;la gestión
+Unit_4;uso;el uso
+Unit_4;lavoratore;el trabajador
+Unit_4;cittadino;el ciudadano
+Unit_5;stato;el estado
+Unit_5;conto;la cuenta
+Unit_5;realtà;la realidad
+Unit_5;possibilità;la posibilidad
+Unit_5;esperienza;la experiencia
+Unit_5;testo;el texto
+Unit_5;confronto;la comparación
+Unit_5;lettera;la carta
+Unit_5;interno;el interior
+Unit_5;strada;la calle
+Unit_5;libro;el libro
+Unit_5;visto;el visado
+Unit_5;obiettivo;el objetivo
+Unit_5;sicurezza;la seguridad
+Unit_5;spesa;el gasto
+Unit_5;tema;el tema
+Unit_5;mano;la mano
+Unit_5;amministrazione;la administración
+Unit_5;azienda;la empresa
+Unit_5;luglio;julio
+Unit_5;fondo;el fondo
+Unit_5;film;la película
+Unit_5;mezzo;el medio
+Unit_5;acqua;el agua
+Unit_5;marzo;marzo
+Unit_5;scelta;la elección
+Unit_5;accordo;el acuerdo
+Unit_5;provvedimento;la medida
+Unit_5;contratto;el contrato
+Unit_5;organizzazione;la organización
+Unit_6;ente;la entidad
+Unit_6;maggio;mayo
+Unit_6;giugno;junio
+Unit_6;idea;la idea
+Unit_6;oggetto;el objeto
+Unit_6;comunicazione;la comunicación
+Unit_6;documento;el documento
+Unit_6;risorsa;el recurso
+Unit_6;presenza;la presencia
+Unit_6;qualità;la calidad
+Unit_6;regione;la región
+Unit_6;competenza;la competencia
+Unit_6;ragione;la razón
+Unit_6;causa;la causa
+Unit_6;personale;el personal
+Unit_6;zona;la zona
+Unit_6;procedura;el procedimiento
+Unit_6;potere;el poder
+Unit_6;ambiente;el ambiente
+Unit_6;prova;la prueba
+Unit_6;posizione;la posición
+Unit_6;gennaio;enero
+Unit_6;valutazione;la evaluación
+Unit_6;cultura;la cultura
+Unit_6;spazio;el espacio
+Unit_6;gioco;el juego
+Unit_6;vista;la vista
+Unit_6;rispetto;el respeto
+Unit_6;associazione;la asociación
+Unit_6;risposta;la respuesta
+Unit_7;fronte;el frente
+Unit_7;ufficio;la oficina
+Unit_7;elemento;el elemento
+Unit_7;inizio;el comienzo
+Unit_7;aspetto;el aspecto
+Unit_7;settembre;septiembre
+Unit_7;figlio;el hijo
+Unit_7;incontro;el encuentro
+Unit_7;applicazione;la aplicación
+Unit_7;aprile;abril
+Unit_7;rischio;el riesgo
+Unit_7;linea;la línea
+Unit_7;immagine;la imagen
+Unit_7;produzione;la producción
+Unit_7;cura;el cuidado
+Unit_7;serie;la serie
+Unit_7;modalità;la modalidad
+Unit_7;seguito;la continuación
+Unit_7;limite;el límite
+Unit_7;febbraio;febrero
+Unit_7;contributo;la contribución
+Unit_7;pagina;la página
+Unit_7;modello;el modelo
+Unit_7;ottobre;octubre
+Unit_7;motivo;el motivo
+Unit_7;conoscenza;el conocimiento
+Unit_7;costo;el costo
+Unit_7;occasione;la ocasión
+Unit_7;fase;la fase
+Unit_7;istituzione;la institución
+Unit_8;esercizio;el ejercicio
+Unit_8;bisogno;la necesidad
+Unit_8;membro;el miembro
+Unit_8;parto;el parto
+Unit_8;voce;la voz
+Unit_8;voto;el voto
+Unit_8;novembre;noviembre
+Unit_8;natura;la naturaleza
+Unit_8;esigenza;la necesidad
+Unit_8;amore;el amor
+Unit_8;prezzo;el precio
+Unit_8;bene;el bien
+Unit_8;terra;la tierra
+Unit_8;contenuto;el contenido
+Unit_8;ministro;el ministro
+Unit_8;attenzione;la atención
+Unit_8;parere;la opinión
+Unit_8;luce;la luz
+Unit_8;ragazzo;el chico
+Unit_8;occhio;el ojo
+Unit_8;provincia;la provincia
+Unit_8;amico;el amigo
+Unit_8;agosto;agosto
+Unit_8;regolamento;el reglamento
+Unit_8;soluzione;la solución
+Unit_8;autore;el autor
+Unit_8;partecipazione;la participación
+Unit_8;categoria;la categoría
+Unit_8;collaborazione;la colaboración
+Unit_8;capacità;la capacidad
+Unit_9;carattere;el carácter
+Unit_9;bilancio;el balance
+Unit_9;settimana;la semana
+Unit_9;corpo;el cuerpo
+Unit_9;percorso;el camino
+Unit_9;impegno;el compromiso
+Unit_9;giovane;el joven
+Unit_9;morte;la muerte
+Unit_9;criterio;el criterio
+Unit_9;classe;la clase
+Unit_9;operazione;la operación
+Unit_9;quota;la cuota
+Unit_9;studente;el estudiante
+Unit_9;realizzazione;la realización
+Unit_9;musica;la música
+Unit_9;accesso;el acceso
+Unit_9;utente;el usuario
+Unit_9;dichiarazione;la declaración
+Unit_9;disciplina;la disciplina
+Unit_9;decisione;la decisión
+Unit_9;tutela;la protección
+Unit_9;messaggio;el mensaje
+Unit_9;libertà;la libertad
+Unit_9;necessità;la necesidad
+Unit_9;impianto;la instalación
+Unit_9;lingua;la lengua
+Unit_9;giudizio;el juicio
+Unit_9;responsabilità;la responsabilidad
+Unit_9;emendamento;la enmienda
+Unit_9;riforma;la reforma
+Unit_10;capo;el jefe
+Unit_10;discussione;la discusión
+Unit_10;movimento;el movimiento
+Unit_10;pace;la paz
+Unit_10;scopo;el propósito
+Unit_10;trattamento;el tratamiento
+Unit_10;attuazione;la aplicación
+Unit_10;previsto;lo previsto
+Unit_10;cuore;el corazón
+Unit_10;regola;la regla
+Unit_10;genere;el tipo
+Unit_10;codice;el código
+Unit_10;favore;el favor
+Unit_10;gente;la gente
+Unit_10;secolo;el siglo
+Unit_10;evento;el evento
+Unit_10;futuro;el futuro
+Unit_10;comunità;la comunidad
+Unit_10;danno;el daño
+Unit_10;analisi;el análisis
+Unit_10;concorso;el concurso
+Unit_10;indirizzo;la dirección
+Unit_10;notizia;la noticia
+Unit_10;consiglio;el consejo
+Unit_10;merito;el mérito
+Unit_10;età;la edad
+Unit_10;obbligo;la obligación
+Unit_10;quadro;el cuadro
+Unit_10;partito;el partido
+Unit_10;integrazione;la integración
+Unit_11;gara;la competición
+Unit_11;argomento;el tema
+Unit_11;istituto;el instituto
+Unit_11;sezione;la sección
+Unit_11;economia;la economía
+Unit_11;compito;la tarea
+Unit_11;offerta;la oferta
+Unit_11;unità;la unidad
+Unit_11;popolo;el pueblo
+Unit_11;popolazione;la población
+Unit_11;rappresentante;el representante
+Unit_11;sinistra;la izquierda
+Unit_11;caratteristica;la característica
+Unit_11;stampa;la prensa
+Unit_11;modifica;el cambio
+Unit_11;giudice;el juez
+Unit_11;resto;el resto
+Unit_11;arte;el arte
+Unit_11;maggioranza;la mayoría
+Unit_11;tecnologia;la tecnología
+Unit_11;mare;el mar
+Unit_11;giornata;el día
+Unit_11;entrata;la entrada
+Unit_11;trasporto;el transporte
+Unit_11;candidato;el candidato
+Unit_11;notte;la noche
+Unit_11;passo;el paso
+Unit_11;conseguenza;la consecuencia
+Unit_11;dimensione;el tamaño
+Unit_11;viaggio;el viaje
+Unit_12;carico;la carga
+Unit_12;carta;el papel
+Unit_12;indicazione;la indicación
+Unit_12;salute;la salud
+Unit_12;origine;el origen
+Unit_12;pensiero;el pensamiento
+Unit_12;differenza;la diferencia
+Unit_12;componente;el componente
+Unit_12;considerazione;la consideración
+Unit_12;disegno;el dibujo
+Unit_12;successo;el éxito
+Unit_12;principio;el principio
+Unit_12;difesa;la defensa
+Unit_12;ricorso;el recurso
+Unit_12;lira;la lira
+Unit_12;minuto;el minuto
+Unit_12;vigore;el vigor
+Unit_12;padre;el padre
+Unit_12;dirigente;el director
+Unit_12;energia;la energía
+Unit_12;difficoltà;la dificultad
+Unit_12;commissione;el comité
+Unit_12;personaggio;el personaje
+Unit_12;prestazione;la actuación
+Unit_12;presentazione;la presentación
+Unit_12;manifestazione;la manifestación
+Unit_12;seduta;la sesión
+Unit_12;colore;el color
+Unit_12;pubblicazione;la publicación
+Unit_12;comune;el municipio
+Unit_13;operatore;el operador
+Unit_13;sera;la tarde
+Unit_13;organo;el órgano
+Unit_13;pubblico;el público
+Unit_13;fenomeno;el fenómeno
+Unit_13;istruzione;la educación
+Unit_13;guida;la guía
+Unit_13;pratica;la práctica
+Unit_13;malattia;la enfermedad
+Unit_13;normativa;la normativa
+Unit_13;leggio;el atril
+Unit_13;autorità;la autoridad
+Unit_13;procedimento;el procedimiento
+Unit_13;miliardo;mil millones
+Unit_13;sentenza;la sentencia
+Unit_13;assistenza;la asistencia
+Unit_13;costruzione;la construcción
+Unit_13;ipotesi;la hipótesis
+Unit_13;maniera;la manera
+Unit_13;sole;el sol
+Unit_13;medico;el médico
+Unit_13;figura;la figura
+Unit_13;direzione;la dirección
+Unit_13;testa;la cabeza
+Unit_13;sostegno;el apoyo
+Unit_13;definizione;la definición
+Unit_13;squadra;el equipo
+Unit_13;crescita;el crecimiento
+Unit_13;riguardo;la consideración
+Unit_13;animale;el animal
+Unit_14;macchina;la máquina
+Unit_14;aiuto;la ayuda
+Unit_14;metodo;el método
+Unit_14;pagamento;el pago
+Unit_14;autorizzazione;la autorización
+Unit_14;durata;la duración
+Unit_14;metro;el metro
+Unit_14;direttore;el director
+Unit_14;responsabile;el responsable
+Unit_14;materiale;el material
+Unit_14;foto;la foto
+Unit_14;aumento;el aumento
+Unit_14;direttiva;la directiva
+Unit_14;verità;la verdad
+Unit_14;protezione;la protección
+Unit_14;utilizzo;el uso
+Unit_14;docente;el docente
+Unit_14;campagna;la campaña
+Unit_14;previsione;la previsión
+Unit_14;commento;el comentario
+Unit_14;versione;la versión
+Unit_14;capitale;el capital
+Unit_14;crisi;la crisis
+Unit_14;finanziamento;la financiación
+Unit_14;primo;el primero
+Unit_14;vendita;la venta
+Unit_14;comportamento;el comportamiento
+Unit_14;giustizia;la justicia
+Unit_14;modificazione;la modificación
+Unit_14;requisito;el requisito
+Unit_15;scena;la escena
+Unit_15;lista;la lista
+Unit_15;passato;el pasado
+Unit_15;fonte;la fuente
+Unit_15;riduzione;la reducción
+Unit_15;sostanza;la sustancia
+Unit_15;principe;el príncipe
+Unit_15;rifiuto;el rechazo
+Unit_15;elezione;la elección
+Unit_15;opportunità;la oportunidad
+Unit_15;genitore;el progenitor
+Unit_15;protagonista;el protagonista
+Unit_15;indagine;la investigación
+Unit_15;passaggio;el pasaje
+Unit_15;giro;el paseo
+Unit_15;memoria;la memoria
+Unit_15;lotta;la lucha
+Unit_15;lettura;la lectura
+Unit_15;contesto;el contexto
+Unit_15;porta;la puerta
+Unit_15;tradizione;la tradición
+Unit_15;dipendente;el empleado
+Unit_15;metà;la mitad
+Unit_15;fila;la fila
+Unit_15;proposito;el propósito
+Unit_15;regime;el régimen
+Unit_15;specie;la especie
+Unit_15;profilo;el perfil
+Unit_15;polizia;la policía
+Unit_15;autonomia;la autonomía
+Unit_16;paura;el miedo
+Unit_16;piede;el pie
+Unit_16;destra;la derecha
+Unit_16;segno;la señal
+Unit_16;aria;el aire
+Unit_16;investimento;la inversión
+Unit_16;errore;el error
+Unit_16;arma;el arma
+Unit_16;verifica;la comprobación
+Unit_16;madre;la madre
+Unit_16;nota;la nota
+Unit_16;credito;el crédito
+Unit_16;scienza;la ciencia
+Unit_16;distanza;la distancia
+Unit_16;contatto;el contacto
+Unit_16;lato;el lado
+Unit_16;concetto;el concepto
+Unit_16;piazza;la plaza
+Unit_16;imposta;el impuesto
+Unit_16;spettacolo;el espectáculo
+Unit_16;insegnante;el profesor
+Unit_16;opinione;la opinión
+Unit_16;esecuzione;la ejecución
+Unit_16;importanza;la importancia
+Unit_16;organismo;el organismo
+Unit_16;reddito;la renta
+Unit_16;visita;la visita
+Unit_16;dubbio;la duda
+Unit_16;conclusione;la conclusión
+Unit_16;vicenda;la historia
+Unit_17;tecnica;la técnica
+Unit_17;commercio;el comercio
+Unit_17;discorso;el discurso
+Unit_17;attesa;la espera
+Unit_17;garanzia;la garantía
+Unit_17;estero;el extranjero
+Unit_17;espressione;la expresión
+Unit_17;banca;el banco
+Unit_17;programmazione;la programación
+Unit_17;iscrizione;la inscripción
+Unit_17;conflitto;el conflicto
+Unit_17;mente;la mente
+Unit_17;elenco;la lista
+Unit_17;media;los medios
+Unit_17;riconoscimento;el reconocimiento
+Unit_17;dibattito;el debate
+Unit_17;acquisto;la compra
+Unit_17;edizione;la edición
