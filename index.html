@@ -2804,7 +2804,7 @@
     .course-entry-card strong { display: block; font-size: 1.8rem; }
     .course-entry-card span { display: block; margin-top: 5px; color: #615b7b; }
     .courses-app { padding-bottom: calc(12px + env(safe-area-inset-bottom)); }
-    .courses-app.unit-details-swipe { touch-action: pan-y; }
+    .courses-app.course-swipe-navigation { touch-action: pan-y; }
     .courses-page-header, .course-card-top, .course-actions, .course-inline {
       display: flex;
       align-items: center;
@@ -8410,7 +8410,7 @@
 
       function setCourseScreen(screen) {
         courseScreen = screen;
-        els.coursesApp?.classList.toggle('unit-details-swipe', screen === 'unit');
+        els.coursesApp?.classList.toggle('course-swipe-navigation', screen === 'unit' || screen === 'details');
         document.getElementById('bottomSheet')?.classList.toggle('practice-format-page', screen === 'practiceTypes');
         setLoadScreen(screen === 'options' ? 'options' : 'courses');
         if (els.coursesContent) els.coursesContent.dataset.courseScreen = screen;
@@ -9669,7 +9669,7 @@
         let suppressCourseSwipeClick = false;
         let suppressCourseSwipeClickTimer;
         els.coursesApp.addEventListener('pointerdown', event => {
-          if (courseScreen !== 'unit' || event.pointerType === 'mouse' ||
+          if (!['unit', 'details'].includes(courseScreen) || event.pointerType === 'mouse' ||
               event.target.closest('button, input, select, textarea, a')) {
             courseSwipeStart = null;
             return;
@@ -9681,7 +9681,9 @@
           const deltaX = event.clientX - courseSwipeStart.x;
           const deltaY = event.clientY - courseSwipeStart.y;
           courseSwipeStart = null;
-          if (courseScreen !== 'unit' || deltaX < 72 || deltaX <= Math.abs(deltaY) * 1.25) return;
+          const shouldNavigateBack = courseScreen === 'unit' ? deltaX >= 72 :
+            courseScreen === 'details' && deltaX <= -72;
+          if (!shouldNavigateBack || Math.abs(deltaX) <= Math.abs(deltaY) * 1.25) return;
           event.preventDefault();
           suppressCourseSwipeClick = true;
           window.clearTimeout(suppressCourseSwipeClickTimer);
