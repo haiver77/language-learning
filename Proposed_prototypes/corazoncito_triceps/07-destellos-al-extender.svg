@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Destellos al extender los brazos</title>
+  <desc id="desc">El corazón empieza con los brazos abiertos y doblados a 90 grados, presiona ambas mancuernas hasta arriba y unos destellos aparecen al extenderlas por completo.</desc>
+  <style>
+    .upperL,.upperR,.foreL,.foreR{transform-box:view-box}
+    .upperL{transform-origin:145px 157px;animation:raiseL 1.6s ease-in-out infinite}.upperR{transform-origin:255px 157px;animation:raiseR 1.6s ease-in-out infinite}
+    .foreL{transform-origin:103px 157px;animation:foreL 1.6s ease-in-out infinite}.foreR{transform-origin:297px 157px;animation:foreR 1.6s ease-in-out infinite}
+    .spark{transform-box:fill-box;transform-origin:center;animation:shine 1.6s ease-in-out infinite}.s2{animation-delay:.1s}
+    @keyframes raiseL{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(90deg)}}@keyframes raiseR{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(-90deg)}}
+    @keyframes foreL{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(-90deg)}}@keyframes foreR{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(90deg)}}
+    @keyframes shine{0%,36%,74%,100%{opacity:0;transform:scale(.3)}49%,63%{opacity:1;transform:scale(1)}}
+    @media(prefers-reduced-motion:reduce){.upperL,.upperR,.foreL,.foreR,.spark{animation:none}.spark{opacity:.5}}
+  </style>
+  <rect width="400" height="320" rx="28" fill="#fff9f1"/>
+  <g transform="translate(200 160) scale(1.1) translate(-200 -160)">
+    <ellipse cx="200" cy="282" rx="92" ry="10" fill="#f3ddd2"/><path d="M178 233l-14 35m58-35 14 35" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+    <path d="M200 238c-24-20-83-60-83-101 0-27 21-47 47-47 16 0 29 8 37 22 9-17 25-25 43-22 28 4 43 29 37 54-8 34-52 70-81 94z" fill="#ff9e9f" stroke="#d96f79" stroke-width="6" stroke-linejoin="round"/><path d="M151 191q49 18 98-3l-12 22q-37 18-75-1z" fill="#ffe4c8"/>
+    <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/><path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+    <path d="M139 119q61-40 122 0l-4 12q-56-29-114 0z" fill="#83b9aa" stroke="#5d9589" stroke-width="3"/>
+    <g class="upperL" fill="none" stroke="#ed9b91" stroke-width="15" stroke-linecap="round"><path d="M145 157h-42"/><g class="foreL" stroke-width="13"><path d="M103 157v-43"/><path d="M96 127h14" stroke="#83b9aa" stroke-width="7"/><circle cx="103" cy="111" r="7" fill="#ffc4b7" stroke-width="3"/><path d="M84 99h38" stroke="#b97655" stroke-width="5"/><path d="M89 90v18m28-18v18" stroke="#f1bc78" stroke-width="8"/></g></g>
+    <g class="upperR" fill="none" stroke="#ed9b91" stroke-width="15" stroke-linecap="round"><path d="M255 157h42"/><g class="foreR" stroke-width="13"><path d="M297 157v-43"/><path d="M290 127h14" stroke="#83b9aa" stroke-width="7"/><circle cx="297" cy="111" r="7" fill="#ffc4b7" stroke-width="3"/><path d="M278 99h38" stroke="#b97655" stroke-width="5"/><path d="M283 90v18m28-18v18" stroke="#f1bc78" stroke-width="8"/></g></g>
+    <g fill="#efb95f"><path class="spark" d="M145 40l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/><path class="spark s2" d="M255 40l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/></g>
+  </g>
+</svg>

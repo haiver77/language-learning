@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Curl con destellos de esfuerzo</title>
+  <desc id="desc">El corazón bebé levanta dos pesas; destellos aparecen brevemente al completar cada flexión.</desc>
+  <style>
+    .left{transform-box:view-box;transform-origin:145px 157px;animation:curlL 1.35s ease-in-out infinite}
+    .right{transform-box:view-box;transform-origin:255px 157px;animation:curlR 1.35s ease-in-out infinite}
+    .spark{transform-box:fill-box;transform-origin:center;animation:shine 1.35s ease-in-out infinite}
+    .s2{animation-delay:.08s}.s3{animation-delay:.16s}
+    @keyframes curlL{0%,100%{transform:rotate(0)}50%{transform:rotate(-50deg)}}
+    @keyframes curlR{0%,100%{transform:rotate(0)}50%{transform:rotate(50deg)}}
+    @keyframes shine{0%,36%,72%,100%{opacity:0;transform:scale(.4)}48%,60%{opacity:1;transform:scale(1)}}
+    @media(prefers-reduced-motion:reduce){.left,.right,.spark{animation:none}.spark{opacity:.55}}
+  </style>
+  <rect width="400" height="320" rx="28" fill="#fff9f1"/>
+  <ellipse cx="200" cy="280" rx="92" ry="12" fill="#f3ddd2"/>
+  <path d="M178 235l-15 31m59-31 15 31" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/>
+  <path d="M148 266h27m50 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+  <path d="M200 238c-24-20-83-60-83-101 0-27 21-47 47-47 16 0 29 8 37 22 9-17 25-25 43-22 28 4 43 29 37 54-8 34-52 70-81 94z" fill="#ff9e9f" stroke="#d96f79" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M151 191q49 18 98-3l-12 22q-37 18-75-1z" fill="#ffe4c8"/>
+  <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/>
+  <ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/>
+  <path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+  <g class="left" fill="none" stroke="#ed9b91" stroke-width="13" stroke-linecap="round">
+    <path d="M145 157q-18 9-28 31l-12 25"/><circle cx="105" cy="213" r="8" fill="#ffc4b7" stroke-width="4"/>
+    <path d="M86 207v20m38-20v20M81 217h48" stroke="#d98f63" stroke-width="6"/>
+  </g>
+  <g class="right" fill="none" stroke="#ed9b91" stroke-width="13" stroke-linecap="round">
+    <path d="M255 157q18 9 28 31l12 25"/><circle cx="295" cy="213" r="8" fill="#ffc4b7" stroke-width="4"/>
+    <path d="M276 207v20m38-20v20m-43-10h48" stroke="#d98f63" stroke-width="6"/>
+  </g>
+  <g fill="#f1b85f">
+    <path class="spark" d="M94 133l5 13 13 5-13 5-5 13-5-13-13-5 13-5z"/>
+    <path class="spark s2" d="M307 125l4 10 10 4-10 4-4 10-4-10-10-4 10-4z"/>
+    <path class="spark s3" d="M200 54l4 9 9 4-9 4-4 9-4-9-9-4 9-4z"/>
+  </g>
+</svg>

@@ -2942,6 +2942,12 @@
     }
     .course-empty, .course-error { padding: 14px; border-radius: 14px; background: var(--surface-soft); color: var(--muted); }
     .course-error { background: #fff0ef; color: #9c2925; }
+    .course-diagnostics { margin: 12px 0; padding: 12px 14px; border: 1px solid var(--border); border-radius: 14px; background: var(--surface-soft); }
+    .course-diagnostics summary { cursor: pointer; font-weight: 800; }
+    .course-diagnostic-list { display: grid; gap: 10px; margin: 12px 0 0; padding-left: 20px; }
+    .course-diagnostic-list li { overflow-wrap: anywhere; }
+    .course-diagnostic-list code { white-space: normal; }
+    .course-diagnostic-list p { margin: 4px 0 0; }
     .course-settings-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
     .course-config-field { display: grid; gap: 6px; }
     .course-config-field label { font-weight: 800; }
@@ -3644,6 +3650,7 @@
                   <fieldset class="speaking-sound-group" data-speaking-sound-group="success">
                     <legend>Word pronounced correctly</legend>
                     <div class="speaking-sound-grid">
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="0" /><span>None<small>Do not play a sound for a correct word</small></span></label></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="1" checked /><span>Crystal burst<small>A full, brilliant chord with a sparkling finish</small></span></label><button type="button" data-sound-preview="success" data-sound-variant="1" data-sound-name="Crystal burst">▶ Preview</button></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="2" /><span>Brass triumph<small>A bold, rich fanfare that opens into a major chord</small></span></label><button type="button" data-sound-preview="success" data-sound-variant="2" data-sound-name="Brass triumph">▶ Preview</button></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-success" value="3" /><span>Starlight cascade<small>A bright, rapid cascade with a strong high note</small></span></label><button type="button" data-sound-preview="success" data-sound-variant="3" data-sound-name="Starlight cascade">▶ Preview</button></div>
@@ -3655,6 +3662,7 @@
                   <fieldset class="speaking-sound-group" data-speaking-sound-group="incorrect">
                     <legend>Word pronounced incorrectly</legend>
                     <div class="speaking-sound-grid">
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="0" /><span>None<small>Do not play a sound for an incorrect word</small></span></label></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="1" checked /><span>Boss alert<small>A bold, low warning with a gritty descending edge</small></span></label><button type="button" data-sound-preview="incorrect" data-sound-variant="1" data-sound-name="Boss alert">▶ Preview</button></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="2" /><span>Electric strike<small>A sharp, dissonant double hit with strong presence</small></span></label><button type="button" data-sound-preview="incorrect" data-sound-variant="2" data-sound-name="Electric strike">▶ Preview</button></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-incorrect" value="3" /><span>Deep thunder<small>A resonant low impact followed by a heavy echo</small></span></label><button type="button" data-sound-preview="incorrect" data-sound-variant="3" data-sound-name="Deep thunder">▶ Preview</button></div>
@@ -3666,6 +3674,7 @@
                   <fieldset class="speaking-sound-group" data-speaking-sound-group="transition">
                     <legend>Moving to the next word or phrase</legend>
                     <div class="speaking-sound-grid">
+                      <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="0" /><span>None<small>Do not play a sound when moving to the next phrase</small></span></label></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="1" checked /><span>Launch flare<small>A forceful upward fanfare with a bright landing note</small></span></label><button type="button" data-sound-preview="transition" data-sound-variant="1" data-sound-name="Launch flare">▶ Preview</button></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="2" /><span>Portal chord<small>A deep pulse opening into a wide, soaring chord</small></span></label><button type="button" data-sound-preview="transition" data-sound-variant="2" data-sound-name="Portal chord">▶ Preview</button></div>
                       <div class="speaking-sound-choice"><label><input type="radio" name="speaking-sound-transition" value="3" /><span>Neon ricochet<small>A punchy arcade jump with a crisp, high finish</small></span></label><button type="button" data-sound-preview="transition" data-sound-variant="3" data-sound-name="Neon ricochet">▶ Preview</button></div>
@@ -3983,6 +3992,7 @@
         forcedIntensiveChallengeRetries: DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES,
       };
       let courseCatalog = [];
+      let courseCatalogDiagnostics = [];
       const courseDataCache = new Map();
       let courseFilesDatabasePromise = null;
       let courseRevision = null;
@@ -5683,7 +5693,7 @@
 
       function normalizeSpeakingSoundVariant(value) {
         const variant = Number(value);
-        return Number.isInteger(variant) && variant >= 1 && variant <= 6 ? variant : 1;
+        return Number.isInteger(variant) && variant >= 0 && variant <= 6 ? variant : 1;
       }
 
       function syncSpeakingSoundControls() {
@@ -5724,7 +5734,13 @@
       }
 
       async function playSpeakingSound(type, variant = speakingSoundSelections[type], delayMs = 0, waitForPlayback = false) {
-        const prototype = SPEAKING_SOUND_PROTOTYPES[type]?.[normalizeSpeakingSoundVariant(variant) - 1];
+        const selectedVariant = normalizeSpeakingSoundVariant(variant);
+        if (!Object.prototype.hasOwnProperty.call(SPEAKING_SOUND_PROTOTYPES, type)) {
+          console.error(`Unknown pronunciation sound type: ${type}`);
+          return false;
+        }
+        if (selectedVariant === 0) return true;
+        const prototype = SPEAKING_SOUND_PROTOTYPES[type][selectedVariant - 1];
         if (!prototype) {
           console.error(`Unknown pronunciation sound type: ${type}`);
           return false;
@@ -6993,6 +7009,39 @@
           .replace(/'/g, '&#39;');
       }
 
+      function withCourseErrorContext(error, stage, resource) {
+        const contextualError = error instanceof Error ? error : new Error(String(error));
+        if (!contextualError.courseStage) contextualError.courseStage = stage;
+        if (!contextualError.courseResource) contextualError.courseResource = resource;
+        return contextualError;
+      }
+
+      function courseDiagnosticMarkup(diagnostics) {
+        if (!diagnostics.length) return '';
+        const entries = diagnostics.map(diagnostic => `
+          <li>
+            <strong>${escapeCourseHtml(diagnostic.course)}</strong>
+            <span> · ${escapeCourseHtml(diagnostic.category)} · ${escapeCourseHtml(diagnostic.stage)}</span>
+            ${diagnostic.resource ? `<div>Resource: <code>${escapeCourseHtml(diagnostic.resource)}</code></div>` : ''}
+            <p>${escapeCourseHtml(diagnostic.message)}</p>
+          </li>`).join('');
+        return `
+          <details class="course-diagnostics">
+            <summary>Show ${diagnostics.length} course diagnostic${diagnostics.length === 1 ? '' : 's'}</summary>
+            <ul class="course-diagnostic-list">${entries}</ul>
+          </details>`;
+      }
+
+      function courseDiagnosticSummary(diagnostics) {
+        const courseFailures = diagnostics.filter(item => item.category === 'course loading').length;
+        const assignmentFailures = diagnostics.filter(item => item.category === 'assignment/metrics').length;
+        const messages = [];
+        if (courseFailures) messages.push(`Unable to load ${courseFailures} course${courseFailures === 1 ? '' : 's'}.`);
+        if (assignmentFailures) messages.push(`Assignment/metrics data unavailable for ${assignmentFailures} course${assignmentFailures === 1 ? '' : 's'}; course details remain available.`);
+        if (diagnostics.length) messages.push('Expand the diagnostic log below for details.');
+        return messages.join(' ');
+      }
+
       function setCourseStatus(message, isError = false) {
         if (!els.coursesStatus) return;
         const messages = [message, courseFreshnessMessage].filter(Boolean);
@@ -7518,31 +7567,51 @@
       }
 
       async function loadCourseUnits(course) {
-        const unitNames = await listCourseDirectories(
-          `courses/${course.id}/Units`,
-          /^Unit_\d+$/i,
-        );
+        const unitsPath = `courses/${course.id}/Units`;
+        let unitNames;
+        try {
+          unitNames = await listCourseDirectories(unitsPath, /^Unit_\d+$/i);
+        } catch (error) {
+          throw withCourseErrorContext(error, 'unit discovery', unitsPath);
+        }
         const units = await Promise.all(unitNames.map(async id => {
-          const details = await fetchCourseJson(course.id, `Units/${id}/unit_details.json`);
-          if (details?.id !== id) {
-            throw new Error(`${id}/unit_details.json id does not match its folder.`);
+          const relativePath = `Units/${id}/unit_details.json`;
+          const resource = `courses/${course.id}/${relativePath}`;
+          let details;
+          try {
+            details = await fetchCourseJson(course.id, relativePath);
+          } catch (error) {
+            throw withCourseErrorContext(error, 'unit metadata loading', resource);
           }
-          for (const key of ['title', 'description']) {
-            if (typeof details?.[key] !== 'string') throw new Error(`${id}/unit_details.json has an invalid ${key}.`);
-          }
-          if (Object.prototype.hasOwnProperty.call(details, 'category') &&
-              (typeof details.category !== 'string' || !details.category.trim())) {
-            throw new Error(`${id}/unit_details.json has an invalid category.`);
-          }
-          for (const key of ['focusVocabularyCount', 'supplementaryVocabularyCount']) {
-            if (!Number.isInteger(details[key]) || details[key] < 0) {
-              throw new Error(`${id}/unit_details.json has an invalid ${key} count.`);
+          try {
+            if (details?.id !== id) {
+              throw new Error(`${id}/unit_details.json id does not match its folder.`);
             }
+            for (const key of ['title', 'description']) {
+              if (typeof details?.[key] !== 'string') throw new Error(`${id}/unit_details.json has an invalid ${key}.`);
+            }
+            if (Object.prototype.hasOwnProperty.call(details, 'category') &&
+                (typeof details.category !== 'string' || !details.category.trim())) {
+              throw new Error(`${id}/unit_details.json has an invalid category.`);
+            }
+            for (const key of ['focusVocabularyCount', 'supplementaryVocabularyCount']) {
+              if (!Number.isInteger(details[key]) || details[key] < 0) {
+                throw new Error(`${id}/unit_details.json has an invalid ${key} count.`);
+              }
+            }
+            return { ...details, id, order: Number(id.match(/\d+/)[0]) };
+          } catch (error) {
+            throw withCourseErrorContext(error, 'unit metadata validation', resource);
           }
-          return { ...details, id, order: Number(id.match(/\d+/)[0]) };
         }));
         units.sort((a, b) => a.order - b.order);
-        if (!units.length) throw new Error(`Course ${course.id} contains no Unit_N folders.`);
+        if (!units.length) {
+          throw withCourseErrorContext(
+            new Error(`Course ${course.id} contains no Unit_N folders.`),
+            'unit discovery',
+            unitsPath,
+          );
+        }
         course.units = units;
         return units;
       }
@@ -7553,17 +7622,40 @@
         if (courseCatalogPromise) return courseCatalogPromise;
         courseCatalogPromise = (async () => {
           setCourseStatus('Loading courses…');
+          courseCatalogDiagnostics = [];
           const ids = await listCourseDirectories('courses', /^[A-Za-z0-9][A-Za-z0-9._-]*$/);
-          const warnings = [];
           const courses = await Promise.all(ids.map(async id => {
             try {
-              const details = validateCourseDetails(id, await fetchCourseJson(id, 'course_details.json'));
+              const detailsPath = 'courses/' + id + '/course_details.json';
+              let rawDetails;
+              try {
+                rawDetails = await fetchCourseJson(id, 'course_details.json');
+              } catch (error) {
+                throw withCourseErrorContext(error, 'course metadata loading', detailsPath);
+              }
+              let details;
+              try {
+                details = validateCourseDetails(id, rawDetails);
+              } catch (error) {
+                throw withCourseErrorContext(error, 'course metadata validation', detailsPath);
+              }
               const course = { ...details, id, units: [] };
               await loadCourseUnits(course);
               return course;
             } catch (error) {
               console.error(`Course ${id} could not be loaded:`, error);
-              warnings.push(`${id}: ${error.message}`);
+              const diagnostic = withCourseErrorContext(
+                error,
+                'course loading',
+                `courses/${id}/course_details.json`,
+              );
+              courseCatalogDiagnostics.push({
+                course: id,
+                category: 'course loading',
+                stage: diagnostic.courseStage,
+                resource: diagnostic.courseResource,
+                message: diagnostic.message,
+              });
               return null;
             }
           }));
@@ -7586,9 +7678,11 @@
               courseFreshnessMessage = 'Course content changed, but the active course or unit is no longer available; the incomplete session could not be rebuilt.';
             }
           }
-          if (warnings.length) setCourseStatus(`Some courses could not be loaded: ${warnings.join(' ')}`, true);
-          else setCourseStatus('');
-          if (!courseCatalog.length && !warnings.length) setCourseStatus('No courses are available in courses/.');
+          const diagnosticSummary = courseDiagnosticSummary(courseCatalogDiagnostics);
+          setCourseStatus(
+            diagnosticSummary || (!courseCatalog.length ? 'No courses are available in courses/.' : ''),
+            courseCatalogDiagnostics.length > 0,
+          );
           return courseCatalog;
         })();
         try {
@@ -7632,41 +7726,47 @@
         if (course.assignmentsPromise) return course.assignmentsPromise;
         course.assignmentsPromise = (async () => {
           const focusPath = 'course_vocabulary_focus_by_unit.csv';
-          const focus = parseVocabularyAssignment(
-            await fetchCourseText(course.id, focusPath),
-            `${course.id}/${focusPath}`,
-            'vocabulary_focus',
-          );
-          let complementary = [];
+          let resource = `courses/${course.id}/${focusPath}`;
           try {
+            const focus = parseVocabularyAssignment(
+              await fetchCourseText(course.id, focusPath),
+              `${course.id}/${focusPath}`,
+              'vocabulary_focus',
+            );
+            let complementary = [];
             const complementaryPath = 'course_vocabulary_complementary_by_unit.csv';
+            resource = `courses/${course.id}/${complementaryPath}`;
+            try {
               complementary = parseVocabularyAssignment(
                 await fetchCourseText(course.id, complementaryPath),
                 `${course.id}/${complementaryPath}`,
                 'vocabulary_complementary',
                 course.supplementaryVocabularyCount === 0,
               );
-          } catch (error) {
-            if (error.status !== 404 || course.supplementaryVocabularyCount !== 0) throw error;
-          }
-          const warnings = [];
-          if (focus.length !== course.focusVocabularyCount) {
-            warnings.push(`Course ${course.id} metadata reports ${course.focusVocabularyCount} focus words; assignment CSV contains ${focus.length}.`);
-          }
-          if (complementary.length !== course.supplementaryVocabularyCount) {
-            warnings.push(`Course ${course.id} metadata reports ${course.supplementaryVocabularyCount} supplementary words; assignment CSV contains ${complementary.length}.`);
-          }
-          for (const unit of course.units) {
-            const focusCount = focus.filter(item => item.unitId === unit.id).length;
-            const supplementaryCount = complementary.filter(item => item.unitId === unit.id).length;
-            if (focusCount !== unit.focusVocabularyCount ||
-                supplementaryCount !== unit.supplementaryVocabularyCount) {
-              warnings.push(`${unit.id} metadata reports ${unit.focusVocabularyCount} focus and ${unit.supplementaryVocabularyCount} supplementary words; assignment CSVs contain ${focusCount} focus and ${supplementaryCount} supplementary words.`);
+            } catch (error) {
+              if (error.status !== 404 || course.supplementaryVocabularyCount !== 0) throw error;
             }
+            const warnings = [];
+            if (focus.length !== course.focusVocabularyCount) {
+              warnings.push(`Course ${course.id} metadata reports ${course.focusVocabularyCount} focus words; assignment CSV contains ${focus.length}.`);
+            }
+            if (complementary.length !== course.supplementaryVocabularyCount) {
+              warnings.push(`Course ${course.id} metadata reports ${course.supplementaryVocabularyCount} supplementary words; assignment CSV contains ${complementary.length}.`);
+            }
+            for (const unit of course.units) {
+              const focusCount = focus.filter(item => item.unitId === unit.id).length;
+              const supplementaryCount = complementary.filter(item => item.unitId === unit.id).length;
+              if (focusCount !== unit.focusVocabularyCount ||
+                  supplementaryCount !== unit.supplementaryVocabularyCount) {
+                warnings.push(`${unit.id} metadata reports ${unit.focusVocabularyCount} focus and ${unit.supplementaryVocabularyCount} supplementary words; assignment CSVs contain ${focusCount} focus and ${supplementaryCount} supplementary words.`);
+              }
+            }
+            course.assignments = { focus, complementary, warnings };
+            if (warnings.length) setCourseStatus(warnings.join(' '), true);
+            return course.assignments;
+          } catch (error) {
+            throw withCourseErrorContext(error, 'assignment/metrics loading', resource);
           }
-          course.assignments = { focus, complementary, warnings };
-          if (warnings.length) setCourseStatus(warnings.join(' '), true);
-          return course.assignments;
         })();
         try {
           return await course.assignmentsPromise;
@@ -8225,18 +8325,37 @@
         setCourseScreen('catalog');
         const courses = await discoverCourses();
         if (!courses.length) {
-          els.coursesContent.innerHTML = '';
+          els.coursesContent.innerHTML = courseDiagnosticMarkup(courseCatalogDiagnostics);
+          setCourseStatus(
+            courseDiagnosticSummary(courseCatalogDiagnostics) || 'No courses are available in courses/.',
+            courseCatalogDiagnostics.length > 0,
+          );
           return;
         }
         const levels = [...new Set(courses.map(course => course.level))].sort();
+        const assignmentWarnings = [];
         const courseSummaries = await Promise.all(courses.map(async course => {
           let assignments = [];
           let loadError = '';
           try {
-            assignments = (await loadCourseAssignments(course)).focus;
+            const loadedAssignments = await loadCourseAssignments(course);
+            assignments = loadedAssignments.focus;
+            assignmentWarnings.push(...loadedAssignments.warnings);
           } catch (error) {
             loadError = error.message;
             console.error(`Course metrics unavailable for ${course.id}:`, error);
+            const diagnostic = withCourseErrorContext(
+              error,
+              'assignment/metrics loading',
+              `courses/${course.id}/course_vocabulary_focus_by_unit.csv`,
+            );
+            courseCatalogDiagnostics.push({
+              course: course.id,
+              category: 'assignment/metrics',
+              stage: diagnostic.courseStage,
+              resource: diagnostic.courseResource,
+              message: diagnostic.message,
+            });
           }
           const progress = courseProgressSummary(course, { focus: assignments });
           return { course, progress, loadError };
@@ -8271,6 +8390,11 @@
               </div>
             </article>`;
         });
+        const diagnosticSummary = [
+          courseDiagnosticSummary(courseCatalogDiagnostics),
+          ...new Set(assignmentWarnings),
+        ].filter(Boolean).join(' ');
+        setCourseStatus(diagnosticSummary, courseCatalogDiagnostics.length > 0 || assignmentWarnings.length > 0);
         els.coursesContent.innerHTML = `
           <div class="course-toolbar">
             <input id="courseSearch" type="search" placeholder="Search courses" aria-label="Search courses" />
@@ -8280,6 +8404,7 @@
             </select>
           </div>
           <div id="courseCards">${cards.join('')}</div>
+          ${courseDiagnosticMarkup(courseCatalogDiagnostics)}
           <p class="course-empty">Course catalog is discovered from the available course folders.</p>`;
         const search = document.getElementById('courseSearch');
         const levelFilter = document.getElementById('courseLevelFilter');

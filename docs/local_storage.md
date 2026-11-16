@@ -20,7 +20,7 @@ Guarda preferencias generales de práctica y la sesión de frases que se está u
 | `wrapCsv` | Si el texto CSV se ajusta visualmente en el área de edición. |
 | `color1`, `color2` | Colores usados para resaltar las dos columnas del CSV. |
 | `speakingMin`, `speakingWait`, `speakingAfterMin`, `speakingCelebrationSeconds` | Umbral de similitud, espera por silencio, espera adicional y duración de la celebración de Speaking Practice. |
-| `speakingSoundSelections` | Variante elegida (1–6) para los sonidos de palabra correcta, palabra incorrecta y transición de frase en las prácticas orales. |
+| `speakingSoundSelections` | Opción elegida para los sonidos de palabra correcta, palabra incorrecta y transición de frase en las prácticas orales: `0` significa None y `1–6` identifica un prototipo. |
 
 Las preferencias se guardan al cambiar los controles relacionados. La selección de un conjunto predefinido también guarda su identificador y el CSV cargado. El contenido CSV, incluidas frases generadas con IA, queda persistido cuando se ejecuta un guardado de configuración; la carga de IA por sí sola no guarda inmediatamente ese contenido.
 

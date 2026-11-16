@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Corazoncito haciendo curl con mancuernas</title>
+  <desc id="desc">Un corazón bebé sonriente levanta dos mancuernas pequeñas flexionando los brazos.</desc>
+  <style>
+    .left{transform-box:view-box;transform-origin:145px 157px;animation:curlL 1.4s ease-in-out infinite}
+    .right{transform-box:view-box;transform-origin:255px 157px;animation:curlR 1.4s ease-in-out infinite}
+    .body{transform-box:fill-box;transform-origin:center;animation:breathe 1.4s ease-in-out infinite}
+    @keyframes curlL{0%,100%{transform:rotate(0)}50%{transform:rotate(-50deg)}}
+    @keyframes curlR{0%,100%{transform:rotate(0)}50%{transform:rotate(50deg)}}
+    @keyframes breathe{50%{transform:translateY(-3px) scale(1.015)}}
+    @media(prefers-reduced-motion:reduce){.left,.right,.body{animation:none}}
+  </style>
+  <rect width="400" height="320" rx="28" fill="#fff9f1"/>
+  <ellipse cx="200" cy="279" rx="91" ry="12" fill="#f3ddd2"/>
+  <path d="M178 235q-7 25-18 31m62-31q7 25 18 31" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/>
+  <path d="M148 266q-17 0-17 10 0 8 18 8h19q8-2 2-10m88-8q17 0 17 10 0 8-18 8h-19q-8-2-2-10" fill="#ffd18c" stroke="#c97871" stroke-width="4" stroke-linecap="round"/>
+  <g class="body">
+    <path d="M200 238c-24-20-83-60-83-101 0-27 21-47 47-47 16 0 29 8 37 22 9-17 25-25 43-22 28 4 43 29 37 54-8 34-52 70-81 94z" fill="#ff9e9f" stroke="#d96f79" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M151 191q49 18 98-3l-12 22q-37 18-75-1z" fill="#ffe4c8"/>
+    <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/>
+    <ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/>
+    <path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <g class="left" fill="none" stroke="#ed9b91" stroke-width="13" stroke-linecap="round">
+    <path d="M145 157q-18 9-28 31l-12 25"/><circle cx="105" cy="213" r="8" fill="#ffc4b7" stroke-width="4"/>
+    <g fill="#f4bd75" stroke="#b97655" stroke-width="3"><path d="M87 208v18m-6-18v18m33-18v18m6-18v18" stroke-width="6" stroke-linecap="round"/><path d="M82 217h43" fill="none" stroke-width="5"/></g>
+  </g>
+  <g class="right" fill="none" stroke="#ed9b91" stroke-width="13" stroke-linecap="round">
+    <path d="M255 157q18 9 28 31l12 25"/><circle cx="295" cy="213" r="8" fill="#ffc4b7" stroke-width="4"/>
+    <g fill="#f4bd75" stroke="#b97655" stroke-width="3"><path d="M275 208v18m-6-18v18m33-18v18m6-18v18" stroke-width="6" stroke-linecap="round"/><path d="M269 217h44" fill="none" stroke-width="5"/></g>
+  </g>
+  <path d="M79 119l6 9m-10 5 10 2m230-18-6 9m10 5-10 2" stroke="#f1bc77" stroke-width="4" stroke-linecap="round"/>
+</svg>

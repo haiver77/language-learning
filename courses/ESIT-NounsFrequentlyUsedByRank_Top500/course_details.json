@@ -2,6 +2,8 @@
   "id": "ESIT-NounsFrequentlyUsedByRank_Top500",
   "title": "ESIT-NounsFrequentlyUsedByRank_Top500",
   "description": "Curso de italiano para hablantes de español, nivel A1, centrado en sustantivos frecuentes. Se prioriza el uso de vocabulario simple y básico A1.",
+  "idioma_nativo": "es",
+  "idioma_destino": "it",
   "focusVocabularyCount": 498,
   "supplementaryVocabularyCount": 1016,
   "level": "A1",

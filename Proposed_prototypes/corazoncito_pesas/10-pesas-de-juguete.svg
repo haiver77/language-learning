@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Primeras pesitas del corazoncito</title>
+  <desc id="desc">Un corazón bebé levanta mancuernas ligeras de juguete, con placas redondas y agarres suaves.</desc>
+  <style>
+    .left{transform-box:view-box;transform-origin:145px 157px;animation:curlL 1.55s ease-in-out infinite}
+    .right{transform-box:view-box;transform-origin:255px 157px;animation:curlR 1.55s ease-in-out infinite}
+    .bounce{transform-box:fill-box;transform-origin:center;animation:toy 1.55s ease-in-out infinite}
+    @keyframes curlL{0%,100%{transform:rotate(0)}50%{transform:rotate(-46deg)}}
+    @keyframes curlR{0%,100%{transform:rotate(0)}50%{transform:rotate(46deg)}}
+    @keyframes toy{50%{transform:translateY(-3px) rotate(4deg)}}
+    @media(prefers-reduced-motion:reduce){.left,.right,.bounce{animation:none}}
+  </style>
+  <rect width="400" height="320" rx="28" fill="#fff9f1"/>
+  <ellipse cx="200" cy="280" rx="92" ry="12" fill="#f3ddd2"/>
+  <path d="M178 235l-15 31m59-31 15 31" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/>
+  <path d="M148 266h27m50 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+  <path d="M200 238c-24-20-83-60-83-101 0-27 21-47 47-47 16 0 29 8 37 22 9-17 25-25 43-22 28 4 43 29 37 54-8 34-52 70-81 94z" fill="#ff9e9f" stroke="#d96f79" stroke-width="6" stroke-linejoin="round"/>
+  <path d="M151 191q49 18 98-3l-12 22q-37 18-75-1z" fill="#ffe4c8"/>
+  <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/>
+  <ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/>
+  <path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+  <g class="left" fill="none" stroke="#ed9b91" stroke-width="13" stroke-linecap="round">
+    <path d="M145 157q-18 9-28 31l-12 25"/><circle cx="105" cy="213" r="8" fill="#ffc4b7" stroke-width="4"/>
+    <g class="bounce"><path d="M91 215h28" stroke="#84b9b2" stroke-width="12"/><circle cx="87" cy="215" r="11" fill="#a8d7ce" stroke="#6eaaa1" stroke-width="3"/><circle cx="123" cy="215" r="11" fill="#a8d7ce" stroke="#6eaaa1" stroke-width="3"/><path d="M83 211l7 8m28-8 7 8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>
+  </g>
+  <g class="right" fill="none" stroke="#ed9b91" stroke-width="13" stroke-linecap="round">
+    <path d="M255 157q18 9 28 31l12 25"/><circle cx="295" cy="213" r="8" fill="#ffc4b7" stroke-width="4"/>
+    <g class="bounce"><path d="M281 215h28" stroke="#84b9b2" stroke-width="12"/><circle cx="277" cy="215" r="11" fill="#a8d7ce" stroke="#6eaaa1" stroke-width="3"/><circle cx="313" cy="215" r="11" fill="#a8d7ce" stroke="#6eaaa1" stroke-width="3"/><path d="M273 211l7 8m28-8 7 8" stroke="#fff" stroke-width="3" stroke-linecap="round"/></g>
+  </g>
+</svg>
