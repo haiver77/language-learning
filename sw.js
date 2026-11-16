@@ -1,5 +1,6 @@
 const CACHE_PREFIX = 'language-practice-';
-const SHELL_CACHE = `${CACHE_PREFIX}shell-v10`;
+const APP_VERSION = 'shell-v11';
+const SHELL_CACHE = `${CACHE_PREFIX}${APP_VERSION}`;
 const RUNTIME_CACHE = `${CACHE_PREFIX}runtime-v1`;
 const APP_ROOT = new URL('./', self.registration.scope);
 const APP_SHELL = [
@@ -19,6 +20,11 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('message', event => {
+  if (event.data?.type === 'GET_APP_VERSION') {
+    event.ports?.[0]?.postMessage({ version: APP_VERSION });
+    return;
+  }
+
   if (event.data?.type !== 'ACTIVATE_UPDATE') return;
 
   event.waitUntil(

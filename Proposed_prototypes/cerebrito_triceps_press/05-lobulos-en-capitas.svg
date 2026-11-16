@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
+  <title id="title">Lobulos en capas - press suave de cuento</title>
+  <desc id="desc">Las lineas paralelas y las capas de lobulos resaltan la forma anatomica del cerebro manteniendo el estilo infantil. La parte inferior queda despejada, sin banda sobre el cerebro.</desc>
+  <style>
+    .upperL,.upperR,.foreL,.foreR{transform-box:view-box}
+    .upperL{transform-origin:145px 157px;animation:raiseL 1.7s ease-in-out infinite}.upperR{transform-origin:255px 157px;animation:raiseR 1.7s ease-in-out infinite}
+    .foreL{transform-origin:103px 157px;animation:foreL 1.7s ease-in-out infinite}.foreR{transform-origin:297px 157px;animation:foreR 1.7s ease-in-out infinite}
+    .body{transform-box:fill-box;transform-origin:center;animation:bob 1.7s ease-in-out infinite}
+    @keyframes raiseL{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(90deg)}}@keyframes raiseR{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(-90deg)}}
+    @keyframes foreL{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(-90deg)}}@keyframes foreR{0%,100%{transform:rotate(0)}48%,66%{transform:rotate(90deg)}}
+    @keyframes bob{50%{transform:translateY(-2px) rotate(.5deg)}}
+    @media(prefers-reduced-motion:reduce){.upperL,.upperR,.foreL,.foreR,.body{animation:none}}
+  </style>
+  <rect width="400" height="320" rx="28" fill="#fff9f1"/>
+  <g transform="translate(200 160) scale(1.1) translate(-200 -160)">
+    <ellipse cx="200" cy="282" rx="92" ry="10" fill="#f3ddd2"/>
+    <g class="body">
+      <path d="M178 233l-14 35m58-35 14 35" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+      <path d="M200 232c-12-1-21-8-25-19-18 5-34-6-32-22-16-7-20-24-8-37-10-15-4-32 11-40-2-16 15-26 31-20 9-17 28-18 39-4 14-12 32-8 37 8 18-2 32 10 27 27 14 12 10 30-5 38-2 16-20 23-35 15-8 12-25 17-40 11z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M157 111q12-8 25-3m18-8q12-8 24-2m24 13q10-7 18-3m-111 24q10-6 19-2m70-2q10-7 19-3m-100 31q9-7 17-3m75 3q8-7 17-3m-72 34q11-8 22-3m19 1q10-7 19-3" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      
+      <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/><path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
+      <path d="M139 119q61-40 122 0l-4 12q-56-29-114 0z" fill="#83b9aa" stroke="#5d9589" stroke-width="3"/>
+    </g>
+    <g class="upperL" fill="none" stroke="#ed9b91" stroke-width="15" stroke-linecap="round"><path d="M145 157h-42"/><g class="foreL" stroke-width="13"><path d="M103 157v-43"/><path d="M96 127h14" stroke="#83b9aa" stroke-width="7"/><circle cx="103" cy="111" r="7" fill="#ffc4b7" stroke-width="3"/><path d="M84 99h38" stroke="#b97655" stroke-width="5"/><path d="M89 90v18m28-18v18" stroke="#f1bc78" stroke-width="8"/><path d="M85 99q19-5 37 0" stroke="#fff0d4" stroke-width="2"/></g></g>
+    <g class="upperR" fill="none" stroke="#ed9b91" stroke-width="15" stroke-linecap="round"><path d="M255 157h42"/><g class="foreR" stroke-width="13"><path d="M297 157v-43"/><path d="M290 127h14" stroke="#83b9aa" stroke-width="7"/><circle cx="297" cy="111" r="7" fill="#ffc4b7" stroke-width="3"/><path d="M278 99h38" stroke="#b97655" stroke-width="5"/><path d="M283 90v18m28-18v18" stroke="#f1bc78" stroke-width="8"/><path d="M278 99q19-5 37 0" stroke="#fff0d4" stroke-width="2"/></g></g>
+  </g>
+</svg>

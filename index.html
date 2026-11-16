@@ -3975,7 +3975,7 @@
       const COURSE_FILES_DB_NAME = 'language-practice-course-files';
       const COURSE_FILES_DB_VERSION = 2;
       const COURSE_REVISION_STORAGE_KEY = 'course-version';
-      const COURSE_REVISION_CHECK_INTERVAL = 10 * 60 * 1000;
+      const COURSE_REVISION_CHECK_INTERVAL = 24 * 60 * 60 * 1000;
       const DEFAULT_COURSE_THRESHOLDS = { known: 1, learning: 2, learned: 6, mastered: 8 };
       const DEFAULT_INTENSIVE_CHALLENGE_FORCED_RETRIES = 2;
       let courseState = {
@@ -3999,6 +3999,10 @@
       let courseRevisionCheckPromise = null;
       let courseFreshnessMessage = '';
       let courseFreshnessError = false;
+      let courseStatusBaseMessage = '';
+      let courseStatusBaseError = false;
+      let courseSyncStatusMessage = '';
+      let courseSyncInFlight = false;
       let courseScreen = 'catalog';
       let loadSourceFocusTarget = null;
       let coursePreviousScreen = 'details';
@@ -7044,6 +7048,8 @@
 
       function setCourseStatus(message, isError = false) {
         if (!els.coursesStatus) return;
+        courseStatusBaseMessage = message;
+        courseStatusBaseError = isError;
         const messages = [message, courseFreshnessMessage].filter(Boolean);
         els.coursesStatus.className = messages.length
           ? (isError || courseFreshnessError ? 'course-error' : 'course-empty')
@@ -7219,26 +7225,77 @@
         courseCatalogPromise = null;
       }
 
-      async function checkCourseRevision() {
+      async function getActiveAppVersion() {
+        const worker = navigator.serviceWorker?.controller;
+        if (!worker || typeof MessageChannel === 'undefined') return null;
+        return new Promise(resolve => {
+          const channel = new MessageChannel();
+          const timeout = setTimeout(() => {
+            channel.port1.close();
+            resolve(null);
+          }, 2000);
+          channel.port1.onmessage = event => {
+            clearTimeout(timeout);
+            channel.port1.close();
+            resolve(typeof event.data?.version === 'string' ? event.data.version : null);
+          };
+          try {
+            worker.postMessage({ type: 'GET_APP_VERSION' }, [channel.port2]);
+          } catch (error) {
+            clearTimeout(timeout);
+            channel.port1.close();
+            resolve(null);
+          }
+        });
+      }
+
+      async function checkCourseRevision({ force = false, appVersion = null } = {}) {
         if (courseRevisionCheckPromise) return courseRevisionCheckPromise;
         courseRevisionCheckPromise = (async () => {
           let previous = null;
           try {
             previous = await readCourseStorage('metadata', COURSE_REVISION_STORAGE_KEY);
             courseRevision = typeof previous?.revision === 'string' ? previous.revision : null;
-            if (previous?.checkedAt && Date.now() - previous.checkedAt < COURSE_REVISION_CHECK_INTERVAL &&
-                (previous.revision || previous.checkFailed)) {
+            const versionNeedsSync = !!appVersion && previous?.lastAppVersionSync !== appVersion;
+            const checkedRecently = Number.isFinite(previous?.checkedAt) &&
+              Date.now() >= previous.checkedAt &&
+              Date.now() - previous.checkedAt < COURSE_REVISION_CHECK_INTERVAL;
+            if (!force && !versionNeedsSync && checkedRecently &&
+                (previous.revision || previous.checkFailed || previous.checkPending)) {
               if (previous.checkFailed) {
                 courseFreshnessError = true;
-                courseFreshnessMessage = 'Course freshness could not be verified; using locally cached course data when available.';
+                courseFreshnessMessage = 'No se pudo verificar la vigencia de los cursos; se conservan los datos locales disponibles.';
+              } else if (previous.checkPending) {
+                courseFreshnessError = true;
+                courseFreshnessMessage = 'La verificación de vigencia de los cursos sigue pendiente; se conservan los datos locales disponibles.';
               } else {
                 courseFreshnessError = false;
                 courseFreshnessMessage = '';
               }
-              return courseRevision;
+              return {
+                revision: courseRevision,
+                status: previous.checkFailed || previous.checkPending ? 'unavailable' : 'current',
+                changed: false,
+                skipped: true,
+              };
             }
           } catch (error) {
             console.error('Could not read the saved course revision:', error);
+          }
+
+          const attemptedAt = Date.now();
+          try {
+            await writeCourseStorage('metadata', {
+              path: COURSE_REVISION_STORAGE_KEY,
+              revision: courseRevision,
+              checkedAt: attemptedAt,
+              checkFailed: false,
+              checkPending: true,
+              ...(previous?.lastAppVersionSync ? { lastAppVersionSync: previous.lastAppVersionSync } : {}),
+              ...(appVersion ? { lastAppVersionSync: appVersion } : {}),
+            });
+          } catch (error) {
+            console.error('Could not save the course freshness check attempt:', error);
           }
 
           try {
@@ -7258,36 +7315,95 @@
             courseRevision = latestRevision;
             courseFreshnessError = false;
             courseFreshnessMessage = changed
-              ? 'Course content changed or had no saved version marker; local course caches were refreshed.'
+              ? 'Se detectaron cambios en los cursos; se actualizaron sus recursos locales.'
               : '';
             await writeCourseStorage('metadata', {
               path: COURSE_REVISION_STORAGE_KEY,
               revision: latestRevision,
-              checkedAt: Date.now(),
+              checkedAt: attemptedAt,
               checkFailed: false,
+              checkPending: false,
+              ...(previous?.lastAppVersionSync ? { lastAppVersionSync: previous.lastAppVersionSync } : {}),
+              ...(appVersion ? { lastAppVersionSync: appVersion } : {}),
             });
-            return courseRevision;
+            return { revision: courseRevision, status: changed ? 'changed' : 'current', changed };
           } catch (error) {
             console.error('Course freshness check failed:', error);
             courseFreshnessError = true;
-            courseFreshnessMessage = 'Course freshness could not be verified; using locally cached course data when available.';
+            courseFreshnessMessage = 'No se pudo verificar la vigencia de los cursos; se conservan los datos locales disponibles.';
             try {
               await writeCourseStorage('metadata', {
                 path: COURSE_REVISION_STORAGE_KEY,
                 revision: courseRevision,
-                checkedAt: Date.now(),
+                checkedAt: attemptedAt,
                 checkFailed: true,
+                checkPending: false,
+                ...(previous?.lastAppVersionSync ? { lastAppVersionSync: previous.lastAppVersionSync } : {}),
+                ...(appVersion ? { lastAppVersionSync: appVersion } : {}),
               });
             } catch (storageError) {
               console.error('Could not save the course freshness check result:', storageError);
             }
-            return courseRevision;
+            return { revision: courseRevision, status: 'unavailable', changed: false };
           }
         })();
         try {
           return await courseRevisionCheckPromise;
         } finally {
           courseRevisionCheckPromise = null;
+        }
+      }
+
+      function courseSyncControlsMarkup() {
+        return `
+          <div class="course-actions">
+            <button type="button" class="course-action primary" id="courseSyncButton"${courseSyncInFlight ? ' disabled' : ''}>Sincronizar cursos</button>
+          </div>
+          <p id="courseSyncStatus" class="course-empty" role="status" aria-live="polite">${escapeCourseHtml(courseSyncStatusMessage)}</p>`;
+      }
+
+      function updateCourseSyncStatus() {
+        const button = document.getElementById('courseSyncButton');
+        const status = document.getElementById('courseSyncStatus');
+        if (button) button.disabled = courseSyncInFlight;
+        if (status) status.textContent = courseSyncStatusMessage;
+      }
+
+      function bindCourseSyncButton() {
+        document.getElementById('courseSyncButton')?.addEventListener('click', synchronizeCoursesManually);
+      }
+
+      async function synchronizeCoursesManually() {
+        if (courseSyncInFlight) return;
+        courseSyncInFlight = true;
+        courseSyncStatusMessage = 'Sincronizando cursos…';
+        updateCourseSyncStatus();
+        try {
+          const appVersion = await getActiveAppVersion();
+          const result = await checkCourseRevision({ force: true, appVersion });
+          if (result.status === 'changed') {
+            courseSyncStatusMessage = 'Los cursos cambiaron; catálogo actualizado.';
+            courseFreshnessMessage = '';
+            courseFreshnessError = false;
+            await renderCourseCatalog();
+          } else if (result.status === 'unavailable') {
+            courseSyncStatusMessage = 'No se pudo verificar la vigencia; se conservan los datos locales disponibles.';
+            setCourseStatus(courseStatusBaseMessage, courseStatusBaseError);
+          } else {
+            courseSyncStatusMessage = 'Los cursos están actualizados.';
+            courseFreshnessMessage = '';
+            courseFreshnessError = false;
+            setCourseStatus(courseStatusBaseMessage, courseStatusBaseError);
+          }
+        } catch (error) {
+          console.error('Manual course synchronization failed:', error);
+          courseFreshnessError = true;
+          courseFreshnessMessage = 'No se pudo verificar la vigencia de los cursos; se conservan los datos locales disponibles.';
+          courseSyncStatusMessage = 'No se pudo completar la sincronización; se conservan los datos locales disponibles.';
+          setCourseStatus(courseStatusBaseMessage, courseStatusBaseError);
+        } finally {
+          courseSyncInFlight = false;
+          updateCourseSyncStatus();
         }
       }
 
@@ -7618,7 +7734,7 @@
 
       let courseCatalogPromise = null;
       async function discoverCourses() {
-        await checkCourseRevision();
+        await checkCourseRevision({ appVersion: await getActiveAppVersion() });
         if (courseCatalogPromise) return courseCatalogPromise;
         courseCatalogPromise = (async () => {
           setCourseStatus('Loading courses…');
@@ -8325,7 +8441,8 @@
         setCourseScreen('catalog');
         const courses = await discoverCourses();
         if (!courses.length) {
-          els.coursesContent.innerHTML = courseDiagnosticMarkup(courseCatalogDiagnostics);
+          els.coursesContent.innerHTML = `${courseDiagnosticMarkup(courseCatalogDiagnostics)}${courseSyncControlsMarkup()}`;
+          bindCourseSyncButton();
           setCourseStatus(
             courseDiagnosticSummary(courseCatalogDiagnostics) || 'No courses are available in courses/.',
             courseCatalogDiagnostics.length > 0,
@@ -8405,7 +8522,9 @@
           </div>
           <div id="courseCards">${cards.join('')}</div>
           ${courseDiagnosticMarkup(courseCatalogDiagnostics)}
-          <p class="course-empty">Course catalog is discovered from the available course folders.</p>`;
+          <p class="course-empty">Course catalog is discovered from the available course folders.</p>
+          ${courseSyncControlsMarkup()}`;
+        bindCourseSyncButton();
         const search = document.getElementById('courseSearch');
         const levelFilter = document.getElementById('courseLevelFilter');
         const filterCards = () => {
@@ -10035,9 +10154,22 @@
         .catch(error => console.error('Service worker registration failed:', error));
 
       navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!updateAccepted || hasReloadedForUpdate) return;
-        hasReloadedForUpdate = true;
-        window.location.reload();
+        const reloadAfterSync = updateAccepted && !hasReloadedForUpdate;
+        if (reloadAfterSync) hasReloadedForUpdate = true;
+        (async () => {
+          const appVersion = await getActiveAppVersion();
+          if (appVersion) {
+            const result = await checkCourseRevision({ appVersion });
+            if (result.changed && courseScreen === 'catalog') {
+              courseSyncStatusMessage = 'Los cursos cambiaron; catálogo actualizado.';
+              await renderCourseCatalog();
+            }
+          }
+          if (reloadAfterSync) window.location.reload();
+        })().catch(error => {
+          console.error('Could not synchronize courses after service worker activation:', error);
+          if (reloadAfterSync) window.location.reload();
+        });
       });
     }
   </script>
