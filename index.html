@@ -3781,7 +3781,7 @@
                 </div>
                 <section class="speaking-option-card speaking-sound-catalog" aria-labelledby="allAvailableSoundsTitle">
                   <div class="speaking-option-heading"><h3 class="speaking-option-heading-label" id="allAvailableSoundsTitle">All Available Sounds</h3></div>
-                  <p class="speaking-option-description">Temporary listening library: current practice cues plus independent sound experiments. Previewing these does not change your practice selections.</p>
+                  <p class="speaking-option-description">Temporary listening library: current practice cues plus independent sound experiments. Trumpets and the piano, violin, flute, saxophone, and harp collections are synthesized approximations, not recordings. Previews never change your practice selections.</p>
                   <div class="speaking-sound-catalog-list" id="allAvailableSoundsCatalog"></div>
                 </section>
                 <p class="settings-detail-description">Changes apply to speaking practice.</p>
@@ -4012,9 +4012,143 @@
       const independentSoundNoise = (offset, duration, volume, filterType, frequency, endFrequency = frequency) => ({
         offset, duration, volume, filterType, frequency, endFrequency,
       });
-      const independentSound = (id, name, description, wave, volume, tones, noise = []) => ({
-        id, name, description, wave, volume, tones, noise,
+      const independentSound = (id, name, description, wave, volume, tones, noise = [], performance = null) => ({
+        id, name, description, wave, volume, tones, noise, performance,
       });
+      const INDEPENDENT_INSTRUMENT_PROFILES = {
+        trumpet: { instrument: 'trumpet', harmonics: [1, 0.78, 0.6, 0.46, 0.34, 0.25, 0.18, 0.13, 0.09, 0.06], attack: 0.025, vibratoRate: 5.1, vibratoDepth: 0.0045, breath: 0.006, brightness: 6800, inharmonicity: 0, envelope: 'sustain', sustain: 0.82, release: 0.1 },
+        piano: { instrument: 'piano', harmonics: [1, 0.58, 0.32, 0.2, 0.13, 0.085, 0.055, 0.035, 0.02], attack: 0.006, vibratoRate: 0, vibratoDepth: 0, breath: 0.0015, brightness: 11000, inharmonicity: 0.00045, envelope: 'pluck', sustain: 0.12, decayTime: 0.28, release: 0.08 },
+        violin: { instrument: 'violin', harmonics: [1, 0.72, 0.53, 0.4, 0.3, 0.23, 0.17, 0.12, 0.08, 0.05], attack: 0.075, vibratoRate: 5.4, vibratoDepth: 0.006, breath: 0.003, brightness: 8500, inharmonicity: 0, envelope: 'sustain', sustain: 0.9, release: 0.14 },
+        flute: { instrument: 'flute', harmonics: [1, 0.16, 0.065, 0.028, 0.014, 0.008], attack: 0.065, vibratoRate: 4.8, vibratoDepth: 0.003, breath: 0.014, brightness: 6400, inharmonicity: 0, envelope: 'sustain', sustain: 0.92, release: 0.12 },
+        saxophone: { instrument: 'saxophone', harmonics: [1, 0.82, 0.62, 0.49, 0.37, 0.28, 0.2, 0.14, 0.09, 0.055], attack: 0.028, vibratoRate: 5.2, vibratoDepth: 0.004, breath: 0.007, brightness: 7400, inharmonicity: 0, envelope: 'sustain', sustain: 0.84, release: 0.11 },
+        harp: { instrument: 'harp', harmonics: [1, 0.5, 0.27, 0.16, 0.095, 0.055, 0.032, 0.018], attack: 0.004, vibratoRate: 0, vibratoDepth: 0, breath: 0.001, brightness: 10500, inharmonicity: 0.00012, envelope: 'pluck', sustain: 0.08, decayTime: 0.48, release: 0.08 },
+      };
+      const independentTrumpetSound = (id, name, description, volume, tones, style = 0) => {
+        const profiles = [
+          { attack: 0.025, vibratoRate: 5.1, vibratoDepth: 0.0045, breath: 0.006, brightness: 6800 },
+          { attack: 0.038, vibratoRate: 4.7, vibratoDepth: 0.006, breath: 0.008, brightness: 6100 },
+          { attack: 0.018, vibratoRate: 5.5, vibratoDepth: 0.0035, breath: 0.005, brightness: 7600 },
+          { attack: 0.03, vibratoRate: 5.25, vibratoDepth: 0.0055, breath: 0.007, brightness: 7200 },
+          { attack: 0.045, vibratoRate: 4.9, vibratoDepth: 0.0065, breath: 0.009, brightness: 5900 },
+        ];
+        return independentSound(id, name, description, 'sawtooth', volume, tones, [], {
+          ...INDEPENDENT_INSTRUMENT_PROFILES.trumpet,
+          ...profiles[style % profiles.length],
+        });
+      };
+      const midiFrequency = midi => 440 * Math.pow(2, (midi - 69) / 12);
+      const independentInstrumentCategory = (instrument, title, volume, phrases) => ({
+        title,
+        sounds: phrases.map((phrase) => independentSound(
+          `${instrument}-${phrase.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+          phrase.name,
+          phrase.description,
+          'sine',
+          phrase.volume || volume,
+          phrase.notes.map(([midi, offset, duration, endMidi = midi]) =>
+            independentSoundTone(midiFrequency(midi), offset, duration, midiFrequency(endMidi)),
+          ),
+          [],
+          INDEPENDENT_INSTRUMENT_PROFILES[instrument],
+        )),
+      });
+      const INDEPENDENT_INSTRUMENT_CATEGORIES = [
+        independentInstrumentCategory('piano', 'Piano & Keys (Synthesized)', 0.1, [
+          { name: 'Moonlit Prelude', description: 'A slow, softly voiced piano opening.', notes: [[60, 0, 0.35], [64, 0.08, 0.34], [67, 0.16, 0.4], [72, 0.52, 0.62]] },
+          { name: 'Amber Waltz', description: 'A lilting three-beat phrase with a warm finish.', notes: [[55, 0, 0.28], [62, 0.22, 0.2], [67, 0.44, 0.2], [71, 0.66, 0.2], [74, 0.9, 0.45]] },
+          { name: 'Glass Staircase', description: 'Bright notes climb in measured steps.', notes: [[72, 0, 0.18], [76, 0.2, 0.18], [79, 0.4, 0.18], [83, 0.6, 0.18], [84, 0.8, 0.42]] },
+          { name: 'Nocturne Pulse', description: 'A low repeating pulse under a quiet melody.', notes: [[48, 0, 0.42], [60, 0.02, 0.3], [48, 0.48, 0.42], [63, 0.5, 0.32], [67, 0.92, 0.5]] },
+          { name: 'Clockwork Etude', description: 'A precise, quick-moving keyboard pattern.', notes: [[64, 0, 0.12], [67, 0.15, 0.12], [71, 0.3, 0.12], [76, 0.45, 0.12], [71, 0.6, 0.12], [79, 0.75, 0.32]] },
+          { name: 'Falling Rain', description: 'A gentle cascade of descending piano tones.', notes: [[84, 0, 0.22], [81, 0.16, 0.22], [76, 0.32, 0.22], [72, 0.48, 0.22], [67, 0.64, 0.48]] },
+          { name: 'Velvet Arpeggio', description: 'A rounded arpeggio that opens into a full chord.', notes: [[55, 0, 0.3], [62, 0.14, 0.3], [67, 0.28, 0.3], [71, 0.42, 0.3], [74, 0.56, 0.55]] },
+          { name: 'Blue Hour', description: 'A spacious, reflective phrase in a mellow register.', notes: [[58, 0, 0.52], [65, 0.06, 0.5], [69, 0.12, 0.48], [74, 0.66, 0.64]] },
+          { name: 'Lantern Dance', description: 'A playful alternating motif with a light bounce.', notes: [[60, 0, 0.16], [67, 0.2, 0.16], [62, 0.4, 0.16], [69, 0.6, 0.16], [72, 0.8, 0.36]] },
+          { name: 'Distant Chord', description: 'A softly struck chord with a high answering note.', notes: [[53, 0, 0.72], [60, 0.02, 0.7], [68, 0.04, 0.68], [77, 0.52, 0.4]] },
+          { name: 'Silver Steps', description: 'A short ascending phrase with an airy upper register.', notes: [[65, 0, 0.2], [69, 0.19, 0.2], [72, 0.38, 0.2], [77, 0.57, 0.42]] },
+          { name: 'Quiet Resolve', description: 'A calm minor phrase resolving into a stable chord.', notes: [[57, 0, 0.35], [60, 0.04, 0.34], [64, 0.08, 0.33], [69, 0.46, 0.62]] },
+          { name: 'Carousel Turn', description: 'A circular melody with a gentle rocking rhythm.', notes: [[72, 0, 0.19], [74, 0.2, 0.19], [79, 0.4, 0.28], [76, 0.7, 0.19], [72, 0.91, 0.4]] },
+          { name: 'Morning Motif', description: 'A bright, simple phrase with a clear final chord.', notes: [[60, 0, 0.22], [64, 0.23, 0.22], [67, 0.46, 0.22], [72, 0.69, 0.46], [76, 0.69, 0.4]] },
+          { name: 'Open Cadence', description: 'A broad, gently descending piano cadence.', notes: [[76, 0, 0.32], [72, 0.34, 0.32], [67, 0.68, 0.32], [60, 1.02, 0.62]] },
+        ]),
+        independentInstrumentCategory('violin', 'Violin (Synthesized)', 0.075, [
+          { name: 'Lyrical Rise', description: 'A smooth bow-like ascent with gentle vibrato.', notes: [[55, 0, 0.4], [62, 0.42, 0.4], [67, 0.84, 0.62]] },
+          { name: 'Long Bow', description: 'A sustained, expressive note that blooms gradually.', notes: [[64, 0, 1.05], [67, 0.78, 0.38]] },
+          { name: 'Autumn Phrase', description: 'A warm descending line with a soft landing.', notes: [[76, 0, 0.28], [74, 0.3, 0.28], [69, 0.6, 0.35], [64, 0.98, 0.56]] },
+          { name: 'Silver Tremolo', description: 'A shimmering repeated-note figure.', notes: [[72, 0, 0.14], [72, 0.17, 0.14], [72, 0.34, 0.14], [76, 0.52, 0.42]] },
+          { name: 'Hearth Song', description: 'A close, warm melody in the lower strings.', notes: [[50, 0, 0.42], [57, 0.44, 0.38], [62, 0.84, 0.58]] },
+          { name: 'Crescendo Arc', description: 'A rising bowed phrase with a long held peak.', notes: [[60, 0, 0.3], [64, 0.32, 0.36], [67, 0.7, 0.76]] },
+          { name: 'Evening Lament', description: 'A plaintive phrase with a gentle falling contour.', notes: [[69, 0, 0.42], [65, 0.44, 0.42], [62, 0.88, 0.62]] },
+          { name: 'Dancing Bow', description: 'A nimble, lightly detached violin figure.', notes: [[67, 0, 0.16], [71, 0.2, 0.16], [74, 0.4, 0.16], [79, 0.6, 0.38]] },
+          { name: 'High Horizon', description: 'A high-register call with a smooth gliding tail.', notes: [[79, 0, 0.36], [83, 0.38, 0.36], [86, 0.76, 0.62]] },
+          { name: 'Amber Duet', description: 'Two overlapping melodic voices form a soft duet.', notes: [[60, 0, 0.62], [67, 0.04, 0.58], [64, 0.66, 0.56], [71, 0.7, 0.52]] },
+          { name: 'Wistful Turn', description: 'A short expressive turn ending on a held note.', notes: [[74, 0, 0.22], [76, 0.24, 0.2], [74, 0.46, 0.2], [69, 0.68, 0.52]] },
+          { name: 'Bowed Pulse', description: 'A steady rhythmic pulse under a rising line.', notes: [[55, 0, 0.2], [55, 0.24, 0.2], [62, 0.48, 0.25], [67, 0.76, 0.48]] },
+          { name: 'Silver Lullaby', description: 'A slow, singing phrase with a soft vibrato.', notes: [[72, 0, 0.48], [69, 0.5, 0.48], [67, 1, 0.68]] },
+          { name: 'Brave Ascent', description: 'A confident rising line with a bright held finish.', notes: [[57, 0, 0.26], [64, 0.28, 0.26], [69, 0.56, 0.26], [76, 0.84, 0.52]] },
+          { name: 'Quiet Finale', description: 'A gentle closing phrase that settles into a warm chord.', notes: [[67, 0, 0.34], [64, 0.36, 0.34], [60, 0.72, 0.64], [55, 0.76, 0.6]] },
+        ]),
+        independentInstrumentCategory('flute', 'Flute (Synthesized)', 0.085, [
+          { name: 'Airy Dawn', description: 'A light breathy phrase rising into the upper register.', notes: [[67, 0, 0.3], [72, 0.32, 0.3], [79, 0.64, 0.56]] },
+          { name: 'Skylark Ascent', description: 'A quick, high birdlike run with a clear finish.', notes: [[72, 0, 0.16], [76, 0.18, 0.16], [79, 0.36, 0.16], [84, 0.54, 0.4]] },
+          { name: 'Bamboo Breeze', description: 'A mellow, airy melody with gently spaced notes.', notes: [[60, 0, 0.4], [64, 0.44, 0.38], [67, 0.86, 0.58]] },
+          { name: 'Cloud Drift', description: 'Long smooth tones float down through a soft phrase.', notes: [[81, 0, 0.48], [76, 0.5, 0.48], [72, 1, 0.6]] },
+          { name: 'Morning Bird', description: 'A bright call-and-response flute motif.', notes: [[79, 0, 0.17], [84, 0.2, 0.28], [76, 0.56, 0.17], [81, 0.76, 0.4]] },
+          { name: 'Pastoral Turn', description: 'A calm, rounded phrase with a descending turn.', notes: [[69, 0, 0.3], [72, 0.32, 0.3], [74, 0.64, 0.26], [69, 0.92, 0.42]] },
+          { name: 'Crystal Air', description: 'A high sustained note with a delicate airy edge.', notes: [[86, 0, 0.82], [81, 0.86, 0.38]] },
+          { name: 'River Song', description: 'A gently rippling melodic line.', notes: [[64, 0, 0.2], [67, 0.22, 0.2], [72, 0.44, 0.32], [69, 0.8, 0.2], [72, 1.02, 0.4]] },
+          { name: 'Soft Echo', description: 'A descending phrase answered by a higher echo.', notes: [[76, 0, 0.32], [72, 0.34, 0.32], [67, 0.68, 0.32], [79, 1.04, 0.42]] },
+          { name: 'Silver Flurry', description: 'A quick ornamental run with a light landing.', notes: [[72, 0, 0.11], [74, 0.13, 0.11], [76, 0.26, 0.11], [79, 0.39, 0.11], [84, 0.52, 0.36]] },
+          { name: 'Hollow Reed', description: 'A lower, breathier flute phrase with a soft finish.', notes: [[55, 0, 0.44], [60, 0.46, 0.44], [64, 0.92, 0.58]] },
+          { name: 'Floating Fifths', description: 'Open intervals drift through a quiet airy space.', notes: [[60, 0, 0.52], [67, 0.04, 0.5], [62, 0.58, 0.5], [69, 0.62, 0.48]] },
+          { name: 'Sunrise Call', description: 'A rising fan of notes that opens into a long tone.', notes: [[62, 0, 0.18], [67, 0.2, 0.18], [74, 0.4, 0.18], [79, 0.6, 0.6]] },
+          { name: 'Evening Air', description: 'A relaxed, descending close with soft vibrato.', notes: [[74, 0, 0.36], [71, 0.38, 0.36], [67, 0.76, 0.58]] },
+          { name: 'Clear Horizon', description: 'A simple open melody with a bright, sustained finish.', notes: [[67, 0, 0.26], [72, 0.28, 0.26], [76, 0.56, 0.26], [84, 0.84, 0.56]] },
+        ]),
+        independentInstrumentCategory('saxophone', 'Saxophone (Synthesized)', 0.075, [
+          { name: 'Midnight Riff', description: 'A warm, slightly gritty descending sax phrase.', notes: [[70, 0, 0.22], [74, 0.24, 0.2], [77, 0.46, 0.2], [74, 0.68, 0.4]] },
+          { name: 'City Lights', description: 'A mellow late-night melody with a held high note.', notes: [[58, 0, 0.34], [65, 0.36, 0.34], [70, 0.72, 0.58]] },
+          { name: 'Blue Note Turn', description: 'A short bluesy bend with a breathy resolution.', notes: [[62, 0, 0.24], [65, 0.26, 0.24], [68, 0.52, 0.24], [69, 0.78, 0.42]] },
+          { name: 'Velvet Solo', description: 'A smooth legato phrase with gentle vibrato.', notes: [[67, 0, 0.38], [71, 0.4, 0.38], [74, 0.8, 0.62]] },
+          { name: 'Brass Alley', description: 'A punchy syncopated motif with a low finish.', notes: [[70, 0, 0.18], [70, 0.28, 0.18], [74, 0.5, 0.26], [62, 0.82, 0.42]] },
+          { name: 'Smoke & Gold', description: 'A warm low note rises into a mellow high chord.', notes: [[55, 0, 0.44], [62, 0.46, 0.42], [67, 0.9, 0.54], [71, 0.94, 0.5]] },
+          { name: 'Late Train', description: 'A rolling phrase with a relaxed, wavering tail.', notes: [[65, 0, 0.2], [69, 0.22, 0.2], [72, 0.44, 0.36], [69, 0.84, 0.52]] },
+          { name: 'Corner Club', description: 'A short, playful club-style call and response.', notes: [[74, 0, 0.2], [77, 0.22, 0.3], [69, 0.58, 0.2], [72, 0.8, 0.38]] },
+          { name: 'Satin Waltz', description: 'A gently swaying saxophone waltz phrase.', notes: [[60, 0, 0.3], [67, 0.32, 0.22], [72, 0.56, 0.22], [76, 0.8, 0.44]] },
+          { name: 'Low Ember', description: 'A deep, mellow tone that swells into a small flourish.', notes: [[49, 0, 0.46], [56, 0.48, 0.3], [61, 0.8, 0.3], [68, 1.12, 0.44]] },
+          { name: 'Neon Steps', description: 'A bright sequence of clipped notes and a sustained peak.', notes: [[72, 0, 0.14], [74, 0.16, 0.14], [77, 0.32, 0.14], [81, 0.48, 0.44]] },
+          { name: 'Rainy Window', description: 'A reflective descending phrase with a soft final note.', notes: [[77, 0, 0.34], [74, 0.36, 0.34], [69, 0.72, 0.34], [65, 1.08, 0.5]] },
+          { name: 'Smoky Question', description: 'An expressive rising question that hangs unresolved.', notes: [[62, 0, 0.3], [65, 0.32, 0.3], [70, 0.64, 0.3], [73, 0.96, 0.56]] },
+          { name: 'After Hours', description: 'A slow, intimate phrase with a breathy release.', notes: [[58, 0, 0.5], [65, 0.52, 0.5], [69, 1.04, 0.68]] },
+          { name: 'Downtown Sign-Off', description: 'A confident closing lick with a rounded ending.', notes: [[67, 0, 0.18], [71, 0.2, 0.18], [74, 0.4, 0.18], [79, 0.6, 0.26], [72, 0.9, 0.5]] },
+        ]),
+        independentInstrumentCategory('harp', 'Harp (Synthesized)', 0.095, [
+          { name: 'Silver Cascade', description: 'A sparkling arpeggio that falls through a clear register.', notes: [[84, 0, 0.56], [79, 0.14, 0.56], [76, 0.28, 0.56], [72, 0.42, 0.72]] },
+          { name: 'Waterfall', description: 'A broad descending cascade of overlapping plucked notes.', notes: [[88, 0, 0.48], [84, 0.12, 0.48], [79, 0.24, 0.48], [76, 0.36, 0.48], [72, 0.48, 0.66]] },
+          { name: 'Celtic Turn', description: 'A nimble folk-like figure with a bright final pluck.', notes: [[67, 0, 0.22], [72, 0.22, 0.22], [74, 0.44, 0.22], [79, 0.66, 0.42]] },
+          { name: 'Dewdrop Chord', description: 'A soft chord followed by one high, bell-like note.', notes: [[60, 0, 0.74], [64, 0.03, 0.72], [67, 0.06, 0.7], [84, 0.52, 0.56]] },
+          { name: 'Golden Thread', description: 'A warm ascending line with gently overlapping plucks.', notes: [[48, 0, 0.52], [55, 0.18, 0.48], [60, 0.36, 0.44], [67, 0.54, 0.62]] },
+          { name: 'Moon Pool', description: 'A quiet, spacious pattern of low and high strings.', notes: [[50, 0, 0.68], [74, 0.08, 0.56], [57, 0.74, 0.58], [77, 0.82, 0.52]] },
+          { name: 'Skipping Stones', description: 'Light, separated notes hop across the strings.', notes: [[64, 0, 0.16], [71, 0.2, 0.16], [67, 0.4, 0.16], [76, 0.6, 0.16], [72, 0.8, 0.38]] },
+          { name: 'Featherfall', description: 'A delicate high-register descent with long resonance.', notes: [[91, 0, 0.52], [86, 0.16, 0.52], [83, 0.32, 0.52], [79, 0.48, 0.72]] },
+          { name: 'Amber Strings', description: 'A mellow plucked chord with a gently moving top line.', notes: [[55, 0, 0.72], [62, 0.04, 0.68], [67, 0.08, 0.64], [71, 0.56, 0.44]] },
+          { name: 'Arpeggio Wheel', description: 'A rotating figure rises and circles back down.', notes: [[60, 0, 0.18], [64, 0.16, 0.18], [67, 0.32, 0.18], [72, 0.48, 0.18], [67, 0.64, 0.18], [64, 0.8, 0.36]] },
+          { name: 'Hollow Grove', description: 'Low resonant strings answer a pair of high plucks.', notes: [[45, 0, 0.78], [76, 0.08, 0.42], [81, 0.54, 0.54], [52, 0.82, 0.64]] },
+          { name: 'Star Map', description: 'A constellation of bright plucks in a wide register.', notes: [[60, 0, 0.24], [79, 0.18, 0.24], [67, 0.36, 0.24], [84, 0.54, 0.24], [72, 0.72, 0.46]] },
+          { name: 'Gentle Current', description: 'A flowing, even pattern with a calm resolution.', notes: [[57, 0, 0.32], [64, 0.28, 0.32], [69, 0.56, 0.32], [72, 0.84, 0.54]] },
+          { name: 'Bellflower', description: 'A bright chord with high, bell-like upper strings.', notes: [[62, 0, 0.72], [69, 0.03, 0.68], [74, 0.06, 0.64], [86, 0.12, 0.58]] },
+          { name: 'Last Light', description: 'A soft descending close that fades into resonance.', notes: [[79, 0, 0.38], [74, 0.3, 0.44], [67, 0.62, 0.5], [60, 0.96, 0.72]] },
+          { name: 'Confetti Cannon', description: 'A rapid rising burst that lands in a bright, sparkling chord.', volume: 0.11, notes: [[60, 0, 0.22], [67, 0.08, 0.24], [72, 0.16, 0.28], [79, 0.24, 0.34], [84, 0.32, 0.62], [88, 0.34, 0.56]] },
+          { name: 'Sunburst Splash', description: 'A joyful chord blooms outward with a high splash of light.', volume: 0.11, notes: [[60, 0, 0.58], [67, 0.02, 0.54], [72, 0.04, 0.52], [79, 0.08, 0.48], [88, 0.18, 0.62], [91, 0.22, 0.58]] },
+          { name: 'Carnival Rocket', description: 'A quick, buoyant launch climbs into a celebratory peak.', volume: 0.11, notes: [[55, 0, 0.24], [62, 0.12, 0.22], [67, 0.24, 0.22], [74, 0.36, 0.24], [79, 0.48, 0.28], [86, 0.62, 0.66]] },
+          { name: 'Joyful Fireworks', description: 'Two sparkling upward flares pop into the night sky.', volume: 0.11, notes: [[72, 0, 0.2], [79, 0.1, 0.22], [84, 0.2, 0.34], [74, 0.52, 0.2], [81, 0.62, 0.22], [88, 0.72, 0.62]] },
+          { name: 'Golden Celebration', description: 'A warm rolling chord grows into a radiant high finish.', volume: 0.11, notes: [[48, 0, 0.68], [55, 0.1, 0.62], [60, 0.2, 0.58], [67, 0.3, 0.54], [76, 0.44, 0.5], [84, 0.58, 0.7]] },
+          { name: 'Radiant Bounce', description: 'A playful series of bright leaps lands with a crisp burst.', volume: 0.11, notes: [[67, 0, 0.2], [76, 0.14, 0.2], [72, 0.28, 0.2], [81, 0.42, 0.2], [77, 0.56, 0.2], [86, 0.7, 0.58], [91, 0.72, 0.52]] },
+          { name: 'Party Comet', description: 'A fast sparkling trail streaks upward into a bright tail.', volume: 0.11, notes: [[60, 0, 0.18], [64, 0.07, 0.18], [67, 0.14, 0.18], [72, 0.21, 0.2], [76, 0.28, 0.22], [79, 0.35, 0.26], [84, 0.44, 0.66]] },
+          { name: 'Fanfare Fountain', description: 'A broad, happy fanfare erupts into a sparkling cascade.', volume: 0.11, notes: [[60, 0, 0.6], [67, 0.02, 0.58], [72, 0.04, 0.56], [76, 0.06, 0.54], [84, 0.18, 0.42], [88, 0.28, 0.36], [91, 0.38, 0.68]] },
+          { name: 'Glittering Finale', description: 'A lively ascending run peaks in a shimmering final chord.', volume: 0.11, notes: [[64, 0, 0.16], [67, 0.1, 0.16], [72, 0.2, 0.16], [76, 0.3, 0.16], [79, 0.4, 0.2], [84, 0.5, 0.64], [88, 0.52, 0.6], [91, 0.54, 0.56]] },
+          { name: 'Happy Explosion', description: 'A joyful, full-register burst of overlapping plucks and sparkle.', volume: 0.11, notes: [[55, 0, 0.64], [67, 0.02, 0.56], [72, 0.04, 0.52], [79, 0.08, 0.46], [84, 0.14, 0.58], [88, 0.2, 0.64], [91, 0.28, 0.7]] },
+        ]),
+      ];
       const INDEPENDENT_SOUND_CATALOG = [
         {
           title: 'Bells & Chimes',
@@ -4163,23 +4297,24 @@
         {
           title: 'Battle Trumpets & Alert Calls',
           sounds: [
-            independentSound('battle-horn-dawn', 'Dawn Muster', 'A clear three-note call to gather at first light.', 'sawtooth', 0.065, [independentSoundTone(262, 0, 0.28), independentSoundTone(392, 0.32, 0.28), independentSoundTone(523, 0.64, 0.52)]),
-            independentSound('battle-horn-shield', 'Shield Line', 'A firm low-high pair with a held final note.', 'sawtooth', 0.07, [independentSoundTone(196, 0, 0.3), independentSoundTone(294, 0.34, 0.3), independentSoundTone(392, 0.68, 0.58)]),
-            independentSound('battle-horn-rally', 'Rally Call', 'A rising fourth followed by a decisive return.', 'sawtooth', 0.065, [independentSoundTone(294, 0, 0.25), independentSoundTone(392, 0.28, 0.25), independentSoundTone(523, 0.56, 0.42), independentSoundTone(392, 1.02, 0.34)]),
-            independentSound('battle-horn-vanguard', 'Vanguard', 'A quick ascending fanfare with a bright peak.', 'sawtooth', 0.06, [independentSoundTone(220, 0, 0.16), independentSoundTone(330, 0.18, 0.16), independentSoundTone(440, 0.36, 0.16), independentSoundTone(587, 0.54, 0.44)]),
-            independentSound('battle-horn-long-watch', 'Long Watch', 'Two measured calls with a solemn low ending.', 'triangle', 0.085, [independentSoundTone(349, 0, 0.42), independentSoundTone(349, 0.52, 0.42), independentSoundTone(262, 1.08, 0.58)]),
-            independentSound('battle-horn-signal-fire', 'Signal Fire', 'A high alert burst that steps down into a steady hold.', 'sawtooth', 0.055, [independentSoundTone(587, 0, 0.18), independentSoundTone(523, 0.2, 0.18), independentSoundTone(440, 0.4, 0.56)]),
-            independentSound('battle-horn-march', 'March Forward', 'A rhythmic marching motif ending in a broad chord.', 'sawtooth', 0.055, [independentSoundTone(262, 0, 0.2), independentSoundTone(262, 0.28, 0.2), independentSoundTone(392, 0.56, 0.2), independentSoundTone(523, 0.84, 0.48), independentSoundTone(659, 0.84, 0.44, 659, 'triangle', 0.035)]),
-            independentSound('battle-horn-gate', 'Gate Warning', 'A low warning call with a repeated higher response.', 'sawtooth', 0.06, [independentSoundTone(220, 0, 0.34), independentSoundTone(330, 0.4, 0.24), independentSoundTone(330, 0.72, 0.24)]),
-            independentSound('battle-horn-high-command', 'High Command', 'A sharp command signal with a strong upper interval.', 'sawtooth', 0.055, [independentSoundTone(392, 0, 0.2), independentSoundTone(587, 0.22, 0.2), independentSoundTone(784, 0.44, 0.42)]),
-            independentSound('battle-horn-iron-resolve', 'Iron Resolve', 'A broad, steady fanfare with a grounded finish.', 'sawtooth', 0.05, [independentSoundTone(196, 0, 0.42), independentSoundTone(294, 0, 0.42), independentSoundTone(392, 0.46, 0.52), independentSoundTone(523, 1.02, 0.56)]),
-            independentSound('battle-horn-storm', 'Storm Muster', 'A brisk warning phrase that climbs over three calls.', 'sawtooth', 0.06, [independentSoundTone(247, 0, 0.18), independentSoundTone(311, 0.22, 0.18), independentSoundTone(392, 0.44, 0.18), independentSoundTone(494, 0.66, 0.42)]),
-            independentSound('battle-horn-last-stand', 'Last Stand', 'A dramatic low call answered by a resolute high tone.', 'triangle', 0.085, [independentSoundTone(175, 0, 0.5), independentSoundTone(262, 0.08, 0.5), independentSoundTone(349, 0.62, 0.58), independentSoundTone(523, 0.68, 0.54)]),
-            independentSound('battle-horn-banner-rise', 'Banner Rise', 'A stately rising phrase with a lifted final note.', 'sawtooth', 0.055, [independentSoundTone(262, 0, 0.32), independentSoundTone(330, 0.35, 0.32), independentSoundTone(392, 0.7, 0.32), independentSoundTone(587, 1.05, 0.5)]),
-            independentSound('battle-horn-field-alert', 'Field Alert', 'A compact repeated alert for a distant signal.', 'sawtooth', 0.05, [independentSoundTone(440, 0, 0.16), independentSoundTone(440, 0.22, 0.16), independentSoundTone(587, 0.48, 0.38)]),
-            independentSound('battle-horn-triumph', 'Triumph Call', 'A ceremonial closing fanfare with a bright held chord.', 'sawtooth', 0.05, [independentSoundTone(262, 0, 0.25), independentSoundTone(330, 0.28, 0.25), independentSoundTone(392, 0.56, 0.25), independentSoundTone(523, 0.84, 0.62), independentSoundTone(659, 0.84, 0.58, 659, 'triangle', 0.035)]),
+            independentTrumpetSound('battle-horn-dawn', 'Dawn Muster', 'A clear three-note call to gather at first light.', 0.065, [independentSoundTone(262, 0, 0.28), independentSoundTone(392, 0.32, 0.28), independentSoundTone(523, 0.64, 0.52)], 0),
+            independentTrumpetSound('battle-horn-shield', 'Shield Line', 'A firm low-high pair with a held final note.', 0.07, [independentSoundTone(196, 0, 0.3), independentSoundTone(294, 0.34, 0.3), independentSoundTone(392, 0.68, 0.58)], 1),
+            independentTrumpetSound('battle-horn-rally', 'Rally Call', 'A rising fourth followed by a decisive return.', 0.065, [independentSoundTone(294, 0, 0.25), independentSoundTone(392, 0.28, 0.25), independentSoundTone(523, 0.56, 0.42), independentSoundTone(392, 1.02, 0.34)], 2),
+            independentTrumpetSound('battle-horn-vanguard', 'Vanguard', 'A quick ascending fanfare with a bright peak.', 0.06, [independentSoundTone(220, 0, 0.16), independentSoundTone(330, 0.18, 0.16), independentSoundTone(440, 0.36, 0.16), independentSoundTone(587, 0.54, 0.44)], 3),
+            independentTrumpetSound('battle-horn-long-watch', 'Long Watch', 'Two measured calls with a solemn low ending.', 0.085, [independentSoundTone(349, 0, 0.42), independentSoundTone(349, 0.52, 0.42), independentSoundTone(262, 1.08, 0.58)], 4),
+            independentTrumpetSound('battle-horn-signal-fire', 'Signal Fire', 'A high alert burst that steps down into a steady hold.', 0.055, [independentSoundTone(587, 0, 0.18), independentSoundTone(523, 0.2, 0.18), independentSoundTone(440, 0.4, 0.56)], 0),
+            independentTrumpetSound('battle-horn-march', 'March Forward', 'A rhythmic marching motif ending in a broad chord.', 0.055, [independentSoundTone(262, 0, 0.2), independentSoundTone(262, 0.28, 0.2), independentSoundTone(392, 0.56, 0.2), independentSoundTone(523, 0.84, 0.48)], 1),
+            independentTrumpetSound('battle-horn-gate', 'Gate Warning', 'A low warning call with a repeated higher response.', 0.06, [independentSoundTone(220, 0, 0.34), independentSoundTone(330, 0.4, 0.24), independentSoundTone(330, 0.72, 0.24)], 2),
+            independentTrumpetSound('battle-horn-high-command', 'High Command', 'A sharp command signal with a strong upper interval.', 0.055, [independentSoundTone(392, 0, 0.2), independentSoundTone(587, 0.22, 0.2), independentSoundTone(784, 0.44, 0.42)], 3),
+            independentTrumpetSound('battle-horn-iron-resolve', 'Iron Resolve', 'A broad, steady fanfare with a grounded finish.', 0.05, [independentSoundTone(196, 0, 0.42), independentSoundTone(294, 0, 0.42), independentSoundTone(392, 0.46, 0.52), independentSoundTone(523, 1.02, 0.56)], 4),
+            independentTrumpetSound('battle-horn-storm', 'Storm Muster', 'A brisk warning phrase that climbs over three calls.', 0.06, [independentSoundTone(247, 0, 0.18), independentSoundTone(311, 0.22, 0.18), independentSoundTone(392, 0.44, 0.18), independentSoundTone(494, 0.66, 0.42)], 0),
+            independentTrumpetSound('battle-horn-last-stand', 'Last Stand', 'A dramatic low call answered by a resolute high tone.', 0.085, [independentSoundTone(175, 0, 0.5), independentSoundTone(262, 0.08, 0.5), independentSoundTone(349, 0.62, 0.58), independentSoundTone(523, 0.68, 0.54)], 1),
+            independentTrumpetSound('battle-horn-banner-rise', 'Banner Rise', 'A stately rising phrase with a lifted final note.', 0.055, [independentSoundTone(262, 0, 0.32), independentSoundTone(330, 0.35, 0.32), independentSoundTone(392, 0.7, 0.32), independentSoundTone(587, 1.05, 0.5)], 2),
+            independentTrumpetSound('battle-horn-field-alert', 'Field Alert', 'A compact repeated alert for a distant signal.', 0.05, [independentSoundTone(440, 0, 0.16), independentSoundTone(440, 0.22, 0.16), independentSoundTone(587, 0.48, 0.38)], 3),
+            independentTrumpetSound('battle-horn-triumph', 'Triumph Call', 'A ceremonial closing fanfare with a bright held chord.', 0.05, [independentSoundTone(262, 0, 0.25), independentSoundTone(330, 0.28, 0.25), independentSoundTone(392, 0.56, 0.25), independentSoundTone(523, 0.84, 0.62)], 4),
           ],
         },
+        ...INDEPENDENT_INSTRUMENT_CATEGORIES,
       ];
       const INDEPENDENT_SOUND_LOOKUP = new Map(
         INDEPENDENT_SOUND_CATALOG.flatMap(category => category.sounds.map(sound => [sound.id, sound])),
@@ -6123,6 +6258,111 @@
         }
       }
 
+      function scheduleInstrumentNote(context, sound, note, startAt) {
+        const performance = sound.performance;
+        const noteStart = startAt + note.offset;
+        const noteEnd = noteStart + note.duration;
+        const attack = Math.min(performance.attack, note.duration * 0.35);
+        const release = Math.min(performance.release, note.duration * 0.35);
+        const filter = context.createBiquadFilter();
+        const envelope = context.createGain();
+        const harmonicWeights = performance.harmonics;
+        const weightTotal = harmonicWeights.reduce((total, weight) => total + weight, 0);
+
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(Math.min(performance.brightness, context.sampleRate * 0.45), noteStart);
+        filter.Q.setValueAtTime(0.7, noteStart);
+        envelope.gain.setValueAtTime(0.0001, noteStart);
+        envelope.gain.linearRampToValueAtTime(sound.volume, noteStart + attack);
+        if (performance.envelope === 'pluck') {
+          const decayEnd = Math.min(noteEnd - 0.01, noteStart + attack + performance.decayTime);
+          envelope.gain.exponentialRampToValueAtTime(
+            Math.max(0.0001, sound.volume * performance.sustain),
+            Math.max(noteStart + attack + 0.005, decayEnd),
+          );
+        } else {
+          const holdAt = Math.max(noteStart + attack, noteEnd - release);
+          envelope.gain.setValueAtTime(sound.volume * performance.sustain, holdAt);
+        }
+        envelope.gain.exponentialRampToValueAtTime(0.0001, noteEnd);
+        filter.connect(envelope);
+        envelope.connect(context.destination);
+
+        const vibrato = performance.vibratoDepth > 0 ? context.createOscillator() : null;
+        if (vibrato) {
+          vibrato.type = 'sine';
+          vibrato.frequency.setValueAtTime(performance.vibratoRate, noteStart);
+        }
+        for (let i = 0; i < harmonicWeights.length; i++) {
+          const harmonic = i + 1;
+          const oscillator = context.createOscillator();
+          const partialGain = context.createGain();
+          const vibratoDepth = vibrato ? context.createGain() : null;
+          const inharmonicRatio = harmonic * Math.sqrt(
+            (1 + performance.inharmonicity * harmonic * harmonic) / (1 + performance.inharmonicity),
+          );
+          const frequency = note.frequency * inharmonicRatio;
+          const endFrequency = (note.endFrequency || note.frequency) * inharmonicRatio;
+          oscillator.type = 'sine';
+          oscillator.frequency.setValueAtTime(frequency, noteStart);
+          if (endFrequency !== frequency) oscillator.frequency.linearRampToValueAtTime(endFrequency, noteEnd);
+          partialGain.gain.setValueAtTime(harmonicWeights[i] * 1.35 / weightTotal, noteStart);
+          if (vibrato && vibratoDepth) {
+            vibratoDepth.gain.setValueAtTime(0, noteStart);
+            vibratoDepth.gain.linearRampToValueAtTime(
+              frequency * performance.vibratoDepth,
+              noteStart + Math.min(note.duration * 0.5, attack + 0.1),
+            );
+            vibrato.connect(vibratoDepth);
+            vibratoDepth.connect(oscillator.frequency);
+          }
+          oscillator.connect(partialGain);
+          partialGain.connect(filter);
+          oscillator.onended = () => {
+            oscillator.disconnect();
+            partialGain.disconnect();
+            if (vibratoDepth) vibratoDepth.disconnect();
+            if (i === harmonicWeights.length - 1) {
+              filter.disconnect();
+              envelope.disconnect();
+            }
+          };
+          oscillator.start(noteStart);
+          oscillator.stop(noteEnd + 0.015);
+        }
+        if (vibrato) {
+          vibrato.onended = () => vibrato.disconnect();
+          vibrato.start(noteStart);
+          vibrato.stop(noteEnd + 0.02);
+        }
+
+        if (performance.breath > 0) {
+          const breathDuration = Math.min(note.duration, performance.breathDuration || 0.12);
+          const breathBuffer = context.createBuffer(1, Math.max(1, Math.ceil(context.sampleRate * breathDuration)), context.sampleRate);
+          const breathSamples = breathBuffer.getChannelData(0);
+          for (let i = 0; i < breathSamples.length; i++) breathSamples[i] = Math.random() * 2 - 1;
+          const breath = context.createBufferSource();
+          const breathFilter = context.createBiquadFilter();
+          const breathEnvelope = context.createGain();
+          breath.buffer = breathBuffer;
+          breathFilter.type = 'highpass';
+          breathFilter.frequency.setValueAtTime(performance.breathFrequency || 1700, noteStart);
+          breathEnvelope.gain.setValueAtTime(0.0001, noteStart);
+          breathEnvelope.gain.linearRampToValueAtTime(performance.breath, noteStart + Math.min(0.025, breathDuration * 0.3));
+          breathEnvelope.gain.exponentialRampToValueAtTime(0.0001, noteStart + breathDuration);
+          breath.connect(breathFilter);
+          breathFilter.connect(breathEnvelope);
+          breathEnvelope.connect(context.destination);
+          breath.onended = () => {
+            breath.disconnect();
+            breathFilter.disconnect();
+            breathEnvelope.disconnect();
+          };
+          breath.start(noteStart);
+          breath.stop(noteStart + breathDuration + 0.01);
+        }
+      }
+
       async function playIndependentSound(soundId) {
         const sound = INDEPENDENT_SOUND_LOOKUP.get(soundId);
         if (!sound) {
@@ -6137,6 +6377,11 @@
           for (const note of sound.tones) {
             const noteStart = startAt + note.offset;
             const noteEnd = noteStart + note.duration;
+            if (sound.performance && INDEPENDENT_INSTRUMENT_PROFILES[sound.performance.instrument]) {
+              scheduleInstrumentNote(context, sound, note, startAt);
+              lastEndAt = Math.max(lastEndAt, noteEnd);
+              continue;
+            }
             const oscillator = context.createOscillator();
             const gain = context.createGain();
             oscillator.type = note.wave || sound.wave;
