@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
   <title id="title">Pliegues en espiral - press suave de cuento</title>
-  <desc id="desc">Los surcos curvos en espiral distinguen la ilustracion, dejando despejadas la cara, la banda y la ropa. La parte inferior queda despejada, sin banda sobre el cerebro.</desc>
+  <desc id="desc">Los pliegues curvos en espiral diferencian este cerebro ovalado, con contorno inferior bajo y redondeado.</desc>
   <style>
     .upperL,.upperR,.foreL,.foreR{transform-box:view-box}
     .upperL{transform-origin:145px 157px;animation:raiseL 1.7s ease-in-out infinite}.upperR{transform-origin:255px 157px;animation:raiseR 1.7s ease-in-out infinite}
@@ -15,8 +15,8 @@
   <g transform="translate(200 160) scale(1.1) translate(-200 -160)">
     <ellipse cx="200" cy="282" rx="92" ry="10" fill="#f3ddd2"/>
     <g class="body">
-      <path d="M178 233l-14 35m58-35 14 35" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
-      <path d="M200 232c-14-1-23-9-26-20-18 4-32-7-31-23-16-6-20-24-9-37-11-14-4-31 10-39-2-17 14-27 31-22 8-17 27-19 39-6 14-12 32-9 38 7 19-3 33 9 31 15 14 12 32-3 41-1 17-18 25-34 17-9 13-25 20-40 16z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M166 99c13 0 18 11 10 19-7 7-1 15 9 13m9-39c-9 9-5 19 5 21 9 2 10 12 2 17m20-35c-8 8-5 16 4 18 9 2 10 12 2 18m23-18c-10 4-12 13-4 18 7 5 5 12-3 15m-95-19c11-1 16 8 11 15-4 7 0 13 8 13m91 1c-10-2-15 5-12 12 3 7-2 12-10 12m-61 16c10-7 7-15 1-17m43 15c-10-7-7-14-1-17" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M178 204l-14 64m58-64 14 64" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+      <path d="M200 207C188 207 179 202 175 194 161 202 148 198 146 187 132 190 123 181 126 169 115 159 118 146 129 140 118 130 121 117 133 111 129 99 140 89 154 92 162 81 178 81 188 91 198 81 211 82 221 92 233 81 248 84 253 97 267 93 279 103 274 117 288 124 287 138 276 146 285 158 280 172 268 177 269 189 258 198 245 194 237 203 224 207 214 202 209 206 204 207 200 207Z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M153 107q11 3 14 12m21-22q-5 7-1 14m29-14q-7 7-1 14m29-7q-8 6-5 13m-113 10q8 3 10 10m108 2q-8 3-9 10m-91 22q8-3 7-10m64 10q-8-3-5-10" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       
       <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/><path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
       <path d="M139 119q61-40 122 0l-4 12q-56-29-114 0z" fill="#83b9aa" stroke="#5d9589" stroke-width="3"/>

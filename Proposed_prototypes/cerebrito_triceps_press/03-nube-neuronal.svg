@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
   <title id="title">Nube neuronal - press suave de cuento</title>
-  <desc id="desc">El contorno de nube hace que el cerebro se vea mas tierno y acolchado; conserva los rasgos y la silueta general del personaje. La parte inferior queda despejada, sin banda sobre el cerebro.</desc>
+  <desc id="desc">Una silueta ovalada de nube cerebral con lobulos suaves mantiene la forma de la referencia y elimina el apendice bajo.</desc>
   <style>
     .upperL,.upperR,.foreL,.foreR{transform-box:view-box}
     .upperL{transform-origin:145px 157px;animation:raiseL 1.7s ease-in-out infinite}.upperR{transform-origin:255px 157px;animation:raiseR 1.7s ease-in-out infinite}
@@ -15,8 +15,8 @@
   <g transform="translate(200 160) scale(1.1) translate(-200 -160)">
     <ellipse cx="200" cy="282" rx="92" ry="10" fill="#f3ddd2"/>
     <g class="body">
-      <path d="M178 233l-14 35m58-35 14 35" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
-      <path d="M200 232c-15-1-24-9-27-20-17 5-32-5-32-21-17-4-22-21-13-34-12-13-8-29 5-39-5-17 10-29 27-26 7-17 23-22 37-12 10-15 28-17 39-5 15-13 33-6 38 11 18-5 33 6 33 22 17 10 16 28 2 39 1 17-15 28-32 22-10 14-27 20-42 12z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M166 96q14 6 8 18t8 16m21-37q-8 11 0 20t-2 17m31-32q-10 11 1 20t-2 17m28-8q-12 5-8 17t-8 13m-106-37q11 4 13 14m107 3q-10 3-12 13m-74 27q9-6 7-14m51 13q-8-6-5-14" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M178 204l-14 64m58-64 14 64" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+      <path d="M200 204C188 205 179 200 175 193 162 200 149 196 146 185 133 188 123 179 127 167 116 158 119 145 130 139 119 128 121 115 133 109 130 97 141 88 155 91 163 79 179 80 188 90 198 79 212 81 221 91 234 81 249 85 253 98 267 94 279 105 274 118 287 126 286 139 275 146 284 159 279 173 267 177 268 189 257 198 244 193 236 202 224 205 213 201 209 204 204 205 200 204Z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M151 106q11 3 14 12m22-23q-5 7-1 14m29-14q-7 7-1 14m29-6q-8 6-5 13m-112 9q8 3 10 11m108 1q-8 3-9 11m-91 21q8-3 7-10m64 10q-8-3-5-10" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       
       <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/><path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
       <path d="M139 119q61-40 122 0l-4 12q-56-29-114 0z" fill="#83b9aa" stroke="#5d9589" stroke-width="3"/>

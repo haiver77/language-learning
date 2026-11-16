@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
   <title id="title">Surcos de cuento - press suave de cuento</title>
-  <desc id="desc">Los surcos organicos, con pequenos remates redondos, recuerdan una ilustracion de cuento sin agregar elementos externos. La parte inferior queda despejada, sin banda sobre el cerebro.</desc>
+  <desc id="desc">Los surcos organicos mantienen el aire de cuento dentro de una silueta ovalada, sin bulto inferior.</desc>
   <style>
     .upperL,.upperR,.foreL,.foreR{transform-box:view-box}
     .upperL{transform-origin:145px 157px;animation:raiseL 1.7s ease-in-out infinite}.upperR{transform-origin:255px 157px;animation:raiseR 1.7s ease-in-out infinite}
@@ -15,8 +15,8 @@
   <g transform="translate(200 160) scale(1.1) translate(-200 -160)">
     <ellipse cx="200" cy="282" rx="92" ry="10" fill="#f3ddd2"/>
     <g class="body">
-      <path d="M178 233l-14 35m58-35 14 35" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
-      <path d="M200 232c-15-1-23-9-26-20-18 5-32-6-31-22-17-5-21-23-10-37-11-14-5-31 10-39-2-17 15-27 31-21 8-17 27-19 39-5 14-13 32-8 37 8 19-2 33 10 29 27 14 13 10 31-4 39-2 16-19 23-35 15-9 13-25 18-41 13z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M158 104q12 4 9 15t7 13m25-33q-9 9-1 18t-2 15m30-30q-9 8 0 17t-2 15m28-4q-12 4-8 15t-8 11m-97-23q10 1 13 11m97-2q-10 3-12 12m-71 20q10-4 8-12m51 12q-9-4-6-12m-35 27q8-5 7-11m14 8q-2-6 4-10" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M178 204l-14 64m58-64 14 64" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
+      <path d="M199 205C187 205 178 200 175 193 161 201 148 197 146 186 132 189 123 179 127 168 115 158 119 145 130 139 119 128 122 115 134 109 130 97 142 88 155 91 163 79 179 81 188 91 198 80 213 82 221 92 234 81 250 85 253 98 268 94 279 105 274 118 288 126 286 139 276 147 284 159 279 173 267 178 268 189 257 198 245 194 237 202 224 206 213 201 209 204 204 205 199 205Z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M153 106q11 3 14 12m21-22q-5 7-1 14m30-14q-7 7-1 14m29-7q-8 6-5 13m-112 10q8 3 10 10m108 1q-8 3-9 10m-91 23q8-3 7-10m64 10q-8-3-5-10" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
       
       <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/><path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
       <path d="M139 119q61-40 122 0l-4 12q-56-29-114 0z" fill="#83b9aa" stroke="#5d9589" stroke-width="3"/>

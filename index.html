@@ -766,6 +766,7 @@
     }
 
     .sheet.load-page .sheet-panel[data-panel="load"].courses-active {
+      padding-top: 0;
       padding-bottom: calc(var(--bottom-nav-height) + 24px + env(safe-area-inset-bottom));
     }
 
@@ -2755,7 +2756,7 @@
       top: 0;
       z-index: 20;
       margin: -20px -20px 0;
-      padding: 6px 20px 8px;
+      padding: 10px 20px 12px;
       background: var(--panel);
     }
     .courses-sticky-header .course-context-header {
@@ -2763,7 +2764,7 @@
       padding: 4px 0;
       background: var(--panel);
     }
-    .courses-sticky-header .courses-page-header { margin: 4px 0 0; }
+    .courses-sticky-header .courses-page-header { margin: 0; }
     .course-context-pill {
       min-width: 0;
       padding: 9px 12px;
@@ -2809,7 +2810,7 @@
       justify-content: space-between;
       gap: 10px;
     }
-    .courses-page-header { margin: 4px 0 16px; }
+    .courses-page-header { justify-content: flex-start; margin: 0 0 16px; }
     .courses-title { margin: 0; font-size: clamp(2.2rem, 6vw, 3rem); }
     .course-back-button, .course-action, .course-tab {
       border: 1px solid var(--border);
@@ -2819,6 +2820,20 @@
       color: var(--ink);
       font-weight: 800;
       cursor: pointer;
+    }
+    .course-back-button {
+      display: inline-flex;
+      flex: 0 0 32px;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      min-height: 32px;
+      padding: 0;
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      font-size: 28px;
+      line-height: 1;
     }
     .course-action.primary, .course-tab.active {
       background: #6652b8;
@@ -3469,7 +3484,7 @@
                 <button type="button" class="course-context-pill" data-course-context="practice" aria-label="Change course practice type"></button>
               </div>
               <div class="courses-page-header">
-                <button type="button" class="course-back-button" id="coursesBack">‹ Load Phrases</button>
+                <button type="button" class="course-back-button" id="coursesBack" aria-label="Back to Load Phrases">‹</button>
                 <h2 class="courses-title" id="coursesPageTitle" tabindex="-1">Courses</h2>
               </div>
             </div>
@@ -8407,7 +8422,7 @@
           els.coursesPageTitle.textContent = titles[screen] || 'Courses';
         }
         if (els.coursesBack) {
-          els.coursesBack.textContent = screen === 'catalog' ? '‹ Load Phrases' : '‹ Back';
+          els.coursesBack.setAttribute('aria-label', screen === 'catalog' ? 'Back to Load Phrases' : 'Back');
           els.coursesBack.hidden = screen === 'practiceTypes';
         }
         updateCourseContext();
