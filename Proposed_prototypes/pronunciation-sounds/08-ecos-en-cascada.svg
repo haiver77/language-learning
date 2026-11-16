@@ -1,12 +1,133 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" role="img" aria-labelledby="title desc">
-  <title id="title">Mobile pronunciation sounds — echo arcs</title><desc id="desc">Compact three-event picker with small echo illustrations and preview controls.</desc>
+  <title id="title">Pronunciation sounds ? open chooser</title>
+  <desc id="desc">An editorial, low-chrome layout uses event headings, numbered choices and open rows for a clean, scannable mobile experience.</desc>
   <defs>
-    <symbol id="art" viewBox="0 0 18 18"><path d="M2 5h3l3 4-3 4H2M7 3h3l5 6-5 6H7M12 1h2l4 8-4 8h-2" fill="none" stroke="#367c82" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
-    <symbol id="tile" viewBox="0 0 180 44"><rect x=".5" y=".5" width="179" height="43" rx="11" fill="#fff" stroke="#dce4ec"/><circle cx="10" cy="22" r="5" fill="#fff" stroke="#778397" stroke-width="1.3"/><use href="#art" x="20" y="13" width="18" height="18"/><rect x="132" y="4" width="44" height="36" rx="9" fill="#f3f5f9" stroke="#dce4ec"/><path d="M139 16l6 4-6 4z" fill="#526378"/><text x="158" y="25" text-anchor="middle" fill="#334155" font-size="8" font-weight="700">Preview</text></symbol><symbol id="selected" viewBox="0 0 180 44"><rect x=".5" y=".5" width="179" height="43" rx="11" fill="#f5f1ff" stroke="#7958d6" stroke-width="1.6"/><circle cx="10" cy="22" r="5" fill="#7958d6"/><circle cx="10" cy="22" r="2" fill="#fff"/><use href="#art" x="20" y="13" width="18" height="18"/><rect x="132" y="4" width="44" height="36" rx="9" fill="#fff" stroke="#cfc2f5"/><path d="M139 16l6 4-6 4z" fill="#5b3cb2"/><text x="158" y="25" text-anchor="middle" fill="#5b3cb2" font-size="8" font-weight="700">Preview</text></symbol><symbol id="none" viewBox="0 0 180 44"><rect x=".5" y=".5" width="179" height="43" rx="11" fill="#fff" stroke="#dce4ec"/><circle cx="10" cy="22" r="5" fill="#fff" stroke="#778397" stroke-width="1.3"/><use href="#art" x="20" y="13" width="18" height="18"/><text x="143" y="25" text-anchor="middle" fill="#8793a3" font-size="8" font-weight="700">Off</text></symbol>
-    <style>text{font-family:Arial,sans-serif}.ink{fill:#172335}.muted{fill:#64748b}.panel{fill:#f7f9fc;stroke:#e6ebf1}</style>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dff5ef" />
+      <stop offset="1" stop-color="#e8eaff" />
+    </linearGradient>
+    <style>text{font-family:Arial,Helvetica,sans-serif}.muted{fill:#758297}.ink{fill:#172335}</style>
   </defs>
-  <rect width="390" height="844" fill="#f2f5f9"/><text x="12" y="20" class="muted" font-size="8" font-weight="700" letter-spacing="1">SETTINGS  /  SPEAKING OPTIONS</text><text x="12" y="47" class="ink" font-size="21" font-weight="700">Pronunciation sounds</text><text x="12" y="66" class="muted" font-size="10">Choose a sound; tap Preview to listen. Saved automatically.</text>
-  <g><rect class="panel" x="9" y="83" width="372" height="232" rx="16"/><circle cx="22" cy="103" r="4" fill="#45ad7a"/><text x="33" y="107" class="ink" font-size="12" font-weight="700">Word pronounced correctly</text><use href="#none" x="12" y="117"/><text x="54" y="143" class="ink" font-size="10" font-weight="700">None</text><use href="#selected" x="198" y="117"/><text x="240" y="143" class="ink" font-size="10" font-weight="700">Crystal burst</text><use href="#tile" x="12" y="166"/><text x="54" y="192" class="ink" font-size="10">Brass triumph</text><use href="#tile" x="198" y="166"/><text x="240" y="192" class="ink" font-size="10">Starlight cascade</text><use href="#tile" x="12" y="215"/><text x="54" y="241" class="ink" font-size="10">Power fanfare</text><use href="#tile" x="198" y="215"/><text x="240" y="241" class="ink" font-size="10">Victory chord</text><use href="#tile" x="12" y="264"/><text x="54" y="290" class="ink" font-size="10">Arcade burst</text></g>
-  <g><rect class="panel" x="9" y="317" width="372" height="232" rx="16"/><circle cx="22" cy="337" r="4" fill="#e77a67"/><text x="33" y="341" class="ink" font-size="12" font-weight="700">Word pronounced incorrectly</text><use href="#none" x="12" y="351"/><text x="54" y="377" class="ink" font-size="10" font-weight="700">None</text><use href="#selected" x="198" y="351"/><text x="240" y="377" class="ink" font-size="10" font-weight="700">Boss alert</text><use href="#tile" x="12" y="400"/><text x="54" y="426" class="ink" font-size="10">Electric strike</text><use href="#tile" x="198" y="400"/><text x="240" y="426" class="ink" font-size="10">Deep thunder</text><use href="#tile" x="12" y="449"/><text x="54" y="475" class="ink" font-size="10">Strong buzzer</text><use href="#tile" x="198" y="449"/><text x="240" y="475" class="ink" font-size="10">Descending alert</text><use href="#tile" x="12" y="498"/><text x="54" y="524" class="ink" font-size="10">Low impact</text></g>
-  <g><rect class="panel" x="9" y="551" width="372" height="232" rx="16"/><circle cx="22" cy="571" r="4" fill="#499cc6"/><text x="33" y="575" class="ink" font-size="12" font-weight="700">Moving to the next word or phrase</text><use href="#none" x="12" y="585"/><text x="54" y="611" class="ink" font-size="10" font-weight="700">None</text><use href="#selected" x="198" y="585"/><text x="240" y="611" class="ink" font-size="10" font-weight="700">Launch flare</text><use href="#tile" x="12" y="634"/><text x="54" y="660" class="ink" font-size="10">Portal chord</text><use href="#tile" x="198" y="634"/><text x="240" y="660" class="ink" font-size="10">Neon ricochet</text><use href="#tile" x="12" y="683"/><text x="54" y="709" class="ink" font-size="10">Bold fanfare</text><use href="#tile" x="198" y="683"/><text x="240" y="709" class="ink" font-size="10">Impact launch</text><use href="#tile" x="12" y="732"/><text x="54" y="758" class="ink" font-size="10">Arcade jump</text></g><text x="12" y="808" class="muted" font-size="9">One sound per event · “Off” plays no sound</text>
+  <rect width="390" height="844" fill="#f5f7fb" />
+  <text x="20" y="25" fill="#818c9b" font-size="8" font-weight="700" text-anchor="start" letter-spacing="1.2">PREFERENCES  /  SPEAKING</text>
+  <text x="20" y="57" fill="#172335" font-size="22" font-weight="700" text-anchor="start">Pronunciation sounds</text>
+  <text x="20" y="77" fill="#64748b" font-size="9" font-weight="400" text-anchor="start">A sound can make each step feel clearer.</text>
+  <text x="19" y="121" fill="#25946b" font-size="9" font-weight="700" text-anchor="start">01</text>
+  <text x="51" y="121" fill="#263448" font-size="11.2" font-weight="700" text-anchor="start">Word pronounced correctly</text>
+  <text x="369" y="121" fill="#9aa4b1" font-size="6.7" font-weight="700" text-anchor="end" letter-spacing=".7">7 OPTIONS</text>
+  <path d="M19 129h352" stroke="#25946b" stroke-width="1.4" opacity=".52" />
+  <text x="24" y="150" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">01</text>
+  <text x="43" y="152" fill="#273649" font-size="8" font-weight="500" text-anchor="start">None</text>
+  <path d="M142 164h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <text x="175" y="165" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Off</text>
+  <rect x="197" y="137" width="173" height="39" rx="8" fill="#eaf8f1" stroke="none" stroke-width="1" />
+  <text x="202" y="150" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">02</text>
+  <text x="221" y="152" fill="#273649" font-size="8" font-weight="700" text-anchor="start">Crystal burst</text>
+  <path d="M320 164h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 159l7 4-7 4z" fill="#25946b" />
+  <text x="353" y="165" fill="#25946b" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="195" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">03</text>
+  <text x="43" y="197" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Brass triumph</text>
+  <path d="M142 209h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 204l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="210" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="202" y="195" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">04</text>
+  <text x="221" y="197" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Starlight cascade</text>
+  <path d="M320 209h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 204l7 4-7 4z" fill="#8a96a5" />
+  <text x="353" y="210" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="240" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">05</text>
+  <text x="43" y="242" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Power fanfare</text>
+  <path d="M142 254h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 249l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="255" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="202" y="240" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">06</text>
+  <text x="221" y="242" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Victory chord</text>
+  <path d="M320 254h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 249l7 4-7 4z" fill="#8a96a5" />
+  <text x="353" y="255" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="285" fill="#25946b" font-size="6.7" font-weight="700" text-anchor="start">07</text>
+  <text x="43" y="287" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Arcade burst</text>
+  <path d="M142 299h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#25946b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 294l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="300" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="19" y="353" fill="#dd655b" font-size="9" font-weight="700" text-anchor="start">02</text>
+  <text x="51" y="353" fill="#263448" font-size="11.2" font-weight="700" text-anchor="start">Word pronounced incorrectly</text>
+  <text x="369" y="353" fill="#9aa4b1" font-size="6.7" font-weight="700" text-anchor="end" letter-spacing=".7">7 OPTIONS</text>
+  <path d="M19 361h352" stroke="#dd655b" stroke-width="1.4" opacity=".52" />
+  <text x="24" y="382" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">01</text>
+  <text x="43" y="384" fill="#273649" font-size="8" font-weight="500" text-anchor="start">None</text>
+  <path d="M142 396h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <text x="175" y="397" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Off</text>
+  <rect x="197" y="369" width="173" height="39" rx="8" fill="#fff0ed" stroke="none" stroke-width="1" />
+  <text x="202" y="382" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">02</text>
+  <text x="221" y="384" fill="#273649" font-size="8" font-weight="700" text-anchor="start">Boss alert</text>
+  <path d="M320 396h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 391l7 4-7 4z" fill="#dd655b" />
+  <text x="353" y="397" fill="#dd655b" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="427" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">03</text>
+  <text x="43" y="429" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Electric strike</text>
+  <path d="M142 441h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 436l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="442" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="202" y="427" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">04</text>
+  <text x="221" y="429" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Deep thunder</text>
+  <path d="M320 441h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 436l7 4-7 4z" fill="#8a96a5" />
+  <text x="353" y="442" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="472" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">05</text>
+  <text x="43" y="474" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Strong buzzer</text>
+  <path d="M142 486h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 481l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="487" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="202" y="472" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">06</text>
+  <text x="221" y="474" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Descending alert</text>
+  <path d="M320 486h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 481l7 4-7 4z" fill="#8a96a5" />
+  <text x="353" y="487" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="517" fill="#dd655b" font-size="6.7" font-weight="700" text-anchor="start">07</text>
+  <text x="43" y="519" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Low impact</text>
+  <path d="M142 531h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#dd655b" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 526l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="532" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="19" y="585" fill="#3989bf" font-size="9" font-weight="700" text-anchor="start">03</text>
+  <text x="51" y="585" fill="#263448" font-size="11.2" font-weight="700" text-anchor="start">Moving to the next word or phrase</text>
+  <text x="369" y="585" fill="#9aa4b1" font-size="6.7" font-weight="700" text-anchor="end" letter-spacing=".7">7 OPTIONS</text>
+  <path d="M19 593h352" stroke="#3989bf" stroke-width="1.4" opacity=".52" />
+  <text x="24" y="614" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">01</text>
+  <text x="43" y="616" fill="#273649" font-size="8" font-weight="500" text-anchor="start">None</text>
+  <path d="M142 628h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <text x="175" y="629" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Off</text>
+  <rect x="197" y="601" width="173" height="39" rx="8" fill="#edf6fc" stroke="none" stroke-width="1" />
+  <text x="202" y="614" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">02</text>
+  <text x="221" y="616" fill="#273649" font-size="8" font-weight="700" text-anchor="start">Launch flare</text>
+  <path d="M320 628h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 623l7 4-7 4z" fill="#3989bf" />
+  <text x="353" y="629" fill="#3989bf" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="659" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">03</text>
+  <text x="43" y="661" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Portal chord</text>
+  <path d="M142 673h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 668l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="674" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="202" y="659" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">04</text>
+  <text x="221" y="661" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Neon ricochet</text>
+  <path d="M320 673h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 668l7 4-7 4z" fill="#8a96a5" />
+  <text x="353" y="674" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="704" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">05</text>
+  <text x="43" y="706" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Bold fanfare</text>
+  <path d="M142 718h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 713l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="719" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="202" y="704" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">06</text>
+  <text x="221" y="706" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Impact launch</text>
+  <path d="M320 718h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M345 713l7 4-7 4z" fill="#8a96a5" />
+  <text x="353" y="719" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="24" y="749" fill="#3989bf" font-size="6.7" font-weight="700" text-anchor="start">07</text>
+  <text x="43" y="751" fill="#273649" font-size="8" font-weight="500" text-anchor="start">Arcade jump</text>
+  <path d="M142 763h4l3 -2.1 4 4.2 4 -6.3 4 7.9799999999999995 4 -3.78 4 0" fill="none" stroke="#3989bf" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" opacity=".8" />
+  <path d="M167 758l7 4-7 4z" fill="#8a96a5" />
+  <text x="175" y="764" fill="#758195" font-size="6.2" font-weight="700" text-anchor="start">Preview</text>
+  <text x="20" y="807" fill="#778398" font-size="8" font-weight="400" text-anchor="start">One selection per event ? None is silent</text>
 </svg>

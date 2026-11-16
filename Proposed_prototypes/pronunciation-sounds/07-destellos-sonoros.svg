@@ -1,12 +1,131 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 844" role="img" aria-labelledby="title desc">
-  <title id="title">Mobile pronunciation sounds — sparkle icons</title><desc id="desc">Dense mobile sound choices with small celebratory starburst illustrations and all groups visible.</desc>
+  <title id="title">Pronunciation sounds ? event timeline</title>
+  <desc id="desc">A vertical feedback timeline connects three event nodes; text-first choice rows form a clear, compact mobile picker.</desc>
   <defs>
-    <symbol id="art" viewBox="0 0 18 18"><path d="M9 1l2 5 5-2-2 5 4 2-5 2 1 4-5-3-4 3 1-5-5-1 5-3z" fill="#f2c56e" stroke="#d19a43" stroke-width="1.1" stroke-linejoin="round"/></symbol>
-    <symbol id="tile" viewBox="0 0 180 44"><rect x=".5" y=".5" width="179" height="43" rx="11" fill="#fff" stroke="#dce4ec"/><circle cx="10" cy="22" r="5" fill="#fff" stroke="#778397" stroke-width="1.3"/><use href="#art" x="20" y="13" width="18" height="18"/><rect x="132" y="4" width="44" height="36" rx="9" fill="#f3f5f9" stroke="#dce4ec"/><path d="M139 16l6 4-6 4z" fill="#526378"/><text x="158" y="25" text-anchor="middle" fill="#334155" font-size="8" font-weight="700">Preview</text></symbol><symbol id="selected" viewBox="0 0 180 44"><rect x=".5" y=".5" width="179" height="43" rx="11" fill="#f5f1ff" stroke="#7958d6" stroke-width="1.6"/><circle cx="10" cy="22" r="5" fill="#7958d6"/><circle cx="10" cy="22" r="2" fill="#fff"/><use href="#art" x="20" y="13" width="18" height="18"/><rect x="132" y="4" width="44" height="36" rx="9" fill="#fff" stroke="#cfc2f5"/><path d="M139 16l6 4-6 4z" fill="#5b3cb2"/><text x="158" y="25" text-anchor="middle" fill="#5b3cb2" font-size="8" font-weight="700">Preview</text></symbol><symbol id="none" viewBox="0 0 180 44"><rect x=".5" y=".5" width="179" height="43" rx="11" fill="#fff" stroke="#dce4ec"/><circle cx="10" cy="22" r="5" fill="#fff" stroke="#778397" stroke-width="1.3"/><use href="#art" x="20" y="13" width="18" height="18"/><text x="143" y="25" text-anchor="middle" fill="#8793a3" font-size="8" font-weight="700">Off</text></symbol>
-    <style>text{font-family:Arial,sans-serif}.ink{fill:#172335}.muted{fill:#64748b}.panel{fill:#f7f9fc;stroke:#e6ebf1}</style>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dff5ef" />
+      <stop offset="1" stop-color="#e8eaff" />
+    </linearGradient>
+    <style>text{font-family:Arial,Helvetica,sans-serif}.muted{fill:#758297}.ink{fill:#172335}</style>
   </defs>
-  <rect width="390" height="844" fill="#f2f5f9"/><text x="12" y="20" class="muted" font-size="8" font-weight="700" letter-spacing="1">SETTINGS  /  SPEAKING OPTIONS</text><text x="12" y="47" class="ink" font-size="21" font-weight="700">Pronunciation sounds</text><text x="12" y="66" class="muted" font-size="10">Choose a sound; tap Preview to listen. Saved automatically.</text>
-  <g><rect class="panel" x="9" y="83" width="372" height="232" rx="16"/><circle cx="22" cy="103" r="4" fill="#45ad7a"/><text x="33" y="107" class="ink" font-size="12" font-weight="700">Word pronounced correctly</text><use href="#none" x="12" y="117"/><text x="54" y="143" class="ink" font-size="10" font-weight="700">None</text><use href="#selected" x="198" y="117"/><text x="240" y="143" class="ink" font-size="10" font-weight="700">Crystal burst</text><use href="#tile" x="12" y="166"/><text x="54" y="192" class="ink" font-size="10">Brass triumph</text><use href="#tile" x="198" y="166"/><text x="240" y="192" class="ink" font-size="10">Starlight cascade</text><use href="#tile" x="12" y="215"/><text x="54" y="241" class="ink" font-size="10">Power fanfare</text><use href="#tile" x="198" y="215"/><text x="240" y="241" class="ink" font-size="10">Victory chord</text><use href="#tile" x="12" y="264"/><text x="54" y="290" class="ink" font-size="10">Arcade burst</text></g>
-  <g><rect class="panel" x="9" y="317" width="372" height="232" rx="16"/><circle cx="22" cy="337" r="4" fill="#e77a67"/><text x="33" y="341" class="ink" font-size="12" font-weight="700">Word pronounced incorrectly</text><use href="#none" x="12" y="351"/><text x="54" y="377" class="ink" font-size="10" font-weight="700">None</text><use href="#selected" x="198" y="351"/><text x="240" y="377" class="ink" font-size="10" font-weight="700">Boss alert</text><use href="#tile" x="12" y="400"/><text x="54" y="426" class="ink" font-size="10">Electric strike</text><use href="#tile" x="198" y="400"/><text x="240" y="426" class="ink" font-size="10">Deep thunder</text><use href="#tile" x="12" y="449"/><text x="54" y="475" class="ink" font-size="10">Strong buzzer</text><use href="#tile" x="198" y="449"/><text x="240" y="475" class="ink" font-size="10">Descending alert</text><use href="#tile" x="12" y="498"/><text x="54" y="524" class="ink" font-size="10">Low impact</text></g>
-  <g><rect class="panel" x="9" y="551" width="372" height="232" rx="16"/><circle cx="22" cy="571" r="4" fill="#499cc6"/><text x="33" y="575" class="ink" font-size="12" font-weight="700">Moving to the next word or phrase</text><use href="#none" x="12" y="585"/><text x="54" y="611" class="ink" font-size="10" font-weight="700">None</text><use href="#selected" x="198" y="585"/><text x="240" y="611" class="ink" font-size="10" font-weight="700">Launch flare</text><use href="#tile" x="12" y="634"/><text x="54" y="660" class="ink" font-size="10">Portal chord</text><use href="#tile" x="198" y="634"/><text x="240" y="660" class="ink" font-size="10">Neon ricochet</text><use href="#tile" x="12" y="683"/><text x="54" y="709" class="ink" font-size="10">Bold fanfare</text><use href="#tile" x="198" y="683"/><text x="240" y="709" class="ink" font-size="10">Impact launch</text><use href="#tile" x="12" y="732"/><text x="54" y="758" class="ink" font-size="10">Arcade jump</text></g><text x="12" y="808" class="muted" font-size="9">One sound per event · “Off” plays no sound</text>
+  <rect width="390" height="844" fill="#f5f7fb" />
+  <text x="18" y="25" fill="#728097" font-size="8" font-weight="700" text-anchor="start" letter-spacing="1.2">SPEAKING FLOW</text>
+  <text x="18" y="56" fill="#172335" font-size="22" font-weight="700" text-anchor="start">Pronunciation sounds</text>
+  <text x="18" y="76" fill="#64748b" font-size="9" font-weight="400" text-anchor="start">Set a cue for each moment.</text>
+  <path d="M28 119v636" stroke="#dce4eb" stroke-width="2" stroke-dasharray="3 4" />
+  <circle cx="28" cy="129" r="9" fill="#25946b" />
+  <circle cx="28" cy="129" r="3" fill="#fff" />
+  <text x="47" y="132" fill="#253449" font-size="10.5" font-weight="700" text-anchor="start">01  Word pronounced correctly</text>
+  <path d="M47 140h326" stroke="#e1e7ee" stroke-width="1" />
+  <rect x="49" y="148" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="163.5" r="3" fill="none" stroke="#25946b" stroke-width="1" />
+  <text x="68" y="166.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">None</text>
+  <text x="181" y="166" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Off</text>
+  <rect x="212" y="148" width="157" height="31" rx="15" fill="#eaf8f1" stroke="#25946b" stroke-width="1" />
+  <circle cx="223" cy="163.5" r="3" fill="#25946b" stroke="#25946b" stroke-width="1" />
+  <text x="231" y="166.5" fill="#2b384a" font-size="7.6" font-weight="700" text-anchor="start">Crystal burst</text>
+  <path d="M336 159.5l7 4-7 4z" fill="#25946b" />
+  <text x="344" y="166" fill="#25946b" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="185" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="200.5" r="3" fill="none" stroke="#25946b" stroke-width="1" />
+  <text x="68" y="203.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Brass triumph</text>
+  <path d="M173 196.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="203" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="212" y="185" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="223" cy="200.5" r="3" fill="none" stroke="#25946b" stroke-width="1" />
+  <text x="231" y="203.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Starlight cascade</text>
+  <path d="M336 196.5l7 4-7 4z" fill="#8793a2" />
+  <text x="344" y="203" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="222" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="237.5" r="3" fill="none" stroke="#25946b" stroke-width="1" />
+  <text x="68" y="240.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Power fanfare</text>
+  <path d="M173 233.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="240" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="212" y="222" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="223" cy="237.5" r="3" fill="none" stroke="#25946b" stroke-width="1" />
+  <text x="231" y="240.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Victory chord</text>
+  <path d="M336 233.5l7 4-7 4z" fill="#8793a2" />
+  <text x="344" y="240" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="259" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="274.5" r="3" fill="none" stroke="#25946b" stroke-width="1" />
+  <text x="68" y="277.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Arcade burst</text>
+  <path d="M173 270.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="277" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <circle cx="28" cy="351" r="9" fill="#dd655b" />
+  <circle cx="28" cy="351" r="3" fill="#fff" />
+  <text x="47" y="354" fill="#253449" font-size="10.5" font-weight="700" text-anchor="start">02  Word pronounced incorrectly</text>
+  <path d="M47 362h326" stroke="#e1e7ee" stroke-width="1" />
+  <rect x="49" y="370" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="385.5" r="3" fill="none" stroke="#dd655b" stroke-width="1" />
+  <text x="68" y="388.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">None</text>
+  <text x="181" y="388" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Off</text>
+  <rect x="212" y="370" width="157" height="31" rx="15" fill="#fff0ed" stroke="#dd655b" stroke-width="1" />
+  <circle cx="223" cy="385.5" r="3" fill="#dd655b" stroke="#dd655b" stroke-width="1" />
+  <text x="231" y="388.5" fill="#2b384a" font-size="7.6" font-weight="700" text-anchor="start">Boss alert</text>
+  <path d="M336 381.5l7 4-7 4z" fill="#dd655b" />
+  <text x="344" y="388" fill="#dd655b" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="407" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="422.5" r="3" fill="none" stroke="#dd655b" stroke-width="1" />
+  <text x="68" y="425.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Electric strike</text>
+  <path d="M173 418.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="425" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="212" y="407" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="223" cy="422.5" r="3" fill="none" stroke="#dd655b" stroke-width="1" />
+  <text x="231" y="425.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Deep thunder</text>
+  <path d="M336 418.5l7 4-7 4z" fill="#8793a2" />
+  <text x="344" y="425" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="444" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="459.5" r="3" fill="none" stroke="#dd655b" stroke-width="1" />
+  <text x="68" y="462.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Strong buzzer</text>
+  <path d="M173 455.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="462" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="212" y="444" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="223" cy="459.5" r="3" fill="none" stroke="#dd655b" stroke-width="1" />
+  <text x="231" y="462.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Descending alert</text>
+  <path d="M336 455.5l7 4-7 4z" fill="#8793a2" />
+  <text x="344" y="462" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="481" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="496.5" r="3" fill="none" stroke="#dd655b" stroke-width="1" />
+  <text x="68" y="499.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Low impact</text>
+  <path d="M173 492.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="499" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <circle cx="28" cy="573" r="9" fill="#3989bf" />
+  <circle cx="28" cy="573" r="3" fill="#fff" />
+  <text x="47" y="576" fill="#253449" font-size="10.5" font-weight="700" text-anchor="start">03  Moving to the next word or phrase</text>
+  <path d="M47 584h326" stroke="#e1e7ee" stroke-width="1" />
+  <rect x="49" y="592" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="607.5" r="3" fill="none" stroke="#3989bf" stroke-width="1" />
+  <text x="68" y="610.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">None</text>
+  <text x="181" y="610" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Off</text>
+  <rect x="212" y="592" width="157" height="31" rx="15" fill="#edf6fc" stroke="#3989bf" stroke-width="1" />
+  <circle cx="223" cy="607.5" r="3" fill="#3989bf" stroke="#3989bf" stroke-width="1" />
+  <text x="231" y="610.5" fill="#2b384a" font-size="7.6" font-weight="700" text-anchor="start">Launch flare</text>
+  <path d="M336 603.5l7 4-7 4z" fill="#3989bf" />
+  <text x="344" y="610" fill="#3989bf" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="629" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="644.5" r="3" fill="none" stroke="#3989bf" stroke-width="1" />
+  <text x="68" y="647.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Portal chord</text>
+  <path d="M173 640.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="647" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="212" y="629" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="223" cy="644.5" r="3" fill="none" stroke="#3989bf" stroke-width="1" />
+  <text x="231" y="647.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Neon ricochet</text>
+  <path d="M336 640.5l7 4-7 4z" fill="#8793a2" />
+  <text x="344" y="647" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="666" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="681.5" r="3" fill="none" stroke="#3989bf" stroke-width="1" />
+  <text x="68" y="684.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Bold fanfare</text>
+  <path d="M173 677.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="684" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="212" y="666" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="223" cy="681.5" r="3" fill="none" stroke="#3989bf" stroke-width="1" />
+  <text x="231" y="684.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Impact launch</text>
+  <path d="M336 677.5l7 4-7 4z" fill="#8793a2" />
+  <text x="344" y="684" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <rect x="49" y="703" width="157" height="31" rx="15" fill="#fff" stroke="#e5eaf0" stroke-width="0.7" />
+  <circle cx="60" cy="718.5" r="3" fill="none" stroke="#3989bf" stroke-width="1" />
+  <text x="68" y="721.5" fill="#2b384a" font-size="7.6" font-weight="500" text-anchor="start">Arcade jump</text>
+  <path d="M173 714.5l7 4-7 4z" fill="#8793a2" />
+  <text x="181" y="721" fill="#68768a" font-size="6.4" font-weight="700" text-anchor="start">Preview</text>
+  <text x="18" y="802" fill="#778398" font-size="8" font-weight="400" text-anchor="start">None turns off only that event</text>
 </svg>

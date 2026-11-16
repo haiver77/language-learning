@@ -70,7 +70,7 @@ Este inventario describe la interfaz implementada en `index.html`. Distingue la 
 
 7.5. **Cursos** (`#coursesApp[data-load-screen="courses"]`, inicialmente `hidden`): cabecera adhesiva con fondo continuo desde el borde superior, retorno compacto con icono y etiqueta accesible (`#coursesBack`) y título alineado a la izquierda (`#coursesPageTitle`), a unos 10 px de la parte superior; debajo se muestran el contexto del curso, el estado (`#coursesStatus`) y el contenido dinámico (`#coursesContent`). Según la vista, el contenido genera:
 - Catálogo: búsqueda (`#courseSearch`), filtro de nivel (`#courseLevelFilter`), tarjetas (`[data-course-card]`) con métricas, progreso y acciones `data-action` para seleccionar, ver detalles o retirar selección. Al final se muestran **Sincronizar cursos** (`#courseSyncButton`, deshabilitado durante la comprobación) y su estado accesible en vivo (`#courseSyncStatus`), que informa si los cursos cambiaron, están actualizados o no se pudo verificar su vigencia. Los errores muestran un resumen breve en `#coursesStatus` y, cuando existen, un registro plegable **Course diagnostics** con curso, etapa, recurso/ruta conocida y mensaje del error; distingue fallos de carga del curso de fallos de asignaciones/métricas.
-- Detalles del curso: resumen y tarjetas de unidad (`[data-course-unit-card]`, `data-unit-id`), con acciones de selección y detalle; un gesto horizontal de derecha a izquierda vuelve al catálogo.
+- Detalles del curso: resumen y tarjetas de unidad (`[data-course-unit-card]`, `data-unit-id`), con acciones de selección y detalle; un gesto horizontal de izquierda a derecha vuelve al catálogo.
 - Detalle de unidad: pestañas de vocabulario `data-action="unit-tab"` (`focus` y `complementary`), filas de palabras y acción para seleccionar unidad y practicar; la navegación hacia atrás se realiza con el botón **Back** superior, un gesto horizontal de izquierda a derecha o el botón Atrás del dispositivo.
 - Tipo de práctica: opciones `data-action="choose-practice-type"` y aplicación `data-action="apply-practice-type"`.
 
@@ -88,7 +88,7 @@ La vista `[data-panel="settings"]` contiene `#settingsPanel`. El menú `[data-se
 
 9.2. **Languages** (`[data-settings-view="languages"]`): idioma nativo (`#lang1Select`) y objetivo (`#lang2Select`).
 
-9.3. **Speaking** (`[data-settings-view="speaking"]`): controles de similitud y tiempos (`#sp-min-settings`, `#sp-wait-settings`, `#sp-after-min-settings`, `#sp-celebration-settings`) con botones de incremento/decremento `data-step-target`; grupos de sonidos `fieldset[data-speaking-sound-group]`, con radios y botones de vista previa `data-sound-preview`; estado `#speaking-sound-status`.
+9.3. **Speaking** (`[data-settings-view="speaking"]`): controles de similitud y tiempos (`#sp-min-settings`, `#sp-wait-settings`, `#sp-after-min-settings`, `#sp-celebration-settings`) con botones de incremento/decremento `data-step-target`; sección compacta de sonidos con una cinta introductoria, tres grupos numerados y diferenciados por color (`fieldset[data-speaking-sound-group]`), opciones tipo cápsula con radio y botón de vista previa `data-sound-preview`, y estado `#speaking-sound-status`.
 
 9.4. **Course** (`[data-settings-view="course"]`): umbrales de progreso (`#courseKnownThreshold`, `#courseLearningThreshold`, `#courseLearnedThreshold`, `#courseMasteredThreshold`), reintentos de Intensive Challenge (`#courseIntensiveChallengeForcedRetries`) y estado (`#courseSettingsStatus`). Los controles numéricos con pasos tienen botones `data-step-target`.
 
