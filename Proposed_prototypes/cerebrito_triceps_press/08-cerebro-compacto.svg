@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" role="img" aria-labelledby="title desc">
   <title id="title">Cerebro compacto - press suave de cuento</title>
-  <desc id="desc">Esta forma ovalada mas compacta conserva los lobulos redondos de la referencia y evita una prolongacion bajo el cerebro.</desc>
+  <desc id="desc">Cerebrito con pliegues ubicados en los lobulos exteriores y zapatillas claras tipo slip-on; se conserva la animacion original del press.</desc>
   <style>
     .upperL,.upperR,.foreL,.foreR{transform-box:view-box}
     .upperL{transform-origin:145px 157px;animation:raiseL 1.7s ease-in-out infinite}.upperR{transform-origin:255px 157px;animation:raiseR 1.7s ease-in-out infinite}
@@ -15,8 +15,8 @@
   <g transform="translate(200 160) scale(1.1) translate(-200 -160)">
     <ellipse cx="200" cy="282" rx="92" ry="10" fill="#f3ddd2"/>
     <g class="body">
-      <path d="M178 204l-14 64m58-64 14 64" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><path d="M149 268h27m48 0h27" stroke="#c97871" stroke-width="5" stroke-linecap="round"/>
-      <path d="M200 206C188 206 179 201 175 194 162 201 149 197 146 186 132 189 123 180 126 168 115 158 118 145 129 139 118 128 121 116 133 110 129 98 141 89 154 92 162 80 178 81 188 91 198 80 212 82 221 91 234 81 249 84 253 97 268 94 279 104 274 118 288 125 287 138 276 146 285 158 280 172 268 177 269 189 258 198 245 194 237 202 225 206 214 202 209 205 204 206 200 206Z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M154 107q10 3 13 12m22-22q-5 7-1 14m29-14q-7 7-1 14m29-7q-8 6-5 13m-113 10q8 3 10 10m108 2q-8 3-9 10m-91 22q8-3 7-10m64 10q-8-3-5-10" fill="none" stroke="#ed8e87" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M178 204l-14 64m58-64 14 64" fill="none" stroke="#dc7d7a" stroke-width="14" stroke-linecap="round"/><g stroke-linejoin="round"><path d="M164 258Q158 255 152 259L141 266Q138 270 142 274Q144 276 149 275L169 274Q174 274 172 269L167 261Q166 259 164 258Z" fill="#fff0d4" stroke="#b97655" stroke-width="3"/><path d="M148 265q9 4 20 1m-20 2q9 4 20 1" fill="none" stroke="#83b9aa" stroke-width="3" stroke-linecap="round"/><g transform="translate(400 0) scale(-1 1)"><path d="M164 258Q158 255 152 259L141 266Q138 270 142 274Q144 276 149 275L169 274Q174 274 172 269L167 261Q166 259 164 258Z" fill="#fff0d4" stroke="#b97655" stroke-width="3"/><path d="M148 265q9 4 20 1m-20 2q9 4 20 1" fill="none" stroke="#83b9aa" stroke-width="3" stroke-linecap="round"/></g></g>
+      <path d="M200 206C188 206 179 201 175 194 162 201 149 197 146 186 132 189 123 180 126 168 115 158 118 145 129 139 118 128 121 116 133 110 129 98 141 89 154 92 162 80 178 81 188 91 198 80 212 82 221 91 234 81 249 84 253 97 268 94 279 104 274 118 288 125 287 138 276 146 285 158 280 172 268 177 269 189 258 198 245 194 237 202 225 206 214 202 209 205 204 206 200 206Z" fill="#ff9e9f" stroke="#d96f79" stroke-width="7" stroke-linejoin="round"/><path d="M151 105q7-6 14 0M175 95q6-5 11 1M216 96q6-6 12 0M239 104q7-5 14 0M136 137q8 1 10 8M136 160q8 0 10 7M254 137q-8 1-10 8M254 160q-8 0-10 7M158 181q7 5 14 1M229 182q7 5 13 0" fill="none" stroke="#ed8e87" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
       
       <ellipse cx="181" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="220" cy="139" rx="4" ry="7" fill="#513b43"/><ellipse cx="163" cy="151" rx="9" ry="5" fill="#f27f88"/><ellipse cx="238" cy="151" rx="9" ry="5" fill="#f27f88"/><path d="M190 156q11 14 22 0" fill="none" stroke="#a8515c" stroke-width="4" stroke-linecap="round"/>
       <path d="M139 119q61-40 122 0l-4 12q-56-29-114 0z" fill="#83b9aa" stroke="#5d9589" stroke-width="3"/>
