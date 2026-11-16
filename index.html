@@ -2175,26 +2175,54 @@
     }
     .activity-day {
       position: relative;
-      display: flex;
+      display: grid;
       min-width: 0;
       min-height: 0;
-      height: clamp(32px, 9.5vw, 40px);
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1px;
+      height: clamp(44px, 12.6vw, 49px);
+      grid-template-rows: 2fr 1fr;
+      overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 8px;
-      background: var(--surface-soft);
+      background: var(--surface);
       color: var(--ink);
-      font-size: 12px;
-      font-weight: 700;
     }
     .activity-day.is-outside { opacity: .42; }
     .activity-day.is-today { outline: 2px solid var(--primary); outline-offset: -2px; }
-    .activity-day.is-complete { background: color-mix(in srgb, #39d353 22%, var(--surface)); border-color: #39d353; }
-    .activity-day-star { color: #e6a23c; font-size: 11px; line-height: 1; }
-    .activity-day-count { color: var(--muted); font-size: 9px; line-height: 1; }
+    .activity-day.is-complete { border-color: var(--success); }
+    .activity-day-number {
+      display: grid;
+      min-width: 0;
+      place-items: center;
+      background: var(--surface);
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .activity-day.is-complete .activity-day-number { background: var(--success-soft); }
+    .activity-day.is-outside { grid-template-rows: 1fr; place-items: center; }
+    .activity-day.is-outside .activity-day-number { background: transparent; font-size: 10px; font-weight: 600; }
+    .activity-day-count-band {
+      display: grid;
+      min-width: 0;
+      grid-template-rows: minmax(0, 1fr) 2px;
+      align-items: center;
+      gap: 1px;
+      padding: 1px 5px 2px;
+      background: var(--surface-soft);
+    }
+    .activity-day.is-complete .activity-day-count-band { background: var(--success-soft); }
+    .activity-day-count { overflow: hidden; color: var(--muted); font-size: 9px; line-height: 9px; text-align: center; text-overflow: clip; }
+    .activity-day.is-complete .activity-day-count { color: var(--success); }
+    .activity-day-progress {
+      width: 100%;
+      height: 2px;
+      overflow: hidden;
+      border-radius: 2px;
+      background: var(--border);
+    }
+    .activity-day-progress-fill { height: 100%; border-radius: inherit; background: var(--primary); }
+    .activity-day.is-complete .activity-day-progress-fill { background: var(--success); }
+    .activity-day-star { position: absolute; z-index: 1; top: 3px; right: 4px; color: #e6a23c; font-size: 9px; line-height: 1; }
     .statistics-summary { margin: 14px 0 0; color: var(--muted); font-size: 14px; }
     .statistics-description { margin: 0 0 16px; color: var(--muted); line-height: 1.5; }
     .effort-period-list { display: grid; gap: 14px; --effort-cell-size: 12px; --effort-gap: 4px; }
@@ -2284,7 +2312,7 @@
       height: 100%;
       max-height: 100%;
       padding: 0;
-      overflow: hidden;
+      overflow: clip;
     }
     .settings-menu,
     .settings-page-view {
@@ -2444,31 +2472,32 @@
     .speaking-sound-status { min-height: 18px; margin: 0; color: var(--muted); font: 12px/18px Arial, sans-serif; }
     .speaking-sounds-card { gap: 8px; padding: 12px; background: var(--surface); }
     .speaking-sounds-card .speaking-option-heading { align-items: center; }
-    .speaking-sounds-mark { width: 28px; height: 22px; flex: 0 0 auto; color: #3f8f89; }
+    .speaking-sounds-mark { width: 28px; height: 22px; flex: 0 0 auto; color: var(--primary); }
     .speaking-sounds-mark path { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
     .speaking-sounds-card .speaking-option-description { margin: -5px 0 0; }
-    .speaking-sound-ribbon { display: flex; min-height: 28px; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 10px; border-radius: 12px; background: linear-gradient(110deg, #dff5ef, #e8eaff); color: #356e72; font: 700 10px/14px Arial, sans-serif; letter-spacing: .06em; }
-    .speaking-sound-ribbon svg { width: 52px; height: 14px; flex: 0 0 auto; color: #3f8f89; }
+    .speaking-sound-ribbon { display: flex; min-height: 28px; align-items: center; justify-content: space-between; gap: 10px; padding: 4px 10px; border: 1px solid var(--border); border-radius: 12px; background: linear-gradient(110deg, var(--primary-soft), var(--success-soft)); color: var(--ink); font: 700 10px/14px Arial, sans-serif; letter-spacing: .06em; }
+    .speaking-sound-ribbon svg { width: 52px; height: 14px; flex: 0 0 auto; color: var(--primary); }
     .speaking-sound-ribbon path { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-    .speaking-sound-group { --sound-accent: #25946b; --sound-tint: #eaf8f1; gap: 7px; padding: 8px; border-color: var(--border); background: var(--surface); }
-    .speaking-sound-group[data-speaking-sound-group="incorrect"] { --sound-accent: #dd655b; --sound-tint: #fff0ed; }
-    .speaking-sound-group[data-speaking-sound-group="transition"] { --sound-accent: #398bb8; --sound-tint: #edf6fc; }
-    .speaking-sound-group legend { display: flex; width: calc(100% + 16px); align-items: center; gap: 8px; margin-left: -8px; padding: 6px 9px; border-radius: 10px; background: var(--sound-tint); font-size: 12px; line-height: 18px; }
-    .speaking-sound-step { display: grid; width: 22px; height: 22px; flex: 0 0 22px; place-items: center; border-radius: 50%; background: var(--sound-accent); color: #fff; font: 700 10px/1 Arial, sans-serif; }
-    .speaking-sound-wave { width: 44px; height: 14px; flex: 0 0 auto; margin-left: auto; color: var(--sound-accent); }
+    .speaking-sound-group { --sound-accent: var(--success); --sound-tint: color-mix(in srgb, var(--sound-accent) 14%, var(--surface)); gap: 5px; padding: 5px; border-color: var(--border); background: var(--surface); }
+    .speaking-sound-group[data-speaking-sound-group="incorrect"] { --sound-accent: var(--danger); }
+    .speaking-sound-group[data-speaking-sound-group="transition"] { --sound-accent: var(--primary); }
+    .speaking-sound-group legend { display: flex; width: 100%; min-width: 0; align-items: center; gap: 7px; padding: 4px 7px; border-radius: 9px; background: var(--sound-tint); color: var(--ink); font-size: 10px; line-height: 14px; }
+    .speaking-sound-group legend > span:nth-child(2) { min-width: 0; }
+    .speaking-sound-step { display: grid; width: 22px; height: 22px; flex: 0 0 22px; place-items: center; border: 1px solid var(--sound-accent); border-radius: 50%; background: var(--surface); color: var(--sound-accent); font: 700 10px/1 Arial, sans-serif; }
+    .speaking-sound-wave { width: 36px; height: 14px; flex: 0 0 auto; margin-left: auto; color: var(--sound-accent); }
     .speaking-sound-wave path { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .speaking-sound-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
-    .speaking-sound-choice { min-width: 0; grid-template-columns: minmax(0, 1fr) 30px; align-items: center; gap: 4px; min-height: 38px; padding: 4px 6px; border-radius: 999px; background: #fbfcfe; }
+    .speaking-sound-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; }
+    .speaking-sound-choice { min-width: 0; grid-template-columns: minmax(0, 1fr) 28px; align-items: center; gap: 3px; min-height: 32px; padding: 2px 5px; border-radius: 999px; background: var(--surface); }
     .speaking-sound-choice.is-selected { border-color: var(--sound-accent); background: var(--sound-tint); box-shadow: none; }
-    .speaking-sound-choice label { min-width: 0; align-items: center; gap: 5px; font-size: 10px; line-height: 14px; }
+    .speaking-sound-choice label { min-width: 0; align-items: center; gap: 5px; color: var(--ink); font-size: 10px; line-height: 14px; }
     .speaking-sound-choice label > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .speaking-sound-choice input { width: 14px; height: 14px; flex: 0 0 14px; margin: 0; accent-color: var(--sound-accent); }
-    .speaking-sound-choice button { display: grid; width: 30px; min-width: 30px; min-height: 30px; place-items: center; padding: 0; border-color: transparent; border-radius: 50%; background: transparent; color: var(--muted); font-size: 0; }
+    .speaking-sound-choice button { display: grid; width: 28px; min-width: 28px; min-height: 28px; place-items: center; padding: 0; border-color: transparent; border-radius: 50%; background: transparent; color: var(--muted); font-size: 0; }
     .speaking-sound-choice button::before { content: "▶"; color: var(--sound-accent); font: 700 10px/1 Arial, sans-serif; }
     .speaking-sound-choice.is-selected button { color: var(--sound-accent); }
     .speaking-sound-choice button:hover { background: var(--sound-tint); }
     .speaking-sound-choice:focus-within { outline: 2px solid var(--sound-accent); outline-offset: 1px; }
-    .speaking-sound-choice small { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+    .speaking-sound-choice small { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); color: var(--muted); white-space: nowrap; border: 0; }
     @media (min-width: 700px) {
       .speaking-sound-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
       .speaking-sound-choice { grid-template-columns: minmax(0, 1fr) auto; min-height: 42px; padding: 5px 8px; }
@@ -3698,7 +3727,7 @@
                 <div class="speaking-option-card speaking-sounds-card">
                   <div class="speaking-option-heading"><span class="speaking-option-heading-label">Pronunciation sounds</span><svg class="speaking-sounds-mark" viewBox="0 0 40 22" aria-hidden="true" focusable="false"><path d="M1 11h5l4-7 5 14 5-18 5 20 5-12 4 3h5" /></svg></div>
                   <p class="speaking-option-description">Choose a cue, then preview it. Changes save automatically.</p>
-                  <div class="speaking-sound-ribbon" aria-hidden="true"><span>ONE CUE PER MOMENT</span><svg viewBox="0 0 40 14" focusable="false"><path d="M1 7h5l3-3 4 6 4-9 4 11 4-6 4 2h10" /></svg></div>
+                  <div class="speaking-sound-ribbon" aria-hidden="true"><span>3 moments in your speaking flow</span><svg viewBox="0 0 40 14" focusable="false"><path d="M1 7h5l3-3 4 6 4-9 4 11 4-6 4 2h10" /></svg></div>
                   <fieldset class="speaking-sound-group" data-speaking-sound-group="success">
                     <legend><span class="speaking-sound-step" aria-hidden="true">1</span><span>Word pronounced correctly</span><svg class="speaking-sound-wave" viewBox="0 0 40 14" aria-hidden="true" focusable="false"><path d="M1 7h5l3-3 4 6 4-9 4 11 4-6 4 2h10" /></svg></legend>
                     <div class="speaking-sound-grid">
@@ -7590,6 +7619,16 @@
           .replace(/[^\p{L}\p{N}]/gu, '');
       }
 
+      function slugCourseCsvName(name) {
+        return `${name.replace(/\.csv$/i, '')
+          .normalize('NFD')
+          .replace(/[\u0300-\u036f]/g, '')
+          .replace(/['’]/g, '')
+          .toLocaleLowerCase()
+          .replace(/[^\p{L}\p{N}]+/gu, '-')
+          .replace(/^-|-$/g, '')}.csv`;
+      }
+
       function matchCourseCsvName(candidateNames, expectedName) {
         const exactMatch = candidateNames.find(name => name === expectedName);
         if (exactMatch) return exactMatch;
@@ -7685,19 +7724,28 @@
           console.warn('Course HTML CSV lookup unavailable:', error);
         }
 
-        const url = courseResourceUrl(courseId, relativePath);
-        try {
-          const response = await fetch(url, { cache: 'no-store' });
-          if (!response.ok) {
-            const error = new Error(`Could not load ${url} (${response.status}). GitHub: ${githubError.message} Server: ${directoryError.message}`);
-            error.status = response.status;
-            throw error;
+        const directFileNames = [...new Set([expectedName, slugCourseCsvName(expectedName)])];
+        const directErrors = [];
+        let lastStatus;
+        for (const fileName of directFileNames) {
+          const directPath = directoryPath ? `${directoryPath}/${fileName}` : fileName;
+          const url = courseResourceUrl(courseId, directPath);
+          let response;
+          try {
+            response = await fetch(url, { cache: 'no-store' });
+          } catch (error) {
+            directErrors.push(`${url}: ${error.message}`);
+            continue;
           }
-          return await storeFetchedCsv(response);
-        } catch (error) {
-          if (error.status) throw error;
-          throw new Error(`Could not load ${url}. GitHub: ${githubError.message} Server: ${directoryError.message} Direct request: ${error.message}`);
+          if (response.ok) return await storeFetchedCsv(response);
+          lastStatus = response.status;
+          directErrors.push(`${url} (${response.status})`);
         }
+        const error = new Error(
+          `Could not load ${courseResourceUrl(courseId, relativePath)}. GitHub: ${githubError.message} Server: ${directoryError.message} Direct requests: ${directErrors.join('; ')}`
+        );
+        if (lastStatus) error.status = lastStatus;
+        throw error;
       }
 
       function validateCourseDetails(folderId, details) {
@@ -8096,10 +8144,17 @@
           const todayClass = dateKey === getPracticeDateKey(today) ? ' is-today' : '';
           const completeClass = metGoal ? ' is-complete' : '';
           const outsideClass = isCurrentMonth ? '' : ' is-outside';
-          const accessibleCount = count === 1 ? '1 phrase' : `${count} phrases`;
-          const goalLabel = metGoal ? ', daily goal met' : '';
           const accessibleDate = cellDate.toLocaleDateString(undefined, { month: 'long', day: 'numeric' });
-          cells.push(`<div class="activity-day${outsideClass}${todayClass}${completeClass}" role="gridcell" aria-label="${accessibleDate}: ${accessibleCount}${goalLabel}"><span>${dayNumber}</span>${metGoal ? '<span class="activity-day-star" aria-hidden="true">★</span>' : count ? `<span class="activity-day-count">${count}</span>` : ''}</div>`);
+          if (!isCurrentMonth) {
+            cells.push(`<div class="activity-day${outsideClass}${todayClass}" role="gridcell" aria-label="${accessibleDate}, outside current month"><span class="activity-day-number">${dayNumber}</span></div>`);
+            continue;
+          }
+
+          const accessibleCount = count === 1 ? '1 phrase' : `${count} phrases`;
+          const goalLabel = metGoal ? 'daily goal met' : 'daily goal not met';
+          const todayLabel = todayClass ? ', today' : '';
+          const progressPercent = Math.min(count / goal, 1) * 100;
+          cells.push(`<div class="activity-day${todayClass}${completeClass}" role="gridcell" aria-label="${accessibleDate}: ${accessibleCount}, ${goalLabel}${todayLabel}"><span class="activity-day-number">${dayNumber}</span>${metGoal ? '<span class="activity-day-star" aria-hidden="true">★</span>' : ''}<span class="activity-day-count-band"><span class="activity-day-count">${count}</span><span class="activity-day-progress" aria-hidden="true"><span class="activity-day-progress-fill" style="width:${progressPercent}%"></span></span></span></div>`);
         }
 
         calendar.innerHTML = cells.join('');

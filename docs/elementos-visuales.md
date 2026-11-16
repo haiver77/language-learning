@@ -46,7 +46,7 @@ Este inventario describe la interfaz implementada en `index.html`. Distingue la 
 
 5.2. **Pestañas** (`#statisticsTabs[role="tablist"]`): Activity, Year Effort y Words (`[data-statistics-tab]`). Cada pestaña controla su panel correspondiente (`[data-statistics-panel]`); los paneles no seleccionados pueden estar `hidden`.
 
-5.3. **Activity** (`#statisticsActivity[role="tabpanel"]`): mes (`#activityMonthLabel`), navegación de mes (`#activityPreviousMonth`, `#activityNextMonth`), calendario (`#activityCalendar[role="grid"]`) y resumen (`#activitySummary`).
+5.3. **Activity** (`#statisticsActivity[role="tabpanel"]`): mes (`#activityMonthLabel`), navegación de mes (`#activityPreviousMonth`, `#activityNextMonth`), calendario (`#activityCalendar[role="grid"]`) y resumen (`#activitySummary`). Cada día del mes distribuye la fecha en los dos tercios superiores y una franja inferior con el conteo de frases y una barra de progreso hacia la meta diaria configurada. La barra se limita visualmente al 100%; los días que alcanzan la meta también muestran una estrella. Los días adyacentes al mes aparecen atenuados sin conteo ni barra.
 
 5.4. **Year Effort** (`#statisticsYear`): descripción (`#yearEffortDescription`), lista de periodos (`#yearEffortCalendar`) y escala de intensidad (`.effort-legend`).
 
